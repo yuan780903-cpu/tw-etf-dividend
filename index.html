@@ -160,6 +160,17 @@ header:after{content:"";position:absolute;right:-120px;top:-160px;width:520px;he
 .months i{height:20px;border-radius:5px;background:var(--track);font-style:normal;font-size:10px;display:grid;place-items:center;color:var(--muted);font-weight:700}
 .months i.pay{color:#fff}
 .lbl{font-size:11px;color:var(--sub);margin-bottom:4px}
+.mrows{display:flex;flex-direction:column;gap:4px}
+.mrow{display:grid;grid-template-columns:30px 1fr;align-items:center;gap:4px}
+.mrow>span{font-size:11px;color:var(--sub);font-weight:700}
+.months i.exm{background:transparent;font-weight:800}
+.months i.sel{outline:2px solid var(--ink);outline-offset:1px}
+.exb{background:linear-gradient(90deg,rgba(14,165,233,.14),rgba(124,58,237,.1));color:var(--ink);border-radius:10px;padding:7px 10px;font-size:12.5px}
+.exs{display:inline-block;background:rgba(14,165,233,.15);color:#0284c7;border-radius:6px;padding:0 6px;margin-right:6px;font-weight:700}
+.chip.soon:not(.on){border-color:#0ea5e9;color:#0284c7;font-weight:700}
+.exbar{margin-top:-6px}
+.exbar .flt{flex-wrap:nowrap;align-items:flex-start}
+.exbar .fl{padding-top:8px}
 .warn{background:var(--warnbg);color:#b25e00;font-size:12px;border-radius:10px;padding:6px 10px;font-weight:500}
 .add{margin-top:auto;border:0;border-radius:12px;padding:10px;font-weight:800;cursor:pointer;color:#fff;font-size:14px}
 
@@ -491,6 +502,9 @@ button,.chip,.cat,.lr,.card{-webkit-tap-highlight-color:transparent}
       <div class="bar">
         <div class="flt"><b class="fl">配息</b><div class="chips" id="freqChips"></div>
         <b class="fl" style="margin-left:8px">市場</b><div class="chips" id="regChips"></div></div>
+      </div>
+      <div class="bar exbar">
+        <div class="flt"><b class="fl">除息月</b><div class="chips" id="exChips"></div></div>
         <span class="count" id="count"></span>
         <div class="vt" id="vt"><button data-v="card">▦ 卡片</button><button data-v="list">☰ 清單</button></div>
       </div>
@@ -569,7 +583,16 @@ const money = n => "$" + fmt(Math.round(n));
 const yi = n => n ? (n>=1e8 ? fmt(n/1e8) + " 億" : fmt(n/1e4) + " 萬") : "—";
 const $ = s => document.querySelector(s);
 
-let S = null, TX = null, curCat = "全部", curFreq = "全部", curReg = "全部";
+let S = null, TX = null, curCat = "全部", curFreq = "全部", curReg = "全部", curEx = "全部";
+let UP = {};                          // 已公告除息(證交所預告表):{id:{ex, cash}}
+const TODAY = new Date().toISOString().slice(0,10), THIS_M = new Date().getMonth() + 1;
+function nextEx(e){                   // 下一次已公告的除息日(證交所預告 or FinMind 已公布的未來除息日)
+  const u = UP[e.id], l = e.lastDiv;
+  if (u && u.ex >= TODAY) return {ex: u.ex, cash: u.cash || (l && l.ex == u.ex ? l.cash : null)};
+  if (l && l.ex >= TODAY) return {ex: l.ex, cash: l.cash};
+  return null;
+}
+const dayDiff = d => Math.round((new Date(d) - new Date(TODAY)) / 864e5);
 let PF = load();   // 我的持股 [{id, lots}]
 
 function load(){ try{ return JSON.parse(localStorage.getItem("etf_pf")) || [{id:"00878",lots:10},{id:"0056",lots:10},{id:"00940",lots:20}] }catch(e){ return [] } }
@@ -580,6 +603,9 @@ fetch("data/summary.json?" + Date.now()).then(r => r.json()).then(d => {
   $("#tx").textContent = fmt(TX.price, 2); $("#txd").textContent = TX.date;
   $("#nEtf").textContent = S.length + " 檔"; $("#upd").textContent = "更新 " + d.updated;
   buildCats(); buildChips(); render(); renderPF(); renderPlan();
+  fetch("data/upcoming.json?" + Date.now()).then(r => r.ok ? r.json() : []).then(u => {
+    (u || []).forEach(x => { if (!UP[x.id] || x.ex < UP[x.id].ex) UP[x.id] = x; }); buildChips(); render();
+  }).catch(() => {});
 });
 
 function buildCats(){
@@ -604,6 +630,11 @@ function buildChips(){
   };
   mk("#freqChips", ["全部","月配","季配","半年配","年配","不配息"], () => curFreq, v => curFreq = v);
   mk("#regChips", ["全部","台股","海外"], () => curReg, v => curReg = v);
+  const nSoon = S ? S.filter(e => { const n = nextEx(e); return n && dayDiff(n.ex) <= 30; }).length : 0;
+  const ex = [["全部","全部"], ["soon", `💧 即將除息${nSoon ? " " + nSoon : ""}`],
+    ...[...Array(12)].map((_, i) => { const m = (THIS_M - 1 + i) % 12 + 1; return [String(m), m + "月" + (i == 0 ? "・本月" : i == 1 ? "・下月" : "")]; })];
+  $("#exChips").innerHTML = ex.map(([v, t]) => `<span class="chip ${curEx==v?"on":""} ${v=="soon"?"soon":""}" data-v="${v}">${t}</span>`).join("");
+  $("#exChips").querySelectorAll(".chip").forEach(el => el.onclick = () => { curEx = el.dataset.v; buildChips(); render(); });
 }
 $("#q").oninput = render; $("#sort").onchange = render;
 
@@ -613,7 +644,15 @@ function spark(m, color){
   const pts = v.map((y,i) => `${(i/(v.length-1)*W).toFixed(1)},${(H - (y-mn)/(mx-mn||1)*H).toFixed(1)}`).join(" ");
   return `<svg viewBox="0 0 ${W} ${H+2}" width="100%" height="42" preserveAspectRatio="none"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2.2" stroke-linejoin="round"/></svg>`;
 }
-const monthsRow = (pm, color) => `<div class="months">${[...Array(12)].map((_,i)=>`<i class="${pm.includes(i+1)?"pay":""}" style="${pm.includes(i+1)?"background:"+color:""}">${i+1}</i>`).join("")}</div>`;
+const monthsRow = (pm, color, kind) => `<div class="months">${[...Array(12)].map((_,i)=>{ const on = pm.includes(i+1), sel = curEx == String(i+1) ? " sel" : "";
+  return kind == "ex" ? `<i class="${on?"exm":""}${sel}" style="${on?`color:${color};box-shadow:inset 0 0 0 1.5px ${color}`:""}">${i+1}</i>`
+                      : `<i class="${on?"pay":""}${sel}" style="${on?"background:"+color:""}">${i+1}</i>`; }).join("")}</div>`;
+function exBadge(e, short){            // 已公告的下次除息日
+  const n = nextEx(e); if (!n) return "";
+  const d = dayDiff(n.ex), md = +n.ex.slice(5,7) + "/" + +n.ex.slice(8,10);
+  const when = d == 0 ? "今天" : d == 1 ? "明天" : `${d} 天後`;
+  return short ? `<span class="exs">💧${md} 除息</span>` : `<div class="exb">💧 <b>${md}</b> 除息（${when}）${n.cash ? `・每股 <b>${n.cash}</b> 元` : "・金額待公告"}</div>`;
+}
 
 let VIEW = (() => { try { return localStorage.getItem("etf_view") } catch(e) {} })() || (matchMedia("(max-width:700px)").matches ? "list" : "card");
 let L = [], shown = 0, moreObs = null;
@@ -635,7 +674,8 @@ function cardHTML(e){
           <div class="kpi"><small>規模</small><b class="num">${yi(e.aum)}</b></div>
           <div class="kpi"><small>近一年漲跌</small><b class="num" style="color:${e.ret1y>=0?"var(--up)":"var(--down)"}">${fmt(e.ret1y,1)}%</b></div>
         </div>
-        ${e.perYear ? `<div><div class="lbl">發放月份</div>${monthsRow(e.payMonths, c)}</div>` : ""}
+        ${exBadge(e)}
+        ${e.perYear ? `<div class="mrows"><div class="mrow"><span>除息</span>${monthsRow(e.exMonths || [], c, "ex")}</div><div class="mrow"><span>入帳</span>${monthsRow(e.payMonths, c)}</div></div>` : ""}
         ${e.annYield > 15 ? `<div class="warn">⚠️ 年化 ${e.annYield}% 偏高，配息可能含本金</div>` : ""}
         <button class="add" style="background:${grad(e.category)}" data-add="${e.id}">＋ 加入我的試算</button>
       </div></div>`;
@@ -645,7 +685,7 @@ function rowHTML(e){
   const tc = sc == null ? "#8a93a8" : sc >= 70 ? "#13a05f" : sc >= 50 ? "#d4a000" : sc >= 35 ? "#f07b14" : "#e5383b";
   return `<div class="lr" data-id="${e.id}">
       <span class="cb" style="background:${grad(e.category)}"></span>
-      <div class="nm"><b>${e.id} ${e.name}</b><small>${e.category}・${e.region}・${e.freq}・規模 ${yi(e.aum)}</small></div>
+      <div class="nm"><b>${e.id} ${e.name}</b><small>${exBadge(e, 1)}${(e.exMonths||[]).length && e.perYear ? `除息 ${e.exMonths.join("・")} 月・` : ""}${e.freq}・規模 ${yi(e.aum)}</small></div>
       <div class="sp">${spark(e.monthly, c)}</div>
       <div class="v"><b class="num">${fmt(e.price,2)}</b><small class="num" style="color:${up?"var(--up)":"var(--down)"}">${up?"▲":"▼"}${fmt(Math.abs(e.chgPct),2)}%</small></div>
       <div class="v"><b class="num" style="color:${e.annYield > 15 ? "#b25e00" : "inherit"}">${e.ttmYield ? e.ttmYield + "%" : "—"}</b><small>殖利率</small></div>
@@ -656,9 +696,12 @@ function rowHTML(e){
 }
 function render(){                      // 篩選/排序改變 -> 重新從第一批開始
   const q = $("#q").value.trim().toLowerCase(), key = $("#sort").value;
-  L = S.filter(e => (curCat=="全部"||e.category==curCat) && (curFreq=="全部"||e.freq==curFreq) && (curReg=="全部"||e.region==curReg)
+  const exOk = e => { if (curEx == "全部") return true; if (curEx == "soon") { const n = nextEx(e); return n && dayDiff(n.ex) <= 30; }
+    const m = +curEx, n = nextEx(e); return (e.exMonths || []).includes(m) || (n && +n.ex.slice(5,7) == m); };
+  L = S.filter(e => (curCat=="全部"||e.category==curCat) && (curFreq=="全部"||e.freq==curFreq) && (curReg=="全部"||e.region==curReg) && exOk(e)
       && (!q || (e.id+e.name+e.category+(e.issuer||"")+(e.top3||[]).join("")).toLowerCase().includes(q)));
   L.sort((a,b) => key=="id" ? a.id.localeCompare(b.id) : key=="ta" ? ((b.ta||{}).score||0) - ((a.ta||{}).score||0) : (b[key]||0) - (a[key]||0));
+  if (curEx == "soon") L.sort((a,b) => nextEx(a).ex.localeCompare(nextEx(b).ex));
   $("#count").textContent = `共 ${L.length} 檔`;
   document.querySelectorAll("#vt button").forEach(b => b.classList.toggle("on", b.dataset.v == VIEW));
   $("#grid").className = "grid" + (VIEW == "list" ? " list" : "");
