@@ -739,6 +739,7 @@ td.r,th.r{text-align:right}
 .scr-r{display:flex;justify-content:space-between;gap:8px;background:var(--bg);border-radius:12px;padding:9px 12px;cursor:pointer;transition:background .15s}
 .scr-r:hover{background:var(--hover)}.scr-r b{font-size:14px}.scr-r small{display:block;font-size:11.5px;color:var(--sub)}.scr-r .tag{margin-left:6px}
 @media(max-width:700px){.scr-g{flex-direction:column;gap:4px}.scr-g>b{width:auto;padding:0}.scr-l{grid-template-columns:1fr;max-height:420px}}
+.mg-say{margin-top:10px;font-size:14.5px;line-height:1.8;background:var(--bg);border-radius:12px;padding:12px 14px}
 /* ===== 骨架載入 ===== */
 .sk{background:linear-gradient(90deg,var(--track) 25%,var(--skhi) 37%,var(--track) 63%);background-size:400% 100%;animation:sk 1.3s ease infinite;border-radius:12px}
 .sk-cat{height:60px;border-radius:18px}
@@ -1751,7 +1752,7 @@ function renderMkt(){
   const {a} = MK, t = a.tech, f = a.forecast;
   const stCol = a.score >= 12 ? "#16a34a" : a.score > -12 ? "#64748b" : "#dc2626";
   $("#mkt").innerHTML = `<div class="mk">
-  <nav class="mk-nav" id="mkNav">${[["mk-sum", "🧭 總結"], ["mk-key", "🔑 關鍵數字"], ["mk-fear", "😱 恐慌度"], ["mk-la", "📐 線型"], ["mk-fc", "🎯 區間"], ["mk-cards", "🚦 燈號"], ["mk-chart", "📈 疊圖"], ["mk-glob", "🌏 全球"], ["mk-det", "📋 明細"], ["mk-ev", "🔬 回測"]].map(([id, n]) => `<button data-to="${id}">${n}</button>`).join("")}</nav>
+  <nav class="mk-nav" id="mkNav">${[["mk-sum", "🧭 總結"], ["mk-key", "🔑 關鍵數字"], ["mk-mg", "📊 資券"], ["mk-fear", "😱 恐慌度"], ["mk-la", "📐 線型"], ["mk-fc", "🎯 區間"], ["mk-cards", "🚦 燈號"], ["mk-chart", "📈 疊圖"], ["mk-glob", "🌏 全球"], ["mk-det", "📋 明細"], ["mk-ev", "🔬 回測"]].map(([id, n]) => `<button data-to="${id}">${n}</button>`).join("")}</nav>
   <div class="mk-hero" id="mk-sum">
     <div class="mk-px"><small>加權指數 ・ ${t.date} 收盤</small>
       <div class="v num">${fmt(t.price, 2)}</div>
@@ -1770,6 +1771,10 @@ function renderMkt(){
 
   <div class="box" id="mk-key"><h2 class="sec">🔑 影響漲跌的關鍵數字 <small>今天的數字 vs 前一天，對短線漲跌是利多還是利空，一句話說明</small></h2>
     <div id="keyBody"></div></div>
+
+  <div class="box" id="mk-mg"><h2 class="sec">📊 資券與法人 <small>上市融資、融券、三大法人每日變化（證交所每晚約 21:30 公布）</small></h2>
+    <div class="ctool"><div class="chips" id="mgTab"></div><div class="chips" id="mgRg"></div></div>
+    <div id="mgSay" class="mg-say"></div><div class="chart" id="mgChart"></div><div class="scrollx" id="mgTbl" style="max-height:420px"></div></div>
 
   <div class="box" id="mk-fear"><h2 class="sec">😱 市場恐慌度 <small>0＝近 5 年最平靜、100＝最恐慌；每天收盤後自動更新</small></h2>
     <div class="ctool"><div class="chips" id="fearTabs"></div></div><div id="fearBody"></div></div>
@@ -1826,7 +1831,7 @@ function renderMkt(){
 
   <p class="mknote">資料來源：臺灣證券交易所（臺股儀表板、信用交易統計）、臺灣期貨交易所（台指 VIX）、FinMind（三大法人、期貨未平倉）、Yahoo Finance（全球指數、美股 VIX）。融資相關為上市資料。所有區間、分數與機率皆為歷史統計推估，不構成任何投資建議。</p>
   </div>`;
-  mkChartUI(); gChartUI(); detailUI(); if (MK.a.fear) fearUI(); else $("#mk-fear").remove(); if (MK.a.drivers) keyUI(); else $("#mk-key").remove(); laUI();
+  mkChartUI(); gChartUI(); detailUI(); if (MK.a.fear) fearUI(); else $("#mk-fear").remove(); if (MK.a.drivers) keyUI(); else $("#mk-key").remove(); laUI(); mgUI();
   $("#mkNav").onclick = e => { const b = e.target.closest("[data-to]"); if (!b) return; const el = document.getElementById(b.dataset.to);
     if (el) window.scrollTo({top: el.getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 70), behavior: "smooth"}); };
 }
@@ -2731,6 +2736,42 @@ const LCH = {id: "line", ic: "📐", name: "線型圖鑑", sub: "民間老師最
 ]};
 CH.splice(2, 0, LCH);
 function openScr(key){ scrKey = key; go("mkt"); const t0 = Date.now(), iv = setInterval(() => { const el = $("#scrTop"); if (el && $("#scrList")) { clearInterval(iv); scrUI().then(() => setTimeout(() => window.scrollTo({top: $("#scrTop").getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 60), behavior: "smooth"}), 700)); } if (Date.now() - t0 > 8000) clearInterval(iv); }, 300); }
+
+
+/* ---------- 資券與法人 ---------- */
+let mgT = "m", mgN = 63;
+function mgUI(){
+  const R = MK.R, f2 = (v, d = 2) => v == null ? "—" : (v > 0 ? "+" : "") + fmt(v, d);
+  R.forEach((r, i) => { const p = R[i - 1]; r.mDiffP = p && r.mAmt != null && p.mAmt ? r.mAmt - p.mAmt : null; r.sDiff = p && r.sShr != null && p.sShr != null ? r.sShr - p.sShr : null;
+    r.sm = r.sShr && r.mShr ? r.sShr / r.mShr * 100 : null; });
+  const T = {m: ["融資", "mDiffP", "億", "融資增減（億）"], s: ["融券", "sDiff", "張", "融券增減（張）"], b: ["餘額", "mAmt", "億", "融資餘額（億）"], i: ["法人", "tot", "億", "三大法人合計（億）"]};
+  $("#mgTab").innerHTML = Object.entries(T).map(([k, t]) => `<span class="chip ${mgT == k ? "on" : ""}" data-t="${k}">${t[0]}</span>`).join("");
+  $("#mgRg").innerHTML = [[21, "1 月"], [63, "3 月"], [126, "半年"], [250, "1 年"]].map(([k, n]) => `<span class="chip ${mgN == k ? "on" : ""}" data-n="${k}">${n}</span>`).join("");
+  $("#mgTab").onclick = e => { const c = e.target.closest("[data-t]"); if (c) { mgT = c.dataset.t; mgUI(); } };
+  $("#mgRg").onclick = e => { const c = e.target.closest("[data-n]"); if (c) { mgN = +c.dataset.n; mgUI(); } };
+  const lastM = [...R].reverse().find(r => r.mAmt != null), V = R.slice(-mgN), t = T[mgT];
+  // 白話判讀:今天的變化在 5 年中排第幾
+  const rank = (key, v) => { const xs = R.map(r => r[key]).filter(x => x != null); return {low: xs.filter(x => x < v).length + 1, high: xs.filter(x => x > v).length + 1, n: xs.length}; };
+  let say = "";
+  if (lastM) {
+    const r = lastM, pct = r.mDiffP != null ? r.mDiffP / (r.mAmt - r.mDiffP) * 100 : null, rk = rank("mDiffP", r.mDiffP), rs = r.sDiff != null ? rank("sDiff", r.sDiff) : null;
+    say = `<b>${r.d}</b>：融資${r.mDiffP < 0 ? "減少" : "增加"} <b class="num" style="color:${r.mDiffP < 0 ? "var(--down)" : "var(--up)"}">${fmt(Math.abs(r.mDiffP), 2)} 億</b>（${f2(pct, 1)}%），餘額 ${fmt(r.mAmt, 2)} 億`
+      + (r.mDiffP < 0 && rk.low <= 10 ? `，是近 5 年<b>第 ${rk.low} 大</b>的單日減少` : r.mDiffP > 0 && rk.high <= 10 ? `，是近 5 年第 ${rk.high} 大的單日增加` : "")
+      + `；融券${r.sDiff < 0 ? "減少" : "增加"} ${fmt(Math.abs(r.sDiff || 0))} 張，券資比 ${fmt(r.sm, 2)}%。`
+      + (r.keep != null ? `整戶維持率 <b>${fmt(r.keep, 2)}%</b>、追繳 <b>${fmt(r.below)}</b> 戶。` : "")
+      + `<br><span class="mknote">白話：${r.mDiffP < 0 && pct < -3 ? "融資一天大減，代表散戶大量被斷頭或認賠出場，短線賣壓沉重；但融資清洗得越乾淨，之後反彈時的解套賣壓越小，歷史上常出現在恐慌末段。" : r.mDiffP < 0 ? "融資減少，散戶槓桿下降，籌碼變得比較乾淨。" : (r.chg || 0) < 0 ? "指數跌、融資卻增加，散戶逢低攤平，套牢籌碼變多，反彈容易遇到賣壓。" : "融資增加、指數上漲，散戶追價，要留意過熱。"}${r.sDiff > 0 ? "融券增加代表空方加碼，但也是之後軋空的燃料。" : ""}</span>`;
+  }
+  $("#mgSay").innerHTML = say;
+  const series = [{name: t[3], vals: V.map(r => r[t[1]]), axis: mgT == "b" ? "L" : "L", color: mgT == "b" ? "#f97316" : "#7c3aed", type: mgT == "b" ? "line" : "bar", w: 2.4,
+      colorFn: mgT == "b" ? null : v => v >= 0 ? "#ef4444" : "#16a34a", fmt: v => (mgT == "b" ? "" : v > 0 ? "+" : "") + fmt(v, t[2] == "張" ? 0 : 2) + " " + t[2]},
+    {name: "加權指數", vals: V.map(r => r.tx), axis: "R", color: "#0ea5e9", w: 2, fmt: v => fmt(v, 2)}];
+  svgChart($("#mgChart"), V.map(r => r.d), series, {H: 260, fmtL: v => fmt(v, t[2] == "張" ? 0 : 0), fmtR: v => fmt(v / 1000, 0) + "K", zeroR: false});
+  const rows = R.slice(-40).reverse();
+  $("#mgTbl").innerHTML = `<table class="ev dtab"><tr><th>日期</th><th class="r">加權指數</th><th class="r">漲跌%</th><th class="r">融資增減(億)</th><th class="r">融資餘額(億)</th><th class="r">融券增減(張)</th><th class="r">融券餘額(張)</th><th class="r">券資比%</th><th class="r">外資(億)</th><th class="r">投信(億)</th><th class="r">自營(億)</th><th class="r">維持率%</th><th class="r">追繳戶</th></tr>
+    ${rows.map(r => `<tr><td class="d">${r.d.slice(5).replace("-", "/")}</td><td class="r num">${fmt(r.tx, 2)}</td><td class="r num ${pc(r.chg)}">${f2(r.chg)}</td><td class="r num ${pc(r.mDiffP)}">${f2(r.mDiffP)}</td><td class="r num">${r.mAmt == null ? "—" : fmt(r.mAmt, 2)}</td>
+      <td class="r num ${pc(r.sDiff)}">${r.sDiff == null ? "—" : f2(r.sDiff, 0)}</td><td class="r num">${r.sShr == null ? "—" : fmt(r.sShr)}</td><td class="r num">${r.sm == null ? "—" : fmt(r.sm, 2)}</td>
+      <td class="r num ${pc(r.fi)}">${f2(r.fi, 1)}</td><td class="r num ${pc(r.it)}">${f2(r.it, 1)}</td><td class="r num ${pc(r.dl)}">${f2(r.dl, 1)}</td><td class="r num ${cellCls("keep", r.keep)}">${r.keep == null ? "—" : fmt(r.keep, 2)}</td><td class="r num ${cellCls("below", r.below)}">${r.below == null ? "—" : fmt(r.below)}</td></tr>`).join("")}</table>`;
+}
 
 </script>
 </body>

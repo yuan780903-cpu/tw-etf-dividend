@@ -138,7 +138,7 @@ def build(margin, keep, inst, fut, vtw, vus):
         dealer = None
         if i: dealer = round(sum(v for n, v in i.items() if n.startswith("Dealer")), 2)
         rows.append([d, t[4], t[2], t[3], round(t[5] / 1e5, 1) if t[5] else None,
-                     m.get("marginShr"), round(mAmt / 1e5, 1) if mAmt else None, round(mVal / 100, 1) if mVal else None,
+                     m.get("marginShr"), round(mAmt / 1e5, 2) if mAmt else None, round(mVal / 100, 1) if mVal else None,
                      round(mVal * 1e6 / (mAmt * 1e3) * 100, 2) if mAmt and mVal else None, m.get("shortShr"),
                      k.get("keepRate"), k.get("belowAccNum"), k.get("callAccNum"),
                      round(k["callAmt"] / 1e8, 2) if k.get("callAmt") is not None else None,
