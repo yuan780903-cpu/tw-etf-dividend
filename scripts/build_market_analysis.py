@@ -171,17 +171,17 @@ tech_view = dict(price=TX[i], date=D[i], chg=r2(ret1[i]), ma20=r2(MA20[i]), ma60
 pRV90 = quantile(RV, .9); pMK10 = quantile(mKeep, .1); pFI5_10 = quantile(fi5, .1); pFFI10 = quantile(ffi, .1)
 CONDS = [
     ("rsi30", "大盤 RSI 低於 30（超賣）", lambda i: RSI[i] is not None and RSI[i] < 30),
-    ("dd10", "指數從 60 日高點回落超過 10%", lambda i: DD60[i] <= -10),
-    ("dd15", "指數從 60 日高點回落超過 15%", lambda i: DD60[i] <= -15),
-    ("bias8", "跌破季線且乖離低於 -8%", lambda i: BIAS60[i] is not None and BIAS60[i] <= -8),
-    ("mKeep10", "估算融資維持率落在 5 年最低 10%", lambda i: mKeep[i] is not None and mKeep[i] <= pMK10),
-    ("mDrop3", "融資金額單日減少超過 3%（斷頭潮）", lambda i: mChg1[i] is not None and mChg1[i] <= -3),
-    ("mDrop20", "融資金額 20 天減少超過 10%（去槓桿）", lambda i: mChg20[i] is not None and mChg20[i] <= -10),
+    ("dd10", "比近 3 個月高點跌超過 10%", lambda i: DD60[i] <= -10),
+    ("dd15", "比近 3 個月高點跌超過 15%", lambda i: DD60[i] <= -15),
+    ("bias8", "跌破季線，且比季線低 8% 以上", lambda i: BIAS60[i] is not None and BIAS60[i] <= -8),
+    ("mKeep10", "估算融資維持率創 5 年來前 10% 低", lambda i: mKeep[i] is not None and mKeep[i] <= pMK10),
+    ("mDrop3", "融資一天減少超過 3%（斷頭潮）", lambda i: mChg1[i] is not None and mChg1[i] <= -3),
+    ("mDrop20", "融資 1 個月內減少超過 10%（散戶大幅降槓桿）", lambda i: mChg20[i] is not None and mChg20[i] <= -10),
     ("fiStreak5", "外資連續賣超 5 天以上", lambda i: streak[i] <= -5),
-    ("fi5low", "外資 5 日賣超落在 5 年最大 10%", lambda i: fi5[i] <= pFI5_10),
-    ("ffi10", "外資台指期淨空單落在 5 年最大 10%", lambda i: ffi[i] is not None and ffi[i] <= pFFI10),
+    ("fi5low", "外資 1 週賣超金額創 5 年來前 10% 大", lambda i: fi5[i] <= pFI5_10),
+    ("ffi10", "外資期貨空單創 5 年來前 10% 多", lambda i: ffi[i] is not None and ffi[i] <= pFFI10),
     ("vixUs30", "美股 VIX 高於 30", lambda i: vixUs[i] is not None and vixUs[i] >= 30),
-    ("rv90", "台股波動率落在 5 年最高 10%", lambda i: RV[i] is not None and RV[i] >= pRV90),
+    ("rv90", "台股震盪程度創 5 年來前 10% 高", lambda i: RV[i] is not None and RV[i] >= pRV90),
     ("sox3", "前一晚費城半導體跌超過 3%", lambda i: SOX_PREV[i] is not None and SOX_PREV[i] <= -3),
     ("below700", "追繳戶數超過 700 戶（官方資料，8 月起）", lambda i: below[i] is not None and below[i] >= 700),
 ]
@@ -292,14 +292,14 @@ fc["backtest"] = dict(n=tot, raw68=r2(hit68 / tot * 100, 0), raw95=r2(hit95 / to
 comp = []
 def add(name, v, why): comp.append(dict(name=name, v=round(max(-100, min(100, v))), why=why))
 tscore = tech.get("score") or 50
-add("技術面", (tscore - 50) * 2, f"技術分數 {tscore}（50 為中性）")
-add("外資現貨", max(-100, min(100, fi5[-1] / max(1, abs(quantile(fi5, .05) or 1)) * 100)), f"近 5 日 {V(fi5[-1])} 億")
+add("技術面", (tscore - 50) * 2, f"均線、RSI、KD 等綜合分數 {tscore}（50 為中性）")
+add("外資買賣股票", max(-100, min(100, fi5[-1] / max(1, abs(quantile(fi5, .05) or 1)) * 100)), f"近 5 日 {V(fi5[-1])} 億")
 pf = pct_rank(ffi, last(ffi)[0]) or 50
-add("外資期貨", (pf - 50) * 2, f"淨未平倉在 5 年第 {pf:.0f} 百分位")
+add("外資期貨部位", (pf - 50) * 2, f"空單多寡在 5 年第 {100 - pf:.0f} 百分位（越高越偏空）")
 mk = pct_rank(mKeep, last(mKeep)[0]) or 50
-add("融資籌碼（反向）", (50 - mk) * 1.2 if mk < 30 else (50 - mk) * 0.6, "融資維持率越低、賣壓越接近出清，反而偏多" if mk < 30 else "槓桿位置")
+add("散戶融資", (50 - mk) * 1.2 if mk < 30 else (50 - mk) * 0.6, "融資戶虧損嚴重、賣壓接近出清，反而偏多" if mk < 30 else f"估算融資維持率在 5 年第 {mk:.0f} 百分位，槓桿不算過高也不算出清")
 fear = pct_rank(RV, last(RV)[0]) or 50
-add("恐慌情緒（反向）", (fear - 50) * 1.2, "極度恐慌時，歷史上後續反彈機率較高")
+add("恐慌程度", (fear - 50) * 1.2, "越恐慌越加分：歷史上極度恐慌後反彈機率較高")
 score = round(st.mean(c["v"] for c in comp))
 stance = "偏多" if score >= 35 else "中性偏多" if score >= 12 else "中性" if score > -12 else "中性偏空" if score > -35 else "偏空"
 # 支撐 / 壓力
@@ -315,12 +315,12 @@ res = sorted([(n, round(v)) for n, v in lv if v and v > P], key=lambda x: x[1])[
 # ---------- 7. 白話總結 ----------
 say = []
 w, m = fc["w1"], fc["m1"]
-say.append(f"加權指數 {V(P, 2)}（{D[-1]}），近 60 日高點回落 {abs(DD60[-1]):.1f}%，{'跌破' if P < (MA60[-1] or 0) else '站上'}季線。")
-say.append(f"依目前波動（年化約 {fc['sigmaAnn']}%），未來 1 週大概率區間 {V(w['lo68'])} ～ {V(w['hi68'])}，1 個月 {V(m['lo68'])} ～ {V(m['hi68'])}；極端情況 1 個月可能落在 {V(m['lo95'])} ～ {V(m['hi95'])}。")
+say.append(f"加權指數 {V(P, 2)}（{D[-1]}），比近 3 個月最高點{'下跌' if DD60[-1] < 0 else '持平'} {abs(DD60[-1]):.1f}%，{'跌破' if P < (MA60[-1] or 0) else '站上'}季線（近 3 個月平均價）。")
+say.append(f"目前市場震盪{'很大' if fc['sigmaAnn'] >= 30 else '正常'}（一年約 ±{fc['sigmaAnn']:.0f}%），未來 1 週大概率落在 {V(w['lo68'])} ～ {V(w['hi68'])}，1 個月 {V(m['lo68'])} ～ {V(m['hi68'])}；極端情況 1 個月可能落在 {V(m['lo95'])} ～ {V(m['hi95'])}。")
 for e in active[:4]:
     h = e["h20"]
-    say.append(f"「{e['name']}」過去 5 年發生 {e['episodes']} 次，之後 20 天大盤平均 {h['avg']:+.1f}%、上漲機率 {h['win']:.0f}%（平常是 {base[20]['avg']:+.1f}%、{base[20]['win']:.0f}%）。")
-say.append(f"綜合多空分數 {score:+d}，判讀：{stance}。")
+    say.append(f"「{e['name']}」過去 5 年發生 {e['episodes']} 次，之後 1 個月大盤平均 {h['avg']:+.1f}%、上漲機率 {h['win']:.0f}%（平常是 {base[20]['avg']:+.1f}%、{base[20]['win']:.0f}%）。")
+say.append(f"綜合多空分數 {score:+d}（-100 最空 ～ +100 最多），判讀：{stance}。")
 say.append("以上為歷史資料統計推估，不構成任何投資建議。")
 
 out = dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), date=D[-1], cards=cards, tech=tech_view,

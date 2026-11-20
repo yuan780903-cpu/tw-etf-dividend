@@ -377,7 +377,7 @@ td.r,th.r{text-align:right}
 .mbar .mb-r{text-align:right}
 .mbar i{font-style:normal;font-size:26px;opacity:.85;margin-left:-4px}
 .mbar.flash{animation:flash .7s ease}
-@media(max-width:1099px){body.has-pf:not(.on-calc) .mbar{display:flex}body.has-pf:not(.on-calc){padding-bottom:84px}}
+@media(max-width:1099px){body.has-pf:not(.on-calc):not(.on-mkt) .mbar{display:flex}body.has-pf:not(.on-calc):not(.on-mkt){padding-bottom:84px}}
 @media(min-width:701px) and (max-width:1099px){.mbar{max-width:560px;left:50%;right:auto;width:calc(100% - 24px);transform:translateX(-50%)}}
 
 /* ===== 手機:精簡頂部 + 底部分頁列(像 App) ===== */
@@ -407,11 +407,103 @@ td.r,th.r{text-align:right}
   .tabs .ic{font-size:21px;line-height:1}
   .tabs .n{position:absolute;top:3px;left:calc(50% + 6px);font-size:10px;padding:2px 6px;min-width:18px}
   body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
-  body.has-pf:not(.on-calc){padding-bottom:calc(150px + env(safe-area-inset-bottom))}
+  body.has-pf:not(.on-calc):not(.on-mkt){padding-bottom:calc(150px + env(safe-area-inset-bottom))}
   .mbar{bottom:calc(74px + env(safe-area-inset-bottom))}
   #toast{bottom:calc(150px + env(safe-area-inset-bottom))!important}
   footer{padding:20px 16px 12px}
 }
+/* ===== 大盤儀表板 ===== */
+.mk{display:flex;flex-direction:column;gap:20px}
+.mk h2.sec{font-size:20px;font-weight:900;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mk h2.sec small{font-size:12px;color:var(--sub);font-weight:500}
+.mk-hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:20px;align-items:stretch}
+.mk-px{border-radius:var(--r);padding:22px;color:#fff;background:linear-gradient(135deg,#0d1b4c,#1f3cff 60%,#7b2ff7);position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.mk-px small{opacity:.8;font-size:13px}
+.mk-px .v{font-size:40px;font-weight:800;margin:4px 0}
+.mk-px .c{font-size:16px;font-weight:800}
+.mk-stance{display:flex;align-items:center;gap:16px;margin-top:16px;background:rgba(255,255,255,.12);border-radius:16px;padding:12px 14px}
+.mk-stance .pill{font-size:22px;font-weight:900;padding:8px 16px;border-radius:12px;background:#fff;white-space:nowrap}
+.mk-mini{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.mk-mini div{background:rgba(255,255,255,.1);border-radius:14px;padding:10px 12px}
+.mk-mini small{display:block;font-size:12px;opacity:.8}
+.mk-mini b{font-size:17px;font-weight:800}
+.mk-mini .lt{display:inline-flex;align-items:center;gap:4px;margin-right:12px}
+.mk-mini .lt i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.mk-say{display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.75}
+.mk-say li{list-style:none;padding:9px 12px;border-radius:12px;background:var(--bg)}
+.mk-say li:last-child{background:none;color:var(--sub);font-size:12px;padding-top:0}
+.fc2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fcb h3{font-size:16px;font-weight:900;display:flex;justify-content:space-between;align-items:baseline}
+.fcb h3 small{font-size:12px;color:var(--sub);font-weight:500}
+.fbar{position:relative;height:46px;margin:30px 6px 26px}
+.fbar .r95{position:absolute;top:14px;height:18px;border-radius:9px;background:linear-gradient(90deg,#fecaca,#fde68a,#bbf7d0)}
+.fbar .r68{position:absolute;top:8px;height:30px;border-radius:10px;background:linear-gradient(90deg,#ef4444,#f59e0b 50%,#22c55e);opacity:.85}
+.fbar .mk1{position:absolute;top:-2px;width:3px;height:50px;background:var(--ink);border-radius:2px}
+.fbar .mk1 b{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:12px;white-space:nowrap}
+.fbar .lab{position:absolute;top:44px;font-size:11.5px;color:var(--sub);transform:translateX(-50%);white-space:nowrap}
+.fbar .lab b{color:var(--ink)}
+.comp{display:flex;flex-direction:column;gap:7px;margin-top:6px}
+.comp div{display:grid;grid-template-columns:118px 1fr 44px;gap:8px;align-items:center;font-size:13px}
+.comp .tr{height:12px;background:var(--track);border-radius:6px;position:relative}
+.comp .tr i{position:absolute;top:0;bottom:0;border-radius:6px}
+.comp .tr:after{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:var(--line)}
+.lvls{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.lvls span{font-size:12px;border-radius:999px;padding:5px 10px;background:var(--bg)}
+.lvls .s{color:#15803d;background:rgba(34,197,94,.13)}.lvls .r{color:#b91c1c;background:rgba(239,68,68,.12)}
+.icards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.icd{background:var(--panel);border-radius:18px;box-shadow:var(--shadow);padding:16px;border-top:5px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.icd.red{border-top-color:#ef4444}.icd.amber{border-top-color:#f59e0b}.icd.green{border-top-color:#22c55e}
+.icd .t{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--sub);font-weight:700;gap:6px}
+.icd .dot{width:10px;height:10px;border-radius:50%;flex:none}
+.icd .v{font-size:26px;font-weight:800}
+.icd .v small{font-size:13px;color:var(--sub);font-weight:600;margin-left:4px}
+.icd .pb{height:8px;border-radius:4px;background:linear-gradient(90deg,#22c55e,#f59e0b 60%,#ef4444);position:relative;opacity:.85}
+.icd .pb.rev{background:linear-gradient(90deg,#ef4444,#f59e0b 40%,#22c55e)}
+.icd .pb i{position:absolute;top:-4px;width:4px;height:16px;border-radius:2px;background:var(--ink);transform:translateX(-50%)}
+.icd .pt{font-size:11.5px;color:var(--sub);display:flex;justify-content:space-between}
+.icd .now{font-size:13.5px;line-height:1.65;font-weight:600}
+.icd details{font-size:12.5px;line-height:1.7;color:var(--sub)}
+.icd details summary{cursor:pointer;font-weight:700;color:var(--ink)}
+.icd details p{margin-top:6px}.icd details b{color:var(--ink)}
+.ctool{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.ctool .chips{flex-wrap:wrap}
+.chart{margin-top:10px;position:relative}
+.chart svg{display:block;overflow:visible}
+.ev{width:100%;border-collapse:collapse;font-size:13px}
+.ev th{position:sticky;top:0;background:var(--panel);z-index:1}
+.ev tr.on td{background:rgba(124,58,237,.08)}
+.ev td.pos{color:var(--up);font-weight:700}.ev td.neg{color:var(--down);font-weight:700}
+.tag{font-size:11px;border-radius:6px;padding:2px 7px;font-weight:700;white-space:nowrap}
+.tag.on{background:#7c3aed;color:#fff}.tag.sm{background:var(--track);color:var(--sub)}
+.quad{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.quad div{border-radius:16px;padding:14px;background:var(--bg);font-size:13px;line-height:1.6;border:2px solid transparent}
+.quad div.now{border-color:#7c3aed;background:rgba(124,58,237,.08)}
+.quad b{font-size:15px}.quad .big{font-size:22px;font-weight:800}
+.cbar{display:flex;flex-direction:column;gap:6px}
+.cbar div{display:grid;grid-template-columns:120px 1fr 44px;gap:8px;align-items:center;font-size:13px}
+.gtab td,.gtab th{white-space:nowrap}
+.gtab td.pos{color:var(--up)}.gtab td.neg{color:var(--down)}
+.gtab tr.tw td{font-weight:800;background:rgba(31,60,255,.06)}
+.gtab tr{cursor:pointer}.gtab tr.sel td:first-child{box-shadow:inset 4px 0 0 #7b2ff7}
+.dtab{font-size:12.5px}
+.dtab th{position:sticky;top:0;background:var(--panel);z-index:2;white-space:nowrap}
+.dtab td{white-space:nowrap}
+.dtab td.d{position:sticky;left:0;background:var(--panel);font-weight:700}
+.dtab tr.ab td{background:rgba(239,68,68,.06)}
+.dtab tr.ab td.d{background:color-mix(in srgb,#ef4444 12%,var(--panel))}
+.dtab tr.sep td{border-top:3px solid #ef4444}
+.dtab td.red{color:#dc2626;font-weight:800}.dtab td.amb{color:#d97706;font-weight:800}
+.dtab td.pos{color:var(--up)}.dtab td.neg{color:var(--down)}
+.dctl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.dctl input[type=date]{border:1px solid var(--line);background:var(--field);border-radius:10px;padding:8px;font-family:inherit}
+.dctl button{border:1px solid var(--line);background:var(--field);border-radius:10px;padding:8px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;color:var(--ink)}
+.dctl button.on{background:var(--sel);color:var(--selink);border-color:transparent}
+.dctl .csv{margin-left:auto;background:linear-gradient(120deg,#16a34a,#0ea5e9);color:#fff;border:0}
+.scrollx{overflow:auto;max-height:560px;margin-top:10px;border-radius:12px;border:1px solid var(--line)}
+.mknote{font-size:12px;color:var(--sub);line-height:1.7}
+@media(max-width:900px){.mk-hero,.fc2{grid-template-columns:1fr}.mk-px .v{font-size:34px}}
+@media(max-width:700px){.fbar .ext{display:none}.quad{grid-template-columns:1fr}.comp div,.cbar div{grid-template-columns:112px 1fr 40px;font-size:12px}.icards{grid-template-columns:1fr}.dctl .csv{margin-left:0}}
+
 /* ===== 骨架載入 ===== */
 .sk{background:linear-gradient(90deg,var(--track) 25%,var(--skhi) 37%,var(--track) 63%);background-size:400% 100%;animation:sk 1.3s ease infinite;border-radius:12px}
 .sk-cat{height:60px;border-radius:18px}
@@ -454,9 +546,12 @@ button,.chip,.cat,.lr,.card{-webkit-tap-highlight-color:transparent}
   <nav class="tabs" id="tabs">
     <button data-tab="etf"><i class="ic">📊</i><span class="lg">ETF 總覽</span><span class="sm">總覽</span></button>
     <button data-tab="calc"><i class="ic">💰</i><span class="lg">我的配息試算</span><span class="sm">配息試算</span> <span class="n" id="tabN">0</span></button>
+    <button data-tab="mkt"><i class="ic">📉</i><span class="lg">大盤儀表板</span><span class="sm">大盤</span></button>
     <button data-tab="plan"><i class="ic">🎯</i><span class="lg">退休規劃</span><span class="sm">退休</span></button>
     <span class="mini" id="tabMini" data-tab="calc"></span>
   </nav>
+
+  <div class="page" id="pg-mkt"><div id="mkt"></div></div>
 
   <div class="page" id="pg-plan">
   <div class="plan" id="plan">
@@ -1154,6 +1249,8 @@ function go(tab, scroll = true){
   if (location.hash != "#" + tab) history.replaceState(null, "", "#" + tab);
   placeCalc();
   document.body.classList.toggle("on-calc", tab == "calc");
+  document.body.classList.toggle("on-mkt", tab == "mkt");
+  if (tab == "mkt") setTimeout(loadMkt);      // 延後:MK 等變數在 script 後段才宣告
   if (scroll && scrollY > 200) window.scrollTo({top: 0, behavior: "smooth"});
 }
 $("#mbar").onclick = () => go("calc");
@@ -1350,6 +1447,245 @@ $("#btnUp").onclick = async () => {
   watchCloud(STAMP);
   b.disabled = false; b.innerHTML = "🔄 <span class=\"t\">一鍵更新</span>";
 };
+
+/* ================= 大盤儀表板 =================
+   資料:data/market.json(5 年每日)、data/market_analysis.json(交叉分析)、data/global.json(全球指數) */
+let MK = null, mkOver = "mAmt", mkRange = 250, gSel = ["TAIEX", "^SOX", "^N225", "^KS11", "^GSPC"], gRange = 250, dRange = "3m";
+const LV = {red: "#ef4444", amber: "#f59e0b", green: "#22c55e", na: "#94a3b8"};
+const sgn = (x, d = 2) => x == null ? "—" : (x > 0 ? "+" : "") + fmt(x, d);
+const pc = x => x == null ? "" : x > 0 ? "pos" : x < 0 ? "neg" : "";
+async function loadMkt(){
+  if (MK) return;
+  $("#mkt").innerHTML = `<div class="box"><div class="sk" style="height:140px"></div></div><div class="box"><div class="sk" style="height:320px"></div></div>`;
+  try {
+    const [m, a, g] = await Promise.all(["market", "market_analysis", "global"].map(f => fetch(`data/${f}.json?` + Date.now()).then(r => r.json())));
+    const ix = Object.fromEntries(m.cols.map((c, i) => [c, i]));
+    const R = m.rows.map(r => Object.fromEntries(m.cols.map((c, i) => [c, r[i]])));
+    R.forEach((r, i) => {                                   // 衍生:漲跌%、融資增減、20 日波動率
+      const p = R[i - 1];
+      r.chg = p ? (r.tx / p.tx - 1) * 100 : null;
+      r.mDiff = p && r.mAmt != null && p.mAmt != null ? r.mAmt - p.mAmt : null;
+      if (i >= 20) { const xs = []; for (let k = i - 19; k <= i; k++) xs.push(Math.log(R[k].tx / R[k - 1].tx));
+        const mu = xs.reduce((s, x) => s + x, 0) / xs.length; r.rv = Math.sqrt(xs.reduce((s, x) => s + (x - mu) ** 2, 0) / xs.length) * Math.sqrt(252) * 100; }
+    });
+    MK = {m, a, g, ix, R};
+    renderMkt();
+  } catch (e) { $("#mkt").innerHTML = `<div class="box empty">大盤資料載入失敗，請稍後重新整理（${e.message}）</div>`; }
+}
+function renderMkt(){
+  const {a} = MK, t = a.tech, f = a.forecast;
+  const stCol = a.score >= 12 ? "#16a34a" : a.score > -12 ? "#64748b" : "#dc2626";
+  $("#mkt").innerHTML = `<div class="mk">
+  <div class="mk-hero">
+    <div class="mk-px"><small>加權指數 ・ ${t.date} 收盤</small>
+      <div class="v num">${fmt(t.price, 2)}</div>
+      <div class="c num">${t.chg >= 0 ? "▲" : "▼"} ${sgn(t.chg)}%　｜　比近 3 個月高點 ${fmt(t.dd60, 1)}%</div>
+      <div class="mk-stance"><span class="pill" style="color:${stCol}">${a.stance}</span>
+        <div><b class="num" style="font-size:20px">${a.score > 0 ? "+" : ""}${a.score}</b> <small>綜合多空分數（-100 最空 ～ +100 最多）</small><br><small>資料更新 ${a.updated}</small></div></div>
+      <div class="mk-mini">
+        <div><small>未來 1 週大概率</small><b class="num">${fmt(f.w1.lo68)} ～ ${fmt(f.w1.hi68)}</b></div>
+        <div><small>未來 1 個月大概率</small><b class="num">${fmt(f.m1.lo68)} ～ ${fmt(f.m1.hi68)}</b></div>
+        <div><small>指標燈號</small><b>${["red", "amber", "green"].map(l => `<span class="lt"><i style="background:${LV[l]}"></i>${a.cards.filter(c => c.level == l).length}</span>`).join("")}</b></div>
+        <div><small>最近支撐 ／ 壓力</small><b class="num">${a.support[0] ? fmt(a.support[0].v) : "—"} ／ ${a.resist[0] ? fmt(a.resist[0].v) : "—"}</b></div>
+      </div>
+    </div>
+    <div class="box"><h2 class="sec">🧭 白話總結 <small>每天收盤後自動更新</small></h2><ul class="mk-say" style="margin-top:10px">${a.summary.map(s => `<li>${s}</li>`).join("")}</ul></div>
+  </div>
+
+  <div class="box"><h2 class="sec">🎯 接下來大盤可能走到哪裡 <small>深色＝大部分情況會落在這裡（約 7 成機率）；淺色＝很極端時的範圍（約 95%）</small></h2>
+    <div class="fc2">${[["未來 1 週", f.w1], ["未來 1 個月", f.m1]].map(([n, b]) => fbar(n, b, t.price)).join("")}</div>
+    <p class="mknote">目前市場一年的震盪幅度約 ±${f.sigmaAnn}%（平常約 ±15～20%），震盪越大、區間就越寬。這個區間用過去 5 年資料驗證過：實際落在深色範圍的機率約 68%、淺色約 95%。</p>
+    <div class="fc2" style="margin-top:14px">
+      <div><b style="font-size:14px">多空分數怎麼來的 <small style="color:var(--sub);font-weight:500">（往右綠色＝偏多、往左紅色＝偏空）</small></b><div class="comp">${a.components.map(c => `<div><span>${c.name}</span><span class="tr" title="${c.why}"><i style="${c.v >= 0 ? `left:50%;width:${c.v / 2}%` : `right:50%;width:${-c.v / 2}%`};background:${c.v >= 0 ? "#22c55e" : "#ef4444"}"></i></span><b class="num" style="text-align:right">${c.v > 0 ? "+" : ""}${c.v}</b></div>`).join("")}</div>
+        <p class="mknote" style="margin-top:6px">${a.components.map(c => `${c.name}：${c.why}`).join("；")}</p></div>
+      <div><b style="font-size:14px">支撐與壓力</b>
+        <div class="lvls">${a.resist.slice().reverse().map(x => `<span class="r">壓力 ${x.name} <b class="num">${fmt(x.v)}</b></span>`).join("")}</div>
+        <div class="lvls">${a.support.map(x => `<span class="s">支撐 ${x.name} <b class="num">${fmt(x.v)}</b></span>`).join("")}</div>
+        <p class="mknote" style="margin-top:8px">均線：月線（近 1 個月平均價）${fmt(t.ma20)}、季線（近 3 個月）${fmt(t.ma60)}、年線（近 1 年）${fmt(t.ma240)}；目前離季線 ${fmt(t.bias60, 1)}%（負越多＝跌得越急）。RSI ${t.rsi}（低於 30 叫「超賣」，常出現反彈）；KD ${t.k}／${t.d}（低於 20 也是超賣區）；MACD ${t.macdUp ? "動能開始轉強" : "動能仍弱"}。</p></div>
+    </div>
+  </div>
+
+  <div><h2 class="sec">🚦 9 大指標燈號 <small>🟢 正常　🟡 留意　🔴 異常；點「白話說明」看基準值、偏高偏低代表什麼</small></h2>
+    <div class="icards" style="margin-top:12px">${a.cards.map(icard).join("")}</div></div>
+
+  <div class="box"><h2 class="sec">📈 大盤 × 籌碼疊圖 <small>灰線＝加權指數（左軸），彩色＝疊加指標（右軸）</small></h2>
+    <div class="ctool"><div class="chips" id="ovChips"></div></div>
+    <div class="ctool"><div class="chips" id="rgChips"></div></div>
+    <div class="chart" id="mkChart"></div><p class="mknote" id="ovNote"></p></div>
+
+  <div class="box"><h2 class="sec">🌏 全球股市對照 <small>點表格列可加入／移出下方比較圖；美股與台股的相關性以「前一晚美股 → 隔天台股」計算</small></h2>
+    <div class="scrollx" style="max-height:none"><table class="gtab ev"><tr><th>指數</th><th class="r">最新</th><th class="r">1 日</th><th class="r">1 週</th><th class="r">1 月</th><th class="r">3 月</th><th class="r">1 年</th><th class="r">今年</th><th class="r">與台股相關</th></tr>
+    ${a.global_.map(x => `<tr data-g="${x.sym}" class="${x.sym == "TAIEX" ? "tw" : ""} ${gSel.includes(x.sym) ? "sel" : ""}"><td>${x.name}<br><small style="color:var(--sub)">${x.date}</small></td><td class="r num">${fmt(x.last, 2)}</td>${["d1", "w1", "m1", "m3", "y1", "ytd"].map(k => `<td class="r num ${pc(x[k])}">${sgn(x[k], 1)}%</td>`).join("")}<td class="r num">${x.corr1y != null ? fmt(x.corr1y, 2) : "—"}</td></tr>`).join("")}</table></div>
+    <div class="ctool"><div class="chips" id="gChips"></div></div>
+    <div class="chart" id="gChart"></div></div>
+
+  <div class="box"><h2 class="sec">📋 5 年每日明細 <small>紅底＝異常日（追繳戶數 ≥ 700 或整戶維持率 < 160%）；紅線＝由正常轉為異常的分界</small></h2>
+    <div class="dctl" id="dctl">${[["1m", "近 1 月"], ["3m", "近 3 月"], ["1y", "近 1 年"], ["5y", "5 年"], ["ab", "只看異常日"]].map(([k, n]) => `<button data-r="${k}">${n}</button>`).join("")}
+      <input type="date" id="dFrom"> ～ <input type="date" id="dTo"><button class="csv" id="dCsv">⬇ 匯出 CSV</button></div>
+    <div class="scrollx" id="dWrap"></div><p class="mknote" id="dNote"></p></div>
+
+  <div class="box"><h2 class="sec">🔬 歷史上發生同樣情況後，大盤怎麼走 <small>過去 5 年統計；5 天≈1 週、20 天≈1 個月、60 天≈1 季；10 天內重複發生只算一次</small></h2>
+    <div class="scrollx" style="max-height:none"><table class="ev"><tr><th>情況</th><th class="r">次數</th><th class="r">5 天平均</th><th class="r">20 天平均</th><th class="r">20 天上漲機率</th><th class="r">20 天最差</th><th class="r">60 天平均</th><th>最近一次</th></tr>
+    <tr><td><b>平常（任何一天）</b></td><td class="r">—</td>${evc(a.base["5"])}${evc(a.base["20"], 1)}${evc(a.base["60"])}<td></td></tr>
+    ${a.events.map(e => `<tr class="${e.active ? "on" : ""}"><td>${e.name} ${e.active ? `<span class="tag on">目前成立</span>` : ""}${e.small ? ` <span class="tag sm">樣本少</span>` : ""}</td><td class="r num">${e.episodes}</td>${evc(e.h5)}${evc(e.h20, 1)}${evc(e.h60)}<td>${e.lastDate || "—"}</td></tr>`).join("")}</table></div>
+    <p class="mknote" style="margin-top:8px">紫色列＝今天也符合的情況。拿它跟「平常」比：平均報酬和上漲機率比平常高，代表歷史上這種時候反而是相對好的時機；比平常低則代表要小心。樣本少（少於 8 次）的結果只能參考。</p></div>
+
+  <div class="fc2">
+    <div class="box"><h2 class="sec">🧩 現在屬於哪一種盤勢 <small>散戶槓桿健不健康 × 外資近 1 個月買還是賣</small></h2>
+      <div class="quad" style="margin-top:12px">${a.quads.map(q => `<div class="${q.now ? "now" : ""}"><b>${q.name}</b>${q.now ? ` <span class="tag on">現在</span>` : ""}<br>過去 ${q.days} 天落在這裡，之後 20 天平均 <span class="big num" style="color:${q.h20.avg >= 0 ? "var(--up)" : "var(--down)"}">${sgn(q.h20.avg, 1)}%</span>，上漲機率 ${q.h20.win}%</div>`).join("")}</div></div>
+    <div class="box"><h2 class="sec">🔗 單看一個指標準不準 <small>和「之後 1 個月大盤漲跌」的關聯度（0＝沒關係，越接近 ±1 越有關）</small></h2>
+      <div class="cbar" style="margin-top:12px">${a.corr.map(c => `<div><span>${c.name}</span><span class="tr" style="height:12px;background:var(--track);border-radius:6px;position:relative"><i style="position:absolute;top:0;bottom:0;border-radius:6px;${c.rho >= 0 ? `left:50%;width:${c.rho * 50}%` : `right:50%;width:${-c.rho * 50}%`};background:${c.rho >= 0 ? "#22c55e" : "#ef4444"}"></i></span><b class="num">${sgn(c.rho)}</b></div>`).join("")}</div>
+      <p class="mknote" style="margin-top:8px">數字越接近 0 代表單看這個指標幾乎無法預告後市；所以儀表板用「多個指標一起看」的條件回測與多空分數，而不是只看單一指標。</p></div>
+  </div>
+
+  <p class="mknote">資料來源：臺灣證券交易所（臺股儀表板、信用交易統計）、臺灣期貨交易所（台指 VIX）、FinMind（三大法人、期貨未平倉）、Yahoo Finance（全球指數、美股 VIX）。融資相關為上市資料。所有區間、分數與機率皆為歷史統計推估，不構成任何投資建議。</p>
+  </div>`;
+  mkChartUI(); gChartUI(); detailUI();
+}
+function fbar(name, b, px){
+  const lo = b.lo95, hi = b.hi95, X = v => ((v - lo) / (hi - lo) * 100).toFixed(2) + "%";
+  return `<div class="fcb"><h3>${name} <small>中心 ${fmt(b.center)}${b.tilt ? `（歷史情境偏移 ${sgn(b.tilt, 1)}%）` : ""}</small></h3>
+    <div class="fbar"><div class="r95" style="left:0;right:0"></div><div class="r68" style="left:${X(b.lo68)};width:calc(${X(b.hi68)} - ${X(b.lo68)})"></div>
+      <div class="mk1" style="left:${X(px)}"><b class="num">現在 ${fmt(px)}</b></div>
+      <span class="lab ext" style="left:0%;transform:none">極端 <b class="num">${fmt(b.lo95)}</b></span><span class="lab" style="left:${X(b.lo68)}"><b class="num">${fmt(b.lo68)}</b></span>
+      <span class="lab" style="left:${X(b.hi68)}"><b class="num">${fmt(b.hi68)}</b></span><span class="lab ext" style="right:0;left:auto;transform:none">極端 <b class="num">${fmt(b.hi95)}</b></span></div>
+    <p class="mknote">大概率：<b>${fmt(b.lo68)} ～ ${fmt(b.hi68)}</b>（約 ${sgn((b.lo68 / px - 1) * 100, 1)}% ～ ${sgn((b.hi68 / px - 1) * 100, 1)}%）<br>極端：${fmt(b.lo95)} ～ ${fmt(b.hi95)}</p></div>`;
+}
+const evc = (h, win) => !h ? (win ? `<td class="r">—</td><td class="r">—</td><td class="r">—</td>` : `<td class="r">—</td>`)
+  : `<td class="r num ${pc(h.avg)}">${sgn(h.avg, 1)}%</td>` + (win ? `<td class="r num"><b>${h.win}%</b></td><td class="r num neg">${fmt(h.worst, 1)}%</td>` : "");
+function icard(c){
+  const hiBad = !["keep", "mKeep", "fi5", "ffi"].includes(c.key);
+  return `<div class="icd ${c.level}"><div class="t"><span>${c.name}</span><span class="dot" style="background:${LV[c.level]}"></span></div>
+    <div class="v num">${c.value == null ? "—" : fmt(c.value, Math.abs(c.value) >= 1000 ? 0 : 2)}<small>${c.unit}</small></div>
+    ${c.pct != null ? `<div class="pb ${hiBad ? "" : "rev"}"><i style="left:${c.pct}%"></i></div><div class="pt"><span>5 年低</span><span>第 ${Math.round(c.pct)} 百分位${c.short ? `（僅 ${c.n} 天資料）` : ""}</span><span>5 年高</span></div>` : ""}
+    <div class="now">${c.now}</div>
+    <details><summary>白話說明</summary><p>${c.explain}</p><p><b>基準值：</b>${c.base}</p><p><b>偏高代表：</b>${c.above}</p><p><b>偏低代表：</b>${c.below}</p><p style="font-size:11.5px">資料日：${c.date}</p></details></div>`;
+}
+
+/* ---------- 通用折線/柱狀圖(SVG,左右雙軸,滑過顯示數值) ---------- */
+function svgChart(el, dates, series, {H = 300, fmtL = v => fmt(v), fmtR = v => fmt(v), zeroR = false} = {}){
+  const W = 900, P = {l: 56, r: 60, t: 10, b: 26}, n = dates.length;
+  if (n < 2) { el.innerHTML = `<div class="empty">資料不足</div>`; return; }
+  const X = i => P.l + i / (n - 1) * (W - P.l - P.r);
+  const ext = ax => { const v = series.filter(s => s.axis == ax).flatMap(s => s.vals).filter(x => x != null); if (!v.length) return null;
+    let mn = Math.min(...v), mx = Math.max(...v); if (zeroR && ax == "R") { mn = Math.min(mn, 0); mx = Math.max(mx, 0); } const pad = (mx - mn) * .06 || 1; return [mn - pad, mx + pad]; };
+  const E = {L: ext("L"), R: ext("R")};
+  const Y = (v, ax) => { const [mn, mx] = E[ax]; return P.t + (1 - (v - mn) / (mx - mn)) * (H - P.t - P.b); };
+  const ticks = ax => E[ax] ? [0, .25, .5, .75, 1].map(t => E[ax][0] + t * (E[ax][1] - E[ax][0])) : [];
+  const step = Math.max(1, Math.round(n / 7));
+  let g = ticks("L").map(v => `<line x1="${P.l}" x2="${W - P.r}" y1="${Y(v, "L")}" y2="${Y(v, "L")}" style="stroke:var(--line)"/><text x="${P.l - 6}" y="${Y(v, "L") + 4}" font-size="11" text-anchor="end" style="fill:var(--sub)">${fmtL(v)}</text>`).join("");
+  g += ticks("R").map(v => `<text x="${W - P.r + 6}" y="${Y(v, "R") + 4}" font-size="11" style="fill:${series.find(s => s.axis == "R").color}">${fmtR(v)}</text>`).join("");
+  g += dates.map((d, i) => i % step == 0 ? `<text x="${X(i)}" y="${H - 6}" font-size="11" text-anchor="middle" style="fill:var(--sub)">${n > 400 ? d.slice(0, 7) : d.slice(5).replace("-", "/")}</text>` : "").join("");
+  for (const s of series) {
+    if (s.type == "bar") {
+      const z = Y(Math.max(E[s.axis][0], Math.min(E[s.axis][1], 0)), s.axis), w = Math.max(1, (W - P.l - P.r) / n * .7);
+      g += s.vals.map((v, i) => v == null ? "" : `<rect x="${X(i) - w / 2}" y="${Math.min(z, Y(v, s.axis))}" width="${w}" height="${Math.abs(Y(v, s.axis) - z) || .5}" fill="${s.colorFn ? s.colorFn(v) : s.color}" opacity=".75"/>`).join("");
+    } else {
+      const d = s.vals.map((v, i) => v == null ? "" : `${i && s.vals[i - 1] != null ? "L" : "M"}${X(i).toFixed(1)},${Y(v, s.axis).toFixed(1)}`).join("");
+      g += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="${s.w || 2}" ${s.dash ? `stroke-dasharray="${s.dash}"` : ""} stroke-linejoin="round"/>`;
+    }
+    (s.marks || []).forEach(m => { g += `<line x1="${P.l}" x2="${W - P.r}" y1="${Y(m.v, s.axis)}" y2="${Y(m.v, s.axis)}" stroke="${m.c}" stroke-dasharray="4 4"/><text x="${P.l + 4}" y="${Y(m.v, s.axis) - 4}" font-size="11" fill="${m.c}">${m.t}</text>`; });
+  }
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%">${g}<line class="hv" y1="${P.t}" y2="${H - P.b}" style="stroke:var(--ink)" opacity="0"/><rect x="${P.l}" y="0" width="${W - P.l - P.r}" height="${H}" fill="transparent" class="hit"/></svg>`;
+  const svg = el.querySelector("svg"), hv = el.querySelector(".hv"), tip = $("#tip");
+  const show = ev => { const r = svg.getBoundingClientRect(), cx = (ev.touches ? ev.touches[0].clientX : ev.clientX), x = (cx - r.left) / r.width * W;
+    const i = Math.max(0, Math.min(n - 1, Math.round((x - P.l) / (W - P.l - P.r) * (n - 1))));
+    hv.setAttribute("x1", X(i)); hv.setAttribute("x2", X(i)); hv.setAttribute("opacity", .35);
+    tip.style.display = "block"; tip.style.left = Math.min(cx + 14, innerWidth - 220) + "px"; tip.style.top = ((ev.touches ? ev.touches[0].clientY : ev.clientY) - 10) + "px";
+    tip.innerHTML = `${dates[i]}<br>` + series.map(s => `<span style="color:${s.color}">●</span> ${s.name}：${s.vals[i] == null ? "—" : (s.fmt || fmt)(s.vals[i])}`).join("<br>"); };
+  const hide = () => { tip.style.display = "none"; hv.setAttribute("opacity", 0); };
+  const hit = el.querySelector(".hit"); hit.onmousemove = show; hit.onmouseleave = hide; hit.ontouchmove = show; hit.ontouchend = hide;
+}
+
+/* ---------- 疊圖 ---------- */
+const OVER = {
+  mAmt:  {n: "融資金額", u: "億", c: "#f97316", note: "融資增加＋指數上漲＝散戶追價；指數跌融資卻不減＝套牢籌碼；融資急減＝斷頭/降槓桿、籌碼轉乾淨。"},
+  keep:  {n: "整戶維持率", u: "%", c: "#dc2626", marks: [{v: 160, t: "160% 危險線", c: "#dc2626"}, {v: 130, t: "130% 追繳線", c: "#7f1d1d"}], note: "官方資料 2026/8/3 起才有；低於 160% 斷頭賣壓明顯升高。"},
+  below: {n: "追繳戶數", u: "戶", c: "#dc2626", bar: 1, marks: [{v: 700, t: "700 戶異常線", c: "#dc2626"}], note: "官方資料 2026/8/3 起；平時 100～300 戶，超過 700 戶屬異常。"},
+  mKeep: {n: "估算融資維持率", u: "%", c: "#0ea5e9", note: "5 年都有；看相對高低：越低代表融資戶越接近賠錢、越容易出現斷頭潮。"},
+  fi:    {n: "外資買賣超", u: "億", c: "#7c3aed", bar: 1, color2: 1, note: "紅柱＝外資賣超、綠柱＝買超（依台股紅漲綠跌習慣，此處紅色代表資金流出）。"},
+  ffi:   {n: "外資台指期淨未平倉", u: "口", c: "#0f766e", marks: [{v: -50000, t: "淨空 5 萬口（極度偏空）", c: "#dc2626"}], note: "越往下＝外資淨空單越多、避險越重；極端空單回補時常引發急漲。"},
+  vixTw: {n: "台指 VIX", u: "", c: "#e11d48", marks: [{v: 30, t: "30 恐慌", c: "#e11d48"}], note: "官方只留近幾個月，之後每天累積。"},
+  vixUs: {n: "美股 VIX", u: "", c: "#be185d", marks: [{v: 30, t: "30 恐慌", c: "#be185d"}], note: "全球恐慌溫度計，5 年都有。"},
+  rv:    {n: "台股 20 日波動率", u: "%", c: "#9333ea", note: "實際震盪幅度（年化），5 年都有，可當恐慌指數的替代。"},
+};
+function mkChartUI(){
+  $("#ovChips").innerHTML = Object.entries(OVER).map(([k, o]) => `<span class="chip ${mkOver == k ? "on" : ""}" data-k="${k}">${o.n}</span>`).join("");
+  $("#rgChips").innerHTML = [[21, "1 月"], [63, "3 月"], [126, "半年"], [250, "1 年"], [750, "3 年"], [9999, "5 年"]].map(([k, n]) => `<span class="chip ${mkRange == k ? "on" : ""}" data-r="${k}">${n}</span>`).join("");
+  $("#ovChips").onclick = ev => { const c = ev.target.closest("[data-k]"); if (c) { mkOver = c.dataset.k; mkChartUI(); } };
+  $("#rgChips").onclick = ev => { const c = ev.target.closest("[data-r]"); if (c) { mkRange = +c.dataset.r; mkChartUI(); } };
+  const R = MK.R.slice(-mkRange), o = OVER[mkOver];
+  svgChart($("#mkChart"), R.map(r => r.d), [
+    {name: "加權指數", vals: R.map(r => r.tx), axis: "L", color: "#94a3b8", w: 2.5, fmt: v => fmt(v, 0)},
+    {name: o.n + (o.u ? `(${o.u})` : ""), vals: R.map(r => r[mkOver]), axis: "R", color: o.c, type: o.bar ? "bar" : "line", marks: o.marks,
+     colorFn: o.color2 ? v => v < 0 ? "#ef4444" : "#22c55e" : null, fmt: v => fmt(v, Math.abs(v) >= 100 ? 0 : 2)},
+  ], {zeroR: !!o.bar, fmtR: v => fmt(v, Math.abs(v) >= 100 ? 0 : 1)});
+  $("#ovNote").textContent = o.note;
+}
+
+/* ---------- 全球比較圖(起點=100) ---------- */
+function gChartUI(){
+  const G = MK.g.idx, tw = MK.R.map(r => [r.d, r.tx]);
+  const src = sym => sym == "TAIEX" ? {name: "台灣 加權", rows: tw} : G[sym];
+  const pal = ["#1f3cff", "#ef4444", "#f59e0b", "#16a34a", "#7c3aed", "#0ea5e9", "#db2777", "#64748b", "#84cc16", "#f97316", "#0f766e", "#a855f7", "#111827"];
+  $("#gChips").innerHTML = [[21, "1 月"], [63, "3 月"], [250, "1 年"], [750, "3 年"], [9999, "5 年"]].map(([k, n]) => `<span class="chip ${gRange == k ? "on" : ""}" data-r="${k}">${n}</span>`).join("");
+  $("#gChips").onclick = ev => { const c = ev.target.closest("[data-r]"); if (c) { gRange = +c.dataset.r; gChartUI(); } };
+  document.querySelectorAll(".gtab tr[data-g]").forEach(tr => tr.onclick = () => { const s = tr.dataset.g;
+    gSel = gSel.includes(s) ? gSel.filter(x => x != s) : [...gSel, s]; if (!gSel.length) gSel = ["TAIEX"];
+    document.querySelectorAll(".gtab tr[data-g]").forEach(x => x.classList.toggle("sel", gSel.includes(x.dataset.g))); gChartUI(); });
+  const dates = MK.R.slice(-gRange).map(r => r.d), d0 = dates[0];
+  const series = gSel.map((sym, k) => { const s = src(sym); if (!s) return null; const m = new Map(s.rows); const base = (s.rows.find(r => r[0] >= d0) || [])[1];
+    let lastV = null; const vals = dates.map(d => { if (m.has(d)) lastV = m.get(d); return lastV != null && base ? lastV / base * 100 : null; });
+    return {name: s.name, vals, axis: "L", color: pal[["TAIEX", ...Object.keys(G)].indexOf(sym) % pal.length], w: sym == "TAIEX" ? 3.2 : 2, fmt: v => fmt(v - 100, 1) + "%"}; }).filter(Boolean);
+  svgChart($("#gChart"), dates, series, {H: 280, fmtL: v => (v - 100 >= 0 ? "+" : "") + fmt(v - 100, 0) + "%"});
+  $("#gChart").insertAdjacentHTML("beforeend", `<div class="legend" style="flex-wrap:wrap">${series.map(s => `<span><i style="background:${s.color}"></i>${s.name} <b class="num">${sgn(s.vals[s.vals.length - 1] - 100, 1)}%</b></span>`).join("")}</div>`);
+}
+
+/* ---------- 5 年明細表 ---------- */
+const DCOL = [
+  ["d", "日期"], ["tx", "加權指數", 2], ["chg", "漲跌%", 2, "pn"], ["txV", "成交(億)", 0], ["mAmt", "融資金額(億)", 1], ["mDiff", "融資增減(億)", 1, "pn"],
+  ["mKeep", "估算維持率%", 1], ["keep", "整戶維持率%", 2, "keep"], ["below", "追繳戶數", 0, "below"], ["callAmt", "追繳金額(億)", 2], ["exeN", "處分戶數", 0], ["exeAmt", "處分金額(億)", 2],
+  ["fi", "外資(億)", 1, "pn"], ["it", "投信(億)", 1, "pn"], ["dl", "自營(億)", 1, "pn"], ["tot", "三大法人(億)", 1, "pn"], ["ffi", "外資期貨淨OI(口)", 0, "ffi"],
+  ["vixTw", "台指VIX", 2, "vix"], ["vixUs", "美股VIX", 2, "vix"]];
+const isAb = r => (r.below != null && r.below >= 700) || (r.keep != null && r.keep < 160);
+function dRows(){
+  const R = MK.R, last = R[R.length - 1].d, from = $("#dFrom").value, to = $("#dTo").value || last;
+  let L = R.filter(r => (!from || r.d >= from) && r.d <= to);
+  if (dRange == "ab") L = L.filter(isAb);
+  return L.slice().reverse();
+}
+function cellCls(k, v){
+  if (v == null) return "";
+  if (k == "pn") return v > 0 ? "pos" : v < 0 ? "neg" : "";
+  if (k == "keep") return v < 160 ? "red" : v < 170 ? "amb" : "";
+  if (k == "below") return v >= 700 ? "red" : v >= 300 ? "amb" : "";
+  if (k == "ffi") return v <= -50000 ? "red" : v <= -30000 ? "amb" : "";
+  if (k == "vix") return v >= 30 ? "red" : v >= 20 ? "amb" : "";
+  return "";
+}
+function detailUI(){
+  const setR = k => { dRange = k; const last = MK.R[MK.R.length - 1].d, dt = new Date(last);
+    const back = {"1m": 31, "3m": 92, "1y": 366, "5y": 4000, "ab": 4000}[k]; const f = new Date(dt - back * 864e5).toISOString().slice(0, 10);
+    $("#dFrom").value = f < MK.R[0].d ? MK.R[0].d : f; $("#dTo").value = last; drawD(); };
+  $("#dctl").onclick = ev => { const b = ev.target.closest("[data-r]"); if (b) setR(b.dataset.r); };
+  $("#dFrom").onchange = $("#dTo").onchange = () => { dRange = "custom"; drawD(); };
+  $("#dCsv").onclick = () => {
+    const L = dRows(), esc = v => v == null ? "" : String(v);
+    const csv = "﻿" + [DCOL.map(c => c[1]).join(","), ...L.map(r => DCOL.map(([k, , d]) => esc(r[k] == null ? null : d != null && k != "d" ? (+r[k]).toFixed(d) : r[k])).join(","))].join("\n");
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], {type: "text/csv"}));
+    a.download = `大盤每日明細_${$("#dFrom").value}_${$("#dTo").value}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  };
+  setR(dRange);
+}
+function drawD(){
+  document.querySelectorAll("#dctl [data-r]").forEach(b => b.classList.toggle("on", b.dataset.r == dRange));
+  const L = dRows();
+  $("#dWrap").innerHTML = `<table class="ev dtab"><tr>${DCOL.map(([k, n]) => `<th class="${k == "d" ? "" : "r"}">${n}</th>`).join("")}</tr>${L.slice(0, 400).map((r, i) => {
+    const ab = isAb(r), sep = !ab && i > 0 && isAb(L[i - 1]) && dRange != "ab";
+    return `<tr class="${ab ? "ab" : ""} ${sep ? "sep" : ""}">${DCOL.map(([k, , d, cls]) => k == "d" ? `<td class="d">${r.d}</td>` : `<td class="r num ${cellCls(cls, r[k])}">${r[k] == null ? "—" : (cls == "pn" && r[k] > 0 ? "+" : "") + fmt(r[k], d)}</td>`).join("")}</tr>`; }).join("")}</table>`;
+  const nab = L.filter(isAb).length;
+  $("#dNote").textContent = `共 ${L.length} 個交易日${L.length > 400 ? "（畫面顯示最近 400 天，匯出 CSV 可取得全部）" : ""}；其中異常日 ${nab} 天。整戶維持率、追繳、處分為證交所官方資料，2026/8/3 起才有。`;
+}
 
 </script>
 </body>
