@@ -134,7 +134,7 @@ def main():
 
     # 7. 大盤儀表板(融資/維持率/追繳/法人/期貨/VIX/全球指數),失敗不影響 ETF 資料
     subprocess.run([sys.executable, os.path.join(HERE, "fetch_market.py")])
-    subprocess.run([sys.executable, os.path.join(HERE, "fetch_breadth.py"), "--keep", "300", "--max", "120"])   # 市場廣度(恐慌度用)
+    subprocess.run([sys.executable, os.path.join(HERE, "fetch_breadth.py"), "--keep", "300", "--max", "300"])   # 市場廣度(恐慌度用)
     subprocess.run([sys.executable, os.path.join(HERE, "build_market_analysis.py")])
 
     # 8. 巴菲特選股(財報一季更新一次、已抓過的期別會跳過;股價/月營收每天更新)
