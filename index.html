@@ -628,6 +628,8 @@ td.r,th.r{text-align:right}
 @keyframes stIn{to{opacity:1;transform:none}}
 .ok{color:#15803d;font-weight:800;white-space:nowrap}.no{color:#b91c1c;font-weight:800;white-space:nowrap}
 .cc{font-size:14.5px;line-height:1.85;background:color-mix(in srgb,#f59e0b 10%,var(--panel));border-radius:12px;padding:12px 14px}
+.scr-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}.scr-btns .lgo{font-size:13px;padding:8px 12px;text-align:left}
+.acap{font-size:12px;color:var(--sub);line-height:1.5;margin:4px 4px 0}
 .lgo{align-self:flex-start;border:0;border-radius:12px;padding:10px 16px;font:inherit;font-weight:800;color:#fff;background:linear-gradient(120deg,#0f766e,#1d4ed8);cursor:pointer}
 .fbig{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.fbig b{font-size:48px;font-weight:900;line-height:1}.fbig span{color:#fff;font-weight:900;border-radius:10px;padding:5px 12px}.fbig small{color:var(--sub)}
 .cchart .dr{stroke-dasharray:2400;stroke-dashoffset:2400}.case.play .cchart .dr{animation:draw 2.2s ease forwards}
@@ -730,6 +732,13 @@ td.r,th.r{text-align:right}
 .la-sec{font-size:11px;font-weight:800;border-radius:6px;padding:2px 7px;background:#ede9fe;color:#6d28d9}
 .la-i p{font-size:13.5px;line-height:1.75;color:var(--sub);margin-top:3px}
 @media(max-width:700px){#laBox .chip{padding:6px 10px;font-size:12px}.la-bar{gap:6px;margin-top:8px}.la-f{width:100%}.la-f input{flex:1;width:auto}.la-sc{margin-left:0;width:100%}.la-head{font-size:16px}}
+.la-tags{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px}
+.scr-g{display:flex;gap:10px;align-items:flex-start;margin-top:8px}.scr-g>b{flex:none;width:72px;font-size:13px;padding-top:7px}.scr-g>b.up{color:#dc2626}.scr-g>b.dn{color:#15803d}.scr-g .chips{flex-wrap:wrap}
+.scr-h{font-size:15px;font-weight:900;margin:14px 0 8px}
+.scr-l{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;max-height:520px;overflow:auto}
+.scr-r{display:flex;justify-content:space-between;gap:8px;background:var(--bg);border-radius:12px;padding:9px 12px;cursor:pointer;transition:background .15s}
+.scr-r:hover{background:var(--hover)}.scr-r b{font-size:14px}.scr-r small{display:block;font-size:11.5px;color:var(--sub)}.scr-r .tag{margin-left:6px}
+@media(max-width:700px){.scr-g{flex-direction:column;gap:4px}.scr-g>b{width:auto;padding:0}.scr-l{grid-template-columns:1fr;max-height:420px}}
 /* ===== 骨架載入 ===== */
 .sk{background:linear-gradient(90deg,var(--track) 25%,var(--skhi) 37%,var(--track) 63%);background-size:400% 100%;animation:sk 1.3s ease infinite;border-radius:12px}
 .sk-cat{height:60px;border-radius:18px}
@@ -1766,7 +1775,8 @@ function renderMkt(){
     <div class="ctool"><div class="chips" id="fearTabs"></div></div><div id="fearBody"></div></div>
 
   <div class="box" id="mk-la"><h2 class="sec">📐 線型分析 <small>自動畫趨勢線、頸線、缺口，判斷 W 底／M 頭／頭肩／三角收斂、均線扣抵與葛蘭碧法則；可查任一檔股票</small></h2>
-    <div id="laBox"></div></div>
+    <div id="laBox"></div>
+    <h3 class="la-tt" id="scrTop">🔎 線型選股：今天哪些股票出現這種線型</h3><div id="scrBox"></div></div>
 
   <div class="box" id="mk-fc"><h2 class="sec">🎯 接下來大盤可能走到哪裡 <small>深色＝大部分情況會落在這裡（約 7 成機率）；淺色＝很極端時的範圍（約 95%）</small></h2>
     <div class="fc2">${[["未來 1 週", f.w1], ["未來 1 個月", f.m1]].map(([n, b]) => fbar(n, b, t.price)).join("")}</div>
@@ -2136,8 +2146,8 @@ let LD = null;                              // {a: market_analysis, v: value_pic
 async function loadLearn(){
   if ($("#learn").dataset.ok) return;
   $("#learn").innerHTML = `<div class="box"><div class="sk" style="height:200px"></div></div>`;
-  const [a, v, m] = await Promise.all([getJ("market_analysis"), getJ("value_picks"), getJ("market")]);
-  LD = {a, v, m}; renderLearn(); $("#learn").dataset.ok = 1;
+  const [a, v, m, pt] = await Promise.all([getJ("market_analysis"), getJ("value_picks"), getJ("market"), getJ("patterns")]);
+  LD = {a, v, m, pt}; renderLearn(); $("#learn").dataset.ok = 1;
 }
 const lpick = id => LD.v && (LD.v.top.find(x => x.id == id) || null);
 const top1 = () => LD.v && LD.v.top[0];
@@ -2373,7 +2383,9 @@ function lessonHTML(l, i){
   return `<details class="lesson" ${i == 0 || innerWidth > 700 ? "open" : ""}><summary><span class="lv ${l.lv == "進階" ? "adv" : ""}">${l.lv}</span>${l.t}</summary>
     <div class="ls-g"><div class="anim">${AN[l.an] || ""}</div><div><p>${l.body}</p>
       <div class="rule"><b>判斷基準</b><ul>${l.rule.map(r => `<li>${r}</li>`).join("")}</ul></div></div></div>
-    ${live ? `<div class="live"><b>📍 現在的實際數字</b><div>${live}</div></div>` : ""}</details>`;
+    ${live ? `<div class="live"><b>📍 現在的實際數字</b><div>${live}</div></div>` : ""}
+    ${l.scr && l.scr.length && LD.pt ? `<div class="live" style="border-color:#7c3aed"><b style="color:#7c3aed">🔎 今天全市場符合的股票（${LD.pt.date}）</b><div class="scr-btns">${l.scr.map(k => { const lb = LD.pt.labels[k], ex = (LD.pt.groups[k] || []).slice(0, 3).map(r => r.name || r.id).join("、");
+      return `<button class="lgo" data-scr="${k}">${lb.name}：${lb.n} 檔${ex ? `（${ex}…）` : ""} →</button>`; }).join("")}</div></div>` : ""}</details>`;
 }
 function drawLearn(){
   document.querySelectorAll("#lnToc a").forEach(a => a.classList.toggle("on", a.dataset.ch == lChap));
@@ -2384,6 +2396,7 @@ function drawLearn(){
       <div class="gloss" id="gl">${GLOSS.filter(g => lLevel == "全部" || g[1] == lLevel).map(([n, lv, d]) => `<div data-q="${n}${d}"><b>${n}</b><span class="lv ${lv == "進階" ? "adv" : ""}">${lv}</span><p>${d}</p></div>`).join("")}</div>`;
   const q = $("#gq"); if (q) q.oninput = () => document.querySelectorAll("#gl>div").forEach(d => d.style.display = d.dataset.q.includes(q.value.trim()) ? "" : "none");
   main.querySelectorAll("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
+  main.querySelectorAll("[data-scr]").forEach(b => b.onclick = () => openScr(b.dataset.scr));
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("play"); io.unobserve(e.target); } }), {threshold: .35});
   main.querySelectorAll(".anim,.case").forEach(el => io.observe(el));
 }
@@ -2608,6 +2621,7 @@ function laDraw(){
   $("#laHead").innerHTML = `<b>${LA.name}</b>${LA.code != "TAIEX" ? ` <small>${LA.code}</small>` : ""}　<span class="num">${f0(last.c)}</span> <span class="num" style="color:${last.c >= prev.c ? "var(--up)" : "var(--down)"}">${last.c >= prev.c ? "▲" : "▼"}${fmt(Math.abs(last.c / prev.c - 1) * 100, 2)}%</span> <small>${last.d}</small>
     <span class="la-sc">線型訊號：<b style="color:#ef4444">偏多 ${R.up}</b>・<b style="color:#16a34a">偏空 ${R.dn}</b></span>`;
   laChart($("#laChart"), B, R);
+  if ($("#laTags")) $("#laTags").innerHTML = laTagsFor(LA.code);
   const ic = s => s > 0 ? `<span class="kb up">偏多</span>` : s < 0 ? `<span class="kb dn">偏空</span>` : `<span class="kb fl">中性</span>`;
   $("#laTalk").innerHTML = `<div class="la-t">${R.F.map((f, i) => `<div class="la-i"><div class="la-n">${i + 1}</div><div><div class="la-h"><span class="la-sec">${f.sec}</span><b>${f.title}</b>${ic(f.sig)}</div><p>${f.text}</p></div></div>`).join("")}</div>
     <div class="cc" style="margin-top:12px"><b>🎯 接下來觀察重點</b>：${R.watch.join("；")}。<br><small>以上是依固定規則自動畫線與判讀，型態判斷本來就有主觀成分，僅供學習參考，不構成買賣建議。</small></div>`;
@@ -2622,13 +2636,101 @@ function laUI(){
     <div id="laHead" class="la-head"></div><span id="laMsg" class="mknote"></span>
     <div class="chart" id="laChart"></div>
     <div class="legend" style="flex-wrap:wrap"><span><i style="background:#f59e0b"></i>5 日線</span><span><i style="background:#7c3aed"></i>月線</span><span><i style="background:#0ea5e9"></i>季線</span><span><i style="background:#dc2626"></i>上升趨勢線</span><span><i style="background:#16a34a"></i>下降趨勢線</span><span>紅K漲・綠K跌</span></div>
+    <div id="laTags" class="la-tags"></div>
     <h3 class="la-tt">👨‍🏫 老師講解（依序看：趨勢 → 型態 → 均線 → 扣抵 → 葛蘭碧 → 缺口 → K 線 → 量價 → 黃金分割）</h3><div id="laTalk"></div>`;
   $("#laQ").onclick = e => { const c = e.target.closest("[data-c]"); if (!c) return; $("#laQ").querySelectorAll(".chip").forEach(x => x.classList.toggle("on", x == c)); laLoad(c.dataset.c); };
   $("#laN").onclick = e => { const c = e.target.closest("[data-n]"); if (!c) return; LA.n = +c.dataset.n; $("#laN").querySelectorAll(".chip").forEach(x => x.classList.toggle("on", x == c)); if (LA.bars) laDraw(); };
   $("#laS").onclick = e => { const c = e.target.closest("[data-s]"); if (!c) return; LA.show[c.dataset.s] = !LA.show[c.dataset.s]; c.classList.toggle("on"); if (LA.bars) laDraw(); };
   $("#laF").onsubmit = e => { e.preventDefault(); const v = $("#laIn").value.trim().toUpperCase(); if (v) { $("#laQ").querySelectorAll(".chip").forEach(x => x.classList.remove("on")); laLoad(v); } };
   laLoad(LA.code);
+  scrUI();
 }
+/* ---------- 線型選股(全市場每日掃描結果) ---------- */
+let SCR = null, scrKey = null;
+async function scrUI(){
+  SCR = SCR || await getJ("patterns");
+  const box = $("#scrBox"); if (!SCR || !box) { if (box) box.innerHTML = `<p class="mknote">線型選股資料尚未產生。</p>`; return; }
+  const L = SCR.labels, keys = Object.keys(L), grp = [["偏多", 1], ["中性・觀察", 0], ["偏空", -1]];
+  if (!scrKey) scrKey = keys.find(k => L[k].sig > 0 && L[k].n) || keys[0];
+  box.innerHTML = `<p class="mknote">全市場 ${SCR.scanned} 檔上市櫃股票（股價 10 元以上），${SCR.date} 收盤後掃描。點分類看清單，點股票直接在上面的 K 線圖分析。</p>
+    ${grp.map(([g, sg]) => `<div class="scr-g"><b class="${sg > 0 ? "up" : sg < 0 ? "dn" : ""}">${g}</b><div class="chips">${keys.filter(k => L[k].sig == sg).map(k => `<span class="chip ${scrKey == k ? "on" : ""}" data-k="${k}">${L[k].name} <b class="num">${L[k].n}</b></span>`).join("")}</div></div>`).join("")}
+    <div id="scrList"></div>`;
+  box.querySelectorAll("[data-k]").forEach(c => c.onclick = () => { scrKey = c.dataset.k; scrUI(); });
+  scrList();
+}
+function scrList(){
+  const L = SCR.groups[scrKey] || [], lb = SCR.labels[scrKey], f0 = v => v == null ? "—" : fmt(v, v >= 1000 ? 0 : v >= 100 ? 1 : 2);
+  const det = r => r.neck != null ? `頸線 ${f0(r.neck)}・滿足點 ${f0(r.target)}` : r.upper != null ? `上緣 ${f0(r.upper)}・下緣 ${f0(r.lower)}` : r.top != null ? `箱頂 ${f0(r.top)}・箱底 ${f0(r.bot)}` : r.line != null ? `趨勢線 ${f0(r.line)}` : r.bias != null ? `季線 ${f0(r.ma60)}・乖離 ${fmt(r.bias, 1)}%` : r.ma60 != null ? `季線 ${f0(r.ma60)}` : "";
+  $("#scrList").innerHTML = `<h4 class="scr-h">${lb.name}：${lb.n} 檔${lb.n > L.length ? `（列出前 ${L.length} 檔）` : ""}</h4>${L.length ? `<div class="scr-l">${L.map(r => `<div class="scr-r" data-c="${r.id}"><div><b>${r.id} ${r.name}</b>${r.fresh ? `<span class="tag on">近 5 日剛${lb.sig > 0 ? "突破" : "跌破"}</span>` : ""}<small>${det(r)}</small></div><div class="num" style="text-align:right"><b>${f0(r.px)}</b><small style="color:${r.chg >= 0 ? "var(--up)" : "var(--down)"}">${r.chg >= 0 ? "▲" : "▼"}${fmt(Math.abs(r.chg), 2)}%</small></div></div>`).join("")}</div>` : `<p class="mknote">今天沒有股票符合。</p>`}`;
+  $("#scrList").querySelectorAll("[data-c]").forEach(r => r.onclick = () => { laLoad(r.dataset.c); const el = $("#laHead"); window.scrollTo({top: el.getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 160 : 70), behavior: "smooth"}); });
+}
+function laTagsFor(code){
+  if (!SCR || code == "TAIEX") return "";
+  const hit = Object.entries(SCR.groups).filter(([k, L]) => L.some(r => r.id == code)).map(([k]) => SCR.labels[k]);
+  return hit.length ? `<b>全市場掃描：</b>${hit.map(l => `<span class="kb ${l.sig > 0 ? "up" : l.sig < 0 ? "dn" : "fl"}">${l.name}</span>`).join(" ")}` : `<b>全市場掃描：</b><span class="mknote">今天沒有符合任何分類的線型</span>`;
+}
+
+
+/* ---------- 線型圖鑑:示意圖產生器(0~100 座標) ---------- */
+function skt(pts, o = {}){
+  const X = x => 14 + x * 2.32, Y = y => 128 - y * 1.12, d = pts.map((p, i) => `${i ? "L" : "M"}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join("");
+  let g = (o.zone || []).map(z => `<rect x="${X(z[0])}" y="${Y(z[3])}" width="${X(z[1]) - X(z[0])}" height="${Y(z[2]) - Y(z[3])}" fill="${z[4]}" opacity=".16"/>`).join("");
+  g += (o.lines || []).map(l => `<line x1="${X(l[0])}" y1="${Y(l[1])}" x2="${X(l[2])}" y2="${Y(l[3])}" stroke="${l[4]}" stroke-width="2" ${l[6] ? 'stroke-dasharray="5 4"' : ""}/>${l[5] ? `<text x="${X(l[2])}" y="${Y(l[3]) - 5}" text-anchor="end" class="lb" style="fill:${l[4]}">${l[5]}</text>` : ""}`).join("");
+  g += `<path d="${d}" class="ln px"/>`;
+  g += (o.marks || []).map((m, i) => `<g class="d${Math.min(4, i + 1)}"><circle cx="${X(m[0])}" cy="${Y(m[1])}" r="4" fill="${m[3] || "#7c3aed"}"/><text x="${X(m[0])}" y="${Y(m[1]) + (m[4] ? 16 : -8)}" text-anchor="middle" class="lb">${m[2]}</text></g>`).join("");
+  if (o.arrow) { const [x, y1, y2, t] = o.arrow; g += `<g class="d4"><line x1="${X(x)}" y1="${Y(y1)}" x2="${X(x)}" y2="${Y(y2)}" stroke="#d97706" stroke-width="2" stroke-dasharray="3 3"/><text x="${X(x) - 4}" y="${Y(y2) + (y2 > y1 ? -4 : 12)}" text-anchor="end" class="lb" style="fill:#d97706">${t}</text></g>`; }
+  return `<svg viewBox="0 0 260 136"><g>${g}</g></svg>${o.cap ? `<p class="acap">${o.cap}</p>` : ""}`;
+}
+Object.assign(AN, {
+  p_tl: skt([[0,20],[12,45],[22,32],[36,62],[46,48],[60,78],[70,64],[82,88],[92,60],[100,52]], {lines: [[0,20,100,77,"#dc2626","上升趨勢線"]], marks: [[22,32,"低點1","#dc2626",1],[46,48,"低點2","#dc2626",1],[92,60,"跌破！","#16a34a",1]], cap: "連接兩個越來越高的低點；收盤跌破代表多頭節奏被破壞"}),
+  p_w: skt([[0,85],[18,30],[32,62],[50,28],[64,62],[72,70],[86,82],[100,94]], {lines: [[24,62,100,62,"#7c3aed","頸線"]], marks: [[18,30,"左底","",1],[50,28,"右底","",1],[72,70,"突破頸線","#dc2626"]], arrow: [94,62,96,"滿足點"], cap: "兩個差不多低的底＋站上中間高點（頸線）＝W 底成立"}),
+  p_m: skt([[0,15],[18,72],[32,40],[50,74],[64,40],[72,32],[86,20],[100,8]], {lines: [[24,40,100,40,"#7c3aed","頸線"]], marks: [[18,72,"左頭"],[50,74,"右頭"],[72,32,"跌破頸線","#16a34a",1]], arrow: [94,40,6,"滿足點"], cap: "兩個差不多高的頭＋跌破中間低點（頸線）＝M 頭成立"}),
+  p_hsb: skt([[0,80],[14,42],[26,62],[40,20],[54,62],[66,44],[78,66],[90,78],[100,88]], {lines: [[20,62,100,64,"#7c3aed","頸線"]], marks: [[14,42,"左肩","",1],[40,20,"頭","",1],[66,44,"右肩","",1],[78,66,"突破","#dc2626"]], cap: "像倒過來的人頭，最低的是頭；突破頸線＝底部反轉"}),
+  p_hst: skt([[0,22],[14,60],[26,40],[40,82],[54,40],[66,58],[78,36],[90,24],[100,14]], {lines: [[20,40,100,38,"#7c3aed","頸線"]], marks: [[14,60,"左肩"],[40,82,"頭"],[66,58,"右肩"],[78,36,"跌破","#16a34a",1]], cap: "中間最高的是頭，兩邊肩膀差不多高；跌破頸線＝頭部反轉"}),
+  p_tri: skt([[0,40],[12,86],[26,30],[40,76],[54,40],[66,68],[78,48],[88,60],[100,82]], {lines: [[12,86,100,52,"#7c3aed","收斂上緣"],[26,30,100,60,"#7c3aed","收斂下緣",1]], marks: [[100,82,"帶量突破","#dc2626"]], cap: "高點越來越低、低點越來越高，像三角形越縮越窄，即將變盤"}),
+  p_box: skt([[0,30],[12,72],[24,32],[38,70],[50,30],[62,71],[74,33],[86,70],[100,90]], {zone: [[8,92,30,72,"#7c3aed"]], lines: [[8,72,92,72,"#dc2626","箱頂（壓力）"],[8,30,92,30,"#16a34a","箱底（支撐）"]], marks: [[100,90,"突破箱頂","#dc2626"]], cap: "在固定區間來回；突破箱頂偏多、跌破箱底偏空"}),
+  p_ma: AN.ma,
+  p_kd: skt([[0,40],[10,45],[20,42],[30,50],[40,48],[50,58],[60,55],[70,66],[80,62],[90,72],[100,70]], {lines: [[0,42,100,60,"#7c3aed","月線",1]], marks: [[10,45,"扣抵（20 天前）","#d97706",1],[100,70,"今天","#dc2626"]], cap: "今天價格 > 20 天前要被扣掉的價格 → 月線明天往上彎"}),
+  p_g: skt([[0,70],[8,58],[16,44],[24,34],[32,30],[40,38],[48,52],[56,62],[64,58],[72,64],[80,78],[88,84],[96,70],[100,60]], {lines: [[0,62,100,56,"#0ea5e9","季線"]], marks: [[48,52,"①突破","#dc2626"],[64,58,"③回測不破","#dc2626",1],[24,34,"④負乖離大","#dc2626",1],[88,84,"⑧正乖離大","#16a34a"],[100,60,"⑤跌破","#16a34a",1]], cap: "以均線為中心，看股價突破、回測、乖離來找 8 個買賣點"}),
+  p_gap: skt([[0,20],[14,30],[26,36],[30,38],[38,58],[52,64],[66,62],[80,70],[100,76]], {zone: [[30,100,38,56,"#ef4444"]], marks: [[34,47,"向上缺口","#dc2626"]], cap: "前一天最高價 < 今天最低價＝向上跳空；缺口常變成支撐"}),
+});
+const LCH = {id: "line", ic: "📐", name: "線型圖鑑", sub: "民間老師最常教的型態與畫線法", lessons: [
+  {id: "l1", t: "趨勢線：畫出多空的方向", lv: "基礎", an: "p_tl", scr: ["tl_up", "tl_dn"],
+   body: "把<b>兩個越來越高的低點</b>連起來就是<b>上升趨勢線</b>，股價回檔到這條線常有支撐；把<b>兩個越來越低的高點</b>連起來是<b>下降趨勢線</b>，反彈到這條線常遇壓力。",
+   rule: ["成立條件：至少兩個轉折點，碰到的點越多越可靠", "操作重點：多頭沿著上升趨勢線走，回測不破是加碼點", "失敗訊號：收盤跌破上升趨勢線（多頭轉弱）；突破下降趨勢線（空頭轉弱）"]},
+  {id: "l2", t: "W 底（雙重底）：最常見的打底型態", lv: "基礎", an: "p_w", scr: ["w_up", "w_form"],
+   body: "股價跌到一個低點反彈，再跌回差不多的位置又反彈，畫出像英文字母 <b>W</b> 的樣子。兩次都在同一個價位止跌，代表那裡有人願意買；中間反彈的高點叫<b>頸線</b>。",
+   rule: ["成立條件：兩個低點差不多高（差 3% 內），且「帶量站上頸線」", "操作重點：突破頸線後回測頸線不破是較安全的買點；目標價＝頸線＋（頸線 − 底部）", "失敗訊號：跌破右底，型態失敗"]},
+  {id: "l3", t: "M 頭（雙重頂）：最常見的做頭型態", lv: "基礎", an: "p_m", scr: ["m_dn", "m_form"],
+   body: "股價兩次漲到差不多的高點都漲不上去，畫出像 <b>M</b> 的樣子，代表那個價位賣壓很重；中間的低點是<b>頸線</b>。",
+   rule: ["成立條件：兩個高點差不多高，且跌破頸線", "操作重點：跌破頸線先減碼；反彈到頸線附近常是賣點；目標價＝頸線 −（頭部 − 頸線）", "失敗訊號：再創新高越過右頭，型態失敗"]},
+  {id: "l4", t: "頭肩底：力道更強的底部反轉", lv: "進階", an: "p_hsb", scr: ["hs_bot_up", "hs_bot_form"],
+   body: "三個低點，中間那個最低（頭），兩邊比較高而且差不多（左肩、右肩），像一個<b>倒立的人</b>。右肩比頭高，代表賣壓越來越輕。",
+   rule: ["成立條件：右肩不再破底，並帶量突破頸線（兩個反彈高點的連線）", "操作重點：突破頸線是買點，回測頸線不破可加碼", "失敗訊號：跌破右肩低點"]},
+  {id: "l5", t: "頭肩頂：力道更強的頭部反轉", lv: "進階", an: "p_hst", scr: ["hs_top_dn", "hs_top_form"],
+   body: "三個高點，中間最高（頭），兩邊比較低而且差不多（左肩、右肩）。右肩比頭低，代表買盤越來越弱。",
+   rule: ["成立條件：跌破頸線（兩個回檔低點的連線）", "操作重點：跌破頸線要減碼或停損，反彈到頸線常是最後賣點", "失敗訊號：漲回頸線之上並越過右肩"]},
+  {id: "l6", t: "三角收斂：變盤前的壓縮", lv: "進階", an: "p_tri", scr: ["tri"],
+   body: "高點一次比一次低、低點一次比一次高，波動越來越小，像<b>彈簧被壓縮</b>。多空雙方都在等，通常會用一根大 K 線決定方向。",
+   rule: ["成立條件：至少各兩個高點、低點形成收斂", "操作重點：等「帶量突破上緣」再進場，跌破下緣則避開", "失敗訊號：突破後很快又跌回三角形內（假突破）"]},
+  {id: "l7", t: "箱型整理：在區間裡來回", lv: "基礎", an: "p_box", scr: ["box"],
+   body: "股價在一個固定的價格區間上上下下，上緣是<b>箱頂</b>（壓力）、下緣是<b>箱底</b>（支撐）。",
+   rule: ["成立條件：高點差不多、低點也差不多", "操作重點：箱底附近買、箱頂附近賣；突破箱頂代表進入新的上漲段", "失敗訊號：跌破箱底，下一個箱子可能更低"]},
+  {id: "l8", t: "均線排列與黃金交叉", lv: "基礎", an: "p_ma", scr: ["ma_bull", "ma_bear", "ma_tangle"],
+   body: "<b>多頭排列</b>：5 日線 > 10 日線 > 月線 > 季線，每個時間買的人都賺錢，最強勢。<b>空頭排列</b>剛好相反。<b>均線糾結</b>：幾條均線擠在一起，代表成本接近、即將變盤。",
+   rule: ["多頭排列：拉回均線是買點", "空頭排列：反彈到均線是賣點", "均線糾結：等它往哪邊發散就跟哪邊"]},
+  {id: "l9", t: "扣抵值：預測均線明天往哪彎", lv: "進階", an: "p_kd", scr: [],
+   body: "20 日均線每天會「加入今天、扣掉 20 天前」的價格。被扣掉的那天價格叫<b>扣抵值</b>。今天收盤比扣抵值高，均線就會往上彎；比扣抵值低就往下彎。老師常用它「預告」均線方向。",
+   rule: ["股價 > 扣抵值：均線上揚，形成支撐", "股價 < 扣抵值：均線下彎，形成壓力", "未來幾天扣抵值很低：均線容易翻揚，是轉強伏筆"]},
+  {id: "l10", t: "葛蘭碧八大法則：均線的 8 個買賣點", lv: "進階", an: "p_g", scr: ["g_buy1", "g_sell1", "g_buy4"],
+   body: "美國分析師葛蘭碧用「股價和均線的關係」整理出 4 個買點、4 個賣點。台灣老師多用<b>季線</b>或<b>月線</b>當基準。",
+   rule: ["買點①：均線走平或上揚，股價由下往上突破", "買點②③：在上揚均線之上回檔、跌破又很快站回", "買點④：離下彎均線太遠（負乖離過大），搶反彈", "賣點①～④：上面四種情況反過來"]},
+  {id: "l11", t: "跳空缺口：急著買或急著賣", lv: "基礎", an: "p_gap", scr: [],
+   body: "今天最低價比昨天最高價還高（<b>向上跳空</b>），或今天最高價比昨天最低價還低（<b>向下跳空</b>），中間沒有成交的空白叫缺口。代表買方或賣方非常急。",
+   rule: ["向上缺口沒被回補：缺口下緣是支撐", "向下缺口沒被回補：缺口上緣是壓力", "缺口被回補：原本的力道消失"]},
+]};
+CH.splice(2, 0, LCH);
+function openScr(key){ scrKey = key; go("mkt"); const t0 = Date.now(), iv = setInterval(() => { const el = $("#scrTop"); if (el && $("#scrList")) { clearInterval(iv); scrUI().then(() => setTimeout(() => window.scrollTo({top: $("#scrTop").getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 60), behavior: "smooth"}), 700)); } if (Date.now() - t0 > 8000) clearInterval(iv); }, 300); }
 
 </script>
 </body>
