@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#1a2fd8">
-<title>ETF 月配息規劃｜配息日曆・巴菲特選股・大盤恐慌度</title>
+<meta name="theme-color" content="#0E1726">
+<title>巴菲遠不負責任財富系統｜ETF 配息・巴菲特選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
 <meta property="og:type" content="website">
-<meta property="og:title" content="ETF 月配息規劃｜配息日曆・巴菲特選股・大盤恐慌度">
+<meta property="og:title" content="巴菲遠不負責任財富系統｜ETF 配息・巴菲特選股・大盤儀表板">
 <meta property="og:description" content="全台 372 檔 ETF 每月領多少一目了然，加上巴菲特選股 Top 50、大盤恐慌度 0～100 與退休試算，每天收盤後自動更新。">
 <meta property="og:url" content="https://yuan780903-cpu.github.io/tw-etf-dividend/">
 <meta property="og:image" content="https://yuan780903-cpu.github.io/tw-etf-dividend/og.jpg">
@@ -753,6 +753,17 @@ td.r,th.r{text-align:right}
 .hq{width:100%;margin-top:8px;border:1px solid var(--line);background:var(--field);border-radius:10px;padding:8px 12px;font:inherit}
 @media(max-width:900px){.hs-kpi{grid-template-columns:repeat(3,1fr)}.tmap svg{aspect-ratio:1000/560}}
 @media(max-width:700px){.hs-kpi{grid-template-columns:repeat(2,1fr)}.hs-ind div{grid-template-columns:96px 1fr 48px}}
+/* ===== 系統名稱 + 即時時鐘 ===== */
+.brand h1 .bm{background:linear-gradient(120deg,#F3DFA8,#C6A15B 55%,#E6CC93);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-right:.12em}
+.clk{flex:1;align-self:center;text-align:center;min-width:0;color:#fff;line-height:1.15;user-select:none}
+.clk .cd{font:700 13px/1.4 Inter,"Noto Sans TC",sans-serif;letter-spacing:.18em;color:rgba(230,204,147,.9)}
+.clk .ct{font-family:Inter,sans-serif;font-weight:700;font-size:clamp(34px,3.2vw,52px);letter-spacing:.04em;font-variant-numeric:tabular-nums;background:linear-gradient(180deg,#fff,#E6CC93);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.clk .ct small{font-size:.42em;margin-left:.3em;-webkit-text-fill-color:rgba(255,255,255,.55)}
+.clk .cs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+.clk .cs span{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;border:1px solid rgba(198,161,91,.35);background:rgba(255,255,255,.05);color:rgba(255,255,255,.85)}
+.clk .cs i{width:7px;height:7px;border-radius:50%;background:#64748b}.clk .cs i.on{background:#22c55e;box-shadow:0 0 8px #22c55e}
+@media(max-width:1399px){.clk{order:3;flex-basis:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;text-align:left;margin:4px 0 0}.clk .cs{margin:0}.clk .ct{font-size:30px}}
+@media(max-width:700px){.clk{order:2;margin:6px 0 2px}.clk .cd{font-size:11px;letter-spacing:.08em;flex-basis:100%}.clk .ct{font-size:26px}.clk .cs span{font-size:10.5px;padding:2px 7px}.brand h1{font-size:21px}}
 /* ===== 全球即時跑馬燈 + 盤勢快訊 ===== */
 .gtk{position:relative;z-index:2;display:flex;align-items:center;gap:12px;margin-top:16px;height:36px;border:1px solid rgba(198,161,91,.28);border-radius:12px;background:rgba(6,10,20,.38);backdrop-filter:blur(6px);overflow:hidden}
 .gtk:empty{display:none}
@@ -790,6 +801,41 @@ td.r,th.r{text-align:right}
 @media(max-width:700px){.gtk{height:32px;margin-top:12px}.gt-lb{padding:0 9px;font-size:10.5px}.gt-i{font-size:12px;padding:0 12px}
   .nq-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.nq{padding:7px 8px 6px}.nq-h small{display:none}.nq-h b{font-size:11.5px}.nq-v{font-size:15px}.nq-c{font-size:10.5px}.nq svg{height:18px}
   .nq:not(.hero) .ab{display:none}.nq.hero{grid-column:span 3}.nq.hero .nq-v{font-size:24px}.nq.hero .nq-h small{display:inline}.nq-g{margin-bottom:8px}.nw-i{grid-template-columns:minmax(0,1fr)}.nw-t{grid-row:auto;order:3;font-size:11px}}
+/* ===== 各國大盤區間查詢 ===== */
+.gx-ctl{display:flex;flex-direction:column;gap:10px;margin:8px 0 14px}
+.gx-chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.gx-chips button{display:flex;flex-direction:column;align-items:flex-start;border:1px solid var(--line);background:var(--panel);color:var(--sub);border-radius:10px;padding:5px 10px;font-size:10.5px;line-height:1.25;cursor:pointer}
+.gx-chips button b{font-size:13px;color:var(--ink,inherit)}.gx-chips button.on{background:var(--sel);border-color:transparent;color:rgba(255,255,255,.7)}.gx-chips button.on b{color:var(--selink,#fff)}
+.gx-chips select{border:1px solid var(--line);background:var(--field,var(--panel));color:inherit;border-radius:10px;padding:8px 10px;font-size:13px}
+.gx-rg{display:flex;gap:4px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:8px 0}
+.gx-rg>button{border:0;background:transparent;color:inherit;font-size:14px;font-weight:700;padding:7px 12px;border-radius:999px;cursor:pointer}
+.gx-rg>button.on{background:var(--track)}.gx-rg>button:hover{background:color-mix(in srgb,var(--gold) 12%,transparent)}
+.gx-cu{display:flex;align-items:center;gap:6px;margin-left:auto;font-size:13px;padding:3px 6px;border-radius:12px}.gx-cu.on{background:var(--track)}
+.gx-cu input{border:1px solid var(--line);background:var(--field,var(--panel));color:inherit;border-radius:8px;padding:6px 8px;font-size:13px}
+.gx-cu button{border:0;background:var(--sel);color:var(--selink,#fff);border-radius:8px;padding:7px 12px;font-weight:700;cursor:pointer}
+.gx-hd{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.gx-sym{font:900 40px/1 Inter,sans-serif;letter-spacing:-.01em}.gx-sym span{font:700 22px/1 var(--serif);color:var(--sub);margin-left:10px;letter-spacing:.02em}
+.gx-hd small{color:var(--sub);font-size:13px}
+.gx-px{text-align:right;display:grid;grid-template-columns:auto auto;gap:2px 12px;align-items:baseline}.gx-px b{font-size:24px;font-weight:800}.gx-px span{font-weight:800;font-size:16px}.gx-px small{grid-column:span 2}
+.gx-tip{margin:12px 0 4px;font-size:13px;min-height:22px;color:var(--sub)}.gx-tip b{color:var(--ink,inherit)}
+.gx-svg{display:block;width:100%;height:auto;touch-action:pan-y}
+.gx-say{margin:12px 0}
+.gx-k{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.gx-k div{background:var(--panel);padding:10px 12px}.gx-k small{display:block;font-size:11.5px;color:var(--sub);font-weight:700}.gx-k b{font-size:16px;font-weight:800}.gx-k b small{display:block;font-size:10.5px;font-weight:600;color:var(--sub)}
+.gx-tb-hd,.gx-cmp-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:18px 0 8px;flex-wrap:wrap}.gx-tb-hd h3,.gx-cmp-hd h3{font-family:var(--serif);font-size:16px}
+.gx-tw{overflow:auto;max-height:560px;border:1px solid var(--line);border-radius:12px}
+.gx-tb{width:100%;border-collapse:collapse;font-size:13px}.gx-tb th{position:sticky;top:0;background:var(--bg);text-align:right;padding:8px 10px;font-size:12px;color:var(--sub);white-space:nowrap;z-index:1}
+.gx-tb td{text-align:right;padding:7px 10px;border-top:1px solid var(--line);white-space:nowrap}.gx-tb th:first-child,.gx-tb td:first-child,.gx-ct td:nth-child(2),.gx-ct th:nth-child(2){text-align:left}
+.gx-tb td.pos,.gx-tb span.pos,.gx-k .pos{color:var(--up)}.gx-tb td.neg,.gx-tb span.neg,.gx-k .neg{color:var(--down)}
+.gx-more{display:block;width:100%;margin-top:8px;border:1px dashed var(--line);background:transparent;color:inherit;border-radius:10px;padding:10px;font-weight:700;cursor:pointer}
+.gx-ct tr[data-s]{cursor:pointer}.gx-ct tr[data-s]:hover td{background:color-mix(in srgb,var(--gold) 8%,transparent)}.gx-ct tr.on td{background:color-mix(in srgb,var(--gold) 14%,transparent)}
+.gx-bar{position:relative;min-width:150px;height:22px;display:flex;align-items:center;justify-content:flex-end}.gx-bar i{position:absolute;left:0;top:5px;height:12px;border-radius:4px;opacity:.28}.gx-bar i.u{background:var(--up)}.gx-bar i.d{background:var(--down)}.gx-bar span{position:relative;font-weight:800}
+.gx-cs{font-size:14px;line-height:1.7;margin-bottom:8px}
+@media(max-width:1100px){.gx-k{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:700px){.gx-sym{font-size:30px}.gx-sym span{font-size:16px;display:block;margin:6px 0 0}.gx-px{text-align:left;display:flex;flex-wrap:wrap;gap:2px 10px}.gx-px small{flex-basis:100%}.gx-px b{font-size:22px}
+  .gx-rg>button{font-size:13px;padding:6px 9px}.gx-cu{margin-left:0;flex-wrap:wrap;width:100%}.gx-cu input{flex:1;min-width:0}
+  .gx-chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}.gx-chips button{flex:none}.gx-k{grid-template-columns:repeat(2,minmax(0,1fr))}.gx-k b{font-size:14.5px}
+  .gx-tb{font-size:12px}.gx-tb td,.gx-tb th{padding:6px 7px}.gx-ct .hm{display:none}.gx-bar{min-width:96px}}
 /* ===== 公司檔案 ===== */
 .pf{display:flex;flex-direction:column;gap:12px;margin-top:8px}
 .pf-say{background:color-mix(in srgb,var(--gold) 9%,var(--panel));border:1px solid color-mix(in srgb,var(--gold) 30%,transparent);border-radius:12px;padding:12px 14px}
@@ -883,10 +929,10 @@ footer{border-image:linear-gradient(90deg,var(--gold),#0E1726 60%,var(--gold)) 1
 <header>
   <div class="top">
     <div class="brand">
-      <h1>💰 ETF 月配息規劃</h1>
-      <p>全台 ETF 配息日曆・巴菲特選股・大盤恐慌度・退休規劃，一站看懂</p>
+      <h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
+      <p>ETF 配息・巴菲特選股・全球大盤・恐慌度・退休規劃，一站看懂</p>
     </div>
-    <div class="sig" aria-label="版權所有 莊政遠"><span class="k">© COPYRIGHT ・ 版權所有</span><span class="n">莊政遠<sup>©</sup></span></div>
+    <div class="clk" id="clk" aria-live="off"></div>
     <div class="tix">
       <div class="tick"><small>加權指數</small><b class="num" id="tx">—</b><small id="txd"></small></div>
       <div class="tick"><small>收錄 ETF</small><b class="num" id="nEtf">—</b><small id="upd"></small></div>
@@ -1004,7 +1050,7 @@ footer{border-image:linear-gradient(90deg,var(--gold),#0E1726 60%,var(--gold)) 1
 </div>
 
 <footer>
-  <div class="ft-brand"><div class="ft-logo">💰 ETF 月配息規劃</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-brand"><div class="ft-logo">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#etf">📊 ETF 總覽</a><a href="#calc">💰 我的配息試算</a><a href="#vp">🏆 巴菲特選股</a><a href="#mkt">📉 大盤儀表板</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -1876,7 +1922,7 @@ function renderMkt(){
   const {a} = MK, t = a.tech, f = a.forecast;
   const stCol = a.score >= 12 ? "#16a34a" : a.score > -12 ? "#64748b" : "#dc2626";
   $("#mkt").innerHTML = `<div class="mk">
-  <nav class="mk-nav" id="mkNav">${[["mk-sum", "🧭 總結"], ["mk-news", "📰 快訊"], ["mk-key", "🔑 關鍵數字"], ["mk-mg", "📊 資券"], ["mk-fear", "😱 恐慌度"], ["mk-la", "📐 線型"], ["mk-fc", "🎯 區間"], ["mk-cards", "🚦 燈號"], ["mk-chart", "📈 疊圖"], ["mk-glob", "🌏 全球"], ["mk-det", "📋 明細"], ["mk-ev", "🔬 回測"]].map(([id, n]) => `<button data-to="${id}">${n}</button>`).join("")}</nav>
+  <nav class="mk-nav" id="mkNav">${[["mk-sum", "🧭 總結"], ["mk-news", "📰 快訊"], ["mk-key", "🔑 關鍵數字"], ["mk-mg", "📊 資券"], ["mk-fear", "😱 恐慌度"], ["mk-la", "📐 線型"], ["mk-fc", "🎯 區間"], ["mk-cards", "🚦 燈號"], ["mk-chart", "📈 疊圖"], ["mk-glob", "🌏 全球"], ["mk-gx", "🔎 各國區間"], ["mk-det", "📋 明細"], ["mk-ev", "🔬 回測"]].map(([id, n]) => `<button data-to="${id}">${n}</button>`).join("")}</nav>
   <div class="mk-hero" id="mk-sum">
     <div class="mk-px"><small>加權指數 ・ ${t.date} 收盤</small>
       <div class="v num">${fmt(t.price, 2)}</div>
@@ -1933,6 +1979,10 @@ function renderMkt(){
     <div class="ctool"><div class="chips" id="rgChips"></div></div>
     <div class="chart" id="mkChart"></div><p class="mknote" id="ovNote"></p></div>
 
+  <div class="box" id="mk-gx"><h2 class="sec">🔎 各國大盤區間查詢 <small>選指數＋區間（或自訂起訖日），看走勢、統計分析與每日明細；資料來源 Yahoo Finance</small></h2>
+    <div id="gxCtl" class="gx-ctl"></div><div id="gxBody"></div>
+    <div class="gx-cmp-hd"><h3>🏁 同一區間，各國比一比</h3><button class="lgo" id="gxCmpBtn">開始比較 13 個市場</button></div><div id="gxCmp"></div></div>
+
   <div class="box" id="mk-glob"><h2 class="sec">🌏 全球股市對照 <small>點表格列可加入／移出下方比較圖；美股與台股的相關性以「前一晚美股 → 隔天台股」計算</small></h2>
     <div class="scrollx" style="max-height:none"><table class="gtab ev"><tr><th>指數</th><th class="r">最新</th><th class="r">1 日</th><th class="r">1 週</th><th class="r">1 月</th><th class="r">3 月</th><th class="r">1 年</th><th class="r">今年</th><th class="r">與台股相關</th></tr>
     ${a.global_.map(x => `<tr data-g="${x.sym}" class="${x.sym == "TAIEX" ? "tw" : ""} ${gSel.includes(x.sym) ? "sel" : ""}"><td>${x.name}<br><small style="color:var(--sub)">${x.date}</small></td><td class="r num">${fmt(x.last, 2)}</td>${["d1", "w1", "m1", "m3", "y1", "ytd"].map(k => `<td class="r num ${pc(x[k])}">${sgn(x[k], 1)}%</td>`).join("")}<td class="r num">${x.corr1y != null ? fmt(x.corr1y, 2) : "—"}</td></tr>`).join("")}</table></div>
@@ -1960,7 +2010,7 @@ function renderMkt(){
 
   <p class="mknote">資料來源：臺灣證券交易所（臺股儀表板、信用交易統計）、臺灣期貨交易所（台指 VIX）、FinMind（三大法人、期貨未平倉）、Yahoo Finance（全球指數、美股 VIX）。融資相關為上市資料。所有區間、分數與機率皆為歷史統計推估，不構成任何投資建議。</p>
   </div>`;
-  mkChartUI(); gChartUI(); detailUI(); if (MK.a.fear) fearUI(); else $("#mk-fear").remove(); if (MK.a.drivers) keyUI(); else $("#mk-key").remove(); laUI(); mgUI(); nwUI();
+  mkChartUI(); gChartUI(); detailUI(); if (MK.a.fear) fearUI(); else $("#mk-fear").remove(); if (MK.a.drivers) keyUI(); else $("#mk-key").remove(); laUI(); mgUI(); nwUI(); gxUI();
   $("#mkNav").onclick = e => { const b = e.target.closest("[data-to]"); if (!b) return; const el = document.getElementById(b.dataset.to);
     if (el) window.scrollTo({top: el.getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 70), behavior: "smooth"}); };
 }
@@ -3030,6 +3080,166 @@ function nwUI(){
 }
 gqLoad(); gqT = setInterval(gqLoad, 60e3);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) { gqLoad(); if ($("#nwL")) nwLoad(); } });
+
+
+/* ---------- 頂部即時時鐘(台北時間)+ 台股/美股開收盤狀態 ---------- */
+function clkTick(){
+  const el = $("#clk"); if (!el) return;
+  const now = new Date(), tz = z => new Date(now.toLocaleString("en-US", {timeZone: z}));
+  const tp = tz("Asia/Taipei"), ny = tz("America/New_York"), p2 = n => String(n).padStart(2, "0");
+  const wk = "日一二三四五六"[tp.getDay()], m = (d) => d.getHours() * 60 + d.getMinutes();
+  const twOpen = tp.getDay() % 6 && m(tp) >= 540 && m(tp) < 810, usOpen = ny.getDay() % 6 && m(ny) >= 570 && m(ny) < 960;
+  const twTxt = twOpen ? "台股 盤中" : tp.getDay() % 6 && m(tp) < 540 ? "台股 09:00 開盤" : "台股 已收盤";
+  el.innerHTML = `<div class="cd">${tp.getFullYear()} 年 ${tp.getMonth() + 1} 月 ${tp.getDate()} 日　星期${wk}</div>
+    <div class="ct">${p2(tp.getHours())}:${p2(tp.getMinutes())}:${p2(tp.getSeconds())}<small>台北</small></div>
+    <div class="cs"><span><i class="${twOpen ? "on" : ""}"></i>${twTxt}</span><span><i class="${usOpen ? "on" : ""}"></i>美股 ${usOpen ? "盤中" : "休市"}（紐約 ${p2(ny.getHours())}:${p2(ny.getMinutes())}）</span></div>`;
+}
+clkTick(); setInterval(clkTick, 1000);
+/* ---------- 各國大盤:區間明細查詢 + 統計分析 ---------- */
+const GX_IDX = [["^TWII", "台灣 加權指數"], ["^GSPC", "美國 標普500"], ["^IXIC", "美國 那斯達克"], ["^DJI", "美國 道瓊工業"], ["^SOX", "美國 費城半導體"], ["^N225", "日本 日經225"], ["^KS11", "韓國 KOSPI"], ["^HSI", "香港 恆生"], ["000001.SS", "中國 上證綜合"], ["^BSESN", "印度 SENSEX"], ["^STI", "新加坡 海峽時報"], ["^GDAXI", "德國 DAX"], ["^FTSE", "英國 富時100"]];
+const GX_OTH = [["^VIX", "美股 VIX 恐慌指數"], ["TWD=X", "美元兌台幣"], ["^TNX", "美國 10 年期公債殖利率"], ["CL=F", "西德州原油"], ["GC=F", "黃金"]];
+const GX_RG = [["1d", "1天", "5m"], ["5d", "1週", "15m"], ["1mo", "1個月", "1d"], ["3mo", "3個月", "1d"], ["6mo", "6個月", "1d"], ["ytd", "年初至今", "1d"], ["1y", "1年", "1d"], ["2y", "2年", "1d"], ["5y", "5年", "1d"], ["10y", "10年", "1wk"], ["max", "全部", "1mo"]];
+let GX = {sym: "^TWII", rg: "1y", from: "", to: "", d: null, page: 40, cmp: null};
+const gxName = s => (GX_IDX.concat(GX_OTH).find(x => x[0] == s) || [s, s])[1];
+async function gxFetch(sym, rg, from, to){
+  let q, iv;
+  if (rg == "custom") {
+    const p1 = Math.floor(new Date(from + "T00:00:00Z").getTime() / 1000) - 86400, p2 = Math.floor(new Date(to + "T00:00:00Z").getTime() / 1000) + 2 * 86400;
+    iv = (p2 - p1) / 86400 > 365 * 6 ? "1wk" : "1d"; q = `period1=${p1}&period2=${p2}&interval=${iv}`;
+  } else { iv = GX_RG.find(x => x[0] == rg)[2]; q = `range=${rg}&interval=${iv}`; }
+  const j = await yc(sym, q + "&includePrePost=false&events=div%2Csplit"), x = j.chart.result[0], m = x.meta, off = m.gmtoffset || 0, qt = x.indicators.quote[0] || {};
+  const intra = /m$/.test(iv), ds = t => new Date((t + off) * 1000).toISOString();
+  let B = (x.timestamp || []).map((t, i) => ({t, d: intra ? ds(t).slice(5, 16).replace("T", " ") : ds(t).slice(0, 10), o: qt.open[i], h: qt.high[i], l: qt.low[i], c: qt.close[i], v: qt.volume ? qt.volume[i] : null})).filter(b => b.c != null);
+  if (!intra && m.regularMarketPrice && m.regularMarketTime) {          // 最後一天的日 K 有時還沒寫入,用即時價補上
+    const md = ds(m.regularMarketTime).slice(0, 10), lb = B[B.length - 1];
+    if (lb && md > lb.d && (iv == "1d" || md.slice(0, 7) > lb.d.slice(0, 7) && iv == "1mo")) B.push({t: m.regularMarketTime, d: md, o: null, h: m.regularMarketDayHigh ?? null, l: m.regularMarketDayLow ?? null, c: m.regularMarketPrice, v: null});
+  }
+  if (rg == "custom") B = B.filter(b => b.d >= from && b.d <= to);
+  return {m, B, iv, intra};
+}
+function gxStats(D, sym){
+  const B = D.B; if (B.length < 2) return null;
+  let base = B[0].c;
+  if (D.iv == "5m" && GQD[sym] && GQD[sym].prev) base = GQD[sym].prev;            // 1 天:跟昨收比
+  const last = B[B.length - 1].c, hi = B.reduce((a, b) => (b.h ?? b.c) > (a.h ?? a.c) ? b : a), lo = B.reduce((a, b) => (b.l ?? b.c) < (a.l ?? a.c) ? b : a);
+  let pk = B[0].c, mdd = 0, mddAt = null, up = 0, best = null, worst = null; const rs = [];
+  B.forEach((b, i) => { pk = Math.max(pk, b.c); const dd = b.c / pk - 1; if (dd < mdd) { mdd = dd; mddAt = b.d; }
+    if (i) { const r = b.c / B[i - 1].c - 1; rs.push(Math.log(b.c / B[i - 1].c)); b.r = r * 100; b.ch = b.c - B[i - 1].c; if (r > 0) up++;
+      if (!best || r > best.r / 100) best = b; if (!worst || r < worst.r / 100) worst = b; } });
+  const mu = rs.reduce((s, x) => s + x, 0) / rs.length, sd = Math.sqrt(rs.reduce((s, x) => s + (x - mu) ** 2, 0) / Math.max(1, rs.length - 1));
+  const per = {"1d": 252, "1wk": 52, "1mo": 12}[D.iv], days = (B[B.length - 1].t - B[0].t) / 86400;
+  const vols = B.map(b => b.v).filter(v => v > 0);
+  return {base, last, chg: last - base, pct: (last / base - 1) * 100, hi, lo, mdd: mdd * 100, mddAt, upR: up / rs.length * 100, n: rs.length,
+    vol: per ? sd * Math.sqrt(per) * 100 : null, cagr: days >= 180 ? (Math.pow(last / B[0].c, 365 / days) - 1) * 100 : null, best, worst, fromHi: (last / (hi.h ?? hi.c) - 1) * 100,
+    avgV: vols.length ? vols.reduce((s, v) => s + v, 0) / vols.length : null, days, open: B[0].o ?? B[0].c};
+}
+function gxChart(D, st){
+  const sm = innerWidth < 700, k = sm ? 1.6 : 1, B = D.B, W = sm ? 560 : 1000, H = sm ? 360 : 300, VH = sm ? 60 : 46, P = {l: 8, r: sm ? 92 : 64, t: 12, b: sm ? 34 : 24};
+  const lo = Math.min(...B.map(b => b.c)), hi = Math.max(...B.map(b => b.c)), pad = (hi - lo) * .06 || hi * .01, y0 = lo - pad, y1 = hi + pad;
+  const X = i => P.l + i / (B.length - 1) * (W - P.l - P.r), Y = v => P.t + (1 - (v - y0) / (y1 - y0)) * (H - P.t - P.b);
+  const up = st.chg >= 0, col = up ? "var(--up)" : "var(--down)";
+  const line = B.map((b, i) => `${X(i).toFixed(1)},${Y(b.c).toFixed(1)}`).join(" ");
+  const ticks = [0, 1, 2, 3].map(k => y0 + (y1 - y0) * (k + .5) / 4);
+  const nL = Math.min(sm ? 3 : 6, B.length), lab = [...Array(nL)].map((_, k) => Math.round(k * (B.length - 1) / Math.max(1, nL - 1)));
+  const vs = B.map(b => b.v || 0), vmx = Math.max(...vs);
+  const baseY = D.iv == "5m" && st.base >= y0 && st.base <= y1 ? `<line x1="${P.l}" x2="${W - P.r}" y1="${Y(st.base)}" y2="${Y(st.base)}" stroke="var(--sub)" stroke-dasharray="4 4" opacity=".6"/><text x="${W - P.r + 6}" y="${Y(st.base) + 4}" font-size="11" fill="var(--sub)">昨收</text>` : "";
+  return `<svg viewBox="0 0 ${W} ${H + (vmx ? VH : 0)}" class="gx-svg" id="gxSvg">
+    <defs><linearGradient id="gxg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${up ? "#CF3A3A" : "#1F9D55"}" stop-opacity=".32"/><stop offset="1" stop-color="${up ? "#CF3A3A" : "#1F9D55"}" stop-opacity="0"/></linearGradient></defs>
+    ${ticks.map(v => `<line x1="${P.l}" x2="${W - P.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${W - P.r + 6}" y="${Y(v) + 4}" font-size="${12 * k}" fill="var(--sub)" font-weight="700">${fmt(v, v >= 1000 ? 0 : 2)}</text>`).join("")}
+    ${lab.map(i => `<text x="${X(i)}" y="${H - 6}" font-size="${11.5 * k}" fill="var(--sub)" text-anchor="${i == 0 ? "start" : i == B.length - 1 ? "end" : "middle"}">${D.intra ? B[i].d.slice(-5) : D.iv == "1mo" || D.iv == "1wk" ? B[i].d.slice(0, 7) : B[i].d.slice(2)}</text>`).join("")}
+    ${baseY}
+    <polygon points="${X(0)},${H - P.b} ${line} ${X(B.length - 1)},${H - P.b}" fill="url(#gxg)"/>
+    <polyline points="${line}" fill="none" stroke="${col}" stroke-width="2.2" stroke-linejoin="round"/>
+    ${vmx ? B.map((b, i) => `<rect x="${(X(i) - (W - P.l - P.r) / B.length * .35).toFixed(1)}" width="${Math.max(.8, (W - P.l - P.r) / B.length * .7).toFixed(1)}" y="${(H + VH - (b.v || 0) / vmx * (VH - 6)).toFixed(1)}" height="${((b.v || 0) / vmx * (VH - 6)).toFixed(1)}" fill="var(--sub)" opacity=".35"/>`).join("") : ""}
+    <g id="gxHv" style="display:none"><line id="gxHl" y1="${P.t}" y2="${H - P.b}" stroke="var(--ink,#334)" stroke-width="1" opacity=".5"/><circle id="gxHc" r="4.5" fill="${col}" stroke="#fff" stroke-width="2"/></g>
+    <rect x="${P.l}" y="0" width="${W - P.l - P.r}" height="${H}" fill="transparent" id="gxHit"/></svg>`;
+}
+function gxBind(D){
+  const svg = $("#gxSvg"), B = D.B, sm = innerWidth < 700, W = sm ? 560 : 1000, P = {l: 8, r: sm ? 92 : 64};
+  const show = ev => {
+    const r = svg.getBoundingClientRect(), px = ((ev.touches ? ev.touches[0].clientX : ev.clientX) - r.left) / r.width * W;
+    const i = Math.max(0, Math.min(B.length - 1, Math.round((px - P.l) / (W - P.l - P.r) * (B.length - 1)))), b = B[i];
+    const pl = svg.querySelector("polyline").points[i]; $("#gxHv").style.display = "";
+    $("#gxHl").setAttribute("x1", pl.x); $("#gxHl").setAttribute("x2", pl.x); $("#gxHc").setAttribute("cx", pl.x); $("#gxHc").setAttribute("cy", pl.y);
+    const st = gxStats(D, GX.sym), rr = (b.c / st.base - 1) * 100;
+    $("#gxTip").innerHTML = `<b>${b.d}</b>　收 <b class="num">${fmt(b.c, 2)}</b>　<span class="num ${pc(rr)}">${sgn(rr)}%（較區間起點）</span>${b.o != null ? `　<small>開 ${fmt(b.o, 2)}・高 ${fmt(b.h, 2)}・低 ${fmt(b.l, 2)}</small>` : ""}`;
+  };
+  const hide = () => { $("#gxHv").style.display = "none"; $("#gxTip").innerHTML = $("#gxTip").dataset.def; };
+  $("#gxHit").addEventListener("mousemove", show); $("#gxHit").addEventListener("touchmove", e => { show(e); }, {passive: true});
+  $("#gxHit").addEventListener("mouseleave", hide); $("#gxHit").addEventListener("touchend", hide);
+}
+async function gxLoad(){
+  $("#gxBody").innerHTML = `<div class="sk" style="height:360px"></div>`;
+  try { GX.d = await gxFetch(GX.sym, GX.rg, GX.from, GX.to); GX.page = 40; gxPaint(); }
+  catch (e) { $("#gxBody").innerHTML = `<p class="mknote">這個區間查不到資料，請換個區間或稍後再試（${e.message}）。</p>`; }
+}
+function gxPaint(){
+  const D = GX.d, st = gxStats(D, GX.sym), m = D.m;
+  if (!st) { $("#gxBody").innerHTML = `<p class="mknote">這個區間資料太少（可能是休市日），請換個區間。</p>`; return; }
+  const rgName = GX.rg == "custom" ? `${GX.from} ～ ${GX.to}` : "過去" + GX_RG.find(x => x[0] == GX.rg)[1];
+  const f2 = v => v == null ? "—" : fmt(v, 2), up = st.chg >= 0;
+  const say = [
+    `${rgName}，${gxName(GX.sym)}${up ? "上漲" : "下跌"} ${fmt(Math.abs(st.chg), 2)} 點（${sgn(st.pct)}%）${st.cagr != null ? `，換算年化報酬約 ${sgn(st.cagr, 1)}%` : ""}。`,
+    `區間最高 ${f2(st.hi.h ?? st.hi.c)}（${st.hi.d}）、最低 ${f2(st.lo.l ?? st.lo.c)}（${st.lo.d}），目前離區間高點 ${fmt(st.fromHi, 1)}%。`,
+    `期間最大跌幅（從高點回落最深）${fmt(st.mdd, 1)}%${st.mddAt ? `，發生在 ${st.mddAt}` : ""}；${st.n} 根 K 棒中有 ${fmt(st.upR, 0)}% 是上漲的。`,
+    st.vol != null ? `年化波動率 ${fmt(st.vol, 1)}%：${st.vol < 15 ? "走勢平穩" : st.vol < 25 ? "波動正常" : st.vol < 35 ? "波動偏大，持有時心臟要大顆一點" : "波動劇烈，屬於高風險期間"}。` : ""
+  ].filter(Boolean);
+  const k = [["區間起點", f2(B0(D).c)], ["開盤（首日）", f2(st.open)], ["最新", f2(st.last)], ["區間漲跌", `<span class="${pc(st.chg)}">${st.chg >= 0 ? "+" : ""}${f2(st.chg)}</span>`], ["漲跌幅", `<span class="${pc(st.pct)}">${sgn(st.pct)}%</span>`], ["年化報酬", st.cagr != null ? sgn(st.cagr, 1) + "%" : "—"],
+    ["區間最高", `${f2(st.hi.h ?? st.hi.c)}<small>${st.hi.d}</small>`], ["區間最低", `${f2(st.lo.l ?? st.lo.c)}<small>${st.lo.d}</small>`], ["最大跌幅", `${fmt(st.mdd, 1)}%<small>${st.mddAt || ""}</small>`],
+    ["52 週最高", f2(m.fiftyTwoWeekHigh)], ["52 週最低", f2(m.fiftyTwoWeekLow)], ["年化波動率", st.vol != null ? fmt(st.vol, 1) + "%" : "—"],
+    ["上漲比例", fmt(st.upR, 0) + "%"], [`單根最大漲`, st.best ? `<span class="pos">${sgn(st.best.r)}%</span><small>${st.best.d}</small>` : "—"], [`單根最大跌`, st.worst ? `<span class="neg">${sgn(st.worst.r)}%</span><small>${st.worst.d}</small>` : "—"],
+    ["平均成交量", st.avgV ? (st.avgV >= 1e8 ? fmt(st.avgV / 1e8, 2) + " 億" : fmt(st.avgV / 1e4, 1) + " 萬") : "—"], ["K 棒數", `${st.n + 1}<small>${{"5m": "5 分 K", "15m": "15 分 K", "1d": "日 K", "1wk": "週 K", "1mo": "月 K"}[D.iv]}</small>`], ["幣別", m.currency || "—"]];
+  const rows = D.B.slice().reverse(), shown = rows.slice(0, GX.page);
+  const def = `<b>${rgName}</b>　滑過圖表看每一天的價格`;
+  $("#gxBody").innerHTML = `
+    <div class="gx-hd"><div><div class="gx-sym">${GX.sym.replace(/^\^/, "")} <span>${gxName(GX.sym)}</span></div><small>${m.exchangeName || ""}・${m.currency || ""}</small></div>
+      <div class="gx-px"><b class="num">${f2(st.last)}</b><span class="num ${pc(st.chg)}">${st.chg >= 0 ? "+" : ""}${fmt(st.chg, 2)}（${sgn(st.pct)}%）</span><small>${rgName}</small></div></div>
+    <div class="gx-tip" id="gxTip" data-def="${def.replace(/"/g, "&quot;")}">${def}</div>
+    ${gxChart(D, st)}
+    <ul class="mk-say gx-say">${say.map(x => `<li>${x}</li>`).join("")}</ul>
+    <div class="gx-k">${k.map(([a, b]) => `<div><small>${a}</small><b class="num">${b}</b></div>`).join("")}</div>
+    <div class="gx-tb-hd"><h3>📋 區間明細（新 → 舊，共 ${rows.length} 筆）</h3><button class="lgo" id="gxCsv">⬇ 下載 CSV</button></div>
+    <div class="gx-tw"><table class="gx-tb"><thead><tr><th>${D.intra ? "時間" : "日期"}</th><th>開盤</th><th>最高</th><th>最低</th><th>收盤</th><th>漲跌</th><th>漲跌%</th>${st.avgV ? "<th>成交量</th>" : ""}</tr></thead>
+      <tbody>${shown.map(b => `<tr><td>${b.d}</td><td class="num">${f2(b.o)}</td><td class="num">${f2(b.h)}</td><td class="num">${f2(b.l)}</td><td class="num"><b>${f2(b.c)}</b></td><td class="num ${pc(b.ch)}">${b.ch == null ? "—" : (b.ch >= 0 ? "+" : "") + f2(b.ch)}</td><td class="num ${pc(b.r)}">${b.r == null ? "—" : sgn(b.r) + "%"}</td>${st.avgV ? `<td class="num">${b.v ? fmt(b.v, 0) : "—"}</td>` : ""}</tr>`).join("")}</tbody></table></div>
+    ${rows.length > GX.page ? `<button class="gx-more" id="gxMore">顯示更多（還有 ${rows.length - GX.page} 筆）</button>` : ""}`;
+  gxBind(D);
+  if ($("#gxMore")) $("#gxMore").onclick = () => { GX.page += 120; const y = scrollY; gxPaint(); scrollTo(0, y); };
+  $("#gxCsv").onclick = () => {
+    const csv = "﻿" + [["日期", "開盤", "最高", "最低", "收盤", "漲跌", "漲跌%", "成交量"].join(",")].concat(D.B.map(b => [b.d, b.o, b.h, b.l, b.c, b.ch != null ? b.ch.toFixed(2) : "", b.r != null ? b.r.toFixed(2) : "", b.v || ""].join(","))).join("\n");
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], {type: "text/csv"})); a.download = `${gxName(GX.sym)}_${rgName}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  };
+}
+const B0 = D => D.B[0];
+async function gxCompare(){
+  const rg = GX.rg == "1d" || GX.rg == "5d" ? GX.rg : GX.rg;
+  $("#gxCmp").innerHTML = `<div class="sk" style="height:240px"></div>`;
+  const res = await Promise.all(GX_IDX.map(([s, n]) => gxFetch(s, rg, GX.from, GX.to).then(D => ({s, n, st: gxStats(D, s), D})).catch(() => ({s, n, st: null}))));
+  const L = res.filter(r => r.st).sort((a, b) => b.st.pct - a.st.pct), mx = Math.max(...L.map(r => Math.abs(r.st.pct)), 1);
+  const rgName = GX.rg == "custom" ? `${GX.from} ～ ${GX.to}` : "過去" + GX_RG.find(x => x[0] == GX.rg)[1];
+  const tw = L.find(r => r.s == "^TWII"), rank = tw ? L.indexOf(tw) + 1 : null;
+  $("#gxCmp").innerHTML = `<p class="gx-cs">${rgName}，${L[0] ? `表現最好的是 <b>${L[0].n}</b>（${sgn(L[0].st.pct)}%）、最差的是 <b>${L[L.length - 1].n}</b>（${sgn(L[L.length - 1].st.pct)}%）` : ""}${rank ? `；台股在 ${L.length} 個市場中排第 ${rank} 名` : ""}。點列可切換到該指數。</p>
+    <div class="gx-tw"><table class="gx-tb gx-ct"><thead><tr><th>#</th><th>指數</th><th>漲跌幅</th><th class="hm">起點</th><th>最新</th><th>最大跌幅</th><th class="hm">年化波動</th><th class="hm">離高點</th></tr></thead><tbody>
+    ${L.map((r, i) => `<tr data-s="${r.s}" class="${r.s == GX.sym ? "on" : ""}"><td>${i + 1}</td><td><b>${r.n}</b></td><td><div class="gx-bar"><i class="${r.st.pct >= 0 ? "u" : "d"}" style="width:${Math.abs(r.st.pct) / mx * 100}%"></i><span class="num ${pc(r.st.pct)}">${sgn(r.st.pct)}%</span></div></td>
+      <td class="num hm">${fmt(r.D.B[0].c, 2)}</td><td class="num">${fmt(r.st.last, 2)}</td><td class="num neg">${fmt(r.st.mdd, 1)}%</td><td class="num hm">${r.st.vol != null ? fmt(r.st.vol, 1) + "%" : "—"}</td><td class="num hm">${fmt(r.st.fromHi, 1)}%</td></tr>`).join("")}</tbody></table></div>`;
+  $("#gxCmp").querySelectorAll("tr[data-s]").forEach(tr => tr.onclick = () => { GX.sym = tr.dataset.s; gxUI(true); $("#mk-gx").scrollIntoView({behavior: "smooth"}); });
+}
+function gxUI(keepCmp){
+  const opt = (L, g) => `<optgroup label="${g}">${L.map(([s, n]) => `<option value="${s}" ${s == GX.sym ? "selected" : ""}>${n}</option>`).join("")}</optgroup>`;
+  const today = new Date().toISOString().slice(0, 10);
+  if (!GX.from) { GX.from = new Date(Date.now() - 90 * 864e5).toISOString().slice(0, 10); GX.to = today; }
+  $("#gxCtl").innerHTML = `<div class="gx-chips">${GX_IDX.map(([s, n]) => `<button data-s="${s}" class="${s == GX.sym ? "on" : ""}">${n.split(" ")[0]}<b>${n.split(" ")[1] || ""}</b></button>`).join("")}
+      <select id="gxOth"><option value="">其他：匯率・利率・原物料…</option>${opt(GX_OTH, "其他")}</select></div>
+    <div class="gx-rg">${GX_RG.map(([k, n]) => `<button data-r="${k}" class="${k == GX.rg ? "on" : ""}">${n}</button>`).join("")}
+      <span class="gx-cu ${GX.rg == "custom" ? "on" : ""}"><input type="date" id="gxF" value="${GX.from}" max="${today}"> ～ <input type="date" id="gxT" value="${GX.to}" max="${today}"><button id="gxGo">查詢區間</button></span></div>`;
+  $("#gxCtl").querySelectorAll(".gx-chips button").forEach(b => b.onclick = () => { GX.sym = b.dataset.s; gxUI(true); });
+  $("#gxOth").value = GX_OTH.some(x => x[0] == GX.sym) ? GX.sym : ""; $("#gxOth").onchange = e => { if (e.target.value) { GX.sym = e.target.value; gxUI(true); } };
+  $("#gxCtl").querySelectorAll(".gx-rg button[data-r]").forEach(b => b.onclick = () => { GX.rg = b.dataset.r; gxUI(); });
+  $("#gxGo").onclick = () => { const f = $("#gxF").value, t = $("#gxT").value; if (!f || !t || f >= t) { alert("請選擇正確的起訖日期（起日要早於迄日）"); return; } GX.from = f; GX.to = t; GX.rg = "custom"; gxUI(); };
+  $("#gxCmpBtn").onclick = gxCompare;
+  if (!keepCmp) $("#gxCmp").innerHTML = "";
+  gxLoad();
+  if (!keepCmp && GX.cmpAuto) gxCompare();
+}
 
 </script>
 </body>
