@@ -716,6 +716,20 @@ td.r,th.r{text-align:right}
   .fr-g svg{max-width:220px!important}.fr-s b{font-size:40px}.fr-s span{font-size:15px}.fr-cmp b{font-size:16px}
   .box{padding:14px;border-radius:16px}
 }
+/* ===== 線型分析 ===== */
+.la-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:10px}
+.la-f{display:flex;gap:6px}.la-f input{border:1px solid var(--line);background:var(--field);border-radius:10px;padding:9px 12px;font:inherit;width:190px}
+.la-f button{border:0;border-radius:10px;padding:9px 16px;font:inherit;font-weight:800;color:#fff;background:linear-gradient(120deg,#1f3cff,#7b2ff7);cursor:pointer}
+.la-head{margin-top:12px;font-size:18px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.la-head small{color:var(--sub);font-size:12px}
+.la-sc{margin-left:auto;font-size:13px;color:var(--sub)}
+.la-tt{font-size:16px;font-weight:900;margin:16px 0 8px}
+.la-t{display:flex;flex-direction:column;gap:8px}
+.la-i{display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;background:var(--bg);border-radius:12px;padding:10px 12px}
+.la-n{width:26px;height:26px;border-radius:50%;background:var(--sel);color:var(--selink);display:grid;place-items:center;font-weight:900;font-size:13px}
+.la-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.la-h b{font-size:14.5px}
+.la-sec{font-size:11px;font-weight:800;border-radius:6px;padding:2px 7px;background:#ede9fe;color:#6d28d9}
+.la-i p{font-size:13.5px;line-height:1.75;color:var(--sub);margin-top:3px}
+@media(max-width:700px){#laBox .chip{padding:6px 10px;font-size:12px}.la-bar{gap:6px;margin-top:8px}.la-f{width:100%}.la-f input{flex:1;width:auto}.la-sc{margin-left:0;width:100%}.la-head{font-size:16px}}
 /* ===== 骨架載入 ===== */
 .sk{background:linear-gradient(90deg,var(--track) 25%,var(--skhi) 37%,var(--track) 63%);background-size:400% 100%;animation:sk 1.3s ease infinite;border-radius:12px}
 .sk-cat{height:60px;border-radius:18px}
@@ -1728,7 +1742,7 @@ function renderMkt(){
   const {a} = MK, t = a.tech, f = a.forecast;
   const stCol = a.score >= 12 ? "#16a34a" : a.score > -12 ? "#64748b" : "#dc2626";
   $("#mkt").innerHTML = `<div class="mk">
-  <nav class="mk-nav" id="mkNav">${[["mk-sum", "🧭 總結"], ["mk-key", "🔑 關鍵數字"], ["mk-fear", "😱 恐慌度"], ["mk-fc", "🎯 區間"], ["mk-cards", "🚦 燈號"], ["mk-chart", "📈 疊圖"], ["mk-glob", "🌏 全球"], ["mk-det", "📋 明細"], ["mk-ev", "🔬 回測"]].map(([id, n]) => `<button data-to="${id}">${n}</button>`).join("")}</nav>
+  <nav class="mk-nav" id="mkNav">${[["mk-sum", "🧭 總結"], ["mk-key", "🔑 關鍵數字"], ["mk-fear", "😱 恐慌度"], ["mk-la", "📐 線型"], ["mk-fc", "🎯 區間"], ["mk-cards", "🚦 燈號"], ["mk-chart", "📈 疊圖"], ["mk-glob", "🌏 全球"], ["mk-det", "📋 明細"], ["mk-ev", "🔬 回測"]].map(([id, n]) => `<button data-to="${id}">${n}</button>`).join("")}</nav>
   <div class="mk-hero" id="mk-sum">
     <div class="mk-px"><small>加權指數 ・ ${t.date} 收盤</small>
       <div class="v num">${fmt(t.price, 2)}</div>
@@ -1750,6 +1764,9 @@ function renderMkt(){
 
   <div class="box" id="mk-fear"><h2 class="sec">😱 市場恐慌度 <small>0＝近 5 年最平靜、100＝最恐慌；每天收盤後自動更新</small></h2>
     <div class="ctool"><div class="chips" id="fearTabs"></div></div><div id="fearBody"></div></div>
+
+  <div class="box" id="mk-la"><h2 class="sec">📐 線型分析 <small>自動畫趨勢線、頸線、缺口，判斷 W 底／M 頭／頭肩／三角收斂、均線扣抵與葛蘭碧法則；可查任一檔股票</small></h2>
+    <div id="laBox"></div></div>
 
   <div class="box" id="mk-fc"><h2 class="sec">🎯 接下來大盤可能走到哪裡 <small>深色＝大部分情況會落在這裡（約 7 成機率）；淺色＝很極端時的範圍（約 95%）</small></h2>
     <div class="fc2">${[["未來 1 週", f.w1], ["未來 1 個月", f.m1]].map(([n, b]) => fbar(n, b, t.price)).join("")}</div>
@@ -1799,7 +1816,7 @@ function renderMkt(){
 
   <p class="mknote">資料來源：臺灣證券交易所（臺股儀表板、信用交易統計）、臺灣期貨交易所（台指 VIX）、FinMind（三大法人、期貨未平倉）、Yahoo Finance（全球指數、美股 VIX）。融資相關為上市資料。所有區間、分數與機率皆為歷史統計推估，不構成任何投資建議。</p>
   </div>`;
-  mkChartUI(); gChartUI(); detailUI(); if (MK.a.fear) fearUI(); else $("#mk-fear").remove(); if (MK.a.drivers) keyUI(); else $("#mk-key").remove();
+  mkChartUI(); gChartUI(); detailUI(); if (MK.a.fear) fearUI(); else $("#mk-fear").remove(); if (MK.a.drivers) keyUI(); else $("#mk-key").remove(); laUI();
   $("#mkNav").onclick = e => { const b = e.target.closest("[data-to]"); if (!b) return; const el = document.getElementById(b.dataset.to);
     if (el) window.scrollTo({top: el.getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 70), behavior: "smooth"}); };
 }
@@ -2386,6 +2403,231 @@ function keyUI(){
     ${grps.map(g => `<div class="kgrp"><h4>${g}</h4>${L.filter(d => d.grp == g).map(d => `<div class="krow"><div class="kn"><b>${d.name}</b><small>${d.date || ""}</small></div>
         <div class="kv num">${d.val}${d.chg ? `<small>${d.chg}</small>` : ""}</div>${badge(d.sig)}<p class="kw">${d.why}</p></div>`).join("")}</div>`).join("")}`;
   $("#keyBody .kchips").onclick = e => { const c = e.target.closest("[data-f]"); if (c) { keyF = c.dataset.f; keyUI(); } };
+}
+
+/* ================= 線型分析(民間常用技術分析) =================
+   輸入日 K [{d,o,h,l,c,v}],自動找:轉折點、趨勢線、W底/M頭/頭肩/三角收斂/箱型、均線排列、扣抵、葛蘭碧八大法則、跳空缺口、K線組合、量價、黃金分割
+   輸出:findings(白話講解) + shapes(畫在 K 線圖上) */
+const LA = {bars: null, name: "", code: "TAIEX", n: 120, show: {ma: true, tl: true, pat: true, gap: true, fib: false}};
+function laSMA(c, n){ return c.map((_, i) => i >= n - 1 ? c.slice(i - n + 1, i + 1).reduce((s, x) => s + x, 0) / n : null); }
+function laPivots(B, thr){            // ZigZag:價格反轉超過 thr 才確認一個轉折點
+  const P = []; let dir = 0, hiI = 0, loI = 0, ext = 0;
+  for (let i = 1; i < B.length; i++) {
+    if (dir == 0) {
+      if (B[i].h > B[hiI].h) hiI = i; if (B[i].l < B[loI].l) loI = i;
+      if (B[hiI].h / B[loI].l - 1 > thr) { if (hiI > loI) { P.push({i: loI, p: B[loI].l, t: "L"}); dir = 1; ext = hiI; } else { P.push({i: hiI, p: B[hiI].h, t: "H"}); dir = -1; ext = loI; } }
+    } else if (dir == 1) {
+      if (B[i].h >= B[ext].h) ext = i;
+      else if (B[ext].h / B[i].l - 1 > thr) { P.push({i: ext, p: B[ext].h, t: "H"}); dir = -1; ext = i; }
+    } else {
+      if (B[i].l <= B[ext].l) ext = i;
+      else if (B[i].h / B[ext].l - 1 > thr) { P.push({i: ext, p: B[ext].l, t: "L"}); dir = 1; ext = i; }
+    }
+  }
+  if (dir) P.push({i: ext, p: dir == 1 ? B[ext].h : B[ext].l, t: dir == 1 ? "H" : "L", open: true});
+  return P;
+}
+function laAnalyze(B){
+  const n = B.length, C = B.map(b => b.c), last = n - 1, px = C[last];
+  const ma = {5: laSMA(C, 5), 10: laSMA(C, 10), 20: laSMA(C, 20), 60: laSMA(C, 60)};
+  const rng = B.slice(-20).map(b => (b.h - b.l) / b.c), atr = rng.reduce((s, x) => s + x, 0) / rng.length;
+  const thr = Math.min(.12, Math.max(.03, atr * 2.8));
+  const P = laPivots(B, thr), F = [], S = [];
+  const add = (sec, title, sig, text) => F.push({sec, title, sig, text});
+  const f0 = v => fmt(v, v >= 1000 ? 0 : v >= 100 ? 1 : 2);
+  const lineAt = (a, b, i) => a.p + (b.p - a.p) * (i - a.i) / (b.i - a.i);
+  const conf = P.filter(p => !p.open), Ls = conf.filter(p => p.t == "L"), Hs = conf.filter(p => p.t == "H");
+  // ---- 1. 趨勢 ----
+  const hh = Hs.length > 1 && Hs[Hs.length - 1].p > Hs[Hs.length - 2].p, hl = Ls.length > 1 && Ls[Ls.length - 1].p > Ls[Ls.length - 2].p;
+  const trend = hh && hl ? "上升" : !hh && !hl && Hs.length > 1 && Ls.length > 1 ? "下降" : "盤整";
+  add("趨勢", `目前趨勢：${trend}${trend == "盤整" ? "（高低點沒有一致方向）" : ""}`, trend == "上升" ? 1 : trend == "下降" ? -1 : 0,
+    trend == "上升" ? "高點一個比一個高、低點也一個比一個高（頭頭高、底底高），這是標準的多頭走勢。" : trend == "下降" ? "高點一個比一個低、低點也一個比一個低（頭頭低、底底低），這是空頭走勢，反彈容易遇到賣壓。" : "最近的高低點忽高忽低，屬於整理格局，等突破整理區間再判斷方向。");
+  if (Ls.length > 1) { const [a, b] = Ls.slice(-2); if (b.p > a.p && last - a.i < 260) { const v = lineAt(a, b, last);
+    S.push({k: "tl", x1: a.i, y1: a.p, x2: last, y2: v, c: "#dc2626", lb: "上升趨勢線"});
+    add("趨勢線", px < v ? `跌破上升趨勢線（約 ${f0(v)}）` : `守在上升趨勢線之上（約 ${f0(v)}）`, px < v ? -1 : 1,
+      px < v ? "把最近兩個低點連起來的「上升趨勢線」已經被跌破，代表原本的上漲節奏被破壞，老師常說「跌破趨勢線先減碼」。" : "股價仍在上升趨勢線上方，回檔到這條線附近是多頭常見的支撐。"); } }
+  if (Hs.length > 1) { const [a, b] = Hs.slice(-2); if (b.p < a.p && last - a.i < 260) { const v = lineAt(a, b, last);
+    S.push({k: "tl", x1: a.i, y1: a.p, x2: last, y2: v, c: "#16a34a", lb: "下降趨勢線"});
+    add("趨勢線", px > v ? `突破下降趨勢線（約 ${f0(v)}）` : `仍被下降趨勢線壓著（約 ${f0(v)}）`, px > v ? 1 : -1,
+      px > v ? "把最近兩個高點連起來的「下降趨勢線」被突破，空頭結構開始鬆動，要觀察能不能站穩。" : "反彈還沒有越過下降趨勢線，這條線就是上方的壓力，站上去才算止跌轉強。"); } }
+  // ---- 2. 型態 ----
+  const T = conf.slice(-5), near = (a, b, t = .035) => Math.abs(a - b) / Math.min(a, b) < t;
+  const pat = (title, sig, text, neck, target, pts) => { add("型態", title, sig, text); S.push({k: "pat", pts, neck, target, lb: title.split("（")[0]}); };
+  let found = false;
+  if (T.length >= 3) {
+    const [a, b, c] = T.slice(-3);
+    if (a.t == "L" && b.t == "H" && c.t == "L" && near(a.p, c.p) && !found) { found = true; const h = b.p - Math.min(a.p, c.p);
+      pat(px > b.p ? "W 底（雙重底）突破頸線" : "W 底（雙重底）成形中", px > b.p ? 1 : 0, `兩個差不多高的低點（${f0(a.p)}、${f0(c.p)}）形成 W 字，中間高點 ${f0(b.p)} 就是「頸線」。${px > b.p ? `股價已站上頸線，型態成立，老師常用的滿足點＝頸線 + 底部深度 ≈ ${f0(b.p + h)}。` : `要「帶量站上頸線 ${f0(b.p)}」才算確認；若再跌破右底 ${f0(c.p)} 則型態失敗。`}`, b.p, b.p + h, [a, b, c]); }
+    if (a.t == "H" && b.t == "L" && c.t == "H" && near(a.p, c.p) && !found) { found = true; const h = Math.max(a.p, c.p) - b.p;
+      pat(px < b.p ? "M 頭（雙重頂）跌破頸線" : "M 頭（雙重頂）成形中", px < b.p ? -1 : 0, `兩個差不多高的高點（${f0(a.p)}、${f0(c.p)}）形成 M 字，中間低點 ${f0(b.p)} 是頸線。${px < b.p ? `已跌破頸線，型態成立，下跌滿足點約 ${f0(b.p - h)}；反彈到頸線附近常變壓力。` : `若跌破頸線 ${f0(b.p)} 就確認做頭，要提高警覺。`}`, b.p, b.p - h, [a, b, c]); }
+  }
+  if (T.length >= 5 && !found) {
+    const [a, b, c, d, e] = T;
+    if (a.t == "L" && c.p < a.p && c.p < e.p && near(a.p, e.p, .06) && b.t == "H") { found = true; const neck = (b.p + d.p) / 2, h = neck - c.p;
+      pat(px > neck ? "頭肩底突破頸線" : "頭肩底成形中", px > neck ? 1 : 0, `左肩 ${f0(a.p)}、頭部 ${f0(c.p)}（最低）、右肩 ${f0(e.p)}，像倒過來的人頭；頸線約 ${f0(neck)}。${px > neck ? `已突破頸線，是常見的底部反轉型態，滿足點約 ${f0(neck + h)}。` : "站上頸線才確認底部完成。"}`, neck, neck + h, [a, b, c, d, e]); }
+    else if (a.t == "H" && c.p > a.p && c.p > e.p && near(a.p, e.p, .06)) { found = true; const neck = (b.p + d.p) / 2, h = c.p - neck;
+      pat(px < neck ? "頭肩頂跌破頸線" : "頭肩頂成形中", px < neck ? -1 : 0, `左肩 ${f0(a.p)}、頭部 ${f0(c.p)}（最高）、右肩 ${f0(e.p)}；頸線約 ${f0(neck)}。${px < neck ? `已跌破頸線，是常見的頭部反轉型態，下跌滿足點約 ${f0(neck - h)}。` : "跌破頸線才確認做頭。"}`, neck, neck - h, [a, b, c, d, e]); }
+  }
+  if (T.length >= 4 && !found) {
+    const hs = T.filter(p => p.t == "H").slice(-2), ls = T.filter(p => p.t == "L").slice(-2);
+    if (hs.length == 2 && ls.length == 2) {
+      if (hs[1].p < hs[0].p && ls[1].p > ls[0].p) { found = true; add("型態", "三角收斂", 0, `高點越來越低（${f0(hs[0].p)}→${f0(hs[1].p)}）、低點越來越高（${f0(ls[0].p)}→${f0(ls[1].p)}），波動越縮越小，代表多空在拉鋸、即將選擇方向；突破上緣偏多、跌破下緣偏空。`);
+        S.push({k: "tl", x1: hs[0].i, y1: hs[0].p, x2: last, y2: lineAt(hs[0], hs[1], last), c: "#7c3aed", lb: "收斂上緣"}, {k: "tl", x1: ls[0].i, y1: ls[0].p, x2: last, y2: lineAt(ls[0], ls[1], last), c: "#7c3aed", lb: "收斂下緣"}); }
+      else if (near(hs[0].p, hs[1].p) && near(ls[0].p, ls[1].p)) { found = true; const top = Math.max(hs[0].p, hs[1].p), bot = Math.min(ls[0].p, ls[1].p);
+        add("型態", `箱型整理（${f0(bot)}～${f0(top)}）`, 0, `股價在 ${f0(bot)} 到 ${f0(top)} 之間來回，箱頂是壓力、箱底是支撐；帶量突破箱頂偏多，跌破箱底偏空。`);
+        S.push({k: "box", x1: Math.min(hs[0].i, ls[0].i), x2: last, y1: bot, y2: top}); }
+    }
+  }
+  if (!found) add("型態", "目前沒有明確的經典型態", 0, "最近的轉折點還沒有構成 W 底、M 頭、頭肩或三角收斂；型態需要時間醞釀，可以先看趨勢線和均線。");
+  // ---- 3. 均線排列與扣抵 ----
+  const m5 = ma[5][last], m10 = ma[10][last], m20 = ma[20][last], m60 = ma[60][last];
+  if (m60) {
+    const arr = m5 > m10 && m10 > m20 && m20 > m60 ? "多頭排列" : m5 < m10 && m10 < m20 && m20 < m60 ? "空頭排列" : (Math.max(m5, m10, m20, m60) - Math.min(m5, m10, m20, m60)) / px < .025 ? "均線糾結" : "均線交錯";
+    add("均線", `${arr}（5日 ${f0(m5)}／10日 ${f0(m10)}／月線 ${f0(m20)}／季線 ${f0(m60)}）`, arr == "多頭排列" ? 1 : arr == "空頭排列" ? -1 : 0,
+      arr == "多頭排列" ? "短均線在上、長均線在下，由上往下依序排好，代表各個時間買進的人都賺錢，是最強勢的排列。" : arr == "空頭排列" ? "短均線在下、長均線在上，各時間買進的人都套牢，反彈到均線常遇到解套賣壓。" : arr == "均線糾結" ? "幾條均線擠在一起，代表成本很接近、多空平衡，通常是「變盤」前兆，留意接下來的突破方向。" : "均線方向不一致，趨勢還在轉換中。");
+    const k20 = C[last - 19], k60 = C[last - 59], k20n = C.slice(last - 19, last - 14), k60n = C.slice(last - 59, last - 54);
+    const up20 = px > k20, up60 = px > k60;
+    add("扣抵", `月線${up20 ? "將上揚" : "將下彎"}、季線${up60 ? "將上揚" : "將下彎"}`, (up20 ? 1 : -1) + (up60 ? 1 : -1) > 0 ? 1 : (up20 ? 1 : -1) + (up60 ? 1 : -1) < 0 ? -1 : 0,
+      `「扣抵值」是均線明天要扣掉的那天價格。月線扣抵約 ${f0(k20)}、季線扣抵約 ${f0(k60)}；現在價格 ${f0(px)} ${up20 ? "高於" : "低於"}月線扣抵、${up60 ? "高於" : "低於"}季線扣抵。未來 5 天月線要扣 ${f0(Math.min(...k20n))}～${f0(Math.max(...k20n))}、季線要扣 ${f0(Math.min(...k60n))}～${f0(Math.max(...k60n))}，股價只要守在扣抵值之上，均線就會往上彎、形成支撐。`);
+    // 葛蘭碧(以季線為準)
+    const sl = (ma[60][last] - ma[60][last - 5]) / ma[60][last - 5] * 100, bias = (px / m60 - 1) * 100, prevBelow = C.slice(-8, -1).some((c, j) => c < ma[60][last - 7 + j]), prevAbove = C.slice(-8, -1).some((c, j) => c > ma[60][last - 7 + j]);
+    let g = null;
+    if (px > m60 && prevBelow && sl >= -0.1) g = [1, "買點①：股價由下往上突破走平或上揚的季線", "均線不再下彎、股價重新站上季線，是趨勢可能轉多的第一個訊號。"];
+    else if (px > m60 && sl > 0 && C.slice(-6, -1).some((c, j) => c < ma[60][last - 5 + j])) g = [1, "買點②：短暫跌破上揚季線後又站回", "季線仍往上，跌破只是假跌破，站回代表多頭還在。"];
+    else if (px > m60 && sl > 0 && bias < 4) g = [1, "買點③：在上揚季線上方回檔、沒有跌破", "回檔到季線附近有撐，是多頭中的加碼點。"];
+    else if (px < m60 && sl < 0 && bias < -12) g = [1, "買點④：股價離下彎季線太遠（負乖離過大）", "跌得太急、離均線太遠，容易出現跌深反彈，但這是搶反彈，不是趨勢翻多。"];
+    else if (px < m60 && prevAbove && sl <= 0.1) g = [-1, "賣點①：股價由上往下跌破走平或下彎的季線", "季線不再上揚、股價跌破，是趨勢可能轉空的第一個訊號。"];
+    else if (px < m60 && sl < 0 && C.slice(-6, -1).some((c, j) => c > ma[60][last - 5 + j])) g = [-1, "賣點②：短暫站上下彎季線後又跌破", "季線還在往下，站上只是假突破。"];
+    else if (px < m60 && sl < 0 && bias > -4) g = [-1, "賣點③：在下彎季線下方反彈、沒有突破", "反彈到季線附近遇壓，是空頭中的賣點。"];
+    else if (px > m60 && sl > 0 && bias > 12) g = [-1, "賣點④：股價離上揚季線太遠（正乖離過大）", "漲得太急，容易拉回修正。"];
+    if (g) add("葛蘭碧", g[1], g[0], g[2] + `（季線 ${f0(m60)}、5 日斜率 ${sl.toFixed(2)}%、乖離 ${bias.toFixed(1)}%）`);
+  }
+  // ---- 4. 跳空缺口 ----
+  const gaps = [];
+  for (let i = Math.max(1, n - 90); i < n; i++) {
+    if (B[i].l > B[i - 1].h) { const lo = B[i - 1].h, hi = B[i].l; const fill = B.slice(i + 1).some(b => b.l <= lo); if (!fill) gaps.push({i, lo, hi, up: 1}); }
+    if (B[i].h < B[i - 1].l) { const lo = B[i].h, hi = B[i - 1].l; const fill = B.slice(i + 1).some(b => b.h >= hi); if (!fill) gaps.push({i, lo, hi, up: 0}); }
+  }
+  gaps.slice(-3).forEach(g => { S.push({k: "gap", x1: g.i - 1, x2: last, y1: g.lo, y2: g.hi, up: g.up});
+    add("缺口", `${g.up ? "向上" : "向下"}跳空缺口未補：${f0(g.lo)}～${f0(g.hi)}（${B[g.i].d}）`, g.up ? 1 : -1,
+      g.up ? "向上跳空代表買盤急著進場，缺口下緣常成為支撐；若被回補（跌回缺口），多方力道減弱。" : "向下跳空代表賣壓急著出場，缺口上緣常成為壓力；要「回補缺口」（漲回缺口上緣）才算解除。"); });
+  // ---- 5. K 線組合 ----
+  const b0 = B[last], b1 = B[last - 1], b2 = B[last - 2], body = b => Math.abs(b.c - b.o), avgB = B.slice(-21, -1).reduce((s, b) => s + body(b), 0) / 20;
+  const dn = (b0.c < C[last - 5]);
+  let k = null;
+  if (b1.c < b1.o && b0.c > b0.o && b0.o <= b1.c && b0.c >= b1.o) k = [1, "多頭吞噬", "今天的紅 K 把昨天整根黑 K 吃掉，低檔出現代表買盤反攻。"];
+  else if (b1.c > b1.o && b0.c < b0.o && b0.o >= b1.c && b0.c <= b1.o) k = [-1, "空頭吞噬", "今天的黑 K 把昨天整根紅 K 吃掉，高檔出現代表賣壓湧現。"];
+  else if (b2.c < b2.o && body(b2) > avgB && body(b1) < avgB * .4 && b0.c > b0.o && b0.c > (b2.o + b2.c) / 2) k = [1, "晨星", "長黑之後出現小 K 線、再接長紅，是常見的底部反轉組合。"];
+  else if (b2.c > b2.o && body(b2) > avgB && body(b1) < avgB * .4 && b0.c < b0.o && b0.c < (b2.o + b2.c) / 2) k = [-1, "夜星", "長紅之後出現小 K 線、再接長黑，是常見的頭部反轉組合。"];
+  else if (body(b0) <= (b0.h - b0.l) * .1) k = [0, "十字線", "開盤和收盤幾乎一樣，代表多空拉鋸、猶豫不決；出現在連續大漲或大跌之後，常是轉折訊號。"];
+  else if (Math.min(b0.o, b0.c) - b0.l >= body(b0) * 2 && b0.h - Math.max(b0.o, b0.c) <= body(b0) * .6 && dn) k = [1, "錘子線（長下影線）", "盤中殺低後被買回，留下長長的下影線，低檔出現代表有人承接。"];
+  else if (b0.h - Math.max(b0.o, b0.c) >= body(b0) * 2 && Math.min(b0.o, b0.c) - b0.l <= body(b0) * .6 && !dn) k = [-1, "流星（長上影線）", "盤中衝高後被賣回，留下長上影線，高檔出現代表上方賣壓重。"];
+  else if (body(b0) > avgB * 1.8) k = b0.c > b0.o ? [1, "長紅 K", "實體很長的紅 K，買方力道強。"] : [-1, "長黑 K", "實體很長的黑 K，賣方力道強。"];
+  if (k) add("K線", `最新 K 線：${k[1]}`, k[0], k[2]);
+  // ---- 6. 量價 ----
+  if (B.some(b => b.v)) { const v0 = b0.v, av = B.slice(-21, -1).reduce((s, b) => s + (b.v || 0), 0) / 20, r = v0 / av, up = b0.c >= b1.c;
+    const t = r > 1.5 ? (up ? ["價漲量增", 1, "上漲時成交量放大，有人追價，上漲比較健康。"] : ["價跌量增（爆量下跌）", -1, "下跌時量能放大，代表有人急著賣（恐慌或斷頭），短線賣壓重；若之後量縮止跌，才是落底訊號。"]) : r < .7 ? (up ? ["價漲量縮", 0, "上漲但量能萎縮，追價意願不足，要小心是反彈而已。"] : ["價跌量縮", 0, "下跌但量縮，賣壓減輕，有機會止跌。"]) : [up ? "價漲量平" : "價跌量平", 0, "量能正常，沒有特別訊號。"];
+    add("量價", `${t[0]}（今日量是 20 日均量的 ${r.toFixed(2)} 倍）`, t[1], t[2]); }
+  // ---- 7. 黃金分割 ----
+  const look = B.slice(-120), hiI = look.reduce((m, b, j) => b.h > look[m].h ? j : m, 0), loI = look.reduce((m, b, j) => b.l < look[m].l ? j : m, 0);
+  const hi = look[hiI].h, lo = look[loI].l, fromHigh = hiI < loI, base = n - look.length;
+  const levels = [.382, .5, .618].map(r => fromHigh ? lo + (hi - lo) * r : hi - (hi - lo) * r);
+  S.push({k: "fib", levels, r: [.382, .5, .618], fromHigh, x1: base + Math.min(hiI, loI)});
+  add("黃金分割", fromHigh ? `下跌後的反彈關卡：${levels.map(f0).join("／")}` : `上漲後的回檔支撐：${levels.map(f0).join("／")}`, 0,
+    fromHigh ? `從近半年高點 ${f0(hi)} 跌到低點 ${f0(lo)}，老師常用 0.382、0.5、0.618 三個比例看反彈能到哪：反彈到 ${f0(levels[0])} 算弱勢反彈，過 ${f0(levels[1])} 算強勢、過 ${f0(levels[2])} 才有機會轉強。` : `從近半年低點 ${f0(lo)} 漲到高點 ${f0(hi)}，回檔到 ${f0(levels[0])} 屬強勢整理，${f0(levels[1])}、${f0(levels[2])} 是更深的支撐。`);
+  // ---- 8. 支撐壓力 ----
+  const sup = conf.filter(p => p.t == "L" && p.p < px).sort((a, b) => b.p - a.p)[0], res = conf.filter(p => p.t == "H" && p.p > px).sort((a, b) => a.p - b.p)[0];
+  if (sup) S.push({k: "h", y: sup.p, c: "#16a34a", lb: `支撐 ${f0(sup.p)}`}); if (res) S.push({k: "h", y: res.p, c: "#dc2626", lb: `壓力 ${f0(res.p)}`});
+  const score = F.reduce((s, f) => s + f.sig, 0), up = F.filter(f => f.sig > 0).length, dn2 = F.filter(f => f.sig < 0).length;
+  const watch = [res ? `上方先看 ${f0(res.p)}（前波高點）能不能突破` : null, sup ? `下方看 ${f0(sup.p)}（前波低點）能不能守住` : null,
+    m20 ? `站回月線 ${f0(m20)} 才算短線轉強` : null].filter(Boolean);
+  return {F, S, P, ma, thr, score, up, dn: dn2, watch, px, date: B[last].d};
+}
+
+/* ---------- K 線圖 ---------- */
+function laChart(el, B, R){
+  const N = Math.min(LA.n, B.length), o = B.length - N, V = B.slice(o), W = 1000, H1 = 340, H2 = 80, G = 14, P = {l: 8, r: 70, t: 12}, H = P.t + H1 + G + H2 + 22;
+  const xs = (W - P.l - P.r) / N, X = i => P.l + (i - o + .5) * xs;
+  let lo = Math.min(...V.map(b => b.l)), hi = Math.max(...V.map(b => b.h));
+  const span0 = hi - lo;                               // 滿足點太遠就不納入縱軸(避免整張圖被壓扁),改在邊緣標示
+  if (LA.show.pat) R.S.filter(s => s.k == "pat").forEach(s => { lo = Math.min(lo, s.neck); hi = Math.max(hi, s.neck);
+    if (s.target > lo - span0 * .25 && s.target < hi + span0 * .25) { lo = Math.min(lo, s.target); hi = Math.max(hi, s.target); s.out = 0; } else s.out = 1; });
+  const pad = (hi - lo) * .06; lo -= pad; hi += pad;
+  const Y = v => P.t + (1 - (v - lo) / (hi - lo)) * H1, vm = Math.max(...V.map(b => b.v || 0)) || 1, YV = v => P.t + H1 + G + H2 - v / vm * H2;
+  const f0 = v => fmt(v, v >= 1000 ? 0 : v >= 100 ? 1 : 2);
+  let g = "";
+  [0, .25, .5, .75, 1].forEach(t => { const v = lo + t * (hi - lo); g += `<line x1="${P.l}" x2="${W - P.r}" y1="${Y(v)}" y2="${Y(v)}" style="stroke:var(--line)"/><text x="${W - P.r + 6}" y="${Y(v) + 4}" font-size="11" style="fill:var(--sub)">${f0(v)}</text>`; });
+  if (LA.show.gap) R.S.filter(s => s.k == "gap" && s.x2 >= o).forEach(s => g += `<rect x="${X(Math.max(o, s.x1))}" y="${Y(s.y2)}" width="${X(s.x2) - X(Math.max(o, s.x1))}" height="${Math.max(1, Y(s.y1) - Y(s.y2))}" fill="${s.up ? "#ef4444" : "#16a34a"}" opacity=".13"/>`);
+  if (LA.show.pat) R.S.filter(s => s.k == "box").forEach(s => g += `<rect x="${X(Math.max(o, s.x1))}" y="${Y(s.y2)}" width="${X(s.x2) - X(Math.max(o, s.x1))}" height="${Y(s.y1) - Y(s.y2)}" fill="#7c3aed" opacity=".08" stroke="#7c3aed" stroke-dasharray="5 4"/>`);
+  if (LA.show.fib) R.S.filter(s => s.k == "fib").forEach(s => s.levels.forEach((v, j) => g += `<line x1="${X(Math.max(o, s.x1))}" x2="${W - P.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="#d97706" stroke-dasharray="2 4"/><text x="${X(Math.max(o, s.x1)) + 4}" y="${Y(v) - 3}" font-size="11" fill="#d97706">${s.r[j]} ・ ${f0(v)}</text>`));
+  V.forEach((b, j) => { const i = o + j, up = b.c >= b.o, col = up ? "#ef4444" : "#16a34a", w = Math.max(1.2, xs * .62);
+    g += `<line x1="${X(i)}" x2="${X(i)}" y1="${Y(b.h)}" y2="${Y(b.l)}" stroke="${col}" stroke-width="1"/><rect x="${X(i) - w / 2}" y="${Y(Math.max(b.o, b.c))}" width="${w}" height="${Math.max(1, Math.abs(Y(b.o) - Y(b.c)))}" fill="${col}"/>`;
+    if (b.v) g += `<rect x="${X(i) - w / 2}" y="${YV(b.v)}" width="${w}" height="${P.t + H1 + G + H2 - YV(b.v)}" fill="${col}" opacity=".45"/>`; });
+  if (LA.show.ma) [[5, "#f59e0b"], [20, "#7c3aed"], [60, "#0ea5e9"]].forEach(([k, c]) => { const m = R.ma[k];
+    g += `<path d="${V.map((_, j) => m[o + j] == null ? "" : `${j && m[o + j - 1] != null ? "L" : "M"}${X(o + j).toFixed(1)},${Y(m[o + j]).toFixed(1)}`).join("")}" fill="none" stroke="${c}" stroke-width="1.6"/>`; });
+  if (LA.show.tl) R.S.filter(s => s.k == "tl").forEach(s => { const x1 = Math.max(o, s.x1), y1 = s.y1 + (s.y2 - s.y1) * (x1 - s.x1) / ((s.x2 - s.x1) || 1);
+    g += `<line x1="${X(x1)}" y1="${Y(y1)}" x2="${X(s.x2)}" y2="${Y(s.y2)}" stroke="${s.c}" stroke-width="2.4"/><text x="${X(s.x2) - 4}" y="${Y(s.y2) - 6}" text-anchor="end" font-size="12" font-weight="700" fill="${s.c}">${s.lb}</text>`; });
+  if (LA.show.pat) R.S.filter(s => s.k == "pat").forEach(s => { const pts = s.pts.filter(p => p.i >= o);
+    if (pts.length > 1) g += `<polyline points="${pts.map(p => `${X(p.i)},${Y(p.p)}`).join(" ")}" fill="none" stroke="#7c3aed" stroke-width="2" stroke-dasharray="6 4"/>` + pts.map(p => `<circle cx="${X(p.i)}" cy="${Y(p.p)}" r="4.5" fill="#7c3aed"/>`).join("");
+    g += `<line x1="${X(Math.max(o, s.pts[0].i))}" x2="${W - P.r}" y1="${Y(s.neck)}" y2="${Y(s.neck)}" stroke="#7c3aed" stroke-width="1.8"/><text x="${X(Math.max(o, s.pts[0].i)) + 4}" y="${Y(s.neck) - 5}" font-size="12" font-weight="800" fill="#7c3aed">頸線 ${f0(s.neck)}・${s.lb}</text>
+      ${s.out ? `<text x="${W - P.r - 4}" y="${s.target < lo ? P.t + H1 - 6 : P.t + 14}" text-anchor="end" font-size="11.5" font-weight="700" fill="#7c3aed">${s.target < lo ? "↓" : "↑"} 型態滿足點 ${f0(s.target)}（圖外）</text>` : `<line x1="${W - P.r - 90}" x2="${W - P.r}" y1="${Y(s.target)}" y2="${Y(s.target)}" stroke="#7c3aed" stroke-dasharray="3 3"/><text x="${W - P.r - 4}" y="${Y(s.target) - 4}" text-anchor="end" font-size="11" fill="#7c3aed">滿足點 ${f0(s.target)}</text>`}`; });
+  R.S.filter(s => s.k == "h").forEach(s => g += `<line x1="${P.l}" x2="${W - P.r}" y1="${Y(s.y)}" y2="${Y(s.y)}" stroke="${s.c}" stroke-dasharray="7 5" opacity=".8"/><text x="${P.l + 4}" y="${Y(s.y) + (s.c == "#16a34a" ? 14 : -5)}" font-size="11.5" font-weight="700" fill="${s.c}">${s.lb}</text>`);
+  R.P.filter(p => p.i >= o && !p.open).forEach(p => g += `<text x="${X(p.i)}" y="${p.t == "H" ? Y(p.p) - 7 : Y(p.p) + 15}" text-anchor="middle" font-size="10.5" style="fill:var(--sub)">${f0(p.p)}</text>`);
+  const step = Math.max(1, Math.round(N / 6));
+  V.forEach((b, j) => { if (j % step == 0) g += `<text x="${X(o + j)}" y="${H - 5}" font-size="11" text-anchor="middle" style="fill:var(--sub)">${b.d.slice(2, 7).replace("-", "/")}</text>`; });
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%">${g}<line class="hv" y1="${P.t}" y2="${H - 20}" style="stroke:var(--ink)" opacity="0"/><rect class="hit" x="${P.l}" y="0" width="${W - P.l - P.r}" height="${H}" fill="transparent"/></svg>`;
+  const svg = el.querySelector("svg"), hv = el.querySelector(".hv"), tip = $("#tip");
+  const show = ev => { const r = svg.getBoundingClientRect(), cx = ev.touches ? ev.touches[0].clientX : ev.clientX, x = (cx - r.left) / r.width * W;
+    const i = Math.max(o, Math.min(B.length - 1, o + Math.floor((x - P.l) / xs))), b = B[i];
+    hv.setAttribute("x1", X(i)); hv.setAttribute("x2", X(i)); hv.setAttribute("opacity", .3);
+    tip.style.display = "block"; tip.style.left = Math.min(cx + 14, innerWidth - 200) + "px"; tip.style.top = ((ev.touches ? ev.touches[0].clientY : ev.clientY) - 10) + "px";
+    tip.innerHTML = `${b.d}<br>開 ${f0(b.o)}　高 ${f0(b.h)}<br>低 ${f0(b.l)}　收 <b>${f0(b.c)}</b>${b.v ? `<br>量 ${fmt(b.v)}` : ""}${R.ma[20][i] ? `<br>月線 ${f0(R.ma[20][i])}　季線 ${R.ma[60][i] ? f0(R.ma[60][i]) : "—"}` : ""}`; };
+  const hide = () => { tip.style.display = "none"; hv.setAttribute("opacity", 0); };
+  const hit = el.querySelector(".hit"); hit.onmousemove = show; hit.onmouseleave = hide; hit.ontouchmove = show; hit.ontouchend = hide;
+}
+
+/* ---------- 區塊 UI ---------- */
+async function laLoad(code){
+  $("#laMsg").textContent = "載入中…";
+  try {
+    let B, name;
+    if (code == "TAIEX") { const t = await getJ("taiex"); B = t.map(r => ({d: r[0], o: r[1], h: r[2], l: r[3], c: r[4], v: r[5] / 1e5})); name = "加權指數"; }
+    else {
+      const st0 = new Date(Date.now() - 560 * 864e5).toISOString().slice(0, 10);
+      const d = await fetch(`https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockPrice&data_id=${encodeURIComponent(code)}&start_date=${st0}`).then(r => r.json());
+      if (!d.data || d.data.length < 80) throw new Error(d.msg && d.msg != "success" ? d.msg : "找不到這個代號，或上市時間太短");
+      B = d.data.filter(r => r.close > 0).map(r => ({d: r.date, o: r.open, h: r.max, l: r.min, c: r.close, v: r.Trading_Volume / 1000}));
+      if (!LA.names) LA.names = fetch("https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockInfo").then(r => r.json()).then(j => Object.fromEntries((j.data || []).map(x => [x.stock_id, x.stock_name]))).catch(() => ({}));
+      name = (await LA.names)[code] || code;
+    }
+    LA.bars = B; LA.code = code; LA.name = name; $("#laMsg").textContent = ""; laDraw();
+  } catch (e) { $("#laMsg").textContent = "載入失敗：" + e.message; }
+}
+function laDraw(){
+  const B = LA.bars, R = laAnalyze(B), f0 = v => fmt(v, v >= 1000 ? 0 : v >= 100 ? 1 : 2), last = B[B.length - 1], prev = B[B.length - 2];
+  $("#laHead").innerHTML = `<b>${LA.name}</b>${LA.code != "TAIEX" ? ` <small>${LA.code}</small>` : ""}　<span class="num">${f0(last.c)}</span> <span class="num" style="color:${last.c >= prev.c ? "var(--up)" : "var(--down)"}">${last.c >= prev.c ? "▲" : "▼"}${fmt(Math.abs(last.c / prev.c - 1) * 100, 2)}%</span> <small>${last.d}</small>
+    <span class="la-sc">線型訊號：<b style="color:#ef4444">偏多 ${R.up}</b>・<b style="color:#16a34a">偏空 ${R.dn}</b></span>`;
+  laChart($("#laChart"), B, R);
+  const ic = s => s > 0 ? `<span class="kb up">偏多</span>` : s < 0 ? `<span class="kb dn">偏空</span>` : `<span class="kb fl">中性</span>`;
+  $("#laTalk").innerHTML = `<div class="la-t">${R.F.map((f, i) => `<div class="la-i"><div class="la-n">${i + 1}</div><div><div class="la-h"><span class="la-sec">${f.sec}</span><b>${f.title}</b>${ic(f.sig)}</div><p>${f.text}</p></div></div>`).join("")}</div>
+    <div class="cc" style="margin-top:12px"><b>🎯 接下來觀察重點</b>：${R.watch.join("；")}。<br><small>以上是依固定規則自動畫線與判讀，型態判斷本來就有主觀成分，僅供學習參考，不構成買賣建議。</small></div>`;
+}
+function laUI(){
+  const quick = [["TAIEX", "加權指數"], ["2330", "台積電"], ["2317", "鴻海"], ["0050", "元大台灣50"], ["00878", "國泰永續高股息"], ["2454", "聯發科"]];
+  $("#laBox").innerHTML = `
+    <div class="la-bar"><div class="chips" id="laQ">${quick.map(([c, n]) => `<span class="chip ${LA.code == c ? "on" : ""}" data-c="${c}">${n}</span>`).join("")}</div>
+      <form id="laF" class="la-f"><input id="laIn" placeholder="輸入股票代號，例如 2603" inputmode="numeric" autocomplete="off"><button>分析</button></form></div>
+    <div class="la-bar"><div class="chips" id="laN">${[[60, "3 個月"], [120, "半年"], [250, "1 年"]].map(([k, n]) => `<span class="chip ${LA.n == k ? "on" : ""}" data-n="${k}">${n}</span>`).join("")}</div>
+      <div class="chips" id="laS">${[["ma", "均線"], ["tl", "趨勢線"], ["pat", "型態"], ["gap", "缺口"], ["fib", "黃金分割"]].map(([k, n]) => `<span class="chip ${LA.show[k] ? "on" : ""}" data-s="${k}">${n}</span>`).join("")}</div></div>
+    <div id="laHead" class="la-head"></div><span id="laMsg" class="mknote"></span>
+    <div class="chart" id="laChart"></div>
+    <div class="legend" style="flex-wrap:wrap"><span><i style="background:#f59e0b"></i>5 日線</span><span><i style="background:#7c3aed"></i>月線</span><span><i style="background:#0ea5e9"></i>季線</span><span><i style="background:#dc2626"></i>上升趨勢線</span><span><i style="background:#16a34a"></i>下降趨勢線</span><span>紅K漲・綠K跌</span></div>
+    <h3 class="la-tt">👨‍🏫 老師講解（依序看：趨勢 → 型態 → 均線 → 扣抵 → 葛蘭碧 → 缺口 → K 線 → 量價 → 黃金分割）</h3><div id="laTalk"></div>`;
+  $("#laQ").onclick = e => { const c = e.target.closest("[data-c]"); if (!c) return; $("#laQ").querySelectorAll(".chip").forEach(x => x.classList.toggle("on", x == c)); laLoad(c.dataset.c); };
+  $("#laN").onclick = e => { const c = e.target.closest("[data-n]"); if (!c) return; LA.n = +c.dataset.n; $("#laN").querySelectorAll(".chip").forEach(x => x.classList.toggle("on", x == c)); if (LA.bars) laDraw(); };
+  $("#laS").onclick = e => { const c = e.target.closest("[data-s]"); if (!c) return; LA.show[c.dataset.s] = !LA.show[c.dataset.s]; c.classList.toggle("on"); if (LA.bars) laDraw(); };
+  $("#laF").onsubmit = e => { e.preventDefault(); const v = $("#laIn").value.trim().toUpperCase(); if (v) { $("#laQ").querySelectorAll(".chip").forEach(x => x.classList.remove("on")); laLoad(v); } };
+  laLoad(LA.code);
 }
 
 </script>
