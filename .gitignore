@@ -3,3 +3,4 @@ data/*_log.txt
 __pycache__/
 .DS_Store
 data/fund/fundamentals.json
+data/breadth/raw/

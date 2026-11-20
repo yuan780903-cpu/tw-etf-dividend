@@ -392,6 +392,16 @@ tw_comps = [
     dict(name="外資台指期淨未平倉", unit="口", nd=0, desc="外資期貨多單減空單；空單越多代表避險越重、越恐慌。", v=ffi, p=[None if x is None else 100 - x for x in exp_pct(ffi)]),
     dict(name="美股 VIX（前一晚）", unit="", desc="全球資金的恐慌溫度計；越高越恐慌。", v=vixUs, p=exp_pct(vixUs)),
 ]
+BP = os.path.join(DATA, "breadth.json")             # 市場廣度(全部上市櫃普通股)
+if os.path.exists(BP):
+    br = {r[0]: r for r in json.load(open(BP))["rows"]}
+    ld5 = [br.get(d, [None] * 4)[1] for d in D]; low5 = [br.get(d, [None] * 4)[2] for d in D]; a200 = [br.get(d, [None] * 4)[3] for d in D]
+    if sum(x is not None for x in a200) > 200:
+        tw_comps += [
+            dict(name="跌停家數比例（5 日平均）", unit="%", nd=2, desc="上市櫃普通股中跌停的比例；越多代表多殺多、越恐慌。", v=ld5, p=exp_pct(ld5)),
+            dict(name="創 52 週新低比例（5 日平均）", unit="%", desc="跌到一年來最低價的股票比例；越多代表殺盤擴散。", v=low5, p=exp_pct(low5)),
+            dict(name="站上 200 日線比例", unit="%", desc="股價在 200 日均線之上的股票比例；越少代表普遍弱勢、越恐慌。", v=a200, p=[None if x is None else 100 - x for x in exp_pct(a200)]),
+        ]
 tw_refs = [("台指 VIX", r2(last(vixTw)[0]), "", "期交所只公開近幾個月，累積滿 1 年後再計入總分"),
            ("整戶擔保維持率", r2(last(keep)[0]), "%", "官方 2026/8 起才有資料"),
            ("追繳戶數", last(below)[0], "戶", "官方 2026/8 起才有資料")]

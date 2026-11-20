@@ -18,6 +18,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: 還原市場廣度快取(近一年全部個股收盤價,不進 git)
+        uses: actions/cache@v4
+        with:
+          path: data/breadth/raw
+          key: breadth-${{ github.run_id }}
+          restore-keys: breadth-
       - name: 抓資料
         env:
           FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
