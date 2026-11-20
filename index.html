@@ -401,7 +401,7 @@ td.r,th.r{text-align:right}
 .mbar .mb-r{text-align:right}
 .mbar i{font-style:normal;font-size:26px;opacity:.85;margin-left:-4px}
 .mbar.flash{animation:flash .7s ease}
-@media(max-width:1099px){body.has-pf:not(.on-calc):not(.on-mkt):not(.on-vp) .mbar{display:flex}body.has-pf:not(.on-calc):not(.on-mkt):not(.on-vp){padding-bottom:84px}}
+@media(max-width:1099px){body.has-pf:not(.on-calc):not(.on-mkt):not(.on-vp):not(.on-learn) .mbar{display:flex}body.has-pf:not(.on-calc):not(.on-mkt):not(.on-vp):not(.on-learn){padding-bottom:84px}}
 @media(min-width:701px) and (max-width:1099px){.mbar{max-width:560px;left:50%;right:auto;width:calc(100% - 24px);transform:translateX(-50%)}}
 
 /* ===== 手機:精簡頂部 + 底部分頁列(像 App) ===== */
@@ -431,7 +431,7 @@ td.r,th.r{text-align:right}
   .tabs .ic{font-size:21px;line-height:1}
   .tabs .n{position:absolute;top:3px;left:calc(50% + 6px);font-size:10px;padding:2px 6px;min-width:18px}
   body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
-  body.has-pf:not(.on-calc):not(.on-mkt):not(.on-vp){padding-bottom:calc(150px + env(safe-area-inset-bottom))}
+  body.has-pf:not(.on-calc):not(.on-mkt):not(.on-vp):not(.on-learn){padding-bottom:calc(150px + env(safe-area-inset-bottom))}
   .mbar{bottom:calc(74px + env(safe-area-inset-bottom))}
   #toast{bottom:calc(150px + env(safe-area-inset-bottom))!important}
   footer{padding:20px 16px 12px}
@@ -596,6 +596,82 @@ td.r,th.r{text-align:right}
 .fc2>*,.fr-top>*,.mk-hero>*{min-width:0}
 @media(max-width:700px){.mk .chart{overflow-x:auto;-webkit-overflow-scrolling:touch}.mk .chart>svg{min-width:640px}}
 @media(max-width:700px){.fr-c .ev td:first-child small{display:none}.fr-bar{min-width:60px}}
+/* ===== 投資教學 ===== */
+.ln-hero{border-radius:var(--r);padding:24px;color:#fff;background:linear-gradient(135deg,#064e3b,#0f766e 50%,#1d4ed8);box-shadow:var(--shadow);display:flex;justify-content:space-between;gap:16px;align-items:flex-end;flex-wrap:wrap;margin-bottom:20px}
+.ln-hero h2{font-size:26px;font-weight:900}.ln-hero p{margin-top:6px;font-size:14px;line-height:1.7;opacity:.95;max-width:720px}
+.ln-lv{display:flex;gap:6px}.ln-lv .chip{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.3)}.ln-lv .chip.on{background:#fff;color:#0f766e}
+.ln-wrap{display:grid;grid-template-columns:250px minmax(0,1fr);gap:22px;align-items:start}
+.ln-toc{position:sticky;top:96px;display:flex;flex-direction:column;gap:6px;background:var(--panel);border-radius:var(--r);box-shadow:var(--shadow);padding:10px}
+.ln-toc a{display:block;padding:11px 12px;border-radius:12px;text-decoration:none;color:var(--ink);transition:background .2s}
+.ln-toc a span{display:block;font-weight:800;font-size:15px}.ln-toc a small{font-size:12px;color:var(--sub)}
+.ln-toc a:hover{background:var(--hover)}.ln-toc a.on{background:var(--sel);color:var(--selink)}.ln-toc a.on small{color:inherit;opacity:.85}
+.ln-main{display:flex;flex-direction:column;gap:14px;min-width:0}
+.ln-h{font-size:22px;font-weight:900;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.ln-h small{font-size:13px;color:var(--sub);font-weight:500}
+.lesson{background:var(--panel);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 20px}
+.lesson summary{cursor:pointer;font-size:18px;font-weight:900;display:flex;align-items:center;gap:10px;list-style:none}
+.lesson summary::-webkit-details-marker{display:none}
+.lesson summary:after{content:"＋";margin-left:auto;color:var(--sub);font-weight:700}.lesson[open] summary:after{content:"－"}
+.lv{font-size:11px;font-weight:800;border-radius:6px;padding:3px 8px;background:#dcfce7;color:#15803d;white-space:nowrap}.lv.adv{background:#ede9fe;color:#6d28d9}
+.ls-g{display:grid;grid-template-columns:300px minmax(0,1fr);gap:20px;margin-top:14px;align-items:start}
+.ls-g p{font-size:15px;line-height:1.85}
+.anim{background:var(--bg);border-radius:16px;padding:10px}.anim svg{display:block;width:100%;height:auto}
+.rule{margin-top:12px;background:var(--bg);border-radius:14px;padding:12px 14px;font-size:14px}.rule ul{margin:6px 0 0 18px;line-height:1.8}
+.live{margin-top:14px;border-left:5px solid #0ea5e9;background:color-mix(in srgb,#0ea5e9 9%,var(--panel));border-radius:12px;padding:12px 14px;font-size:14.5px;line-height:1.8}
+.live>b{display:block;font-size:13px;color:#0284c7;margin-bottom:2px}
+.lspark{background:var(--bg);border-radius:12px;padding:8px 10px;margin-top:8px}.lspark small{font-size:12px;color:var(--sub)}
+.lsp2{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.case{background:var(--panel);border-radius:var(--r);box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;gap:12px}
+.case-h{font-size:19px;font-weight:900}.case-h small{display:block;font-size:12.5px;color:var(--sub);font-weight:500;margin-top:3px}
+.steps{list-style:none;display:flex;flex-direction:column;gap:8px;padding:0;margin:0}
+.steps li{display:grid;grid-template-columns:200px minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--bg);border-radius:12px;padding:10px 14px;font-size:14px;line-height:1.65;opacity:0;transform:translateY(8px)}
+.case.play .steps li{animation:stIn .45s ease forwards}
+@keyframes stIn{to{opacity:1;transform:none}}
+.ok{color:#15803d;font-weight:800;white-space:nowrap}.no{color:#b91c1c;font-weight:800;white-space:nowrap}
+.cc{font-size:14.5px;line-height:1.85;background:color-mix(in srgb,#f59e0b 10%,var(--panel));border-radius:12px;padding:12px 14px}
+.lgo{align-self:flex-start;border:0;border-radius:12px;padding:10px 16px;font:inherit;font-weight:800;color:#fff;background:linear-gradient(120deg,#0f766e,#1d4ed8);cursor:pointer}
+.fbig{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.fbig b{font-size:48px;font-weight:900;line-height:1}.fbig span{color:#fff;font-weight:900;border-radius:10px;padding:5px 12px}.fbig small{color:var(--sub)}
+.cchart .dr{stroke-dasharray:2400;stroke-dashoffset:2400}.case.play .cchart .dr{animation:draw 2.2s ease forwards}
+.gq{width:100%;border:1px solid var(--line);background:var(--field);border-radius:12px;padding:11px 14px;font:inherit}
+.gloss{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.gloss>div{background:var(--panel);border-radius:16px;box-shadow:var(--shadow);padding:14px}.gloss b{font-size:16px;margin-right:8px}.gloss p{font-size:13.5px;line-height:1.7;margin-top:6px;color:var(--sub)}
+/* 動畫 */
+.anim .lb{font-size:12px;font-weight:700;fill:var(--ink)}.anim .cap{font-size:11px;fill:var(--sub)}.anim .tw{font-size:13px;font-weight:900;fill:#fff}.anim .ts{font-size:9.5px;fill:#fff;opacity:.9}
+.anim .ln{fill:none;stroke-width:3;stroke-linejoin:round;stroke-dasharray:600;stroke-dashoffset:600}
+.anim.play .ln{animation:draw 2s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.anim .px{stroke:var(--ink)}.anim .s{stroke:#7c3aed}.anim .l{stroke:#f59e0b}.anim .osc{stroke:#0ea5e9}
+.anim .t-s{fill:#7c3aed}.anim .t-l{fill:#f59e0b}
+.anim .hit{fill:#16a34a;opacity:0}.anim.play .hit{animation:pulse 1.4s 1.6s ease infinite}
+@keyframes pulse{0%{opacity:0;r:4}40%{opacity:.9;r:9}100%{opacity:0;r:14}}
+.anim .d1,.anim .d2,.anim .d3,.anim .d4{opacity:0}.anim.play .d1{animation:fadeIn .4s .3s forwards}.anim.play .d2{animation:fadeIn .4s .8s forwards}.anim.play .d3{animation:fadeIn .4s 1.3s forwards}.anim.play .d4{animation:fadeIn .4s 1.8s forwards}
+@keyframes fadeIn{to{opacity:1}}
+.a-cd .wick{stroke-width:3;stroke-dasharray:120;stroke-dashoffset:120}.a-cd .up{stroke:#ef4444;fill:#ef4444}.a-cd .dn{stroke:#16a34a;fill:#16a34a}
+.a-cd .body{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(0)}
+.anim.play .a-cd .wick{animation:draw 1s ease forwards}.anim.play .a-cd .body{animation:grow .9s .4s ease forwards}
+@keyframes grow{to{transform:scaleY(1)}}
+.a-sr .rs{stroke:#dc2626;stroke-width:2;stroke-dasharray:6 5}.a-sr .sp{stroke:#16a34a;stroke-width:2;stroke-dasharray:6 5}.a-sr .ball{fill:#f59e0b}
+.a-rsi .zh{fill:#fecaca;opacity:.5}.a-rsi .zl{fill:#bbf7d0;opacity:.5}
+.a-macd .zero{stroke:var(--line);stroke-width:2}.a-macd .bar{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(0)}.a-macd .bar.dn{transform-origin:50% 0;fill:#16a34a}.a-macd .bar.up{fill:#ef4444}
+.anim.play .a-macd .bar{animation:grow .5s ease forwards}
+.a-vol .vb{fill:#94a3b8;transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(0)}.anim.play .a-vol .vb{animation:grow .5s ease forwards}
+.a-three .tc{opacity:0;transform:translateY(14px)}.anim.play .a-three .tc{animation:stIn .5s ease forwards}
+.a-pe .b1{fill:#16a34a;transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(0)}.a-pe .b2{fill:#7c3aed;transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(0)}.a-pe .op{font-size:26px;font-weight:900;fill:var(--ink)}
+.anim.play .a-pe .b1{animation:grow .7s ease forwards}.anim.play .a-pe .b2{animation:grow 1s 1.1s ease forwards}
+.a-roe .ring0{fill:none;stroke:var(--track);stroke-width:14}.a-roe .ring1{fill:none;stroke:#7c3aed;stroke-width:14;stroke-linecap:round;stroke-dasharray:314;stroke-dashoffset:314}.a-roe .big{font-size:22px;font-weight:900;fill:var(--ink)}
+.anim.play .a-roe .ring1{animation:roe 1.6s ease forwards}@keyframes roe{to{stroke-dashoffset:251}}
+.a-cash .co{fill:#0f766e}.a-cash .ar{stroke:var(--line);stroke-width:3;fill:none}.a-cash .coin{fill:#f59e0b}
+.a-band .mkr{fill:var(--ink);transform:translateX(30px)}.anim.play .a-band .mkr{animation:mk 3.5s ease-in-out infinite alternate}@keyframes mk{to{transform:translateX(230px)}}
+.a-mg .arc{fill:none;stroke-width:16;stroke:url(#none);stroke:#f59e0b}.a-mg .ndl,.a-fear .ndl{stroke:var(--ink);stroke-width:5;stroke-linecap:round;transform-origin:130px 120px}.a-fear .ndl{transform-origin:130px 125px}.a-mg .hub,.a-fear .hub{fill:var(--ink)}
+.anim.play .a-mg .ndl{animation:sw1 3s ease-in-out infinite alternate}@keyframes sw1{from{transform:rotate(55deg)}to{transform:rotate(-75deg)}}
+.anim.play .a-fear .ndl{animation:sw2 3s ease-in-out infinite alternate}@keyframes sw2{from{transform:rotate(-80deg)}to{transform:rotate(82deg)}}
+.a-br circle{fill:#22c55e}.anim.play .a-br circle{animation:brd 4s ease-in-out infinite alternate}@keyframes brd{0%,30%{fill:#22c55e}70%,100%{fill:#ef4444}}
+.a-inst .ib{transform-box:fill-box;transform-origin:0 50%;transform:scaleX(0)}.anim.play .a-inst .ib{animation:gx .8s ease forwards}@keyframes gx{to{transform:scaleX(1)}}
+@media(max-width:900px){.ln-wrap{grid-template-columns:1fr}.ln-toc{position:sticky;top:0;z-index:30;flex-direction:row;overflow-x:auto;padding:8px;border-radius:0 0 14px 14px;margin:0 -12px;scrollbar-width:none}
+  .ln-toc::-webkit-scrollbar{display:none}.ln-toc a{flex:none;padding:8px 12px}.ln-toc a small{display:none}.ln-toc a span{font-size:14px;white-space:nowrap}
+  .ls-g{grid-template-columns:1fr}.anim{max-width:420px;margin:0 auto;width:100%}.steps li{grid-template-columns:1fr;gap:2px}.lsp2{grid-template-columns:1fr}}
+@media(max-width:700px){.lesson{padding:14px}.lesson summary{font-size:16px}.ls-g p{font-size:14.5px}.ln-hero h2{font-size:22px}}
+@media(prefers-reduced-motion:reduce){.anim .ln,.cchart .dr{stroke-dashoffset:0!important}.a-cd .body,.a-macd .bar,.a-vol .vb,.a-pe .b1,.a-pe .b2,.a-inst .ib{transform:none!important}.a-three .tc,.steps li{opacity:1!important;transform:none!important}}
+
 /* ===== 骨架載入 ===== */
 .sk{background:linear-gradient(90deg,var(--track) 25%,var(--skhi) 37%,var(--track) 63%);background-size:400% 100%;animation:sk 1.3s ease infinite;border-radius:12px}
 .sk-cat{height:60px;border-radius:18px}
@@ -641,11 +717,14 @@ button,.chip,.cat,.lr,.card{-webkit-tap-highlight-color:transparent}
     <button data-tab="vp"><i class="ic">🏆</i><span class="lg">巴菲特選股</span><span class="sm">選股</span></button>
     <button data-tab="mkt"><i class="ic">📉</i><span class="lg">大盤儀表板</span><span class="sm">大盤</span></button>
     <button data-tab="plan"><i class="ic">🎯</i><span class="lg">退休規劃</span><span class="sm">退休</span></button>
+    <button data-tab="learn"><i class="ic">📚</i><span class="lg">投資教學</span><span class="sm">教學</span></button>
     <span class="mini" id="tabMini" data-tab="calc"></span>
   </nav>
 
   <div class="page" id="pg-vp"><div id="vp"></div></div>
   <div class="page" id="pg-mkt"><div id="mkt"></div></div>
+
+  <div class="page" id="pg-learn"><div id="learn"></div></div>
 
   <div class="page" id="pg-plan">
   <div class="plan" id="plan">
@@ -739,7 +818,7 @@ button,.chip,.cat,.lr,.card{-webkit-tap-highlight-color:transparent}
 
 <footer>
   <div class="ft-brand"><div class="ft-logo">💰 ETF 月配息規劃</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
-  <div class="ft-nav"><b>功能</b><a href="#etf">📊 ETF 總覽</a><a href="#calc">💰 我的配息試算</a><a href="#vp">🏆 巴菲特選股</a><a href="#mkt">📉 大盤儀表板</a><a href="#plan">🎯 退休規劃</a></div>
+  <div class="ft-nav"><b>功能</b><a href="#etf">📊 ETF 總覽</a><a href="#calc">💰 我的配息試算</a><a href="#vp">🏆 巴菲特選股</a><a href="#mkt">📉 大盤儀表板</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
 </footer>
@@ -1349,7 +1428,9 @@ function go(tab, scroll = true){
   document.body.classList.toggle("on-mkt", tab == "mkt");
   if (tab == "mkt") setTimeout(loadMkt);
   if (tab == "vp") setTimeout(loadVP);
-  document.body.classList.toggle("on-vp", tab == "vp");      // 延後:MK 等變數在 script 後段才宣告
+  if (tab == "learn") setTimeout(loadLearn);
+  document.body.classList.toggle("on-vp", tab == "vp");
+  document.body.classList.toggle("on-learn", tab == "learn");      // 延後:MK 等變數在 script 後段才宣告
   if (scroll && scrollY > 200) window.scrollTo({top: 0, behavior: "smooth"});
 }
 $("#mbar").onclick = () => go("calc");
@@ -1982,6 +2063,266 @@ function fearChart(el, f, range){
   const hit = el.querySelector(".hit"); hit.onmousemove = show; hit.onmouseleave = hide; hit.ontouchmove = show; hit.ontouchend = hide;
 }
 const lvl = x => x == null ? null : FZ.find(z => x < z[0])[1];
+
+/* ================= 投資教學 =================
+   每課:動畫圖解 + 白話說明 + 公式/判斷基準 + 「現在的實際數字」(讀網站最新資料) ;另有 3 個完整案例 */
+const LJ = {};
+const getJ = n => LJ[n] || (LJ[n] = fetch(`data/${n}.json?` + Date.now()).then(r => r.json()).catch(() => null));
+let LD = null;                              // {a: market_analysis, v: value_picks, m: market rows}
+async function loadLearn(){
+  if ($("#learn").dataset.ok) return;
+  $("#learn").innerHTML = `<div class="box"><div class="sk" style="height:200px"></div></div>`;
+  const [a, v, m] = await Promise.all([getJ("market_analysis"), getJ("value_picks"), getJ("market")]);
+  LD = {a, v, m}; renderLearn(); $("#learn").dataset.ok = 1;
+}
+const lpick = id => LD.v && (LD.v.top.find(x => x.id == id) || null);
+const top1 = () => LD.v && LD.v.top[0];
+const etf = id => S && S.find(e => e.id == id);
+const card = k => LD.a && LD.a.cards.find(c => c.key == k);
+
+/* ---------- 動畫圖解(SVG + CSS,捲到畫面內才播放) ---------- */
+const AN = {
+  candle: `<svg viewBox="0 0 260 150"><g class="a-cd">
+    <line x1="70" y1="18" x2="70" y2="132" class="wick up"/><rect x="52" y="45" width="36" height="62" class="body up"/>
+    <text x="96" y="22" class="lb d1">最高</text><text x="96" y="50" class="lb d2">收盤</text><text x="96" y="110" class="lb d3">開盤</text><text x="96" y="134" class="lb d4">最低</text>
+    <line x1="190" y1="22" x2="190" y2="128" class="wick dn"/><rect x="172" y="40" width="36" height="58" class="body dn"/>
+    <text x="70" y="148" text-anchor="middle" class="cap">紅K：收盤 > 開盤（漲）</text><text x="190" y="148" text-anchor="middle" class="cap">綠K：收盤 < 開盤（跌）</text></g></svg>`,
+  ma: `<svg viewBox="0 0 260 150"><g class="a-ma">
+    <path d="M10,110 C40,120 60,95 80,100 S120,70 140,60 S190,40 250,30" class="ln px"/>
+    <path d="M10,112 C50,112 80,104 110,92 S170,62 250,42" class="ln s"/>
+    <path d="M10,80 C60,86 100,92 140,86 S200,70 250,62" class="ln l"/>
+    <circle cx="118" cy="89" r="7" class="hit"/><text x="128" y="124" class="lb d3">黃金交叉</text>
+    <text x="12" y="16" class="cap"><tspan class="t-s">━ 短均線(月線)</tspan>　<tspan class="t-l">━ 長均線(季線)</tspan></text></g></svg>`,
+  sr: `<svg viewBox="0 0 260 150"><g class="a-sr">
+    <line x1="10" y1="35" x2="250" y2="35" class="rs"/><line x1="10" y1="115" x2="250" y2="115" class="sp"/>
+    <text x="250" y="28" text-anchor="end" class="lb" style="fill:#dc2626">壓力：漲到這裡常被賣回來</text><text x="250" y="132" text-anchor="end" class="lb" style="fill:#16a34a">支撐：跌到這裡常有人買</text>
+    <path id="srp" d="M15,100 L50,40 L85,110 L120,42 L155,112 L190,45 L225,108" class="ln px"/>
+    <circle r="6" class="ball"><animateMotion dur="5s" repeatCount="indefinite" path="M15,100 L50,40 L85,110 L120,42 L155,112 L190,45 L225,108"/></circle></g></svg>`,
+  rsi: `<svg viewBox="0 0 260 150"><g class="a-rsi">
+    <rect x="10" y="10" width="240" height="30" class="zh"/><rect x="10" y="100" width="240" height="30" class="zl"/>
+    <text x="14" y="28" class="lb">70 以上：超買（漲多了）</text><text x="14" y="122" class="lb">30 以下：超賣（跌多了）</text>
+    <path d="M10,75 C30,40 50,20 70,30 S100,90 120,110 S150,125 170,95 S210,50 250,60" class="ln osc"/></g></svg>`,
+  macd: `<svg viewBox="0 0 260 150"><g class="a-macd"><line x1="10" y1="75" x2="250" y2="75" class="zero"/>
+    ${[-18, -28, -34, -26, -14, -4, 8, 18, 30, 38, 34, 22].map((h, i) => `<rect x="${16 + i * 19}" y="${h > 0 ? 75 - h : 75}" width="13" height="${Math.abs(h)}" class="bar ${h > 0 ? "up" : "dn"}" style="animation-delay:${i * .12}s"/>`).join("")}
+    <text x="12" y="146" class="cap">柱子由負轉正＝動能由弱轉強</text></g></svg>`,
+  vol: `<svg viewBox="0 0 260 150"><g class="a-vol"><path d="M10,80 L40,74 L70,78 L100,70 L130,60 L160,46 L190,40 L220,30 L250,26" class="ln px"/>
+    ${[12, 14, 11, 16, 26, 38, 44, 50, 54].map((h, i) => `<rect x="${12 + i * 28}" y="${140 - h}" width="18" height="${h}" class="vb" style="animation-delay:${i * .12}s"/>`).join("")}
+    <text x="12" y="16" class="cap">價漲量增：上漲有人跟，比較健康</text></g></svg>`,
+  three: `<svg viewBox="0 0 260 150"><g class="a-three">
+    ${[["損益表", "賺多少", "#2563eb"], ["資產負債表", "家當與負債", "#7c3aed"], ["現金流量表", "現金進出", "#16a34a"]].map(([t, s, c], i) =>
+      `<g class="tc" style="animation-delay:${i * .35}s"><rect x="${10 + i * 84}" y="24" width="76" height="100" rx="12" fill="${c}"/><text x="${48 + i * 84}" y="66" text-anchor="middle" class="tw">${t}</text><text x="${48 + i * 84}" y="92" text-anchor="middle" class="ts">${s}</text></g>`).join("")}</g></svg>`,
+  pe: `<svg viewBox="0 0 260 150"><g class="a-pe">
+    <rect x="30" y="100" width="40" height="30" class="b1"/><text x="50" y="146" text-anchor="middle" class="cap">每股賺 EPS</text>
+    <text x="95" y="120" class="op">×</text><text x="112" y="120" class="lb d2">本益比</text><text x="112" y="136" class="cap d2" style="opacity:0">市場願付幾倍</text>
+    <rect x="200" y="20" width="40" height="110" class="b2"/><text x="220" y="146" text-anchor="middle" class="cap">＝ 股價</text></g></svg>`,
+  roe: `<svg viewBox="0 0 260 150"><g class="a-roe"><circle cx="75" cy="75" r="50" class="ring0"/><circle cx="75" cy="75" r="50" class="ring1" transform="rotate(-90 75 75)"/>
+    <text x="75" y="82" text-anchor="middle" class="big">20%</text><text x="140" y="60" class="lb">股東每投入 100 元</text><text x="140" y="84" class="lb">一年幫你賺 20 元</text><text x="140" y="108" class="cap">巴菲特：長期 15% 以上</text></g></svg>`,
+  cash: `<svg viewBox="0 0 260 150"><g class="a-cash"><rect x="95" y="50" width="70" height="50" rx="12" class="co"/><text x="130" y="80" text-anchor="middle" class="tw">公司</text>
+    <text x="10" y="40" class="lb">營業收到的現金</text><text x="180" y="30" class="lb">投資設備</text><text x="180" y="130" class="lb">發股利給股東</text>
+    <path id="c1" d="M20,75 L95,75" class="ar"/><path d="M165,65 L240,40" class="ar"/><path d="M165,85 L240,115" class="ar"/>
+    ${[0, 1, 2].map(i => `<circle r="5" class="coin"><animateMotion dur="2.4s" begin="${i * .8}s" repeatCount="indefinite" path="M20,75 L95,75 L165,${i == 1 ? 65 : 85} L240,${i == 1 ? 40 : 115}"/></circle>`).join("")}</g></svg>`,
+  band: `<svg viewBox="0 0 260 150"><g class="a-band"><rect x="15" y="60" width="60" height="22" fill="#bbf7d0"/><rect x="75" y="60" width="65" height="22" fill="#bae6fd"/><rect x="140" y="60" width="55" height="22" fill="#fde68a"/><rect x="195" y="60" width="50" height="22" fill="#fecaca"/>
+    <text x="45" y="100" text-anchor="middle" class="lb">便宜</text><text x="108" y="100" text-anchor="middle" class="lb">合理</text><text x="168" y="100" text-anchor="middle" class="lb">偏貴</text><text x="220" y="100" text-anchor="middle" class="lb">很貴</text>
+    <g class="mkr"><rect x="-3" y="50" width="6" height="42" rx="3"/><text y="44" text-anchor="middle" class="lb d1">股價</text></g>
+    <text x="15" y="132" class="cap">安全邊際＝內在價值比股價高出多少</text></g></svg>`,
+  margin: `<svg viewBox="0 0 260 150"><g class="a-mg"><path d="M30,120 A100,100 0 0 1 230,120" class="arc"/>
+    <text x="30" y="140" class="cap">130% 追繳線</text><text x="230" y="140" text-anchor="end" class="cap">180%+ 安全</text>
+    <line x1="130" y1="120" x2="130" y2="40" class="ndl"/><circle cx="130" cy="120" r="7" class="hub"/></g></svg>`,
+  fear: `<svg viewBox="0 0 260 150"><g class="a-fear">${[["#22c55e", 0, 25], ["#84cc16", 25, 50], ["#f59e0b", 50, 75], ["#f97316", 75, 90], ["#dc2626", 90, 100]].map(([c, a, b]) => {
+      const p = v => [130 - 95 * Math.cos(v / 100 * Math.PI), 125 - 95 * Math.sin(v / 100 * Math.PI)], [x0, y0] = p(a + .8), [x1, y1] = p(b - .8);
+      return `<path d="M${x0},${y0} A95,95 0 0 1 ${x1},${y1}" stroke="${c}" stroke-width="16" fill="none"/>`; }).join("")}
+    <line x1="130" y1="125" x2="130" y2="50" class="ndl"/><circle cx="130" cy="125" r="7" class="hub"/><text x="35" y="145" class="cap">平靜</text><text x="225" y="145" text-anchor="end" class="cap">極度恐慌</text></g></svg>`,
+  breadth: `<svg viewBox="0 0 260 150"><g class="a-br">${[...Array(60)].map((_, i) => `<circle cx="${22 + (i % 12) * 19}" cy="${22 + Math.floor(i / 12) * 22}" r="7" style="animation-delay:${(i % 12) * .08 + Math.floor(i / 12) * .05}s"/>`).join("")}
+    <text x="12" y="146" class="cap">綠＝站上 200 日線，紅＝跌破；紅點變多＝大部分股票都在跌</text></g></svg>`,
+  inst: `<svg viewBox="0 0 260 150"><g class="a-inst">${[["外資", 95, "#2563eb"], ["投信", 50, "#f59e0b"], ["自營商", 30, "#94a3b8"]].map(([n, w, c], i) =>
+      `<text x="12" y="${40 + i * 38}" class="lb">${n}</text><rect x="70" y="${26 + i * 38}" width="${w * 1.7}" height="20" rx="6" fill="${c}" class="ib" style="animation-delay:${i * .25}s"/>`).join("")}
+    <text x="12" y="146" class="cap">外資資金最大，主導台積電等權值股方向</text></g></svg>`,
+};
+
+/* ---------- 課程內容 ---------- */
+const CH = [
+  {id: "basic", ic: "📘", name: "基本分析", sub: "看懂公司體質與合理價", lessons: [
+    {id: "b1", t: "財報三表：公司的健康檢查報告", lv: "基礎", an: "three",
+     body: "上市公司每季都要公布財報。<b>損益表</b>看這段期間賺了多少；<b>資產負債表</b>看公司有多少資產、欠多少錢；<b>現金流量表</b>看錢是不是真的收進來。三張一起看，才不會被「帳面賺錢、口袋沒錢」騙。",
+     rule: ["營收、毛利、淨利都在成長 → 生意變好", "負債比低、現金多 → 抗風險能力強", "營業現金流 ≥ 淨利 → 賺的是真錢"],
+     live: () => { const x = top1(); return x ? `本站巴菲特選股第 1 名 <b>${x.id} ${x.name}</b>：近 5 年營業現金流是淨利的 <b>${x.cashQ ?? "—"} 倍</b>、負債比 <b>${x.debt ?? "—"}%</b>。` : ""; }},
+    {id: "b2", t: "EPS 與本益比：股價貴不貴", lv: "基礎", an: "pe",
+     body: "<b>EPS（每股盈餘）</b>＝公司一年賺的錢 ÷ 股數，代表每一股賺多少。<b>本益比（PE）</b>＝股價 ÷ EPS，意思是「你願意付幾年的獲利來買它」。同一家公司，本益比比自己過去低，通常代表相對便宜。",
+     rule: ["股價 ＝ EPS × 本益比", "跟「自己過去的本益比」比，比跟別家比更準", "成長快的公司本益比本來就比較高"],
+     live: () => { const x = lpick("2330"); return x ? `<b>台積電</b>近四季 EPS <b>${x.epsTTM}</b> 元，股價 ${fmt(x.px, 0)} 元 → 本益比 <b>${x.peNow}</b> 倍；它自己歷年本益比中位數約 <b>${x.band.peMid}</b> 倍，所以目前位置是「<b>${x.zone}</b>」。` : ""; }},
+    {id: "b3", t: "ROE 與毛利率：好生意與護城河", lv: "基礎", an: "roe",
+     body: "<b>ROE（股東權益報酬率）</b>＝淨利 ÷ 股東權益，代表股東投入的錢一年能賺幾 %。巴菲特最愛長期 15% 以上的公司。<b>毛利率</b>＝（營收 − 成本）÷ 營收，毛利率高又穩，代表產品有定價能力，別人很難搶走生意，這就是「護城河」。",
+     rule: ["ROE 長期 ≥ 15%：好生意", "毛利率 ≥ 30% 且年年穩定：有護城河", "ROE 很高但負債也很高：要小心是借錢撐出來的"],
+     live: () => { const x = top1(); return x ? `<b>${x.name}</b> ${x.series.years.length} 年平均 ROE <b>${x.roeAvg}%</b>、毛利率平均 <b>${x.gmAvg ?? "—"}%</b>（波動 ±${x.gmSd ?? "—"}）。${sparkL(x.series.roe, "#7c3aed", "ROE 走勢")}` : ""; }},
+    {id: "b4", t: "現金流與負債：會不會一下就倒", lv: "進階", an: "cash",
+     body: "<b>營業現金流</b>是本業實際收到的現金；扣掉買設備等投資支出後剩下的叫<b>自由現金流</b>，才是真正能發股利、還債的錢。<b>負債比</b>＝總負債 ÷ 總資產，越低越穩。景氣不好時，現金多、負債少的公司最撐得住。",
+     rule: ["營業現金流連續多年為正", "自由現金流多數年度為正", "負債比 < 50%（金融業例外）"],
+     live: () => { const x = top1(); return x ? `<b>${x.name}</b>近 5 年有 <b>${x.fcfPos}</b> 年自由現金流為正，負債比 <b>${x.debt ?? "—"}%</b>。` : ""; }},
+    {id: "b5", t: "估價：合理價、內在價值、安全邊際", lv: "進階", an: "band",
+     body: "巴菲特說：「用合理的價格買好公司」。常見兩種估法：①<b>歷史本益比區間</b>：用公司自己過去的便宜／合理／偏貴本益比 × 現在的 EPS；②<b>現金流折現（DCF）</b>：估未來 10 年能賺的現金，折算回今天的價值＝<b>內在價值</b>。股價比內在價值低越多，<b>安全邊際</b>越大，估錯了也比較不會虧。",
+     rule: ["便宜價＝EPS × 歷年本益比 25% 分位", "安全邊際＝(內在價值 − 股價) ÷ 內在價值", "巴菲特偏好安全邊際 25% 以上"],
+     live: () => { const x = lpick("2330") || top1(); return x ? `<b>${x.name}</b>：便宜 ${fmt(x.band.cheap, 0)}／合理 ${fmt(x.band.fair, 0)}／偏貴 ${fmt(x.band.rich, 0)} 元，股價 ${fmt(x.px, 0)} 元；估算內在價值約 ${fmt(x.iv, 0)} 元，安全邊際 <b>${x.mos > 0 ? "+" : ""}${x.mos}%</b>。` : ""; }},
+  ]},
+  {id: "tech", ic: "📈", name: "技術分析", sub: "從價格與成交量看買賣力道", lessons: [
+    {id: "t1", t: "K 線：一根蠟燭看懂一天", lv: "基礎", an: "candle",
+     body: "每根 K 線記錄一段時間的<b>開盤、最高、最低、收盤</b>四個價格。台股習慣<b>紅色＝收盤比開盤高（漲）</b>、<b>綠色＝收盤比開盤低（跌）</b>。上下的細線叫影線：長下影線代表盤中殺低後有人買回，常是止跌訊號。",
+     rule: ["長紅 K：買方強勢", "長下影線：低檔有人接", "連續長黑 K：賣壓沉重"],
+     live: () => { const m = LD.m; if (!m) return ""; const r = m.rows[m.rows.length - 1], i = m.cols.indexOf("tx"), h = m.cols.indexOf("txH"), l = m.cols.indexOf("txL"), p = m.rows[m.rows.length - 2][i];
+       return `最新一天加權指數：最高 ${fmt(r[h], 0)}、最低 ${fmt(r[l], 0)}、收盤 <b>${fmt(r[i], 0)}</b>（${r[i] >= p ? "收紅" : "收黑"}，${sgn((r[i] / p - 1) * 100, 2)}%）。`; }},
+    {id: "t2", t: "均線：判斷趨勢的方向盤", lv: "基礎", an: "ma",
+     body: "<b>均線</b>是過去一段時間收盤價的平均：月線（20 日）、季線（60 日）、年線（240 日）。股價在均線之上＝多數人賺錢、趨勢向上；跌破＝趨勢轉弱。短均線往上穿過長均線叫<b>黃金交叉</b>，往下穿叫<b>死亡交叉</b>。",
+     rule: ["站上月線、季線：短中期偏多", "跌破季線：中期轉弱", "跌破年線：長期轉空"],
+     live: () => { const t = LD.a && LD.a.tech; return t ? `加權指數 ${fmt(t.price, 0)}：月線 ${fmt(t.ma20, 0)}、季線 ${fmt(t.ma60, 0)}、年線 ${fmt(t.ma240, 0)} → <b>${t.price < t.ma240 ? "三條均線全部跌破，長中短期都轉弱" : t.price < t.ma60 ? "跌破季線，中期轉弱" : t.price < t.ma20 ? "跌破月線，短線轉弱" : "站上均線，趨勢偏多"}</b>。` : ""; }},
+    {id: "t3", t: "支撐與壓力：價格的地板與天花板", lv: "基礎", an: "sr",
+     body: "<b>支撐</b>是跌到附近容易有人買的價位（前波低點、均線、整數關卡）；<b>壓力</b>是漲到附近容易有人賣的價位（前波高點、套牢區）。支撐被跌破後，常會變成之後的壓力。",
+     rule: ["前波低點、整數關卡＝常見支撐", "前波高點、大量套牢區＝常見壓力", "帶量跌破支撐，要提高警覺"],
+     live: () => { const a = LD.a; return a ? `目前加權指數最近支撐：${a.support.slice(0, 2).map(x => `${x.name} ${fmt(x.v)}`).join("、")}；壓力：${a.resist.slice(0, 2).map(x => `${x.name} ${fmt(x.v)}`).join("、")}。` : ""; }},
+    {id: "t4", t: "RSI 與 KD：漲太多還是跌太多", lv: "進階", an: "rsi",
+     body: "<b>RSI</b> 和 <b>KD</b> 都是把最近的漲跌力道換算成 0～100 的分數。RSI 70 以上（KD 80 以上）代表漲多了、短線可能拉回；RSI 30 以下（KD 20 以下）代表跌多了、可能反彈。但強勢行情可以一直超買，弱勢行情也可以一直超賣，要搭配趨勢看。",
+     rule: ["RSI < 30、KD < 20：超賣，留意反彈", "RSI > 70、KD > 80：超買，留意拉回", "K 往上穿過 D：短線轉強"],
+     live: () => { const t = LD.a && LD.a.tech; return t ? `加權指數 RSI <b>${t.rsi}</b>（${t.rsi < 30 ? "超賣區" : t.rsi > 70 ? "超買區" : "中性"}）、KD <b>${t.k}／${t.d}</b>（${t.k < 20 ? "超賣區" : t.k > 80 ? "過熱區" : "中性"}，${t.k > t.d ? "K 在 D 之上，短線轉強" : "K 在 D 之下，短線仍弱"}）。` : ""; }},
+    {id: "t5", t: "MACD：動能有沒有轉向", lv: "進階", an: "macd",
+     body: "<b>MACD</b> 比較短期和長期均線的差距，用來看動能。柱狀體在零軸上方＝多方動能，下方＝空方動能；柱子由長變短，代表原本的力道正在減弱，常早一步提示轉折。",
+     rule: ["柱狀體由負轉正：動能轉強", "柱狀體縮短：原趨勢力道減弱", "和股價走勢背離：轉折訊號"],
+     live: () => { const t = LD.a && LD.a.tech; return t ? `加權指數 MACD 柱狀體目前 <b>${t.macdUp ? "開始變強（往上）" : "仍在轉弱"}</b>。` : ""; }},
+    {id: "t6", t: "成交量：價格背後的力量", lv: "進階", an: "vol",
+     body: "量是價的先行指標。<b>價漲量增</b>代表有人追、上漲健康；<b>價漲量縮</b>代表追價意願不足；<b>價跌量增</b>代表有人急著賣（恐慌或斷頭）；跌到後來<b>量縮不跌</b>，常是賣壓接近出清。",
+     rule: ["價漲量增：健康上漲", "爆量長黑：恐慌或倒貨", "量縮止跌：賣壓減輕"],
+     live: () => { const m = LD.m; if (!m) return ""; const v = m.cols.indexOf("txV"), xs = m.rows.slice(-21).map(r => r[v]).filter(x => x); const now = xs[xs.length - 1], avg = xs.slice(0, -1).reduce((s, x) => s + x, 0) / (xs.length - 1);
+       return `最新成交量 <b>${fmt(now, 0)} 億</b>，是近 20 日平均（${fmt(avg, 0)} 億）的 <b>${fmt(now / avg, 2)} 倍</b>。`; }},
+  ]},
+  {id: "chip", ic: "🧭", name: "籌碼與市場情緒", sub: "誰在買、誰在賣、大家怕不怕", lessons: [
+    {id: "c1", t: "三大法人：外資、投信、自營商", lv: "基礎", an: "inst",
+     body: "<b>外資</b>是國外資金，台股最大的買賣力量；<b>投信</b>是國內基金公司，季底常有作帳行情；<b>自營商</b>是券商自己的資金，多為短線與避險。外資連續大賣通常壓抑指數，由賣轉買常是止跌訊號。",
+     rule: ["外資連續賣超 5 天以上：指數承壓", "外資 1 週大賣創 5 年前 10%：歷史上之後反而常反彈", "投信連續買：中小型股常有表現"],
+     live: () => { const c = card("fi5"); return c ? `外資近 5 日買賣超 <b>${fmt(c.value)} 億</b>（5 年第 ${Math.round(c.pct)} 百分位）。${c.now}` : ""; }},
+    {id: "c2", t: "融資、維持率、追繳與斷頭", lv: "進階", an: "margin",
+     body: "<b>融資</b>是向券商借錢買股票。<b>維持率</b>＝股票市值 ÷ 借款，跌破 <b>130%</b> 會收到<b>追繳</b>通知，要在 2 個交易日內補錢；沒補就會被券商強制賣出，俗稱<b>斷頭</b>。追繳戶數暴增，代表短線有被迫賣壓；但斷頭潮過後，籌碼常變乾淨。",
+     rule: ["整戶維持率 170% 以上：正常", "160% 以下：危險，斷頭賣壓變大", "追繳戶數 > 700：異常；> 2,000：斷頭潮"],
+     live: () => { const k = card("keep"), b = card("below"); return k && b ? `整戶維持率 <b>${k.value}%</b>、追繳戶數 <b>${fmt(b.value)}</b> 戶（${k.date}）。${b.now}` : ""; }},
+    {id: "c3", t: "VIX 與恐慌度：大家有多害怕", lv: "進階", an: "fear",
+     body: "<b>VIX</b> 是選擇權市場預期的未來 30 天波動，俗稱恐慌指數。本站的<b>市場恐慌度</b>把波動、跌幅、融資、法人、市場廣度等指標，換算成「在近 5 年排第幾百分位」再平均，0 最平靜、100 最恐慌。歷史上極度恐慌時進場，之後半年的表現常比平常好，但當下可能還會再跌。",
+     rule: ["VIX < 20 平靜、> 30 恐慌、> 40 極度恐慌", "恐慌度 ≥ 90：極度恐慌", "別人恐懼時我貪婪 ≠ 一次買滿，可分批"],
+     live: () => { const f = LD.a && LD.a.fear && LD.a.fear.tw; return f ? `台股恐慌度 <b style="color:${fzc(f.score)}">${f.score}</b>（${f.level}），一週前 ${f.w1}、一個月前 ${f.m1}。` : ""; }},
+    {id: "c4", t: "市場廣度：是少數股票在跌，還是全部都在跌", lv: "進階", an: "breadth",
+     body: "指數可能被少數大型股撐著，所以要看<b>廣度</b>：有多少股票<b>站上 200 日線</b>（長期趨勢向上）、多少股票<b>創 52 週新低</b>、<b>跌停家數</b>有多少。站上 200 日線比例很低、新低家數暴增，代表殺盤擴散到幾乎所有股票，通常是恐慌末段的特徵。",
+     rule: ["站上 200 日線比例 < 20%：普遍弱勢", "創 52 週新低比例暴增：恐慌擴散", "跌停家數比例飆高：多殺多"],
+     live: () => { const f = LD.a && LD.a.fear && LD.a.fear.tw, c = f && f.comps.filter(x => /200|新低|跌停/.test(x.name)); return c && c.length ? c.map(x => `${x.name} <b>${fmt(x.value, 1)}${x.unit}</b>`).join("；") + "。" : "（廣度資料每天收盤後更新）"; }},
+  ]},
+];
+
+const GLOSS = [
+  ["股票", "基礎", "公司的一小份所有權；買股票就是成為股東，分享公司的獲利。"], ["ETF", "基礎", "一籃子股票或債券包成一檔，像買「整個市場或主題」，分散風險。"],
+  ["一張／零股", "基礎", "台股 1 張＝1,000 股；不到 1 張叫零股，可以小額買。"], ["漲跌停", "基礎", "台股單日最多漲或跌 10%，到頂叫漲停、到底叫跌停。"],
+  ["除權息", "基礎", "公司發股利時，股價會先扣掉配掉的金額；除息日當天買的不會領到這次股利。"], ["填息", "基礎", "除息後股價漲回除息前的價位，代表領的股利沒有被股價下跌吃掉。"],
+  ["殖利率", "基礎", "一年股利 ÷ 股價，像存款利率的概念。"], ["市值", "基礎", "股價 × 總股數，代表市場認為這家公司值多少錢。"],
+  ["EPS", "基礎", "每股盈餘＝淨利 ÷ 股數，每一股一年賺多少錢。"], ["本益比 PE", "基礎", "股價 ÷ EPS，用幾年的獲利買這家公司。"],
+  ["股價淨值比 PB", "基礎", "股價 ÷ 每股淨值；金融股常用，低於 1 代表比帳面價值便宜。"], ["ROE", "基礎", "淨利 ÷ 股東權益，股東的錢一年賺幾 %。"],
+  ["三大法人", "基礎", "外資、投信、自營商三種機構投資人。"], ["均線", "基礎", "過去 N 天收盤價平均：月線 20 日、季線 60 日、年線 240 日。"],
+  ["毛利率", "進階", "(營收 − 成本) ÷ 營收；高而穩代表有定價能力。"], ["營業利益率", "進階", "本業賺的錢 ÷ 營收，排除業外收益後的獲利能力。"],
+  ["自由現金流", "進階", "營業現金流 − 資本支出，真正能發股利、還債的錢。"], ["負債比", "進階", "總負債 ÷ 總資產，越低財務越穩。"],
+  ["流動比率", "進階", "流動資產 ÷ 流動負債，短期償債能力；大於 1.5 較安全。"], ["內在價值", "進階", "把公司未來能賺的現金折算回今天的價值。"],
+  ["安全邊際", "進階", "內在價值比股價高出的比例，給估錯留的緩衝。"], ["Piotroski F 分數", "進階", "9 項財務體檢，看今年比去年體質有沒有變好，0～9 分。"],
+  ["神奇公式", "進階", "葛林布雷提出：找資本報酬率高、又相對便宜的公司。"], ["乖離率", "進階", "股價離均線多遠；乖離太大容易往均線拉回。"],
+  ["RSI／KD", "進階", "0～100 的漲跌力道指標，過高超買、過低超賣。"], ["MACD", "進階", "看短長期均線差距的動能指標，柱狀體正負代表多空。"],
+  ["布林通道", "進階", "均線上下各兩個標準差的通道，碰上緣偏熱、碰下緣偏冷。"], ["融資融券", "進階", "融資＝借錢買股；融券＝借股票來賣（看空）。"],
+  ["維持率／追繳／斷頭", "進階", "維持率跌破 130% 被追繳，沒補錢就被強制賣出（斷頭）。"], ["VIX", "進階", "選擇權隱含的未來 30 天波動，俗稱恐慌指數。"],
+  ["未平倉", "進階", "期貨或選擇權還沒平倉的口數；外資空單多代表避險重。"], ["市場廣度", "進階", "看多少股票一起漲跌，例如站上 200 日線比例、創新低家數。"],
+];
+
+function sparkL(vals, color, label){
+  const v = vals.filter(x => x != null); if (v.length < 2) return "";
+  const mn = Math.min(...v, 0), mx = Math.max(...v), W = 300, H = 60;
+  const pts = vals.map((y, i) => y == null ? null : `${(i / (vals.length - 1) * W).toFixed(1)},${(H - (y - mn) / (mx - mn || 1) * H).toFixed(1)}`).filter(Boolean).join(" ");
+  return `<div class="lspark"><small>${label}</small><svg viewBox="0 0 ${W} ${H + 4}" width="100%" height="64" preserveAspectRatio="none"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round"/></svg></div>`;
+}
+
+/* ---------- 案例 ---------- */
+function caseBuffett(){
+  const x = top1(); if (!x) return "";
+  const ok = b => b ? `<span class="ok">✓ 符合</span>` : `<span class="no">✗ 未達</span>`;
+  const steps = [
+    ["① 是好生意嗎？（ROE）", `${x.series.years.length} 年平均 ROE ${x.roeAvg}%，近 5 年最低 ${x.roeMin5}%`, x.roeAvg >= 15],
+    ["② 每年都賺錢嗎？（EPS）", `EPS 年平均成長 ${x.gEps ?? "—"}%`, (x.gEps ?? -1) >= 0],
+    ["③ 有護城河嗎？（毛利率）", x.fin ? `金融業看淨利率 ${x.nmAvg}%` : `毛利率平均 ${x.gmAvg}%，波動 ±${x.gmSd}`, x.fin ? x.nmAvg >= 10 : x.gmAvg >= 30],
+    ["④ 財務保守嗎？（負債）", `負債比 ${x.debt ?? "—"}%`, (x.debt ?? 100) <= 50],
+    ["⑤ 賺的是真錢嗎？（現金流）", `營業現金流是淨利的 ${x.cashQ ?? "—"} 倍`, (x.cashQ ?? 0) >= .8],
+    ["⑥ 體質在變好嗎？（F 分數）", `${x.f}/9 分`, x.f >= 6],
+    ["⑦ 價格合理嗎？（估價）", `股價 ${fmt(x.px, 1)}，合理價 ${fmt(x.band.fair, 1)}，安全邊際 ${x.mos}%`, x.px <= x.band.fair],
+  ];
+  return `<div class="case"><div class="case-h">🏆 案例一：用巴菲特檢查表看 <b>${x.id} ${x.name}</b><small>本站選股第 1 名・${x.ind || ""}・資料 ${LD.v.updated}</small></div>
+    <ol class="steps">${steps.map(([q, a, b], i) => `<li style="animation-delay:${i * .12}s"><b>${q}</b><span>${a}</span>${ok(b)}</li>`).join("")}</ol>
+    <div class="lsp2">${sparkL(x.series.roe, "#7c3aed", "ROE（%）")}${sparkL(x.series.eps, "#16a34a", "EPS（元）")}${sparkL(x.series.gm, "#f59e0b", "毛利率（%）")}</div>
+    <p class="cc">結論：7 項中有 <b>${steps.filter(s => s[2]).length}</b> 項符合。這就是巴菲特式的思考順序：<b>先確認是好公司，再看價格是否合理</b>。好公司買太貴也會賠錢，便宜的爛公司更危險。</p>
+    <button class="lgo" data-go="vp">看完整前 50 名 →</button></div>`;
+}
+function caseTech(){
+  const a = LD.a, m = LD.m; if (!a || !m) return "";
+  const t = a.tech, i = m.cols.indexOf("tx"), d = m.cols.indexOf("d"), rows = m.rows.slice(-260), px = rows.map(r => r[i]);
+  const ma = n => px.map((_, k) => k >= n - 1 ? px.slice(k - n + 1, k + 1).reduce((s, x) => s + x, 0) / n : null);
+  const N = 120, P = px.slice(-N), M20 = ma(20).slice(-N), M60 = ma(60).slice(-N), all = P.concat(M20, M60).filter(x => x), mn = Math.min(...all), mx = Math.max(...all), W = 900, H = 240;
+  const X = k => k / (N - 1) * W, Y = v => H - (v - mn) / (mx - mn) * H, path = arr => arr.map((v, k) => v == null ? "" : `${k && arr[k - 1] != null ? "L" : "M"}${X(k).toFixed(1)},${Y(v).toFixed(1)}`).join("");
+  const chart = `<svg viewBox="0 0 ${W} ${H + 20}" width="100%" class="cchart"><path d="${path(M60)}" stroke="#f59e0b" stroke-width="2" fill="none" class="dr"/><path d="${path(M20)}" stroke="#7c3aed" stroke-width="2" fill="none" class="dr"/><path d="${path(P)}" style="stroke:var(--ink)" stroke-width="2.2" fill="none" class="dr"/>
+    <text x="4" y="${H + 16}" font-size="12" style="fill:var(--sub)">${rows[rows.length - N][d]}</text><text x="${W}" y="${H + 16}" text-anchor="end" font-size="12" style="fill:var(--sub)">${rows[rows.length - 1][d]}</text></svg>
+    <div class="legend"><span><i style="background:var(--ink)"></i>加權指數</span><span><i style="background:#7c3aed"></i>月線</span><span><i style="background:#f59e0b"></i>季線</span></div>`;
+  const pts = [
+    ["趨勢（均線）", t.price < t.ma60 ? `指數 ${fmt(t.price, 0)} 在季線 ${fmt(t.ma60, 0)} 之下，中期趨勢向下${t.price < t.ma240 ? "，也跌破年線" : ""}。` : "指數在季線之上，中期趨勢向上。"],
+    ["乖離", `離季線 ${fmt(t.bias60, 1)}%，${t.bias60 < -10 ? "跌得又快又急，短線容易出現跌深反彈" : t.bias60 > 10 ? "漲得太快，容易拉回" : "還在正常範圍"}。`],
+    ["超買超賣（RSI、KD）", `RSI ${t.rsi}、KD ${t.k}／${t.d}：${t.rsi < 30 ? "已進入超賣區，代表短線跌多了" : t.rsi > 70 ? "超買區，短線漲多了" : "中性區"}。`],
+    ["動能（MACD）", t.macdUp ? "MACD 柱狀體開始往上，下跌動能減弱。" : "MACD 柱狀體仍在變弱，下跌動能還沒停。"],
+    ["支撐與壓力", `下方支撐 ${a.support.slice(0, 2).map(s => fmt(s.v)).join("、")}；上方壓力 ${a.resist.slice(0, 2).map(s => fmt(s.v)).join("、")}。`],
+  ];
+  return `<div class="case"><div class="case-h">📈 案例二：用技術分析看現在的加權指數<small>資料 ${t.date}・近 120 個交易日</small></div>${chart}
+    <ol class="steps">${pts.map(([q, a2], k) => `<li style="animation-delay:${k * .12}s"><b>${q}</b><span>${a2}</span></li>`).join("")}</ol>
+    <p class="cc">綜合判讀：<b>${t.price < t.ma60 && t.rsi < 35 ? "趨勢偏空但短線超賣——適合等止跌訊號（例如站回月線、MACD 翻正）再分批，而不是急著接刀或恐慌殺低。" : t.price > t.ma60 ? "趨勢偏多，回檔到均線支撐附近是較好的布局點。" : "方向不明，宜觀察。"}</b></p>
+    <button class="lgo" data-go="mkt">到大盤儀表板看更多 →</button></div>`;
+}
+function caseFear(){
+  const f = LD.a && LD.a.fear && LD.a.fear.tw; if (!f) return "";
+  const z = f.zones.find(x => x.name == f.level), all = f.zones[0], ep = f.episodes.filter(e => e.r120 != null);
+  return `<div class="case"><div class="case-h">😱 案例三：恐慌度 ${f.score}，現在該怕還是該貪？<small>資料 ${f.date}</small></div>
+    <div class="fbig"><b style="color:${fzc(f.score)}">${f.score}</b><span style="background:${fzc(f.score)}">${f.level}</span><small>一週前 ${f.w1}・一個月前 ${f.m1}</small></div>
+    <ol class="steps">
+      <li><b>恐慌來自哪裡</b><span>${f.comps.slice().sort((a2, b) => (b.pct ?? 0) - (a2.pct ?? 0)).slice(0, 3).map(c => `${c.name}（${c.pct}）`).join("、")} 拉分最多。</span></li>
+      ${z && z.r120 ? `<li><b>歷史上同樣處在「${f.level}」</b><span>之後 6 個月加權指數中位數 ${sgn(z.r120.med, 1)}%、上漲比例 ${z.r120.win}%（所有交易日是 ${sgn(all.r120.med, 1)}%、${all.r120.win}%）；樣本 ${z.days} 天。</span></li>` : ""}
+      ${ep.length ? `<li><b>過去的極度恐慌</b><span>${ep.map(e => `${e.d}：之後 6 個月 ${sgn(e.r120, 1)}%`).join("；")}。</span></li>` : ""}
+      <li><b>但短線還可能再跌</b><span>恐慌度高代表「已經跌很多、大家很怕」，不代表明天就止跌；追繳斷頭的賣壓常要幾天才出清。</span></li>
+    </ol>
+    <p class="cc">實際運用：極度恐慌時<b>不追殺、不借錢攤平</b>；有閒錢、看長期的人，可以把要投入的錢<b>分 3～5 批</b>，在恐慌期間慢慢買進體質好的標的（例如市值型 ETF 或巴菲特選股中價位便宜的公司）。</p>
+    <button class="lgo" data-go="mkt">看恐慌度詳細資料 →</button></div>`;
+}
+
+/* ---------- 版面 ---------- */
+let lChap = "basic", lLevel = "全部";
+function renderLearn(){
+  const toc = CH.map(c => `<a data-ch="${c.id}" href="javascript:void 0"><span>${c.ic} ${c.name}</span><small>${c.sub}</small></a>`).join("") +
+    `<a data-ch="case" href="javascript:void 0"><span>🧪 實戰案例</span><small>用現在的資料一步步分析</small></a><a data-ch="gloss" href="javascript:void 0"><span>📖 術語小辭典</span><small>基礎 ${GLOSS.filter(g => g[1] == "基礎").length}・進階 ${GLOSS.filter(g => g[1] == "進階").length} 個</small></a>`;
+  $("#learn").innerHTML = `<div class="ln-hero"><div><h2>📚 投資教學</h2><p>從看懂財報、K 線，到判斷市場恐慌。每一課都有動畫圖解，並直接套用本站<b>今天的真實數據</b>當例子。</p></div>
+      <div class="ln-lv">${["全部", "基礎", "進階"].map(l => `<span class="chip ${lLevel == l ? "on" : ""}" data-lv="${l}">${l}</span>`).join("")}</div></div>
+    <div class="ln-wrap"><nav class="ln-toc" id="lnToc">${toc}</nav><div class="ln-main" id="lnMain"></div></div>`;
+  $("#lnToc").onclick = e => { const a = e.target.closest("[data-ch]"); if (!a) return; lChap = a.dataset.ch; drawLearn(); window.scrollTo({top: $("#learn").getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 90 : 10), behavior: "smooth"}); };
+  $("#learn .ln-lv").onclick = e => { const c = e.target.closest("[data-lv]"); if (!c) return; lLevel = c.dataset.lv; $("#learn .ln-lv").querySelectorAll(".chip").forEach(x => x.classList.toggle("on", x == c)); drawLearn(); };
+  drawLearn();
+}
+function lessonHTML(l, i){
+  const live = l.live ? l.live() : "";
+  return `<details class="lesson" ${i == 0 || innerWidth > 700 ? "open" : ""}><summary><span class="lv ${l.lv == "進階" ? "adv" : ""}">${l.lv}</span>${l.t}</summary>
+    <div class="ls-g"><div class="anim">${AN[l.an] || ""}</div><div><p>${l.body}</p>
+      <div class="rule"><b>判斷基準</b><ul>${l.rule.map(r => `<li>${r}</li>`).join("")}</ul></div></div></div>
+    ${live ? `<div class="live"><b>📍 現在的實際數字</b><div>${live}</div></div>` : ""}</details>`;
+}
+function drawLearn(){
+  document.querySelectorAll("#lnToc a").forEach(a => a.classList.toggle("on", a.dataset.ch == lChap));
+  const main = $("#lnMain"), c = CH.find(x => x.id == lChap);
+  if (c) { const ls = c.lessons.filter(l => lLevel == "全部" || l.lv == lLevel); main.innerHTML = `<h3 class="ln-h">${c.ic} ${c.name}<small>${c.sub}</small></h3>` + (ls.map(lessonHTML).join("") || `<div class="box empty">這個章節沒有「${lLevel}」課程</div>`); }
+  else if (lChap == "case") main.innerHTML = `<h3 class="ln-h">🧪 實戰案例<small>全部用本站今天的資料自動產生，每天都會更新</small></h3>${caseBuffett()}${caseTech()}${caseFear()}`;
+  else main.innerHTML = `<h3 class="ln-h">📖 術語小辭典<small>點分類篩選；搜尋任何名詞</small></h3><input class="gq" id="gq" placeholder="🔍 搜尋術語，例如 殖利率、ROE、斷頭">
+      <div class="gloss" id="gl">${GLOSS.filter(g => lLevel == "全部" || g[1] == lLevel).map(([n, lv, d]) => `<div data-q="${n}${d}"><b>${n}</b><span class="lv ${lv == "進階" ? "adv" : ""}">${lv}</span><p>${d}</p></div>`).join("")}</div>`;
+  const q = $("#gq"); if (q) q.oninput = () => document.querySelectorAll("#gl>div").forEach(d => d.style.display = d.dataset.q.includes(q.value.trim()) ? "" : "none");
+  main.querySelectorAll("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("play"); io.unobserve(e.target); } }), {threshold: .35});
+  main.querySelectorAll(".anim,.case").forEach(el => io.observe(el));
+}
 
 </script>
 </body>
