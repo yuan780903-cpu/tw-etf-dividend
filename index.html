@@ -377,7 +377,7 @@ td.r,th.r{text-align:right}
 .mbar .mb-r{text-align:right}
 .mbar i{font-style:normal;font-size:26px;opacity:.85;margin-left:-4px}
 .mbar.flash{animation:flash .7s ease}
-@media(max-width:1099px){body.has-pf:not(.on-calc):not(.on-mkt) .mbar{display:flex}body.has-pf:not(.on-calc):not(.on-mkt){padding-bottom:84px}}
+@media(max-width:1099px){body.has-pf:not(.on-calc):not(.on-mkt):not(.on-vp) .mbar{display:flex}body.has-pf:not(.on-calc):not(.on-mkt):not(.on-vp){padding-bottom:84px}}
 @media(min-width:701px) and (max-width:1099px){.mbar{max-width:560px;left:50%;right:auto;width:calc(100% - 24px);transform:translateX(-50%)}}
 
 /* ===== 手機:精簡頂部 + 底部分頁列(像 App) ===== */
@@ -407,7 +407,7 @@ td.r,th.r{text-align:right}
   .tabs .ic{font-size:21px;line-height:1}
   .tabs .n{position:absolute;top:3px;left:calc(50% + 6px);font-size:10px;padding:2px 6px;min-width:18px}
   body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
-  body.has-pf:not(.on-calc):not(.on-mkt){padding-bottom:calc(150px + env(safe-area-inset-bottom))}
+  body.has-pf:not(.on-calc):not(.on-mkt):not(.on-vp){padding-bottom:calc(150px + env(safe-area-inset-bottom))}
   .mbar{bottom:calc(74px + env(safe-area-inset-bottom))}
   #toast{bottom:calc(150px + env(safe-area-inset-bottom))!important}
   footer{padding:20px 16px 12px}
@@ -504,6 +504,50 @@ td.r,th.r{text-align:right}
 @media(max-width:900px){.mk-hero,.fc2{grid-template-columns:1fr}.mk-px .v{font-size:34px}}
 @media(max-width:700px){.fbar .ext{display:none}.quad{grid-template-columns:1fr}.comp div,.cbar div{grid-template-columns:112px 1fr 40px;font-size:12px}.icards{grid-template-columns:1fr}.dctl .csv{margin-left:0}}
 
+/* ===== 巴菲特選股 ===== */
+.vp-hero{border-radius:var(--r);padding:24px;color:#fff;background:linear-gradient(135deg,#3b0764,#7c2d12 55%,#b45309);box-shadow:var(--shadow);display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:20px}
+.vp-hero h2{font-size:26px;font-weight:900}
+.vp-hero p{font-size:14px;line-height:1.75;margin-top:8px;opacity:.95}
+.vp-w{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.vp-w span{background:rgba(255,255,255,.16);border-radius:999px;padding:5px 11px;font-size:12.5px}
+.vp-how{background:rgba(255,255,255,.1);border-radius:16px;padding:12px 14px;font-size:13px;line-height:1.7;align-self:start}
+.vp-how summary{cursor:pointer;font-weight:800}
+.vp-how p{margin-top:8px}
+.vp-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.vpc{background:var(--panel);border-radius:var(--r);box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:10px}
+.vpc-h{display:grid;grid-template-columns:38px 1fr 54px;gap:10px;align-items:center}
+.vpc-h .rk{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#f59e0b,#b45309);color:#fff;font-weight:900;display:grid;place-items:center;font-size:16px}
+.vpc-h .nm b{display:block;font-size:17px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vpc-h .nm small{font-size:12px;color:var(--sub)}
+.ring{width:54px;height:54px;border-radius:50%;display:grid;place-items:center}
+.ring span{width:42px;height:42px;border-radius:50%;background:var(--panel);display:grid;place-items:center;font-weight:900;font-size:17px}
+.vpc-p{display:flex;justify-content:space-between;align-items:flex-end}
+.vpc-p small{display:block;font-size:12px;color:var(--sub)}
+.vpc-p b{font-size:24px;font-weight:800}
+.zp{display:inline-block;color:#fff;border-radius:8px;padding:3px 8px;font-size:12px;font-weight:800;vertical-align:middle}
+.pband{position:relative;height:14px;border-radius:7px;overflow:visible;margin-top:4px}
+.pband .seg{position:absolute;top:0;bottom:0}
+.pband .seg:first-child{border-radius:7px 0 0 7px}.pband .seg:nth-child(4){border-radius:0 7px 7px 0}
+.pband i{position:absolute;top:-5px;width:4px;height:24px;border-radius:2px;background:var(--ink);transform:translateX(-50%)}
+.pbl{display:flex;justify-content:space-between;font-size:12px;color:var(--sub)}
+.pbl b{color:var(--ink)}
+.vpk{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.vpk div{background:var(--bg);border-radius:10px;padding:7px 9px}
+.vpk small{display:block;font-size:11px;color:var(--sub)}
+.vpk b{font-size:15px}
+.vps{display:flex;flex-direction:column;gap:5px}
+.vps div{display:grid;grid-template-columns:76px 1fr 38px;gap:8px;align-items:center;font-size:12px}
+.vps .tr{height:8px;background:var(--track);border-radius:4px;overflow:hidden}
+.vps .tr i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#f59e0b,#16a34a)}
+.vps b{text-align:right}
+.vpw summary{cursor:pointer;font-weight:800;font-size:13.5px}
+.vpw ul{margin:8px 0 8px 18px;font-size:13px;line-height:1.75}
+.vpsp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:6px}
+.vpsp small{font-size:11px;color:var(--sub)}
+.vpw a{color:#7c3aed}
+@media(max-width:900px){.vp-hero{grid-template-columns:1fr}}
+@media(max-width:700px){.vp-list{grid-template-columns:1fr}.vp-hero h2{font-size:22px}}
+
 /* ===== 骨架載入 ===== */
 .sk{background:linear-gradient(90deg,var(--track) 25%,var(--skhi) 37%,var(--track) 63%);background-size:400% 100%;animation:sk 1.3s ease infinite;border-radius:12px}
 .sk-cat{height:60px;border-radius:18px}
@@ -546,11 +590,13 @@ button,.chip,.cat,.lr,.card{-webkit-tap-highlight-color:transparent}
   <nav class="tabs" id="tabs">
     <button data-tab="etf"><i class="ic">📊</i><span class="lg">ETF 總覽</span><span class="sm">總覽</span></button>
     <button data-tab="calc"><i class="ic">💰</i><span class="lg">我的配息試算</span><span class="sm">配息試算</span> <span class="n" id="tabN">0</span></button>
+    <button data-tab="vp"><i class="ic">🏆</i><span class="lg">巴菲特選股</span><span class="sm">選股</span></button>
     <button data-tab="mkt"><i class="ic">📉</i><span class="lg">大盤儀表板</span><span class="sm">大盤</span></button>
     <button data-tab="plan"><i class="ic">🎯</i><span class="lg">退休規劃</span><span class="sm">退休</span></button>
     <span class="mini" id="tabMini" data-tab="calc"></span>
   </nav>
 
+  <div class="page" id="pg-vp"><div id="vp"></div></div>
   <div class="page" id="pg-mkt"><div id="mkt"></div></div>
 
   <div class="page" id="pg-plan">
@@ -1250,7 +1296,9 @@ function go(tab, scroll = true){
   placeCalc();
   document.body.classList.toggle("on-calc", tab == "calc");
   document.body.classList.toggle("on-mkt", tab == "mkt");
-  if (tab == "mkt") setTimeout(loadMkt);      // 延後:MK 等變數在 script 後段才宣告
+  if (tab == "mkt") setTimeout(loadMkt);
+  if (tab == "vp") setTimeout(loadVP);
+  document.body.classList.toggle("on-vp", tab == "vp");      // 延後:MK 等變數在 script 後段才宣告
   if (scroll && scrollY > 200) window.scrollTo({top: 0, behavior: "smooth"});
 }
 $("#mbar").onclick = () => go("calc");
@@ -1685,6 +1733,89 @@ function drawD(){
     return `<tr class="${ab ? "ab" : ""} ${sep ? "sep" : ""}">${DCOL.map(([k, , d, cls]) => k == "d" ? `<td class="d">${r.d}</td>` : `<td class="r num ${cellCls(cls, r[k])}">${r[k] == null ? "—" : (cls == "pn" && r[k] > 0 ? "+" : "") + fmt(r[k], d)}</td>`).join("")}</tr>`; }).join("")}</table>`;
   const nab = L.filter(isAb).length;
   $("#dNote").textContent = `共 ${L.length} 個交易日${L.length > 400 ? "（畫面顯示最近 400 天，匯出 CSV 可取得全部）" : ""}；其中異常日 ${nab} 天。整戶維持率、追繳、處分為證交所官方資料，2026/8/3 起才有。`;
+}
+
+/* ================= 巴菲特選股 ================= */
+let VP = null, vpInd = "全部", vpZone = "全部", vpSort = "rank", vpQ = "";
+async function loadVP(){
+  if (VP) return;
+  $("#vp").innerHTML = `<div class="box"><div class="sk" style="height:160px"></div></div><div class="box"><div class="sk" style="height:420px"></div></div>`;
+  try { VP = await fetch("data/value_picks.json?" + Date.now()).then(r => r.json()); renderVP(); }
+  catch (e) { $("#vp").innerHTML = `<div class="box empty">選股資料載入失敗，請稍後重新整理（${e.message}）</div>`; }
+}
+const ZC = {"便宜": "#16a34a", "合理偏低": "#0ea5e9", "合理偏高": "#f59e0b", "偏貴": "#ef4444"};
+function renderVP(){
+  const v = VP, inds = [...new Set(v.top.map(x => x.ind || "其他"))].sort();
+  $("#vp").innerHTML = `<div class="mk">
+  <div class="vp-hero">
+    <div><h2>🏆 巴菲特選股 Top 50</h2>
+      <p>用「合理的價格，買到長期會賺錢的好公司」。結合巴菲特的價值投資條件，再加上近年國內外常用的選股方法，從全部上市櫃公司中篩出 ${v.universe} 家合格公司，依綜合分數排出前 50 名。</p>
+      <div class="vp-w">${Object.entries(v.method.weights).map(([k, w]) => `<span>${k} <b>${w}%</b></span>`).join("")}</div>
+      <p class="mknote" style="color:rgba(255,255,255,.8)">門檻：${v.method.gate}。財報：${v.years[0]}～${v.years[v.years.length - 1]} 年${v.latest ? `＋${v.latest} 近四季` : ""}；資料更新 ${v.updated}。</p></div>
+    <details class="vp-how"><summary>📖 各項評分白話說明</summary>
+      <p><b>巴菲特品質（45%）</b>：ROE（股東權益報酬率）長期 15% 以上＝好生意；每年都賺錢且 EPS 長期成長；毛利率高又穩＝有護城河（別人搶不走的定價能力）；負債低；營業現金流 ≥ 淨利＝賺的是真錢。</p>
+      <p><b>Piotroski F 分數（15%）</b>：美國史丹佛教授提出的 9 項財務體檢，看「今年比去年」獲利、現金流、負債、毛利、效率有沒有變好，0～9 分，7 分以上代表體質正在改善。</p>
+      <p><b>神奇公式（15%）</b>：葛林布雷提出，同時找「資本報酬率高」（做生意很有效率）＋「獲利相對市值便宜」的公司。</p>
+      <p><b>動能（10%）</b>：近一年股價表現（扣掉最近一個月）與近 3 個月營收年增率，台股法人很看重月營收。</p>
+      <p><b>價格（15%）</b>：巴菲特說「用合理價格買好公司」。用兩種方法估合理價：①這家公司自己歷年本益比的區間 × 近四季 EPS；②自由現金流折現的內在價值（${v.method.dcf}）。股價越低於合理價，分數越高。</p>
+      <p><b>正常股價區間</b>：便宜價＝歷年本益比 25% 分位、合理價＝中位數、偏貴價＝75% 分位，各乘上近四季 EPS。</p></details>
+  </div>
+
+  <div class="bar" style="margin-bottom:0">
+    <input id="vpQ" placeholder="🔍 搜尋代號或名稱，例如 2330、台積電" value="${vpQ}">
+    <select id="vpSort"><option value="rank">綜合分數高→低</option><option value="mos">安全邊際大→小</option><option value="roeAvg">平均 ROE 高→低</option><option value="qB">巴菲特品質高→低</option><option value="f">F 分數高→低</option><option value="peNow">本益比低→高</option></select>
+    <select id="vpInd"><option>全部</option>${inds.map(i => `<option ${vpInd == i ? "selected" : ""}>${i}</option>`).join("")}</select>
+  </div>
+  <div class="bar"><div class="flt"><b class="fl">目前價位</b><div class="chips" id="vpZ">${["全部", "便宜", "合理偏低", "合理偏高", "偏貴"].map(z => `<span class="chip ${vpZone == z ? "on" : ""}" data-z="${z}">${z}</span>`).join("")}</div></div><span class="count" id="vpCount"></span></div>
+  <div class="vp-list" id="vpList"></div>
+
+  <div class="box"><h2 class="sec">📋 第 51～150 名 <small>也通過門檻、但綜合分數較低的公司</small></h2>
+    <div class="scrollx"><table class="ev"><tr><th>名次</th><th>公司</th><th>產業</th><th class="r">股價</th><th class="r">綜合分數</th><th>目前價位</th></tr>
+    ${v.others.map(x => `<tr><td class="num">${x.rank}</td><td>${x.id} ${x.name}</td><td>${x.ind || ""}</td><td class="r num">${fmt(x.px, 2)}</td><td class="r num">${x.score}</td><td><span class="zp" style="background:${ZC[x.zone]}">${x.zone}</span></td></tr>`).join("")}</table></div></div>
+  <p class="mknote">資料來源：公開資訊觀測站（合併財報、月營收）、臺灣證券交易所、證券櫃檯買賣中心。本頁為依公開財報與固定規則的篩選結果，內在價值與合理價為模型估算，不代表未來股價，也不構成任何投資建議。</p>
+  </div>`;
+  $("#vpSort").value = vpSort;
+  $("#vpQ").oninput = e => { vpQ = e.target.value.trim(); drawVP(); };
+  $("#vpSort").onchange = e => { vpSort = e.target.value; drawVP(); };
+  $("#vpInd").onchange = e => { vpInd = e.target.value; drawVP(); };
+  $("#vpZ").onclick = e => { const c = e.target.closest("[data-z]"); if (!c) return; vpZone = c.dataset.z; $("#vpZ").querySelectorAll(".chip").forEach(x => x.classList.toggle("on", x == c)); drawVP(); };
+  drawVP();
+}
+function drawVP(){
+  const q = vpQ.toLowerCase();
+  let L = VP.top.filter(x => (vpInd == "全部" || (x.ind || "其他") == vpInd) && (vpZone == "全部" || x.zone == vpZone) && (!q || (x.id + x.name).toLowerCase().includes(q)));
+  const k = vpSort; L.sort((a, b) => k == "rank" ? a.rank - b.rank : k == "peNow" ? (a.peNow ?? 999) - (b.peNow ?? 999) : (b[k] ?? -999) - (a[k] ?? -999));
+  $("#vpCount").textContent = `${L.length} 家`;
+  $("#vpList").innerHTML = L.map(vpCard).join("") || `<div class="box empty">沒有符合條件的公司</div>`;
+}
+function vpSpark(vals, color){
+  const v = vals.map(x => x ?? null), xs = v.filter(x => x != null); if (xs.length < 2) return "";
+  const mn = Math.min(...xs, 0), mx = Math.max(...xs), W = 120, H = 34;
+  const pts = v.map((y, i) => y == null ? null : `${(i / (v.length - 1) * W).toFixed(1)},${(H - (y - mn) / (mx - mn || 1) * H).toFixed(1)}`).filter(Boolean).join(" ");
+  return `<svg viewBox="0 0 ${W} ${H + 2}" width="100%" height="36" preserveAspectRatio="none"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2.2" stroke-linejoin="round"/></svg>`;
+}
+function vpCard(x){
+  const b = x.band, lo = Math.min(b.cheap * .8, x.px * .95), hi = Math.max(b.rich * 1.15, x.px * 1.05), X = v => ((v - lo) / (hi - lo) * 100).toFixed(1) + "%";
+  const sub = [["巴菲特品質", x.qB], ["F 分數", x.f / 9 * 100, `${x.f}/9`], ["神奇公式", x.magicP], ["動能", x.momoP], ["價格", x.vS]];
+  const ring = `conic-gradient(${x.score >= 70 ? "#16a34a" : x.score >= 55 ? "#0ea5e9" : "#f59e0b"} ${x.score * 3.6}deg, var(--track) 0)`;
+  return `<div class="vpc">
+    <div class="vpc-h"><span class="rk">${x.rank}</span>
+      <div class="nm"><b>${x.id} ${x.name}</b><small>${x.ind || ""}・${x.mkt || ""}・市值 ${fmt(x.mcap)} 億</small></div>
+      <div class="ring" style="background:${ring}"><span class="num">${Math.round(x.score)}</span></div></div>
+    <div class="vpc-p"><div><small>股價</small><b class="num">${fmt(x.px, 2)}</b> <span class="zp" style="background:${ZC[x.zone]}">${x.zone}</span></div>
+      <div style="text-align:right"><small>安全邊際</small><b class="num" style="color:${(x.mos ?? 0) >= 0 ? "var(--down)" : "var(--up)"}">${x.mos == null ? "—" : (x.mos > 0 ? "+" : "") + x.mos + "%"}</b></div></div>
+    <div class="pband"><div class="seg" style="left:0;width:${X(b.cheap)};background:#bbf7d0"></div><div class="seg" style="left:${X(b.cheap)};width:calc(${X(b.fair)} - ${X(b.cheap)});background:#bae6fd"></div>
+      <div class="seg" style="left:${X(b.fair)};width:calc(${X(b.rich)} - ${X(b.fair)});background:#fde68a"></div><div class="seg" style="left:${X(b.rich)};right:0;background:#fecaca"></div>
+      <i style="left:${X(x.px)}"></i></div>
+    <div class="pbl"><span>便宜 <b class="num">${fmt(b.cheap, 1)}</b></span><span>合理 <b class="num">${fmt(b.fair, 1)}</b></span><span>偏貴 <b class="num">${fmt(b.rich, 1)}</b></span></div>
+    <div class="mknote">正常股價區間＝歷年本益比 ${b.peLo}／${b.peMid}／${b.peHi} 倍 × 近四季 EPS ${x.epsTTM} 元${b.nPE < 4 ? "（歷史本益比資料不足，用一般值）" : ""}；內在價值約 <b>${fmt(x.iv)}</b> 元。</div>
+    <div class="vpk">${[["平均 ROE", x.roeAvg + "%"], ["EPS 年成長", x.gEps == null ? "—" : x.gEps + "%"], [x.fin ? "淨利率" : "毛利率", (x.fin ? x.nmAvg : x.gmAvg) == null ? "—" : (x.fin ? x.nmAvg : x.gmAvg) + "%"], ["負債比", x.debt == null ? "—" : x.debt + "%"], ["本益比", x.peNow == null ? "—" : x.peNow + " 倍"], ["營收年增", x.ryoy == null ? "—" : (x.ryoy > 0 ? "+" : "") + x.ryoy + "%"]].map(([n, val]) => `<div><small>${n}</small><b class="num">${val}</b></div>`).join("")}</div>
+    <div class="vps">${sub.map(([n, s, t]) => `<div><span>${n}</span><span class="tr"><i style="width:${s ?? 0}%"></i></span><b class="num">${t || (s == null ? "—" : Math.round(s))}</b></div>`).join("")}</div>
+    <details class="vpw"><summary>為什麼選它・10 年走勢</summary>
+      <ul>${x.why.map(w => `<li>${w}</li>`).join("")}</ul>
+      <div class="vpsp"><div><small>ROE（%）</small>${vpSpark(x.series.roe, "#7c3aed")}</div><div><small>EPS（元）</small>${vpSpark(x.series.eps, "#16a34a")}</div><div><small>毛利率（%）</small>${vpSpark(x.series.gm, "#f59e0b")}</div></div>
+      <small style="color:var(--sub)">${x.series.years[0]}～${x.series.years[x.series.years.length - 1]}　<a href="https://tw.stock.yahoo.com/quote/${x.id}" target="_blank" rel="noopener">Yahoo 股市看即時走勢 ↗</a></small>
+    </details></div>`;
 }
 
 </script>

@@ -135,6 +135,11 @@ def main():
     # 7. 大盤儀表板(融資/維持率/追繳/法人/期貨/VIX/全球指數),失敗不影響 ETF 資料
     subprocess.run([sys.executable, os.path.join(HERE, "fetch_market.py")])
     subprocess.run([sys.executable, os.path.join(HERE, "build_market_analysis.py")])
+
+    # 8. 巴菲特選股(財報一季更新一次、已抓過的期別會跳過;股價/月營收每天更新)
+    ff = [sys.executable, os.path.join(HERE, "fetch_fundamentals.py")] + (["--refresh-latest"] if TODAY.weekday() == 0 else [])   # 最新一季每週一重抓(補晚交財報的公司)
+    if subprocess.run(ff).returncode == 0:
+        subprocess.run([sys.executable, os.path.join(HERE, "build_value_picks.py")])
     print(f"完成。FinMind 用了 {used}/{BUDGET} 次")
 
 if __name__ == "__main__":
