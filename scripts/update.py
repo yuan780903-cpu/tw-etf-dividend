@@ -137,6 +137,8 @@ def main():
     subprocess.run([sys.executable, os.path.join(HERE, "fetch_breadth.py"), "--keep", "300", "--max", "300"])   # 市場廣度(恐慌度用)
     subprocess.run([sys.executable, os.path.join(HERE, "scan_patterns.py")])   # 線型選股(全市場掃描)
     subprocess.run([sys.executable, os.path.join(HERE, "build_market_analysis.py")])
+    subprocess.run([sys.executable, os.path.join(HERE, "fetch_news.py")])        # 盤勢快訊(標題)
+    subprocess.run([sys.executable, os.path.join(HERE, "fetch_profiles.py"), "--max", "150"])   # 公司檔案輪替更新
 
     # 8. 巴菲特選股(財報一季更新一次、已抓過的期別會跳過;股價/月營收每天更新)
     ff = [sys.executable, os.path.join(HERE, "fetch_fundamentals.py")] + (["--refresh-latest"] if TODAY.weekday() == 0 else [])   # 最新一季每週一重抓(補晚交財報的公司)
