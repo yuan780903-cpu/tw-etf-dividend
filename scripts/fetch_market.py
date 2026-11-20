@@ -156,10 +156,12 @@ GLOBAL = [("^GSPC","美國 標普500","美洲"), ("^IXIC","美國 那斯達克",
           ("^N225","日本 日經225","亞洲"), ("^KS11","韓國 KOSPI","亞洲"), ("^HSI","香港 恆生","亞洲"), ("000001.SS","中國 上證綜合","亞洲"),
           ("^BSESN","印度 SENSEX","亞洲"), ("^STI","新加坡 海峽時報","亞洲"), ("^GDAXI","德國 DAX","歐洲"), ("^FTSE","英國 富時100","歐洲")]
 
+MACRO = [("TWD=X", "美元兌台幣", "匯率"), ("^TNX", "美國 10 年期公債殖利率", "利率"), ("CL=F", "西德州原油", "原物料")]
+
 def fetch_global():
     old = (load("global", {}) or {})
     out = {}
-    for sym, name, reg in GLOBAL:
+    for sym, name, reg in GLOBAL + MACRO:
         rows = dict(old.get(sym, {}).get("rows", []))
         rng = "5y" if (FULL or not rows) else "1mo"
         try:
@@ -174,7 +176,9 @@ def fetch_global():
         out[sym] = dict(name=name, region=reg, ccy=ccy, rows=keep)
         time.sleep(0.8)
     save("global", out)
-    fh.save(os.path.join(DATA, "global.json"), dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), idx=out))
+    msyms = {m[0] for m in MACRO}
+    fh.save(os.path.join(DATA, "global.json"), dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"),
+            idx={k: v for k, v in out.items() if k not in msyms}, macro={k: v for k, v in out.items() if k in msyms}))
     print("全球指數:", ", ".join(f"{v['name']} {len(v['rows'])}天" for v in out.values()))
 
 def main():

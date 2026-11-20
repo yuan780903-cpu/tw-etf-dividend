@@ -417,10 +417,115 @@ for key, sym, nm in (("us", "^GSPC", "標普500"), ("sox", "^SOX", "費城半導
              dict(name=f"{nm}離近一年高點", unit="%", desc="比近一年最高點低多少；跌越深越恐慌。", v=dd_g, p=exp_pct([-x for x in dd_g])),
              dict(name="美股 VIX", unit="", desc="標普500 選擇權隱含的未來 30 天波動；越高越恐慌。", v=vx, p=exp_pct(vx))]
     fear[key] = fear_block("美股大盤" if key == "us" else "費城半導體", nm, gd, gp, comps)
+# ---------- 9. 影響漲跌的關鍵數字(今天 vs 前一天,利多/利空 + 白話) ----------
+def lastn(vals, k=0):
+    xs = [(i, v) for i, v in enumerate(vals) if v is not None]
+    return xs[-1 - k] if len(xs) > k else (None, None)
+def f1(x, n=0, unit=""): return "—" if x is None else f"{x:+,.{n}f}{unit}" if unit in ("億", "口", "張", "點", "%") and x != 0 else f"{x:,.{n}f}{unit}"
+drv = []
+def D_(grp, name, val, chg, sig, why, date=None): drv.append(dict(grp=grp, name=name, val=val, chg=chg, sig=sig, why=why, date=date))
+# 法人現貨
+for key, nm, big in (("fi", "外資", 100), ("it", "投信", 20), ("dl", "自營商", 30)):
+    i, v = lastn(col(key))
+    if v is None: continue
+    s_ = 1 if v > big * .1 else -1 if v < -big * .1 else 0
+    D_("法人資金", f"{nm}買賣超", f"{v:+,.1f} 億", "", s_,
+       (f"{nm}今天{'買超' if v > 0 else '賣超'} {abs(v):,.0f} 億。" + ("外資是台股最大資金，買超通常推升權值股、賣超壓抑指數。" if key == "fi" else
+        "投信是國內基金，連續買超的股票常有表現；季底常有作帳。" if key == "it" else "自營商多為短線與避險，參考性較低。")), D[i])
+i, v = lastn(ffi); _, v0 = lastn(ffi, 1)
+if v is not None:
+    ch = v - v0 if v0 is not None else None
+    D_("期貨籌碼", "外資台指期淨未平倉", f"{v:+,.0f} 口", f"{ch:+,.0f} 口" if ch is not None else "", 1 if (ch or 0) > 3000 else -1 if (ch or 0) < -3000 else 0,
+       f"外資期貨{'淨空' if v < 0 else '淨多'} {abs(v):,.0f} 口，比前一天{'空單增加' if (ch or 0) < 0 else '空單減少'} {abs(ch or 0):,.0f} 口。空單變多＝外資更看空或加強避險；空單大量回補常帶動急漲。", D[i])
+i, v = lastn(col("fit")); _, v0 = lastn(col("fit"), 1)
+if v is not None:
+    D_("期貨籌碼", "投信台指期淨未平倉", f"{v:+,.0f} 口", f"{v - v0:+,.0f} 口" if v0 is not None else "", 0,
+       "投信的期貨多單多半是 ETF（例如槓桿型）避險部位，看方向參考性較低。", D[i])
+# 信用交易
+i, v = lastn(mAmt); _, v0 = lastn(mAmt, 1)
+if v is not None and v0:
+    ch = v - v0; pct = ch / v0 * 100; up = (ret1[i] or 0) > 0
+    sig = 0 if pct <= -2 else (-1 if (not up and ch > 0) else 0)
+    D_("散戶信用", "融資餘額", f"{v:,.0f} 億", f"{ch:+,.0f} 億（{pct:+.1f}%）", sig,
+       ("融資大減：散戶被迫斷頭或主動降槓桿，短線有賣壓，但籌碼會變乾淨。" if pct <= -2 else
+        "指數跌、融資卻增加：散戶逢低攤平，套牢籌碼變多，反彈時容易遇到解套賣壓。" if (not up and ch > 0) else
+        "融資增加、指數上漲：散戶追價，留意過熱。" if ch > 0 else "融資小幅減少，散戶槓桿下降。"), D[i])
+sS = col("sShr"); i, v = lastn(sS); _, v0 = lastn(sS, 1)
+if v is not None and v0:
+    D_("散戶信用", "融券餘額", f"{v:,.0f} 張", f"{v - v0:+,.0f} 張", 0, "融券＝借股票來賣（看空）。融券增加代表空方加碼，但之後回補時也會變成買盤（軋空燃料）。", D[i])
+i, v = lastn(keep)
+if v is not None:
+    D_("散戶信用", "整戶擔保維持率", f"{v:.2f}%", "", 1 if v >= 170 else -1 if v < 160 else 0,
+       f"低於 130% 會被追繳。{'已跌破 160% 危險線，斷頭賣壓明顯。' if v < 160 else '在警戒區。' if v < 170 else '在安全範圍。'}", D[i])
+i, v = lastn(below)
+if v is not None:
+    D_("散戶信用", "追繳戶數", f"{v:,.0f} 戶", "", -1 if v >= 700 else 0 if v >= 300 else 1,
+       f"{'斷頭潮等級：' if v >= 2000 else '異常偏高：' if v >= 700 else ''}被追繳的帳戶若 2 天內沒補錢就會被強制賣出，短線形成賣壓；但斷頭出清後常接近短期底部。", D[i])
+# 市場內部
+txv = col("txV"); i, v = lastn(txv)
+if v:
+    avg = st.mean([x for x in txv[max(0, i - 20):i] if x]); r = v / avg; up = (ret1[i] or 0) > 0
+    D_("市場內部", "成交量", f"{v:,.0f} 億", f"{r:.2f} 倍均量", (1 if up else -1) if r > 1.2 else 0,
+       f"今天成交量是近 20 日平均的 {r:.2f} 倍。" + ("價漲量增：上漲有人跟，比較健康。" if up and r > 1.2 else "價跌量增：急著賣的人多，恐慌或斷頭賣壓。" if (not up) and r > 1.2 else "量能普通。"), D[i])
+BPJ = os.path.join(DATA, "breadth.json")
+if os.path.exists(BPJ):
+    bj = json.load(open(BPJ)); bc = {c: k for k, c in enumerate(bj["cols"])}
+    br_rows = [r_ for r_ in bj["rows"] if len(r_) >= len(bj["cols"])]
+    if br_rows:
+        b = br_rows[-1]
+        D_("市場內部", "上漲／下跌家數", f"{b[bc['adv']]:,} ／ {b[bc['dec']]:,}", "", 1 if b[bc['adv']] > b[bc['dec']] * 1.2 else -1 if b[bc['dec']] > b[bc['adv']] * 1.2 else 0,
+           "上市櫃普通股中上漲和下跌的家數；指數漲但下跌家數多，代表只有少數權值股在撐。", b[0])
+        D_("市場內部", "漲停／跌停家數", f"{b[bc['lu']]:,} ／ {b[bc['ld']]:,}", "", -1 if b[bc['ld']] > max(20, b[bc['lu']] * 2) else 1 if b[bc['lu']] > max(20, b[bc['ld']] * 2) else 0,
+           "跌停家數暴增＝多殺多、恐慌賣壓；漲停家數多＝資金積極追價。", b[0])
+        D_("市場內部", "創 52 週新低家數", f"{b[bc['lowN']]:,} 家", f"5 日平均占 {b[bc['low5']]}%", -1 if (b[bc['low5']] or 0) > 10 else 0,
+           "跌到一年最低價的股票數；越多代表殺盤擴散到大部分股票。", b[0])
+        D_("市場內部", "站上 200 日線比例", f"{b[bc['a200']]}%", "", 1 if (b[bc['a200']] or 0) >= 60 else -1 if (b[bc['a200']] or 0) < 30 else 0,
+           "股價在 200 日均線（長期趨勢）之上的股票比例；低於 20% 屬普遍弱勢，歷史上常出現在恐慌末段。", b[0])
+# 情緒
+for vals, nm in ((vixTw, "台指 VIX"), (vixUs, "美股 VIX")):
+    i, v = lastn(vals); _, v0 = lastn(vals, 1)
+    if v is None: continue
+    D_("市場情緒", nm, f"{v:.2f}", f"{v - v0:+.2f}" if v0 else "", -1 if v >= 30 else 1 if v < 18 else 0,
+       f"{'極度恐慌' if v >= 40 else '恐慌' if v >= 30 else '緊張' if v >= 20 else '平靜'}。VIX 越高代表市場預期震盪越大；短線不利，但極端高點常接近底部。", D[i])
+ft = fear.get("tw")
+if ft: D_("市場情緒", "台股恐慌度", f"{ft['score']}（{ft['level']}）", f"{ft['score'] - ft['prev']:+d}" if ft.get("prev") is not None else "", -1 if (ft["score"] or 0) >= 75 else 1 if (ft["score"] or 0) < 25 else 0,
+          "綜合多項指標的 0～100 分；分數高代表大家很怕，短線賣壓重，但歷史上極度恐慌後半年的表現常比平常好。", ft["date"])
+# 國際
+def gchg(sym, src=None):
+    rows = (src or G["idx"]).get(sym, {}).get("rows", [])
+    return (rows[-1][0], rows[-1][1], (rows[-1][1] / rows[-2][1] - 1) * 100) if len(rows) > 1 else (None, None, None)
+for sym, nm, why in (("^SOX", "費城半導體（前一晚）", "台股權值以半導體為主，費半前一晚漲跌常直接影響台積電等開盤方向。"),
+                     ("^IXIC", "那斯達克（前一晚）", "美國科技股指標，影響台股電子股情緒。"),
+                     ("^GSPC", "標普500（前一晚）", "美國大盤，代表全球風險情緒。"),
+                     ("^N225", "日經225（今天）", "日本股市，和台股同屬亞洲科技供應鏈，相關性最高。"),
+                     ("^KS11", "韓國 KOSPI（今天）", "韓國以半導體、電子為主，和台股走勢高度相關。")):
+    d_, v, c = gchg(sym)
+    if v: D_("國際股市", nm, f"{v:,.0f}", f"{c:+.2f}%", 1 if c > .5 else -1 if c < -.5 else 0, why, d_)
+MAC = G.get("macro", {})
+d_, v, c = gchg("TWD=X", MAC)
+if v: D_("匯率利率", "美元兌台幣", f"{v:.3f}", f"{c:+.2f}%", -1 if c > .15 else 1 if c < -.15 else 0,
+         f"數字變大＝台幣貶值。{'台幣貶值通常代表外資匯出、賣台股。' if c > 0 else '台幣升值通常代表外資匯入、有利台股。'}", d_)
+rows = MAC.get("^TNX", {}).get("rows", [])
+if len(rows) > 1:
+    v, ch = rows[-1][1], rows[-1][1] - rows[-2][1]
+    D_("匯率利率", "美國 10 年期公債殖利率", f"{v:.2f}%", f"{ch * 100:+.0f} 個基點", -1 if ch > .04 else 1 if ch < -.04 else 0,
+       "美債殖利率上升＝資金成本變高，會壓低高本益比科技股的評價；下降則有利成長股。", rows[-1][0])
+d_, v, c = gchg("CL=F", MAC)
+if v: D_("匯率利率", "西德州原油", f"{v:.2f} 美元", f"{c:+.2f}%", -1 if c > 3 else 0,
+         "油價大漲會推升通膨、讓央行更難降息，對股市不利；對塑化、航運等族群影響較大。", d_)
+# 技術面
+t = tech_view
+D_("技術面", "均線位置", f"{fmt_ma(t)}" if False else f"月 {t['ma20']:,.0f}／季 {t['ma60']:,.0f}／年 {t['ma240']:,.0f}", f"離季線 {t['bias60']:+.1f}%",
+   -1 if t["price"] < t["ma60"] else 1, "指數在均線之上＝趨勢向上；跌破季線＝中期轉弱、跌破年線＝長期轉空。乖離太大時容易出現反彈或拉回。", t["date"])
+D_("技術面", "RSI（14 日）", f"{t['rsi']}", "", 1 if t["rsi"] < 30 else -1 if t["rsi"] > 70 else 0,
+   "低於 30＝跌多了（超賣），短線有反彈機會；高於 70＝漲多了（超買）。這是反向訊號，不代表趨勢翻轉。", t["date"])
+D_("技術面", "KD", f"K {t['k']}／D {t['d']}", "", 1 if t["k"] > t["d"] else -1, "K 在 D 之上＝短線轉強；K 低於 20 是超賣區。", t["date"])
+D_("技術面", "MACD 動能", "轉強" if t["macdUp"] else "轉弱", "", 1 if t["macdUp"] else -1, "MACD 柱狀體往上＝下跌（或上漲）力道在改善；往下＝動能轉弱。", t["date"])
+drv_sum = dict(up=sum(1 for x in drv if x["sig"] > 0), dn=sum(1 for x in drv if x["sig"] < 0), flat=sum(1 for x in drv if x["sig"] == 0))
 out = dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), date=D[-1], cards=cards, tech=tech_view,
            base={str(h): base[h] for h in base}, events=events, corr=corr_fwd, global_=glob, quads=quads,
            forecast=fc, score=score, stance=stance, components=comp,
-           support=[dict(name=n, v=v) for n, v in sup], resist=[dict(name=n, v=v) for n, v in res], summary=say, fear=fear)
+           support=[dict(name=n, v=v) for n, v in sup], resist=[dict(name=n, v=v) for n, v in res], summary=say, fear=fear, drivers=drv, drvSum=drv_sum)
 json.dump(out, open(os.path.join(DATA, "market_analysis.json"), "w"), ensure_ascii=False, separators=(",", ":"))
 print("market_analysis.json OK", D[-1], "分數", score, stance)
 print("\n".join(say))

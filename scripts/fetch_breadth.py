@@ -89,9 +89,11 @@ def compute():
     ld, lows, out = collections.deque(maxlen=5), collections.deque(maxlen=5), {}
     for i, f in enumerate(files):
         d = f[:10]; day = json.load(open(os.path.join(RAW, f)))
-        n_low = n_elig = n_up = n_200 = 0
+        n_low = n_elig = n_up = n_200 = adv = dec = lu = 0
         for code, c in day["c"].items():
             h = hist[code]
+            if h:                                      # 今天 vs 前一個交易日
+                p0 = h[-1]; adv += c > p0; dec += c < p0; lu += c >= p0 * 1.095
             if len(h) >= 200:
                 n_elig += 1
                 if c <= min(h): n_low += 1
@@ -103,11 +105,12 @@ def compute():
         lows.append(n_low / n_elig * 100 if n_elig else None)
         if i >= 252 and n_elig > 500:                  # 前 252 天只用來暖機
             m = lambda q: round(st.mean([x for x in q if x is not None]), 2) if any(x is not None for x in q) else None
-            out[d] = [d, m(ld), m(lows), round(n_up / n_200 * 100, 1) if n_200 else None]
+            out[d] = [d, m(ld), m(lows), round(n_up / n_200 * 100, 1) if n_200 else None,
+                      adv, dec, lu, (day.get("dnT") or 0) + (day.get("dnO") or 0), n_low]
     old.update(out)
     rows = sorted(old.values())
-    fh.save(OUT, dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), cols=["d", "ld5", "low5", "a200"], rows=rows,
-                      note="ld5=跌停家數比例5日平均%;low5=創52週新低比例5日平均%;a200=站上200日線比例%(上市櫃普通股)"))
+    fh.save(OUT, dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), cols=["d", "ld5", "low5", "a200", "adv", "dec", "lu", "ld", "lowN"], rows=rows,
+                      note="ld5=跌停家數比例5日平均%;low5=創52週新低比例5日平均%;a200=站上200日線比例%;adv/dec=上漲/下跌家數;lu=漲停(漲幅≥9.5%);ld=跌停家數;lowN=當日創52週新低家數(上市櫃普通股)"))
     print(f"breadth.json: {len(rows)} 天" + (f",最新 {rows[-1]}" if rows else ""))
 
 if __name__ == "__main__":
