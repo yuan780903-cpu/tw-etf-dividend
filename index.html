@@ -548,6 +548,30 @@ td.r,th.r{text-align:right}
 @media(max-width:900px){.vp-hero{grid-template-columns:1fr}}
 @media(max-width:700px){.vp-list{grid-template-columns:1fr}.vp-hero h2{font-size:22px}}
 
+/* ===== 恐慌度 / 儀表板導覽 ===== */
+.mk-nav{position:sticky;top:84px;z-index:40;display:flex;gap:6px;overflow-x:auto;padding:8px;background:var(--glass);backdrop-filter:blur(10px);border-radius:16px;box-shadow:var(--shadow);scrollbar-width:none}
+.mk-nav::-webkit-scrollbar{display:none}
+.mk-nav button{border:0;background:var(--bg);border-radius:10px;padding:8px 12px;font:inherit;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;white-space:nowrap}
+.mk-nav button:hover{background:var(--sel);color:var(--selink)}
+@media(max-width:700px){.mk-nav{top:0;border-radius:0 0 14px 14px;margin:0 -12px}}
+.fr-top{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:20px;margin-top:10px}
+.fr-g{text-align:center}
+.fr-s{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:-6px}
+.fr-s b{font-size:52px;font-weight:900;line-height:1}
+.fr-s span{color:#fff;font-weight:900;font-size:18px;border-radius:12px;padding:6px 14px}
+.fr-cmp{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}
+.fr-cmp div{background:var(--bg);border-radius:12px;padding:8px 4px}
+.fr-cmp small{display:block;font-size:11.5px;color:var(--sub)}
+.fr-cmp b{font-size:20px;font-weight:800}
+.fr-bar{height:10px;background:var(--track);border-radius:5px;overflow:hidden;min-width:90px;display:inline-block;width:calc(100% - 34px);vertical-align:middle;margin-right:6px}
+.fr-bar i{display:block;height:100%;border-radius:5px}
+.fr-ref{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;font-size:13px;align-items:center}
+.fr-ref span{background:var(--bg);border-radius:10px;padding:6px 10px}
+.fr-ref small{display:block;font-size:11px;color:var(--sub)}
+@media(max-width:900px){.fr-top{grid-template-columns:1fr}}
+.fc2>*,.fr-top>*,.mk-hero>*{min-width:0}
+@media(max-width:700px){.mk .chart{overflow-x:auto;-webkit-overflow-scrolling:touch}.mk .chart>svg{min-width:640px}}
+@media(max-width:700px){.fr-c .ev td:first-child small{display:none}.fr-bar{min-width:60px}}
 /* ===== 骨架載入 ===== */
 .sk{background:linear-gradient(90deg,var(--track) 25%,var(--skhi) 37%,var(--track) 63%);background-size:400% 100%;animation:sk 1.3s ease infinite;border-radius:12px}
 .sk-cat{height:60px;border-radius:18px}
@@ -1550,7 +1574,8 @@ function renderMkt(){
   const {a} = MK, t = a.tech, f = a.forecast;
   const stCol = a.score >= 12 ? "#16a34a" : a.score > -12 ? "#64748b" : "#dc2626";
   $("#mkt").innerHTML = `<div class="mk">
-  <div class="mk-hero">
+  <nav class="mk-nav" id="mkNav">${[["mk-sum", "🧭 總結"], ["mk-fear", "😱 恐慌度"], ["mk-fc", "🎯 區間"], ["mk-cards", "🚦 燈號"], ["mk-chart", "📈 疊圖"], ["mk-glob", "🌏 全球"], ["mk-det", "📋 明細"], ["mk-ev", "🔬 回測"]].map(([id, n]) => `<button data-to="${id}">${n}</button>`).join("")}</nav>
+  <div class="mk-hero" id="mk-sum">
     <div class="mk-px"><small>加權指數 ・ ${t.date} 收盤</small>
       <div class="v num">${fmt(t.price, 2)}</div>
       <div class="c num">${t.chg >= 0 ? "▲" : "▼"} ${sgn(t.chg)}%　｜　比近 3 個月高點 ${fmt(t.dd60, 1)}%</div>
@@ -1566,7 +1591,10 @@ function renderMkt(){
     <div class="box"><h2 class="sec">🧭 白話總結 <small>每天收盤後自動更新</small></h2><ul class="mk-say" style="margin-top:10px">${a.summary.map(s => `<li>${s}</li>`).join("")}</ul></div>
   </div>
 
-  <div class="box"><h2 class="sec">🎯 接下來大盤可能走到哪裡 <small>深色＝大部分情況會落在這裡（約 7 成機率）；淺色＝很極端時的範圍（約 95%）</small></h2>
+  <div class="box" id="mk-fear"><h2 class="sec">😱 市場恐慌度 <small>0＝近 5 年最平靜、100＝最恐慌；每天收盤後自動更新</small></h2>
+    <div class="ctool"><div class="chips" id="fearTabs"></div></div><div id="fearBody"></div></div>
+
+  <div class="box" id="mk-fc"><h2 class="sec">🎯 接下來大盤可能走到哪裡 <small>深色＝大部分情況會落在這裡（約 7 成機率）；淺色＝很極端時的範圍（約 95%）</small></h2>
     <div class="fc2">${[["未來 1 週", f.w1], ["未來 1 個月", f.m1]].map(([n, b]) => fbar(n, b, t.price)).join("")}</div>
     <p class="mknote">目前市場一年的震盪幅度約 ±${f.sigmaAnn}%（平常約 ±15～20%），震盪越大、區間就越寬。這個區間用過去 5 年資料驗證過：實際落在深色範圍的機率約 68%、淺色約 95%。</p>
     <div class="fc2" style="margin-top:14px">
@@ -1579,26 +1607,26 @@ function renderMkt(){
     </div>
   </div>
 
-  <div><h2 class="sec">🚦 9 大指標燈號 <small>🟢 正常　🟡 留意　🔴 異常；點「白話說明」看基準值、偏高偏低代表什麼</small></h2>
+  <div id="mk-cards"><h2 class="sec">🚦 9 大指標燈號 <small>🟢 正常　🟡 留意　🔴 異常；點「白話說明」看基準值、偏高偏低代表什麼</small></h2>
     <div class="icards" style="margin-top:12px">${a.cards.map(icard).join("")}</div></div>
 
-  <div class="box"><h2 class="sec">📈 大盤 × 籌碼疊圖 <small>灰線＝加權指數（左軸），彩色＝疊加指標（右軸）</small></h2>
+  <div class="box" id="mk-chart"><h2 class="sec">📈 大盤 × 籌碼疊圖 <small>灰線＝加權指數（左軸），彩色＝疊加指標（右軸）</small></h2>
     <div class="ctool"><div class="chips" id="ovChips"></div></div>
     <div class="ctool"><div class="chips" id="rgChips"></div></div>
     <div class="chart" id="mkChart"></div><p class="mknote" id="ovNote"></p></div>
 
-  <div class="box"><h2 class="sec">🌏 全球股市對照 <small>點表格列可加入／移出下方比較圖；美股與台股的相關性以「前一晚美股 → 隔天台股」計算</small></h2>
+  <div class="box" id="mk-glob"><h2 class="sec">🌏 全球股市對照 <small>點表格列可加入／移出下方比較圖；美股與台股的相關性以「前一晚美股 → 隔天台股」計算</small></h2>
     <div class="scrollx" style="max-height:none"><table class="gtab ev"><tr><th>指數</th><th class="r">最新</th><th class="r">1 日</th><th class="r">1 週</th><th class="r">1 月</th><th class="r">3 月</th><th class="r">1 年</th><th class="r">今年</th><th class="r">與台股相關</th></tr>
     ${a.global_.map(x => `<tr data-g="${x.sym}" class="${x.sym == "TAIEX" ? "tw" : ""} ${gSel.includes(x.sym) ? "sel" : ""}"><td>${x.name}<br><small style="color:var(--sub)">${x.date}</small></td><td class="r num">${fmt(x.last, 2)}</td>${["d1", "w1", "m1", "m3", "y1", "ytd"].map(k => `<td class="r num ${pc(x[k])}">${sgn(x[k], 1)}%</td>`).join("")}<td class="r num">${x.corr1y != null ? fmt(x.corr1y, 2) : "—"}</td></tr>`).join("")}</table></div>
     <div class="ctool"><div class="chips" id="gChips"></div></div>
     <div class="chart" id="gChart"></div></div>
 
-  <div class="box"><h2 class="sec">📋 5 年每日明細 <small>紅底＝異常日（追繳戶數 ≥ 700 或整戶維持率 < 160%）；紅線＝由正常轉為異常的分界</small></h2>
+  <div class="box" id="mk-det"><h2 class="sec">📋 5 年每日明細 <small>紅底＝異常日（追繳戶數 ≥ 700 或整戶維持率 < 160%）；紅線＝由正常轉為異常的分界</small></h2>
     <div class="dctl" id="dctl">${[["1m", "近 1 月"], ["3m", "近 3 月"], ["1y", "近 1 年"], ["5y", "5 年"], ["ab", "只看異常日"]].map(([k, n]) => `<button data-r="${k}">${n}</button>`).join("")}
       <input type="date" id="dFrom"> ～ <input type="date" id="dTo"><button class="csv" id="dCsv">⬇ 匯出 CSV</button></div>
     <div class="scrollx" id="dWrap"></div><p class="mknote" id="dNote"></p></div>
 
-  <div class="box"><h2 class="sec">🔬 歷史上發生同樣情況後，大盤怎麼走 <small>過去 5 年統計；5 天≈1 週、20 天≈1 個月、60 天≈1 季；10 天內重複發生只算一次</small></h2>
+  <div class="box" id="mk-ev"><h2 class="sec">🔬 歷史上發生同樣情況後，大盤怎麼走 <small>過去 5 年統計；5 天≈1 週、20 天≈1 個月、60 天≈1 季；10 天內重複發生只算一次</small></h2>
     <div class="scrollx" style="max-height:none"><table class="ev"><tr><th>情況</th><th class="r">次數</th><th class="r">5 天平均</th><th class="r">20 天平均</th><th class="r">20 天上漲機率</th><th class="r">20 天最差</th><th class="r">60 天平均</th><th>最近一次</th></tr>
     <tr><td><b>平常（任何一天）</b></td><td class="r">—</td>${evc(a.base["5"])}${evc(a.base["20"], 1)}${evc(a.base["60"])}<td></td></tr>
     ${a.events.map(e => `<tr class="${e.active ? "on" : ""}"><td>${e.name} ${e.active ? `<span class="tag on">目前成立</span>` : ""}${e.small ? ` <span class="tag sm">樣本少</span>` : ""}</td><td class="r num">${e.episodes}</td>${evc(e.h5)}${evc(e.h20, 1)}${evc(e.h60)}<td>${e.lastDate || "—"}</td></tr>`).join("")}</table></div>
@@ -1614,7 +1642,9 @@ function renderMkt(){
 
   <p class="mknote">資料來源：臺灣證券交易所（臺股儀表板、信用交易統計）、臺灣期貨交易所（台指 VIX）、FinMind（三大法人、期貨未平倉）、Yahoo Finance（全球指數、美股 VIX）。融資相關為上市資料。所有區間、分數與機率皆為歷史統計推估，不構成任何投資建議。</p>
   </div>`;
-  mkChartUI(); gChartUI(); detailUI();
+  mkChartUI(); gChartUI(); detailUI(); if (MK.a.fear) fearUI(); else $("#mk-fear").remove();
+  $("#mkNav").onclick = e => { const b = e.target.closest("[data-to]"); if (!b) return; const el = document.getElementById(b.dataset.to);
+    if (el) window.scrollTo({top: el.getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 70), behavior: "smooth"}); };
 }
 function fbar(name, b, px){
   const lo = b.lo95, hi = b.hi95, X = v => ((v - lo) / (hi - lo) * 100).toFixed(2) + "%";
@@ -1843,6 +1873,86 @@ function vpCard(x){
       <small style="color:var(--sub)">${x.series.years[0]}～${x.series.years[x.series.years.length - 1]}　<a href="https://tw.stock.yahoo.com/quote/${x.id}" target="_blank" rel="noopener">Yahoo 股市看即時走勢 ↗</a></small>
     </details></div>`;
 }
+
+/* ---------- 市場恐慌度 ---------- */
+let fearKey = "tw", fearRange = 250;
+const FZ = [[25, "平靜", "#22c55e"], [50, "正常", "#84cc16"], [75, "緊張", "#f59e0b"], [90, "恐慌", "#f97316"], [101, "極度恐慌", "#dc2626"]];
+const fzc = x => x == null ? "#94a3b8" : FZ.find(z => x < z[0])[2];
+function fearUI(){
+  const F = MK.a.fear || {};
+  $("#fearTabs").innerHTML = [["tw", "台股"], ["us", "美股大盤"], ["sox", "費城半導體"]].filter(([k]) => F[k]).map(([k, n]) =>
+    `<span class="chip ${fearKey == k ? "on" : ""}" data-k="${k}">${n} <b class="num" style="color:${fearKey == k ? "inherit" : fzc(F[k].score)}">${F[k].score ?? "—"}</b></span>`).join("");
+  $("#fearTabs").onclick = e => { const c = e.target.closest("[data-k]"); if (c) { fearKey = c.dataset.k; fearUI(); } };
+  const f = F[fearKey]; if (!f) return;
+  const diff = (a, b) => a == null || b == null ? "" : a > b ? `<span style="color:#dc2626">▲${a - b}</span>` : a < b ? `<span style="color:#16a34a">▼${b - a}</span>` : "持平";
+  $("#fearBody").innerHTML = `
+  <div class="fr-top">
+    <div class="fr-g">${fearGauge(f.score)}
+      <div class="fr-s"><b class="num" style="color:${fzc(f.score)}">${f.score ?? "—"}</b><span style="background:${fzc(f.score)}">${f.level || "—"}</span></div>
+      <div class="fr-cmp">${[["前一日", f.prev], ["一週前", f.w1], ["一個月前", f.m1], ["三個月前", f.m3]].map(([n, v]) => `<div><small>${n}</small><b class="num" style="color:${fzc(v)}">${v ?? "—"}</b></div>`).join("")}</div>
+      <p class="mknote">${f.idx} ${f.date} 收盤；比前一日 ${diff(f.score, f.prev) || "—"}。0＝近 5 年最平靜、100＝最恐慌。</p></div>
+    <div class="fr-c"><table class="ev"><tr><th>計入總分的指標</th><th class="r">現在</th><th>恐慌位置（0～100）</th><th class="r">一週前</th></tr>
+      ${f.comps.map(c => `<tr><td><b>${c.name}</b><br><small style="color:var(--sub)">${c.desc}</small></td><td class="r num">${c.value == null ? "—" : fmt(c.value, Math.abs(c.value) >= 1000 ? 0 : 1)}${c.unit}</td>
+        <td><div class="fr-bar"><i style="width:${c.pct ?? 0}%;background:${fzc(c.pct)}"></i></div><b class="num" style="font-size:12px">${c.pct ?? "—"}</b></td><td class="r num" style="color:${fzc(c.w1)}">${c.w1 ?? "—"}</td></tr>`).join("")}</table>
+      ${f.refs && f.refs.length ? `<div class="fr-ref"><b>參考（不計入總分）</b>${f.refs.map(r => `<span>${r.name} <b class="num">${r.value == null ? "—" : fmt(r.value, Math.abs(r.value) >= 1000 ? 0 : 2)}${r.unit}</b><small>${r.note}</small></span>`).join("")}</div>` : ""}
+      <p class="mknote">算法：每個指標先看「今天的數值在之前近 5 年排第幾百分位」，方向統一成越高越恐慌（例如融資維持率越低越恐慌就反過來算），再把各項平均成總分。各指標權重相同。</p></div>
+  </div>
+  <div class="ctool"><div class="chips" id="fearRg">${[[250, "1 年"], [750, "3 年"], [99999, "全部"]].map(([k, n]) => `<span class="chip ${fearRange == k ? "on" : ""}" data-r="${k}">${n}</span>`).join("")}</div>
+    <span class="mknote">底色：橘＝恐慌（75 以上）、紅＝極度恐慌（90 以上）；紅點＝每一次進入極度恐慌。滑過圖可看那天之後 1 個月、3 個月的漲跌。</span></div>
+  <div class="chart" id="fearChart"></div>
+  <div class="fc2" style="margin-top:14px">
+    <div><b style="font-size:15px">過去在各恐慌區間，${f.idx}之後怎麼走</b>
+      <div class="scrollx" style="max-height:none"><table class="ev"><tr><th>區間</th><th class="r">天數</th><th class="r">1 個月後<br><small>中位數／上漲比例</small></th><th class="r">3 個月後</th><th class="r">6 個月後</th></tr>
+      ${f.zones.map(z => `<tr${z.name == f.level ? ' class="on"' : ""}><td><span class="dot" style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${z.name == "所有交易日" ? "#94a3b8" : FZ.find(x => x[1] == z.name)[2]}"></span> ${z.name}${z.name == f.level ? ' <span class="tag on">現在</span>' : ""}</td><td class="r num">${z.days}</td>${["r20", "r60", "r120"].map(k => `<td class="r num ${pc(z[k] && z[k].med)}">${z[k] ? `${sgn(z[k].med, 1)}%／${z[k].win}%` : "—"}</td>`).join("")}</tr>`).join("")}</table></div>
+      <p class="mknote">統計期間 ${f.since} 起（每個指標要先累積半年資料才開始算分）；天數少的區間只能參考。報酬不含股利。</p></div>
+    <div><b style="font-size:15px">歷次「極度恐慌」</b>
+      <div class="scrollx" style="max-height:none"><table class="ev"><tr><th>進入日</th><th class="r">分數</th><th class="r">當時離高點</th><th class="r">之後最多再跌</th><th class="r">1 個月後</th><th class="r">3 個月後</th><th class="r">6 個月後</th></tr>
+      ${f.episodes.slice().reverse().map(e => `<tr><td>${e.d}</td><td class="r num" style="color:#dc2626">${e.score}</td><td class="r num">${fmt(e.dd, 1)}%</td><td class="r num neg">${e.maxDrop == null ? "—" : fmt(e.maxDrop, 1) + "%"}</td>${["r20", "r60", "r120"].map(k => `<td class="r num ${pc(e[k])}">${e[k] == null ? "尚未到期" : sgn(e[k], 1) + "%"}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="7" class="empty">這段期間沒有出現過</td></tr>`}</table></div>
+      <p class="mknote">「之後最多再跌」＝進入極度恐慌後 6 個月內，最低點比當天再低多少；越接近 0 代表當時已接近底部。</p></div>
+  </div>`;
+  $("#fearRg").onclick = e => { const c = e.target.closest("[data-r]"); if (c) { fearRange = +c.dataset.r; fearUI(); } };
+  fearChart($("#fearChart"), f, fearRange);
+}
+function fearGauge(v){
+  const cx = 110, cy = 105, R = 88, arc = (a0, a1, col) => { const p = a => [cx - R * Math.cos(a / 100 * Math.PI), cy - R * Math.sin(a / 100 * Math.PI)];
+    const [x0, y0] = p(a0), [x1, y1] = p(a1); return `<path d="M${x0},${y0} A${R},${R} 0 0 1 ${x1},${y1}" stroke="${col}" stroke-width="18" fill="none"/>`; };
+  let g = ""; let a = 0; FZ.forEach(([t, , c]) => { const b = Math.min(100, t); g += arc(a + .6, b - .6, c); a = b; });
+  const ang = (v ?? 0) / 100 * Math.PI, nx = cx - (R - 22) * Math.cos(ang), ny = cy - (R - 22) * Math.sin(ang);
+  return `<svg viewBox="0 0 220 120" width="100%" style="max-width:300px;display:block;margin:0 auto">${g}
+    <line x1="${cx}" y1="${cy}" x2="${nx}" y2="${ny}" style="stroke:var(--ink)" stroke-width="5" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="8" style="fill:var(--ink)"/>
+    <text x="16" y="118" font-size="10" style="fill:var(--sub)">平靜</text><text x="204" y="118" font-size="10" text-anchor="end" style="fill:var(--sub)">極度恐慌</text></svg>`;
+}
+function fearChart(el, f, range){
+  const S = f.series, n0 = Math.max(0, S.d.length - range), d = S.d.slice(n0), px = S.px.slice(n0), fv = S.f.slice(n0), n = d.length;
+  if (n < 2) { el.innerHTML = ""; return; }
+  const W = 900, H1 = 230, H2 = 90, G = 18, P = {l: 56, r: 14, t: 8}, H = P.t + H1 + G + H2 + 24;
+  const X = i => P.l + i / (n - 1) * (W - P.l - P.r);
+  const lp = px.map(Math.log), mn = Math.min(...lp), mx = Math.max(...lp);
+  const Y1 = v => P.t + (1 - (Math.log(v) - mn) / (mx - mn || 1)) * H1, Y2 = v => P.t + H1 + G + (1 - v / 100) * H2;
+  const w = (W - P.l - P.r) / n + .6;
+  let g = "";
+  fv.forEach((v, i) => { if (v != null && v >= 75) g += `<rect x="${X(i) - w / 2}" y="${P.t}" width="${w}" height="${H1}" fill="${v >= 90 ? "rgba(220,38,38,.20)" : "rgba(249,115,22,.14)"}"/>`; });
+  [0, .25, .5, .75, 1].forEach(t => { const v = Math.exp(mn + t * (mx - mn)); g += `<line x1="${P.l}" x2="${W - P.r}" y1="${Y1(v)}" y2="${Y1(v)}" style="stroke:var(--line)"/><text x="${P.l - 6}" y="${Y1(v) + 4}" font-size="11" text-anchor="end" style="fill:var(--sub)">${fmt(v)}</text>`; });
+  g += `<path d="${px.map((v, i) => `${i ? "L" : "M"}${X(i).toFixed(1)},${Y1(v).toFixed(1)}`).join("")}" fill="none" style="stroke:var(--ink)" stroke-width="1.8"/>`;
+  const epd = new Set(f.episodes.map(e => e.d));
+  d.forEach((dd, i) => { if (epd.has(dd)) g += `<circle cx="${X(i)}" cy="${Y1(px[i])}" r="5.5" fill="#dc2626" stroke="#fff" stroke-width="1.5"/>`; });
+  FZ.reduce((a, [t, , c]) => { const b = Math.min(100, t); g += `<rect x="${P.l}" y="${Y2(b)}" width="${W - P.l - P.r}" height="${Y2(a) - Y2(b)}" fill="${c}" opacity=".10"/>`; return b; }, 0);
+  [0, 25, 50, 75, 90, 100].forEach(v => g += `<text x="${P.l - 6}" y="${Y2(v) + 4}" font-size="10" text-anchor="end" style="fill:var(--sub)">${v}</text>`);
+  for (let i = 1; i < n; i++) if (fv[i] != null && fv[i - 1] != null) g += `<line x1="${X(i - 1)}" y1="${Y2(fv[i - 1])}" x2="${X(i)}" y2="${Y2(fv[i])}" stroke="${fzc(fv[i])}" stroke-width="2"/>`;
+  const step = Math.max(1, Math.round(n / 7));
+  d.forEach((dd, i) => { if (i % step == 0) g += `<text x="${X(i)}" y="${H - 6}" font-size="11" text-anchor="middle" style="fill:var(--sub)">${n > 400 ? dd.slice(0, 7) : dd.slice(5).replace("-", "/")}</text>`; });
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%">${g}<line class="hv" y1="${P.t}" y2="${H - 22}" style="stroke:var(--ink)" opacity="0"/><rect class="hit" x="${P.l}" y="0" width="${W - P.l - P.r}" height="${H}" fill="transparent"/></svg>`;
+  const svg = el.querySelector("svg"), hv = el.querySelector(".hv"), tip = $("#tip"), all = S.px, off = n0;
+  const show = ev => { const r = svg.getBoundingClientRect(), cx = ev.touches ? ev.touches[0].clientX : ev.clientX, x = (cx - r.left) / r.width * W;
+    const i = Math.max(0, Math.min(n - 1, Math.round((x - P.l) / (W - P.l - P.r) * (n - 1)))), k = i + off;
+    const fw = h => k + h < all.length ? sgn((all[k + h] / all[k] - 1) * 100, 1) + "%" : "尚未到期";
+    hv.setAttribute("x1", X(i)); hv.setAttribute("x2", X(i)); hv.setAttribute("opacity", .35);
+    tip.style.display = "block"; tip.style.left = Math.min(cx + 14, innerWidth - 230) + "px"; tip.style.top = ((ev.touches ? ev.touches[0].clientY : ev.clientY) - 10) + "px";
+    tip.innerHTML = `${d[i]}　${f.idx} ${fmt(px[i], 0)}<br>恐慌度 <b style="color:${fzc(fv[i])}">${fv[i] ?? "—"}</b>（${lvl(fv[i]) || "—"}）<br>之後 1 個月 ${fw(20)}、3 個月 ${fw(60)}`; };
+  const hide = () => { tip.style.display = "none"; hv.setAttribute("opacity", 0); };
+  const hit = el.querySelector(".hit"); hit.onmousemove = show; hit.onmouseleave = hide; hit.ontouchmove = show; hit.ontouchend = hide;
+}
+const lvl = x => x == null ? null : FZ.find(z => x < z[0])[1];
 
 </script>
 </body>

@@ -323,10 +323,94 @@ for e in active[:4]:
 say.append(f"綜合多空分數 {score:+d}（-100 最空 ～ +100 最多），判讀：{stance}。")
 say.append("以上為歷史資料統計推估，不構成任何投資建議。")
 
+# ---------- 8. 市場恐慌度(0~100):各指標在「之前近 5 年」的百分位,方向統一成越高越恐慌,等權平均 ----------
+import bisect
+def exp_pct(vals, minn=120, win=1250):
+    out, hist, srt = [], [], []
+    for v in vals:
+        if v is None: out.append(None); continue
+        bisect.insort(srt, v); hist.append(v)
+        if len(hist) > win: old = hist.pop(0); srt.pop(bisect.bisect_left(srt, old))
+        out.append(None if len(hist) < minn else bisect.bisect_right(srt, v) / len(srt) * 100)
+    return out
+def rv_series(px, n=20):
+    out = []
+    for i in range(len(px)):
+        xs = [math.log(px[k] / px[k - 1]) for k in range(max(1, i - n + 1), i + 1)]
+        out.append(st.pstdev(xs) * math.sqrt(252) * 100 if len(xs) >= 10 else None)
+    return out
+def dd_series(px, n=252): return [(px[i] / max(px[max(0, i - n + 1):i + 1]) - 1) * 100 for i in range(len(px))]
+def ffill(dates, src):
+    out, lastv, ks, j = [], None, sorted(src), 0
+    for d in dates:
+        while j < len(ks) and ks[j] <= d: lastv = src[ks[j]]; j += 1
+        out.append(lastv)
+    return out
+LEVELS = [(25, "平靜"), (50, "正常"), (75, "緊張"), (90, "恐慌"), (101, "極度恐慌")]
+def lvl(x): return None if x is None else next(n for t, n in LEVELS if x < t)
+def fear_block(name, idx_name, dates, px, comps, refs=()):
+    n = len(dates); P = [c["p"] for c in comps]
+    score = []
+    for i in range(n):
+        xs = [p[i] for p in P if p[i] is not None]
+        score.append(round(st.mean(xs)) if len(xs) >= max(3, len(comps) - 2) else None)
+    def ago(k): return score[-1 - k] if len(score) > k and score[-1 - k] is not None else None
+    def fw(i, h): return (px[i + h] / px[i] - 1) * 100 if i + h < n else None
+    def zst(idx):
+        o = {"days": len(idx)}
+        for h in (20, 60, 120):
+            xs = [fw(i, h) for i in idx if fw(i, h) is not None]
+            o[f"r{h}"] = dict(n=len(xs), med=r2(st.median(xs), 1), win=r2(sum(x > 0 for x in xs) / len(xs) * 100, 0)) if xs else None
+        return o
+    zones = [dict(name="所有交易日", **zst([i for i in range(n) if score[i] is not None]))]
+    for t, nm in LEVELS: zones.append(dict(name=nm, **zst([i for i in range(n) if lvl(score[i]) == nm])))
+    dd = dd_series(px); eps, last_hi = [], -999
+    for i in range(n):
+        if score[i] is not None and score[i] >= 90:
+            if i - last_hi > 20:                     # 離開極度恐慌 20 天以上再進來,才算新的一次
+                fut = px[i:i + 121]
+                eps.append(dict(d=dates[i], score=score[i], px=round(px[i]), dd=r2(dd[i], 1), maxDrop=r2((min(fut) / px[i] - 1) * 100, 1) if len(fut) > 1 else None,
+                                r20=r2(fw(i, 20), 1), r60=r2(fw(i, 60), 1), r120=r2(fw(i, 120), 1)))
+            last_hi = i
+    cs = []
+    for c in comps:
+        v, p = c["v"], c["p"]
+        cs.append(dict(name=c["name"], desc=c["desc"], unit=c["unit"], value=r2(last(v)[0], c.get("nd", 1)), pct=r2(last(p)[0], 0),
+                       prev=r2(p[-2], 0) if len(p) > 1 and p[-2] is not None else None, w1=r2(p[-6], 0) if len(p) > 5 and p[-6] is not None else None))
+    k0 = next((i for i in range(n) if score[i] is not None), 0)
+    return dict(name=name, idx=idx_name, date=dates[-1], score=score[-1], level=lvl(score[-1]), prev=ago(1), w1=ago(5), m1=ago(21), m3=ago(63),
+                comps=cs, refs=[dict(name=a, value=b, unit=u, note=nt) for a, b, u, nt in refs], zones=zones, episodes=eps,
+                series=dict(d=dates[k0:], px=[round(x, 2) for x in px[k0:]], f=score[k0:]), since=dates[k0])
+
+# 台股:6 項計分
+dd_tw = dd_series(TX)
+tw_comps = [
+    dict(name="加權指數 20 日實際波動", unit="%", desc="最近 20 天每天漲跌的劇烈程度（年化）；震得越兇越恐慌。", v=RV, p=exp_pct(RV)),
+    dict(name="加權指數離近一年高點", unit="%", desc="收盤比近一年最高點低多少；跌越深越恐慌。", v=dd_tw, p=exp_pct([-x for x in dd_tw])),
+    dict(name="估算融資維持率", unit="%", desc="融資戶抵押股票市值 ÷ 借款（證交所資料自算）；越低越接近追繳、越恐慌。", v=mKeep, p=[None if x is None else 100 - x for x in exp_pct(mKeep)]),
+    dict(name="外資近 5 日買賣超", unit="億", nd=0, desc="外資最近 5 天現股買賣超合計；賣得越多越恐慌。", v=fi5, p=[None if x is None else 100 - x for x in exp_pct(fi5)]),
+    dict(name="外資台指期淨未平倉", unit="口", nd=0, desc="外資期貨多單減空單；空單越多代表避險越重、越恐慌。", v=ffi, p=[None if x is None else 100 - x for x in exp_pct(ffi)]),
+    dict(name="美股 VIX（前一晚）", unit="", desc="全球資金的恐慌溫度計；越高越恐慌。", v=vixUs, p=exp_pct(vixUs)),
+]
+tw_refs = [("台指 VIX", r2(last(vixTw)[0]), "", "期交所只公開近幾個月，累積滿 1 年後再計入總分"),
+           ("整戶擔保維持率", r2(last(keep)[0]), "%", "官方 2026/8 起才有資料"),
+           ("追繳戶數", last(below)[0], "戶", "官方 2026/8 起才有資料")]
+fear = {"tw": fear_block("台股", "加權指數", D, TX, tw_comps, tw_refs)}
+# 美股 / 費半:實際波動、離一年高點、VIX 三項
+vus_raw = json.load(open(os.path.join(DATA, "market", "raw_vixus.json")))
+for key, sym, nm in (("us", "^GSPC", "標普500"), ("sox", "^SOX", "費城半導體")):
+    rows = G["idx"].get(sym, {}).get("rows", [])
+    if len(rows) < 300: continue
+    gd, gp = [d for d, _ in rows], [v for _, v in rows]
+    rv_g, dd_g, vx = rv_series(gp), dd_series(gp), ffill(gd, vus_raw)
+    comps = [dict(name=f"{nm} 20 日實際波動", unit="%", desc="最近 20 天震盪幅度（年化）；越大越恐慌。", v=rv_g, p=exp_pct(rv_g)),
+             dict(name=f"{nm}離近一年高點", unit="%", desc="比近一年最高點低多少；跌越深越恐慌。", v=dd_g, p=exp_pct([-x for x in dd_g])),
+             dict(name="美股 VIX", unit="", desc="標普500 選擇權隱含的未來 30 天波動；越高越恐慌。", v=vx, p=exp_pct(vx))]
+    fear[key] = fear_block("美股大盤" if key == "us" else "費城半導體", nm, gd, gp, comps)
 out = dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), date=D[-1], cards=cards, tech=tech_view,
            base={str(h): base[h] for h in base}, events=events, corr=corr_fwd, global_=glob, quads=quads,
            forecast=fc, score=score, stance=stance, components=comp,
-           support=[dict(name=n, v=v) for n, v in sup], resist=[dict(name=n, v=v) for n, v in res], summary=say)
+           support=[dict(name=n, v=v) for n, v in sup], resist=[dict(name=n, v=v) for n, v in res], summary=say, fear=fear)
 json.dump(out, open(os.path.join(DATA, "market_analysis.json"), "w"), ensure_ascii=False, separators=(",", ":"))
 print("market_analysis.json OK", D[-1], "分數", score, stance)
 print("\n".join(say))
