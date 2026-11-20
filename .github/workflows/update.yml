@@ -36,4 +36,8 @@ jobs:
           git add data
           if git diff --cached --quiet; then echo "沒有新資料"; exit 0; fi
           git commit -m "資料更新 $(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M')"
-          git push
+          for i in 1 2 3; do                 # 執行期間若有人推了新程式,先合併再推(資料以這次為準)
+            git pull --rebase -X theirs origin main && git push && exit 0
+            sleep 10
+          done
+          exit 1
