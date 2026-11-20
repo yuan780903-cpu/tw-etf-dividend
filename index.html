@@ -4,7 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1a2fd8">
-<title>ETF 月配息規劃</title>
+<title>ETF 月配息規劃｜配息日曆・巴菲特選股・大盤恐慌度</title>
+<meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ETF 月配息規劃｜配息日曆・巴菲特選股・大盤恐慌度">
+<meta property="og:description" content="全台 372 檔 ETF 每月領多少一目了然，加上巴菲特選股 Top 50、大盤恐慌度 0～100 與退休試算，每天收盤後自動更新。">
+<meta property="og:url" content="https://yuan780903-cpu.github.io/tw-etf-dividend/">
+<meta property="og:image" content="https://yuan780903-cpu.github.io/tw-etf-dividend/og.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
@@ -196,8 +207,20 @@ header:after{content:"";position:absolute;right:-120px;top:-160px;width:520px;he
 @media(max-width:900px){.calc{grid-template-columns:1fr}}
 .calc .hold{max-height:none}
 /* ===== 頁尾 ===== */
-footer{max-width:1500px;margin:0 auto;padding:26px 24px 40px;border-top:1px solid var(--line);color:var(--sub);font-size:13px;line-height:1.8;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer{max-width:1500px;margin:30px auto 0;padding:30px 24px 44px;border-top:4px solid transparent;border-image:linear-gradient(90deg,#1f3cff,#7b2ff7,#ff3d77) 1;color:var(--sub);font-size:13px;line-height:1.8;display:grid;grid-template-columns:1.1fr 1fr 2fr;gap:28px}
 footer .cp{color:var(--ink);font-weight:800;font-size:14px}
+footer b{display:block;color:var(--ink);font-size:14px;margin-bottom:6px}
+.ft-logo{font-size:20px;font-weight:900;color:var(--ink);margin-bottom:4px}
+.ft-nav a{display:block;color:var(--sub);text-decoration:none;padding:2px 0}
+.ft-nav a:hover{color:#7b2ff7}
+.ft-src span{display:block}
+.ft-disc{margin-top:8px;font-size:12px;opacity:.9}
+@media(max-width:900px){footer{grid-template-columns:1fr 1fr}.ft-src{grid-column:1/-1}}
+@media(max-width:700px){footer{grid-template-columns:1fr;padding:24px 16px 12px}.ft-nav{display:none}}
+.totop{position:fixed;right:22px;bottom:26px;z-index:58;width:46px;height:46px;border-radius:50%;border:0;background:linear-gradient(135deg,#1f3cff,#7b2ff7);color:#fff;font-size:20px;font-weight:900;cursor:pointer;box-shadow:0 10px 24px -8px rgba(31,60,255,.7);opacity:0;transform:translateY(12px);pointer-events:none;transition:.25s}
+.totop.show{opacity:1;transform:none;pointer-events:auto}
+@media(max-width:1099px){.totop{bottom:calc(96px + env(safe-area-inset-bottom))}}
+@media(max-width:700px){.totop{right:14px;bottom:calc(150px + env(safe-area-inset-bottom));width:40px;height:40px;font-size:17px}}
 .box{background:var(--panel);border-radius:var(--r);box-shadow:var(--shadow);padding:20px}
 .box h2{font-size:18px;font-weight:900;display:flex;justify-content:space-between;align-items:center}
 .big{background:linear-gradient(135deg,#ff7a18,#ff3d77 55%,#7b2ff7);color:#fff}
@@ -312,10 +335,11 @@ td.r,th.r{text-align:right}
 .bigs i{font-style:normal;font-size:12px;color:var(--sub)}
 .alloc{display:flex;height:46px;border-radius:14px;overflow:hidden}
 .alloc div{display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;transition:width .4s}
-.picks{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.picks{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
 .pick{border-radius:16px;padding:14px;border:2px solid var(--line);display:flex;flex-direction:column;gap:6px}
 .pick .t{display:flex;justify-content:space-between;align-items:center}
-.pick .t b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-right:6px}
+.pick .t b{font-size:15px;margin-right:6px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pick .t{align-items:flex-start!important}
 .pick .t span{flex-shrink:0}
 .pick .t span{font-size:12px;color:#fff;border-radius:999px;padding:3px 9px;font-weight:700}
 .pick small{color:var(--sub);font-size:12px}
@@ -598,7 +622,7 @@ button,.chip,.cat,.lr,.card{-webkit-tap-highlight-color:transparent}
   <div class="top">
     <div class="brand">
       <h1>💰 ETF 月配息規劃</h1>
-      <p>全台 ETF 一次看：分類、持股、配息月份、每月可以領多少</p>
+      <p>全台 ETF 配息日曆・巴菲特選股・大盤恐慌度・退休規劃，一站看懂</p>
     </div>
     <div class="sig" aria-label="版權所有 莊政遠"><span class="k">© COPYRIGHT ・ 版權所有</span><span class="n">莊政遠<sup>©</sup></span></div>
     <div class="tix">
@@ -714,9 +738,12 @@ button,.chip,.cat,.lr,.card{-webkit-tap-highlight-color:transparent}
 </div>
 
 <footer>
-  <div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div>未經授權請勿轉載、重製或作商業使用。</div>
-  <div style="max-width:640px">資料來源：臺灣證券交易所、證券櫃檯買賣中心、FinMind、Yahoo 股市、MoneyDJ。本站內容僅供參考，不構成任何投資建議；配息為依歷史資料估算，實際以各投信公告為準。</div>
+  <div class="ft-brand"><div class="ft-logo">💰 ETF 月配息規劃</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-nav"><b>功能</b><a href="#etf">📊 ETF 總覽</a><a href="#calc">💰 我的配息試算</a><a href="#vp">🏆 巴菲特選股</a><a href="#mkt">📉 大盤儀表板</a><a href="#plan">🎯 退休規劃</a></div>
+  <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
+    <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
 </footer>
+<button class="totop" id="toTop" aria-label="回到頂端">↑</button>
 
 <button class="mbar" id="mbar" data-tab="calc" aria-label="打開我的配息試算">
   <span class="mb-l"><small>已選 <b id="mbN">0</b> 檔・未來 12 個月</small><b class="num" id="mbSum">$0</b></span>
@@ -1326,6 +1353,8 @@ function go(tab, scroll = true){
   if (scroll && scrollY > 200) window.scrollTo({top: 0, behavior: "smooth"});
 }
 $("#mbar").onclick = () => go("calc");
+$("#toTop").onclick = () => window.scrollTo({top: 0, behavior: "smooth"});
+addEventListener("scroll", () => $("#toTop").classList.toggle("show", scrollY > 900), {passive: true});
 /* 深淺色:自動(跟系統) → 深色 → 淺色 */
 const TH = ["auto","dark","light"], TH_ICON = {auto:"🌓", dark:"🌙", light:"☀️"};
 function setTheme(t){
