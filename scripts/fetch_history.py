@@ -5,6 +5,7 @@
 用法: python3 scripts/fetch_history.py [--only 0050,00878]
 """
 import json, os, sys, time, datetime as dt, urllib.request, urllib.parse
+import os as _o, sys as _s; _s.path.insert(0, _o.path.dirname(_o.path.abspath(__file__))); import net  # noqa: 帶 cookie 跟隨證交所轉址
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "data")
 TOKEN = os.environ.get("FINMIND_TOKEN", "")

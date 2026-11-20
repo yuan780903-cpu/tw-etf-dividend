@@ -1,5 +1,6 @@
 """步驟2b: 由 prices/ dividends/ 整理出網頁要用的總表 data/summary.json + 除息預告 data/upcoming.json"""
 import json, os, re, sys, datetime as dt, urllib.request
+import os as _o, sys as _s; _s.path.insert(0, _o.path.dirname(_o.path.abspath(__file__))); import net  # noqa: 帶 cookie 跟隨證交所轉址
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import ta
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

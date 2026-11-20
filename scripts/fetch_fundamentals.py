@@ -116,6 +116,12 @@ def prices_on(day, tag, cache=True):
     p = os.path.join(RAW, f"{tag}.json")
     if cache and os.path.exists(p): return json.load(open(p))
     out = {}
+    try: return _prices_on(day, tag, p, out)
+    except Exception as e:                             # 抓不到就沿用舊快取,不讓整個選股中斷
+        print(f"  {tag} 股價失敗,沿用舊資料:", e)
+        return json.load(open(p)) if os.path.exists(p) else {}
+
+def _prices_on(day, tag, p, out):
     for back in range(0, 12):
         d = day - dt.timedelta(days=back)
         if d.weekday() >= 5: continue
@@ -134,6 +140,7 @@ def prices_on(day, tag, cache=True):
                 v = num(r[ci[0]])
                 if v: out[r[0]] = v
         out["_date"] = d.isoformat(); break
+    if len(out) < 300: raise RuntimeError(f"只抓到 {len(out)} 檔")
     fh.save(p, out); print(f"{tag} 股價 {out.get('_date')}: {len(out) - 1} 檔"); time.sleep(3)
     return out
 

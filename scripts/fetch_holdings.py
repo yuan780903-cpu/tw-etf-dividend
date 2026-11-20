@@ -4,6 +4,7 @@
 可中斷續跑(今天抓過的跳過)。用法: python3 scripts/fetch_holdings.py [--only 0050,00878]
 """
 import json, os, re, sys, time, datetime as dt, urllib.request
+import os as _o, sys as _s; _s.path.insert(0, _o.path.dirname(_o.path.abspath(__file__))); import net  # noqa: 帶 cookie 跟隨證交所轉址
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "data")
 UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/130 Safari/537.36"}
