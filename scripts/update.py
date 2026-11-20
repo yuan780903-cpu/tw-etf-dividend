@@ -131,6 +131,9 @@ def main():
 
     # 6. 總表
     subprocess.run([sys.executable, os.path.join(HERE, "build_summary.py")], check=True)
+
+    # 7. 大盤儀表板(融資/維持率/追繳/法人/期貨/VIX/全球指數),失敗不影響 ETF 資料
+    subprocess.run([sys.executable, os.path.join(HERE, "fetch_market.py")])
     print(f"完成。FinMind 用了 {used}/{BUDGET} 次")
 
 if __name__ == "__main__":
