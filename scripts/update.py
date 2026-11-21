@@ -145,6 +145,9 @@ def main():
     ff = [sys.executable, os.path.join(HERE, "fetch_fundamentals.py")] + (["--refresh-latest"] if TODAY.weekday() == 0 else [])   # 最新一季每週一重抓(補晚交財報的公司)
     if subprocess.run(ff).returncode == 0:
         subprocess.run([sys.executable, os.path.join(HERE, "build_value_picks.py")])
+        subprocess.run([sys.executable, os.path.join(HERE, "build_experts.py")])      # 專家選股(9 位大師條件)
+    subprocess.run([sys.executable, os.path.join(HERE, "fetch_divs.py")])               # 個股股利排行+除權息行事曆
+    subprocess.run([sys.executable, os.path.join(HERE, "fetch_ratings.py")])            # 券商評等/法人共識目標價
     print(f"完成。FinMind 用了 {used}/{BUDGET} 次")
 
 if __name__ == "__main__":

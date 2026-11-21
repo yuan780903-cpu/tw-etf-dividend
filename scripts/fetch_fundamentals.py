@@ -67,7 +67,9 @@ def slim_is(r):
     if rev is None and r.get("利息淨收益") is not None: rev = (r.get("利息淨收益") or 0) + (r.get("利息以外淨損益") or 0)
     return dict(rev=rev, gp=pick(r, "營業毛利（毛損）淨額", "營業毛利（毛損）"), op=pick(r, "營業利益（損失）"),
                 ni=pick(r, "本期淨利（淨損）", "本期稅後淨利（淨損）"), niP=pick(r, "淨利（淨損）歸屬於母公司業主", "淨利（損）歸屬於母公司業主"),
-                eps=pick(r, "基本每股盈餘（元）", "基本每股盈餘"), fmt=r["_fmt"], name=r["_name"])
+                eps=pick(r, "基本每股盈餘（元）", "基本每股盈餘"),
+                pt=pick(r, "稅前淨利（淨損）", "繼續營業單位稅前淨利（淨損）", "繼續營業單位稅前損益", "稅前損益", "繼續營業單位稅前純益（純損）"),
+                fmt=r["_fmt"], name=r["_name"])
 def slim_bs(r):
     return dict(ca=pick(r, "流動資產"), cl=pick(r, "流動負債"), ta=pick(r, "資產總計", "資產總額", "資產合計"), tl=pick(r, "負債總計", "負債總額", "負債合計"), ncl=pick(r, "非流動負債"),
                 eq=pick(r, "權益總計", "權益總額", "權益合計"), eqP=pick(r, "歸屬於母公司業主之權益合計", "歸屬於母公司業主之權益"),
@@ -90,7 +92,11 @@ def fetch_mops():
         for typek in ("sii", "otc"):
             for k, ep, slim in KINDS:
                 p = os.path.join(RAW, f"{k}_{y}Q{s}_{typek}.json")
-                if os.path.exists(p) and not (REFRESH and (y, s) == latest): continue
+                if os.path.exists(p) and not (REFRESH and (y, s) == latest):
+                    if k != "is": continue
+                    old = json.load(open(p))
+                    if any("pt" in v for v in list(old.values())[:20]): continue      # 已含稅前淨利
+                    print(f"   {k} {y}Q{s} {typek} 補抓稅前淨利")
                 t0 = time.time()
                 try: rows = parse(mops(ep, typek, y - 1911, s))
                 except Exception as e: print(f"   {k} {y}Q{s} {typek} 失敗,下次再補:", e); continue
@@ -170,19 +176,30 @@ def monthly_revenue(n=3):
         for c, v in rows.items(): out.setdefault(c, []).append([f"{m:%Y%m}"] + v)
     return out
 
+VOL = {}
 def current_prices():
-    q = {}
+    q, day = {}, None
     try:
         for x in get_json("https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL", 90):
             v = num(x.get("ClosingPrice", ""));
             if v: q[x["Code"]] = v
+            tv = num(x.get("TradeVolume", "")); day = day or x.get("Date")
+            if tv is not None: VOL[x["Code"]] = round(tv / 1000)
     except Exception as e: print("證交所目前股價失敗:", e)
     try:
         for x in get_json("https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes", 180):
             v = num(x.get("Close", ""))
             if v: q[x["SecuritiesCompanyCode"]] = v
+            tv = num(x.get("TradingShares", ""))
+            if tv is not None: VOL[x["SecuritiesCompanyCode"]] = round(tv / 1000)
     except Exception as e: print("櫃買目前股價失敗:", e)
-    print("目前股價", len(q), "檔"); return q
+    # 五日均量:保留最近 5 個交易日的成交量
+    hp = os.path.join(RAW, "vol_hist.json"); hist = json.load(open(hp)) if os.path.exists(hp) else {}
+    if VOL and day:
+        hist[str(day)] = VOL; hist = {k: hist[k] for k in sorted(hist)[-5:]}; fh.save(hp, hist)
+    for c in list(VOL):
+        vs = [h[c] for h in hist.values() if c in h]; VOL[c] = round(sum(vs) / len(vs)) if vs else VOL[c]
+    print("目前股價", len(q), "檔;五日均量用", len(hist), "天"); return q
 
 def industries():
     try:
@@ -212,7 +229,7 @@ def build(ps, latest):
         for c, r in I.items():
             d = comp.setdefault(c, dict(name=r["name"], fmt=r["fmt"], y={}))
             d["name"], d["fmt"] = r["name"], r["fmt"]
-            d["y"][y] = {**{k: r[k] for k in ("rev", "gp", "op", "ni", "niP", "eps")}, **(B.get(c) or {}), **(C.get(c) or {})}
+            d["y"][y] = {**{k: r.get(k) for k in ("rev", "gp", "op", "ni", "niP", "eps", "pt")}, **(B.get(c) or {}), **(C.get(c) or {})}
     if latest:                                         # 近四季 = 去年全年 + 今年累計 - 去年同期累計
         (yy, q) = latest
         Icur, Iprev, Ccur, Cprev, Bcur = load("is", yy, q), load("is", yy - 1, q), load("cf", yy, q), load("cf", yy - 1, q), load("bs", yy, q)
@@ -220,7 +237,7 @@ def build(ps, latest):
             full = d["y"].get(yy - 1)
             if not full or c not in Icur or c not in Iprev: continue
             ttm = {}
-            for k in ("rev", "gp", "op", "ni", "niP", "eps"):
+            for k in ("rev", "gp", "op", "ni", "niP", "eps", "pt"):
                 a, b, f = Icur[c].get(k), Iprev[c].get(k), full.get(k)
                 ttm[k] = None if None in (a, b, f) else round(f + a - b, 2)
             for k in ("cfo", "cfi"):
@@ -235,7 +252,7 @@ def build(ps, latest):
     rev = monthly_revenue(3)
     for c, d in comp.items():
         d["px"] = now.get(c); d["pxY"] = {y: px_year[y].get(c) for y in years if px_year[y].get(c)}
-        d["px1m"], d["px12m"] = p1m.get(c), p12m.get(c)
+        d["px1m"], d["px12m"] = p1m.get(c), p12m.get(c); d["vol5"] = VOL.get(c)
         if c in rev: d["rev"] = sorted(rev[c], reverse=True)
         d.update(ind.get(c, {}))
     out = dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), years=years, latest=f"{latest[0]}Q{latest[1]}" if latest else None,

@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#F1F5FF">
-<title>巴菲遠不負責任財富系統｜ETF 配息・巴菲特選股・大盤儀表板</title>
+<title>巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
 <meta property="og:type" content="website">
-<meta property="og:title" content="巴菲遠不負責任財富系統｜ETF 配息・巴菲特選股・大盤儀表板">
+<meta property="og:title" content="巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板">
 <meta property="og:description" content="全台 372 檔 ETF 每月領多少一目了然，加上巴菲特選股 Top 50、大盤恐慌度 0～100 與退休試算，每天收盤後自動更新。">
 <meta property="og:url" content="https://yuan780903-cpu.github.io/tw-etf-dividend/">
 <meta property="og:image" content="https://yuan780903-cpu.github.io/tw-etf-dividend/og.jpg">
@@ -937,6 +937,43 @@ td.r,th.r{text-align:right}
 .ad-q{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-bottom:8px;background:var(--field,var(--panel));color:inherit}
 .ad-tb td{text-align:left!important}
 @media(max-width:700px){.btn-mem{padding:0 10px;font-size:12.5px}.btn-mem .t{display:none}.mm-ben,.mm-plans,.ad-2{grid-template-columns:1fr}.ad-k{grid-template-columns:repeat(2,minmax(0,1fr))}.ad-f{grid-template-columns:1fr}.ad-f label.w{grid-column:auto}.mdlg{padding:18px;border-radius:18px}.gated{max-height:480px}}
+/* ===== 專家選股 ===== */
+.xp-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:6px}
+.xp-nav button{flex:1;min-width:140px;border:0;background:none;border-radius:12px;padding:11px 14px;font-size:15px;font-weight:600;color:var(--sub);cursor:pointer}
+.xp-nav button.on{background:var(--sel);color:var(--selink,#fff);font-weight:700;box-shadow:0 8px 18px -10px rgba(47,91,234,.7)}
+.xp-hero{border-radius:var(--r);padding:22px 24px;color:#fff;background:radial-gradient(700px 300px at 90% -20%,rgba(255,255,255,.25),transparent 60%),linear-gradient(135deg,#3B2470,#6A4BB0 55%,#8E74D6);margin-bottom:16px}
+.xp-hero h2{font-size:24px}.xp-hero p{font-size:14.5px;line-height:1.8;margin:6px 0;opacity:.96;max-width:980px}.xp-hero small{opacity:.8;font-size:12px}
+.ex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.ex-c{position:relative;display:flex;gap:12px;align-items:center;background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:12px 12px 12px 14px;cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s}
+.ex-c:hover{transform:translateY(-2px);box-shadow:var(--shadow)}.ex-c.on{border-color:#6A4BB0;background:color-mix(in srgb,#6A4BB0 7%,var(--panel))}
+.ex-c .xav{flex:none;border-radius:50%}.ex-t{min-width:0;display:flex;flex-direction:column;gap:1px}.ex-t b{font-size:16px}.ex-t small{font-size:11.5px;color:var(--sub)}.ex-t em{font-style:normal;font-size:12.5px;color:var(--sub)}.ex-t em b{color:#6A4BB0;font-size:15px}
+.ex-ck{position:absolute;top:8px;right:10px}.ex-ck input{display:none}.ex-ck span{display:block;width:20px;height:20px;border-radius:6px;border:2px solid var(--line);background:var(--panel)}
+.ex-c.on .ex-ck span{background:#6A4BB0;border-color:#6A4BB0;box-shadow:inset 0 0 0 3px var(--panel)}
+.ex-more{position:absolute;right:10px;bottom:8px;border:0;background:none;color:#6A4BB0;font-weight:700;font-size:12.5px;cursor:pointer}
+.ex-bar{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0 4px}
+.ex-mode,.ex-ops{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:13px}.ex-mode button,.ex-ops button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:6px 12px;font-weight:600;cursor:pointer}
+.ex-mode button.on{background:#6A4BB0;color:#fff;border-color:transparent}.ex-ops label{display:flex;gap:5px;align-items:center;cursor:pointer}
+.ex-tb tr[data-c]{cursor:pointer}.ex-tb tr[data-c]:hover td{background:color-mix(in srgb,#6A4BB0 6%,transparent)}.ex-tb td.ok{color:var(--down);font-weight:700}.ex-tb td.ng{color:var(--up)}
+.ex-hits{display:inline-flex;gap:2px}.ex-hits .xav{border-radius:50%;display:block}.ex-near{font-style:normal;font-size:11px;background:#FEF3C7;color:#92400E;border-radius:6px;padding:1px 6px;margin-left:6px}
+.ex-rules{padding-left:22px;display:flex;flex-direction:column;gap:8px}.ex-rules li b{display:block;font-size:15px}.ex-rules li small{color:var(--sub);font-size:13px;line-height:1.6}
+.rt-k{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:10px 0 14px}
+.rt-k>div{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 14px}.rt-k small{display:block;font-size:12.5px;color:var(--sub);font-weight:700}.rt-k b{display:block;font-size:24px;margin:2px 0}.rt-k i{font-style:normal;font-size:12px;color:var(--sub)}
+.rt-k p{font-size:12px;color:var(--sub);line-height:1.6;margin-top:6px;border-top:1px dashed var(--line);padding-top:6px}.rt-k .pos,.gx-tb .pos{color:var(--up)}.rt-k .neg,.gx-tb .neg{color:var(--down)}
+.rt-tabs{display:flex;gap:4px;margin:6px 0 10px;border-bottom:1px solid var(--line)}.rt-tabs button{border:0;background:none;padding:9px 14px;font-weight:600;font-size:14px;color:var(--sub);cursor:pointer;border-bottom:3px solid transparent}
+.rt-tabs button.on{color:var(--ink);border-bottom-color:#2F5BEA}
+.rt-s{cursor:pointer}.gx-tb a{color:#2F5BEA;text-decoration:none}
+.dv-ctl{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px}.dv-ctl label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--sub);font-weight:600}
+.dv-ctl select,.dv-ctl input[type=text],.dv-ctl #dvQ{border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:14px;background:var(--field,var(--panel));color:var(--ink)}
+.dv-ctl label.ck{flex-direction:row;align-items:center;padding-bottom:8px;cursor:pointer}
+.dv-say{font-size:13.5px;line-height:1.75;background:color-mix(in srgb,#2F5BEA 6%,var(--panel));border-radius:12px;padding:10px 12px;margin-bottom:10px}.dv-say b{background:#2F5BEA;color:#fff;border-radius:6px;padding:1px 7px;margin-right:8px;font-size:12px}
+.dv-hist{display:flex;align-items:flex-end;gap:10px;height:200px;padding:20px 4px 0;border-bottom:1px solid var(--line);margin-bottom:14px}
+.dv-hist div{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px}.dv-hist i{width:100%;border-radius:6px 6px 0 0;min-height:2px}.dv-hist b{font-size:13px}.dv-hist small{font-size:11.5px;color:var(--sub);white-space:nowrap}
+.dv-sp{display:inline-flex;align-items:flex-end;gap:2px;height:24px}.dv-sp i{width:7px;background:#3B82F6;border-radius:2px 2px 0 0}
+.dv-day{display:grid;grid-template-columns:120px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.dv-day>div{display:flex;flex-wrap:wrap;gap:6px}
+.dv-ev{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:13px}.dv-ev em{font-style:normal;background:#FEE2E2;color:#B91C1C;border-radius:6px;padding:0 6px;margin:0 6px;font-size:11.5px}
+@media(max-width:900px){.rt-k{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.xp-nav button{min-width:calc(50% - 6px);font-size:13.5px;padding:9px}.ex-grid{grid-template-columns:1fr}.rt-k{grid-template-columns:1fr}.rt-k b{font-size:20px}.dv-day{grid-template-columns:1fr}.dv-hist{gap:4px;height:160px}.dv-hist small{font-size:9.5px}}
+.xl3 td:nth-child(-n+3),.xl3 th:nth-child(-n+3),.xl2 td:nth-child(-n+2),.xl2 th:nth-child(-n+2),.xl1 td:first-child,.xl1 th:first-child{text-align:left!important}
 /* ===== 公司檔案 ===== */
 .pf{display:flex;flex-direction:column;gap:12px;margin-top:8px}
 .pf-say{background:color-mix(in srgb,var(--gold) 9%,var(--panel));border:1px solid color-mix(in srgb,var(--gold) 30%,transparent);border-radius:12px;padding:12px 14px}
@@ -1120,7 +1157,7 @@ body.need-login .wrap,body.need-login header,body.need-login footer,body.need-lo
   <div class="top">
     <div class="brand"><img class="logo" src="logo.svg" alt="巴菲遠" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p>ETF 配息・巴菲特選股・全球大盤・恐慌度・退休規劃，一站看懂</p></div>
+      <p>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="tix">
@@ -1139,14 +1176,14 @@ body.need-login .wrap,body.need-login header,body.need-login footer,body.need-lo
     <button data-tab="mkt"><i class="ic">📉</i><span class="lg">大盤儀表板</span><span class="sm">大盤</span></button>
     <button data-tab="macro"><i class="ic">🛢️</i><span class="lg">總經指標</span><span class="sm">總經</span></button>
     <button data-tab="etf"><i class="ic">📊</i><span class="lg">ETF 總覽</span><span class="sm">總覽</span></button>
-    <button data-tab="vp"><i class="ic">🏆</i><span class="lg">巴菲特選股</span><span class="sm">選股</span></button>
+    <button data-tab="vp"><i class="ic">🧠</i><span class="lg">專家選股</span><span class="sm">選股</span></button>
     <button data-tab="calc"><i class="ic">💰</i><span class="lg">我的配息試算</span><span class="sm">試算</span> <span class="n" id="tabN">0</span></button>
     <button data-tab="plan"><i class="ic">🎯</i><span class="lg">退休規劃</span><span class="sm">退休</span></button>
     <button data-tab="learn"><i class="ic">📚</i><span class="lg">投資教學</span><span class="sm">教學</span></button>
     <span class="mini" id="tabMini" data-tab="calc"></span>
   </nav>
 
-  <div class="page" id="pg-vp"><div id="vp"></div></div>
+  <div class="page" id="pg-vp"><div id="xpNav"></div><div id="xpEx"></div><div id="vp"></div><div id="xpRt"></div><div id="xpDv"></div></div>
   <div class="page" id="pg-mkt"><div id="mkt"></div></div>
   <div class="page" id="pg-macro"><div id="macro"></div></div>
 
@@ -1244,7 +1281,7 @@ body.need-login .wrap,body.need-login header,body.need-login footer,body.need-lo
 
 <footer>
   <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
-  <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🏆 巴菲特選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
+  <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
 </footer>
@@ -1861,7 +1898,7 @@ function go(tab, scroll = true){
   document.body.classList.toggle("on-calc", tab == "calc");
   document.body.classList.toggle("on-mkt", tab == "mkt");
   if (tab == "mkt") setTimeout(loadMkt);
-  if (tab == "vp") setTimeout(loadVP);
+  if (tab == "vp") setTimeout(loadXP);
   if (tab == "learn") setTimeout(loadLearn);
   if (tab == "macro") setTimeout(loadMacro);
   document.body.classList.toggle("on-macro", tab == "macro");
@@ -2390,7 +2427,7 @@ function renderVP(){
   const v = VP, inds = [...new Set(v.top.map(x => x.ind || "其他"))].sort();
   $("#vp").innerHTML = `<div class="mk">
   <div class="vp-hero">
-    <div><h2>🏆 巴菲特選股 Top 150</h2>
+    <div><h2>🏆 巴菲遠綜合評分 Top 150</h2>
       <p>用「合理的價格，買到長期會賺錢的好公司」。結合巴菲特的價值投資條件，再加上近年國內外常用的選股方法，從全部上市櫃公司中篩出 ${v.universe} 家合格公司，依綜合分數排出前 150 名（前 50 名為精選）。</p>
       <div class="vp-w">${Object.entries(v.method.weights).map(([k, w]) => `<span>${k} <b>${w}%</b></span>`).join("")}</div>
       <p class="mknote" style="color:rgba(255,255,255,.8)">門檻：${v.method.gate}。財報：${v.years[0]}～${v.years[v.years.length - 1]} 年${v.latest ? `＋${v.latest} 近四季` : ""}；資料更新 ${v.updated}。</p></div>
@@ -3915,7 +3952,7 @@ const dt = t => t ? new Date(t).toLocaleString("zh-TW", {year: "numeric", month:
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"})[c]);
 async function admStats(){
   const r = await admApi("stats?days=30"); if (!r.ok) return $("#adB").innerHTML = `<p class="mknote">${r.reason}</p>`;
-  const m = r.mem || {}, D = r.daily || [], mx = Math.max(1, ...D.map(d => d.pv)), PN = {mkt: "大盤儀表板", macro: "總經指標", etf: "ETF 總覽", vp: "巴菲特選股", calc: "配息試算", plan: "退休規劃", learn: "投資教學"};
+  const m = r.mem || {}, D = r.daily || [], mx = Math.max(1, ...D.map(d => d.pv)), PN = {mkt: "大盤儀表板", macro: "總經指標", etf: "ETF 總覽", vp: "專家選股", calc: "配息試算", plan: "退休規劃", learn: "投資教學"};
   $("#adB").innerHTML = `<div class="ad-k">${[["有效會員", m.active || 0, "目前可使用"], ["3 天內到期", m.soon || 0, "可提醒續約"], ["已建未登入", m.unused || 0, "帳號還沒登入過"], ["已到期", m.expired || 0, ""], ["今日瀏覽", r.today.pv, `不重複 ${r.today.uv} 人`], ["近 30 天瀏覽", r.totals.pv, `不重複 ${r.totals.uv} 人`]].map(([a, b, c]) => `<div><small>${a}</small><b class="num">${b}</b><i>${c}</i></div>`).join("")}</div>
     <h3>📈 近 30 天每日流量 <small>深色＝瀏覽次數、金色＝不重複訪客、👑＝付費會員人數</small></h3>
     <div class="ad-bars">${D.map(d => `<div title="${d.day}：瀏覽 ${d.pv}、訪客 ${d.uv}、會員 ${d.mv}"><i style="height:${d.pv / mx * 100}%"></i><em style="height:${d.uv / mx * 100}%"></em><small>${d.day.slice(5)}</small></div>`).join("") || `<p class="mknote">還沒有流量資料</p>`}</div>
@@ -4022,6 +4059,257 @@ async function admCfg(){
 }
 
 memBadge(); if (!isPaid()) lgShow(); memCheck(); setInterval(memCheck, 10 * 60e3);
+/* ================= 🧠 專家選股:大師選股 / 巴菲遠綜合 / 券商評等 / 股利排行 ================= */
+let XP = {sub: (() => { try { return localStorage.getItem("bfy_xp") || "ex"; } catch (e) { return "ex"; } })()}, EXD = null, RTD = null, DVD = null;
+const XSUB = [["ex", "🧠 大師選股"], ["vp", "🏆 綜合評分 Top150"], ["rt", "📣 券商評等"], ["dv", "💰 股利排行"]];
+function loadXP(){
+  if (!$("#xpNav").innerHTML) $("#xpNav").innerHTML = `<div class="xp-nav">${XSUB.map(([k, n]) => `<button data-k="${k}">${n}</button>`).join("")}</div>`;
+  $("#xpNav").onclick = e => { const b = e.target.closest("button[data-k]"); if (b) { XP.sub = b.dataset.k; try { localStorage.setItem("bfy_xp", XP.sub); } catch (er) {} xpShow(); } };
+  xpShow();
+}
+function xpShow(){
+  $("#xpNav").querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.k == XP.sub));
+  [["ex", "#xpEx"], ["vp", "#vp"], ["rt", "#xpRt"], ["dv", "#xpDv"]].forEach(([k, s]) => $(s).style.display = k == XP.sub ? "" : "none");
+  ({ex: loadEx, vp: loadVP, rt: loadRt, dv: loadDv})[XP.sub]();
+}
+
+/* ---------- 大師插畫肖像(原創插畫,非本人照片) ---------- */
+const AVC = {
+  lynch:  {bg: ["#3D6CF0", "#1A3596"], hair: "#F2F2F0", style: "full", tie: "#2F5BEA"},
+  graham: {bg: ["#6B4E2E", "#3B2A18"], hair: "#9CA3AF", style: "bald", glass: "round", tie: "bow"},
+  buffett:{bg: ["#B4405A", "#6E1F33"], hair: "#F4F4F2", style: "swept", glass: "rect", tie: "#C0392B", brow: "#E5E7EB"},
+  osh:    {bg: ["#0E8C7A", "#075E52"], hair: "#B8BEC8", style: "short", glass: "rect", tie: "#14213D"},
+  murphy: {bg: ["#6A4BB0", "#3B2470"], hair: "#5B3A1E", style: "short", tie: "#F59E0B"},
+  kfisher:{bg: ["#2F718A", "#17465A"], hair: "#D1D5DB", style: "wave", beard: "#D1D5DB", tie: "#1E3A8A"},
+  yusko:  {bg: ["#A67D2C", "#6E5114"], hair: "#C9B9A0", style: "bald", tie: "#7A1F35"},
+  sivy:   {bg: ["#3F8659", "#24543A"], hair: "#2A2A33", style: "short", glass: "round", must: "#2A2A33", tie: "#B91C1C"},
+  price:  {bg: ["#5B6478", "#333A49"], hair: "#9CA3AF", style: "swept", tie: "#0E4F43"},
+};
+function exAvatar(id, size = 64){
+  const c = AVC[id] || AVC.lynch, u = "av" + id, H = c.hair, brow = c.brow || (c.style == "bald" ? H : H == "#F4F4F2" || H == "#F2F2F0" ? "#D1D5DB" : H);
+  const hair = {
+    full: `<path d="M150 214 C138 150 170 100 256 96 C342 100 374 150 362 214 C350 180 330 160 256 156 C182 160 162 180 150 214 Z" fill="${H}"/>`,
+    swept: `<path d="M156 222 C140 176 162 128 206 112 C232 98 290 96 318 114 C356 132 374 178 358 222 C350 196 338 176 320 166 C300 150 270 146 252 150 C224 152 198 160 182 178 C168 192 162 206 156 222 Z" fill="${H}"/><path d="M150 226 C138 240 140 270 156 284 C152 262 154 244 162 230 Z M362 226 C374 240 372 270 356 284 C360 262 358 244 350 230 Z" fill="${H}"/>`,
+    short: `<path d="M160 214 C150 168 160 120 196 100 C222 86 290 84 318 98 C354 116 364 166 352 214 C348 190 342 172 334 162 C316 150 290 146 256 146 C222 146 196 150 178 162 C170 172 164 190 160 214 Z" fill="${H}"/>`,
+    bald: `<path d="M152 236 C146 206 150 186 160 172 L170 176 C164 194 164 214 168 238 Z M360 236 C366 206 362 186 352 172 L342 176 C348 194 348 214 344 238 Z" fill="${H}"/>`,
+    wave: `<path d="M150 230 C130 170 160 104 230 94 C300 86 368 120 366 196 C364 214 360 226 356 236 C350 200 338 176 318 166 C300 154 270 150 252 152 C224 154 196 162 180 180 C166 196 158 212 150 230 Z" fill="${H}"/><path d="M140 240 C132 266 140 290 156 300 L160 250 Z M372 240 C380 266 372 290 356 300 L352 250 Z" fill="${H}"/>`,
+  }[c.style];
+  const glass = c.glass == "round" ? `<circle cx="221" cy="230" r="30" fill="#fff" fill-opacity=".12" stroke="#1F2937" stroke-width="7"/><circle cx="291" cy="230" r="30" fill="#fff" fill-opacity=".12" stroke="#1F2937" stroke-width="7"/><path d="M251 228 L261 228" stroke="#1F2937" stroke-width="6"/>`
+    : c.glass == "rect" ? `<rect x="187" y="208" width="64" height="44" rx="12" fill="#fff" fill-opacity=".12" stroke="#1F2937" stroke-width="8"/><rect x="261" y="208" width="64" height="44" rx="12" fill="#fff" fill-opacity=".12" stroke="#1F2937" stroke-width="8"/><path d="M251 226 L261 226" stroke="#1F2937" stroke-width="7"/>` : "";
+  const tie = c.tie == "bow" ? `<path d="M226 404 L256 418 L226 432 Z M286 404 L256 418 L286 432 Z" fill="#7A1F35"/><circle cx="256" cy="418" r="7" fill="#5B1626"/>`
+    : `<path d="M244 398 L268 398 L262 416 L276 476 L256 500 L236 476 L250 416 Z" fill="${c.tie}"/>`;
+  return `<svg class="xav" width="${size}" height="${size}" viewBox="0 0 512 512" aria-hidden="true"><defs><linearGradient id="${u}b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c.bg[0]}"/><stop offset="1" stop-color="${c.bg[1]}"/></linearGradient><clipPath id="${u}c"><circle cx="256" cy="256" r="236"/></clipPath></defs>
+    <circle cx="256" cy="256" r="248" fill="#C9A24E"/><circle cx="256" cy="256" r="236" fill="url(#${u}b)"/><g clip-path="url(#${u}c)">
+    <path d="M70 512 C80 420 150 382 256 378 C362 382 432 420 442 512 Z" fill="#14213D"/><path d="M206 384 L256 470 L306 384 C290 380 272 378 256 378 C240 378 222 380 206 384 Z" fill="#fff"/>${tie}
+    <path d="M222 330 L222 386 C240 396 272 396 290 386 L290 330 Z" fill="#E9B896"/><ellipse cx="160" cy="240" rx="20" ry="30" fill="#EFC2A2"/><ellipse cx="352" cy="240" rx="20" ry="30" fill="#EFC2A2"/>
+    <ellipse cx="256" cy="232" rx="96" ry="112" fill="#F6D2B6"/>${hair}
+    <path d="M196 196 C210 186 232 186 244 194 M268 194 C280 186 302 186 316 196" stroke="${brow}" stroke-width="11" stroke-linecap="round" fill="none"/>
+    <path d="M206 232 C214 222 228 222 236 232 M276 232 C284 222 298 222 306 232" stroke="#2A2A33" stroke-width="7" stroke-linecap="round" fill="none"/>${glass}
+    <path d="M256 240 C250 258 246 270 252 276 C256 279 262 278 266 274" stroke="#D99D7A" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <ellipse cx="196" cy="274" rx="18" ry="10" fill="#F29A8A" opacity=".45"/><ellipse cx="316" cy="274" rx="18" ry="10" fill="#F29A8A" opacity=".45"/>
+    ${c.beard ? `<path d="M168 262 C170 330 210 360 256 362 C302 360 342 330 344 262 C330 300 300 318 256 318 C212 318 182 300 168 262 Z" fill="${c.beard}"/>` : ""}
+    ${c.must ? `<path d="M256 288 C240 280 218 282 204 296 C222 300 244 298 256 292 C268 298 290 300 308 296 C294 282 272 280 256 288 Z" fill="${c.must}"/>` : ""}
+    <path d="M226 306 C244 324 268 324 286 306" stroke="#B5584A" stroke-width="7" stroke-linecap="round" fill="none"/></g></svg>`;
+}
+
+/* ---------- 大師選股 ---------- */
+const XRM = {   // 每位大師各條件對應的指標(顯示用)
+  lynch: [["pe", "本益比", ""], ["revG2", "營收成長(2年均)", "%"], ["ptG5", "稅前淨利成長(5年均)", "%"], ["debt", "負債比", "%"]],
+  graham: [["epsMin5", "5年最低EPS", "元"], ["pe", "本益比", ""], ["rev12", "近12月營收", "億"], ["pb", "股價淨值比", ""], ["cur", "流動比率", "%"], ["ptG5", "稅前淨利成長(5年均)", "%"]],
+  buffett: [["epsMin5", "5年最低EPS", "元"], ["rps", "每股營收", "元"], ["pb", "股價淨值比", ""], ["roe", "ROE(近4季)", "%"], ["gmMin5", "5年最低毛利率", "%"]],
+  osh: [["epsG5", "EPS成長(5年均)", "%"], ["pe", "本益比", ""], ["roe", "ROE(近4季)", "%"], ["roeUp", "ROE較上年度", "%"]],
+  murphy: [["revG3", "營收成長(3年均)", "%"], ["roe", "ROE(近4季)", "%"], ["om", "營益率(近4季)", "%"], ["omMin3", "3年最低營益率", "%"]],
+  kfisher: [["revG5", "營收成長(5年均)", "%"], ["ptG5", "稅前淨利成長(5年均)", "%"], ["debt", "負債比", "%"]],
+  yusko: [["ptMin5", "稅前淨利最低年成長", "%"], ["ptG5", "稅前淨利成長(5年均)", "%"], ["gm", "毛利率(近4季)", "%"]],
+  sivy: [["pe", "本益比", ""], ["revMin5", "營收最低年成長", "%"], ["roe", "ROE(近4季)", "%"], ["debt", "負債比", "%"]],
+  price: [["pb", "股價淨值比", ""], ["dir", "董監持股", "%"], ["debt", "負債比", "%"]],
+};
+let EX = {sel: [], mode: "and", q: "", ind: "全部", near: false, sort: "n", page: 60};
+async function loadEx(){
+  if (EXD) return;
+  $("#xpEx").innerHTML = `<div class="box"><div class="sk" style="height:300px"></div></div>`;
+  EXD = await getJ("experts");
+  if (!EXD) { $("#xpEx").innerHTML = `<div class="box empty">專家選股資料載入失敗，請稍後重新整理</div>`; return; }
+  EX.sel = [EXD.experts[2].id];               // 預設選巴菲特
+  renderEx();
+}
+function renderEx(){
+  const E = EXD.experts, inds = [...new Set(Object.values(EXD.stocks).map(s => s.ind).filter(Boolean))].sort();
+  $("#xpEx").innerHTML = `<div class="xp-hero"><div><h2>🧠 專家選股</h2><p>把 9 位世界級投資大師公開的選股條件，套用到<b>全台灣 ${Object.keys(EXD.stocks).length} 家上市櫃公司</b>的最新財報。可以點大師看他的選股邏輯，也可以<b>複選多位大師</b>，找出同時被好幾位大師看上的公司。</p>
+      <small>財報：${EXD.years} 年＋${EXD.ttm} 近四季・${EXD.filter}・資料更新 ${EXD.updated}・${EXD.source}</small></div></div>
+    <div class="ex-grid">${E.map(e => `<div class="ex-c ${EX.sel.includes(e.id) ? "on" : ""}" data-id="${e.id}">
+        <label class="ex-ck"><input type="checkbox" ${EX.sel.includes(e.id) ? "checked" : ""}><span></span></label>
+        ${exAvatar(e.id, 72)}<div class="ex-t"><b>${e.name}</b><small>${e.en}・${e.tag}</small><em>符合 <b class="num">${e.n}</b> 家</em></div>
+        <button class="ex-more" data-m="${e.id}">選股邏輯 ›</button></div>`).join("")}</div>
+    <p class="mknote">※ 大師頭像為原創插畫示意，非本人照片。</p>
+    <div class="ex-bar"><div class="ex-mode"><b>多位大師時：</b><button data-mode="and" class="${EX.mode == "and" ? "on" : ""}">同時符合（交集）</button><button data-mode="or" class="${EX.mode == "or" ? "on" : ""}">符合任一（聯集）</button></div>
+      <div class="ex-ops"><button id="exAll">全選</button><button id="exNone">清除</button><label><input type="checkbox" id="exNear" ${EX.near ? "checked" : ""}> 只差一個條件也列出</label></div></div>
+    <div class="bar"><input id="exQ" placeholder="🔍 搜尋代號或名稱" value="${EX.q}"><select id="exInd"><option>全部</option>${inds.map(i => `<option ${EX.ind == i ? "selected" : ""}>${i}</option>`).join("")}</select>
+      <select id="exSort"><option value="n">被越多大師選中越前面</option><option value="roe">ROE 高→低</option><option value="pe">本益比 低→高</option><option value="pb">股價淨值比 低→高</option><option value="revG3">營收成長 高→低</option><option value="epsG5">EPS 成長 高→低</option></select></div>
+    <div id="exRes"></div>`;
+  $("#exSort").value = EX.sort;
+  $("#xpEx").querySelectorAll(".ex-c").forEach(c => c.onclick = e => { if (e.target.closest(".ex-more")) return; const id = c.dataset.id; EX.sel = EX.sel.includes(id) ? EX.sel.filter(x => x != id) : [...EX.sel, id]; EX.page = 60; renderEx(); });
+  $("#xpEx").querySelectorAll(".ex-more").forEach(b => b.onclick = () => exInfo(b.dataset.m));
+  $("#xpEx").querySelectorAll("[data-mode]").forEach(b => b.onclick = () => { EX.mode = b.dataset.mode; renderEx(); });
+  $("#exAll").onclick = () => { EX.sel = E.map(e => e.id); renderEx(); }; $("#exNone").onclick = () => { EX.sel = []; renderEx(); };
+  $("#exNear").onchange = e => { EX.near = e.target.checked; exRes(); };
+  $("#exQ").oninput = e => { EX.q = e.target.value.trim(); exRes(); }; $("#exInd").onchange = e => { EX.ind = e.target.value; exRes(); }; $("#exSort").onchange = e => { EX.sort = e.target.value; exRes(); };
+  exRes();
+}
+function exInfo(id){
+  const e = EXD.experts.find(x => x.id == id);
+  $("#dlg").innerHTML = `<div class="dhd" style="background:linear-gradient(135deg,${AVC[id].bg[0]},${AVC[id].bg[1]})"><i class="grab"></i><button class="x" onclick="closeDetail()" aria-label="關閉">✕</button>
+    <div style="display:flex;gap:16px;align-items:center">${exAvatar(id, 88)}<div><div style="opacity:.85;font-weight:600">${e.en}・${e.tag}</div><h2>${e.name}的選股法</h2><div class="tags"><span>全台符合 ${e.n} 家</span></div></div></div></div>
+    <div class="dbd" style="display:block"><div class="box"><h3 class="mm-h3">💬 白話說明</h3><p style="line-height:1.85;font-size:15px">${e.say}</p>
+      <h3 class="mm-h3">📏 選股條件（全部都要符合）</h3><ol class="ex-rules">${e.rules.map((r, i) => `<li><b>${r}</b><small>${exWhy(id, i)}</small></li>`).join("")}</ol>
+      <p class="mknote">共同過濾：排除股價 5 元以下、五日均量 500 張以下的冷門股。條件參考 MoneyDJ 大師選股；流動比率依格拉罕原意採 200%。</p>
+      <button class="lgo" onclick="closeDetail();EX.sel=['${id}'];EX.page=60;renderEx();document.querySelector('#exRes').scrollIntoView({behavior:'smooth'})">看 ${e.name} 選出的 ${e.n} 家公司 →</button></div></div>`;
+  $("#ov").classList.add("on"); document.body.style.overflow = "hidden"; $("#dlg").scrollTop = 0;
+}
+const XW = {pe: "本益比＝股價 ÷ 每股盈餘，越低代表用越少的錢買到 1 元獲利。", pb: "股價淨值比＝股價 ÷ 每股淨值，小於 1 代表比公司帳面資產還便宜。",
+  roe: "股東權益報酬率＝公司用股東的錢一年賺多少，越高越會賺錢。", roeUp: "獲利能力不只要高，還要比去年更好。", debt: "負債比＝總負債 ÷ 總資產，越低財務越穩健、越不怕景氣反轉。",
+  revG2: "營收成長代表公司生意越做越大。", revG3: "營收成長代表公司生意越做越大。", revG5: "營收長期成長，代表產品真的有市場。", revMin5: "每一年都成長，代表成長很穩定、不是曇花一現。",
+  ptG5: "稅前淨利成長代表本業加業外的獲利一起變多。", ptMin5: "每一年獲利都成長，大起大落的公司會被排除。", epsMin5: "每股盈餘（EPS）每年都要賺錢，代表經營穩定。", epsG5: "EPS 長期高速成長，代表每一股賺的錢越來越多。",
+  gmMin5: "毛利率每年都夠高，代表產品有定價能力（護城河）。", gm: "毛利率代表產品賺錢的基本能力。", om: "營業利益率代表本業真正賺錢的能力。", omMin3: "連續幾年本業都賺錢，不是靠一次性收入。",
+  cur: "流動比率＝流動資產 ÷ 流動負債，200% 以上代表短期償債能力非常好。", dir: "董監持股高代表經營者自己也是大股東，跟小股東利益一致。", rps: "每股營收太低的公司規模太小、波動大。", rev12: "營收太小的公司容易受單一客戶影響。"};
+function exWhy(id, i){ return XW[XRM[id][i][0]] || ""; }
+function exRes(){
+  const S = EXD.stocks, sel = EX.sel, q = EX.q.toLowerCase();
+  if (!sel.length) { $("#exRes").innerHTML = `<div class="box empty">請點選上方至少一位大師</div>`; return; }
+  const pass = (s, id) => s.liq && s.t[id] && !s.t[id].includes("0"), near = (s, id) => s.liq && s.t[id] && (s.t[id].match(/0/g) || []).length == 1;
+  let L = Object.entries(S).map(([c, s]) => ({c, ...s, pn: sel.filter(id => pass(s, id)).length, nn: sel.filter(id => near(s, id)).length}))
+    .filter(x => EX.mode == "and" ? (x.pn == sel.length || (EX.near && x.pn + x.nn == sel.length && x.nn <= 1)) : (x.pn > 0 || (EX.near && x.nn > 0)))
+    .filter(x => (EX.ind == "全部" || x.ind == EX.ind) && (!q || (x.c + x.n).toLowerCase().includes(q)));
+  const k = EX.sort, asc = ["pe", "pb"].includes(k);
+  L.sort((a, b) => k == "n" ? (b.hit.length - a.hit.length) || (b.pn - a.pn) || ((b.roe ?? -99) - (a.roe ?? -99)) : asc ? (a[k] ?? 1e9) - (b[k] ?? 1e9) : (b[k] ?? -1e9) - (a[k] ?? -1e9));
+  const one = sel.length == 1 ? sel[0] : null, cols = one ? XRM[one] : [["pe", "本益比", ""], ["pb", "股價淨值比", ""], ["roe", "ROE", "%"], ["debt", "負債比", "%"], ["revG3", "營收成長3年", "%"], ["epsG5", "EPS成長5年", "%"]];
+  const names = sel.map(id => EXD.experts.find(e => e.id == id).name).join(EX.mode == "and" ? " ＋ " : " 或 ");
+  const shown = L.slice(0, EX.page);
+  $("#exRes").innerHTML = `<div class="box"><h2 class="sec">📋 ${names} <small>共 ${L.length} 家${EX.near ? "（含只差一個條件）" : ""}；點公司看產品與商業模式</small></h2>
+    ${L.length ? `<div class="gx-tw" style="max-height:none"><table class="gx-tb ex-tb xl2"><thead><tr><th>公司</th><th>產業</th><th>股價</th><th>被選中</th>${cols.map(c => `<th>${c[1]}</th>`).join("")}</tr></thead><tbody>
+      ${shown.map(x => `<tr data-c="${x.c}"><td><b>${x.c} ${x.n}</b>${x.pn < (EX.mode == "and" ? sel.length : 1) ? `<em class="ex-near">差 1 條</em>` : ""}</td><td>${x.ind || ""}</td><td class="num">${fmt(x.px, 2)}</td>
+        <td><span class="ex-hits">${x.hit.map(h => `<i title="${EXD.experts.find(e => e.id == h).name}">${exAvatar(h, 22)}</i>`).join("")}</span></td>
+        ${cols.map((cc, i) => { const v = x[cc[0]], ok = one ? x.t[one][i] == "1" : null; return `<td class="num ${ok === true ? "ok" : ok === false ? "ng" : ""}">${v == null ? "—" : fmt(v, Math.abs(v) >= 100 ? 0 : 1) + (cc[2] == "億" ? " 億" : cc[2] == "元" ? "" : cc[2])}${ok === true ? " ✓" : ok === false ? " ✗" : ""}</td>`; }).join("")}</tr>`).join("")}</tbody></table></div>
+      ${L.length > EX.page ? `<button class="gx-more" id="exMore">顯示更多（還有 ${L.length - EX.page} 家）</button>` : ""}` : `<p class="mknote">目前沒有公司同時符合這些條件。可以改用「符合任一」，或勾選「只差一個條件也列出」。</p>`}
+    <p class="mknote">✓／✗ 表示該條件是否達成。數字為公開財報計算結果，僅供研究參考，不構成投資建議。</p></div>`;
+  $("#exRes").querySelectorAll("tr[data-c]").forEach(tr => tr.onclick = () => openStock(tr.dataset.c));
+  if ($("#exMore")) $("#exMore").onclick = () => { EX.page += 100; exRes(); };
+}
+
+/* ---------- 券商評等 ---------- */
+let RT = {tab: "all", q: "", act: "全部"};
+async function loadRt(){
+  if (RTD) return;
+  $("#xpRt").innerHTML = `<div class="box"><div class="sk" style="height:300px"></div></div>`;
+  RTD = await getJ("ratings"); if (!RTD) { $("#xpRt").innerHTML = `<div class="box empty">券商評等資料載入失敗</div>`; return; }
+  renderRt();
+}
+function renderRt(){
+  const I = RTD.items, today = I[0] ? I[0].d : "—", d7 = new Date(Date.now() - 7 * 864e5).toISOString().slice(0, 10), d30 = new Date(Date.now() - 30 * 864e5).toISOString().slice(0, 10);
+  const w = I.filter(x => x.d >= d7), up = w.filter(x => /調升|上修/.test(x.act)).length, dn = w.filter(x => /調降|下修/.test(x.act)).length;
+  const latest = {}; I.forEach(x => { if (!latest[x.id]) latest[x.id] = x; });
+  const gap = x => { const p = RTD.px[x.id]; return p && x.tp ? (x.tp / p - 1) * 100 : null; };
+  const gaps = Object.values(latest).filter(x => x.d >= d7).map(gap).filter(v => v != null), avgGap = gaps.length ? gaps.reduce((a, b) => a + b, 0) / gaps.length : null;
+  $("#xpRt").innerHTML = `<div class="box"><h2 class="sec">📣 券商評等與法人目標價 <small>${RTD.note}</small></h2>
+    <div class="rt-k">${[["最新報導", today.slice(5), `近 7 天 ${w.length} 篇・近 30 天 ${I.filter(x => x.d >= d30).length} 篇`, "最近一次有法人報告見報的日期與篇數，財報季或法說會密集期篇數會變多。"],
+      ["近 7 天調升／調降", `<span class="pos">${up}</span> ／ <span class="neg">${dn}</span>`, `調升占 ${up + dn ? Math.round(up / (up + dn) * 100) : 0}%`, "法人把目標價或獲利預估往上調（紅）與往下調（綠）的篇數。調升占比越高，代表法人整體越樂觀。"],
+      ["近 7 天涵蓋", `${new Set(w.map(x => x.id)).size} 檔`, `共 ${new Set(I.map(x => x.id)).size} 檔有紀錄`, "最近一週有被法人調整目標價或獲利預估的股票數。"],
+      ["平均目標價距現價", avgGap == null ? "—" : `<span class="${pc(avgGap)}">${sgn(avgGap, 1)}%</span>`, "近 7 天有目標價的股票平均", "目標價比現在股價高幾 %，正值越大代表法人認為還有越多上漲空間；負值代表目標價比現價還低。"]]
+      .map(([a, b, c, d]) => `<div><small>${a}</small><b class="num">${b}</b><i>${c}</i><p>${d}</p></div>`).join("")}</div>
+    <div class="rt-tabs"><button data-t="all" class="${RT.tab == "all" ? "on" : ""}">逐筆最新</button><button data-t="stk" class="${RT.tab == "stk" ? "on" : ""}">依個股</button></div>
+    <div class="bar"><input id="rtQ" placeholder="🔍 搜尋代號或名稱，例如 2330、台積電" value="${RT.q}"><select id="rtAct">${["全部", "調升目標價", "調降目標價", "EPS 預估上修", "EPS 預估下修", "維持", "首次評等"].map(a => `<option ${RT.act == a ? "selected" : ""}>${a}</option>`).join("")}</select></div>
+    <div id="rtList"></div></div>`;
+  $("#xpRt").querySelectorAll("[data-t]").forEach(b => b.onclick = () => { RT.tab = b.dataset.t; renderRt(); });
+  $("#rtQ").oninput = e => { RT.q = e.target.value.trim(); rtList(); }; $("#rtAct").onchange = e => { RT.act = e.target.value; rtList(); };
+  rtList();
+}
+function rtList(){
+  const q = RT.q.toLowerCase(), gap = x => { const p = RTD.px[x.id]; return p && x.tp ? (x.tp / p - 1) * 100 : null; };
+  let L = RTD.items.filter(x => (RT.act == "全部" || x.act == RT.act) && (!q || (x.id + x.n).toLowerCase().includes(q)));
+  const RC = r => r == "看多" ? "pos" : r == "看空" ? "neg" : "";
+  if (RT.tab == "stk") {
+    const g = {}; L.forEach(x => (g[x.id] = g[x.id] || []).push(x));
+    const rows = Object.entries(g).map(([id, a]) => ({id, n: a[0].n, last: a[0], cnt: a.length, up: a.filter(x => /調升|上修/.test(x.act)).length, dn: a.filter(x => /調降|下修/.test(x.act)).length, tps: a.map(x => x.tp).filter(Boolean)}))
+      .sort((a, b) => b.cnt - a.cnt);
+    $("#rtList").innerHTML = `<div class="gx-tw" style="max-height:640px"><table class="gx-tb xl1"><thead><tr><th>股票</th><th>最新目標價</th><th>距現價</th><th>目標價區間</th><th>則數</th><th>調升／調降</th><th>最新日期</th></tr></thead><tbody>
+      ${rows.map(r => { const gp = gap(r.last); return `<tr data-c="${r.id}"><td><b>${r.id} ${r.n}</b></td><td class="num">${fmt(r.last.tp, 1)}</td><td class="num ${pc(gp)}">${gp == null ? "—" : sgn(gp, 0) + "%"}</td><td class="num">${fmt(Math.min(...r.tps), 0)}～${fmt(Math.max(...r.tps), 0)}</td><td class="num">${r.cnt}</td><td><span class="pos">${r.up}</span> ／ <span class="neg">${r.dn}</span></td><td>${r.last.d}</td></tr>`; }).join("") || "<tr><td colspan=7>沒有資料</td></tr>"}</tbody></table></div>`;
+  } else {
+    $("#rtList").innerHTML = `<div class="gx-tw" style="max-height:640px"><table class="gx-tb xl3"><thead><tr><th>日期</th><th>股票</th><th>券商／來源</th><th>評等</th><th>動作</th><th>目標價</th><th>距現價</th><th>出處</th></tr></thead><tbody>
+      ${L.slice(0, 300).map(x => { const gp = gap(x); return `<tr><td>${x.d.slice(5)}</td><td data-c="${x.id}" class="rt-s"><b>${x.id} ${x.n}</b></td><td>${x.src}</td><td class="${RC(x.r)}">${x.r}</td><td class="${/調升|上修/.test(x.act) ? "pos" : /調降|下修/.test(x.act) ? "neg" : ""}">${x.act}${x.chg ? `（${sgn(x.chg, 1)}%）` : x.eps ? `・EPS ${fmt(x.eps, 2)}` : ""}</td><td class="num">${fmt(x.tp, 1)}</td><td class="num ${pc(gp)}">${gp == null ? "—" : sgn(gp, 0) + "%"}</td><td><a href="${x.u}" target="_blank" rel="noopener">${x.media} ↗</a></td></tr>`; }).join("") || "<tr><td colspan=8>沒有資料</td></tr>"}</tbody></table></div>`;
+  }
+  $("#rtList").querySelectorAll("[data-c]").forEach(t => t.onclick = () => openStock(t.dataset.c));
+}
+
+/* ---------- 股利排行 ---------- */
+let DVS = {tab: "rank", y: null, sort: "yld", top: 100, epsUp: false, y5: false, q: ""};
+async function loadDv(){
+  if (DVD) return;
+  $("#xpDv").innerHTML = `<div class="box"><div class="sk" style="height:300px"></div></div>`;
+  DVD = await getJ("stock_div"); if (!DVD) { $("#xpDv").innerHTML = `<div class="box empty">股利資料載入失敗</div>`; return; }
+  const cnt = y => Object.values(DVD.stocks).filter(s => (s.y[y] || {}).cash > 0).length;
+  DVS.y = DVD.years.slice().reverse().find(y => cnt(y) > 800) || DVD.years[DVD.years.length - 2];
+  renderDv();
+}
+function dvRows(y){
+  const prev = String(+y - 1);
+  return Object.entries(DVD.stocks).filter(([c]) => /^\d{4}$/.test(c)).map(([c, s]) => { const a = s.y[y] || {}, p = s.y[prev] || {};
+    let streak = 0; for (let k = +y; s.y[String(k)] && s.y[String(k)].cash > 0; k--) streak++;
+    return {c, n: s.n, ind: s.ind, px: s.px, cash: a.cash || 0, stk: a.stk || 0, tot: a.tot || 0, k: a.k || 0, eps: a.eps, epsP: p.eps, pay: a.pay, yld: s.px && a.cash ? a.cash / s.px * 100 : null, streak, hist: DVD.years.map(yy => (s.y[yy] || {}).cash || 0)}; })
+    .filter(x => x.cash > 0 || x.stk > 0);
+}
+const med = a => { const b = a.filter(v => v != null).sort((x, y) => x - y); return b.length ? b[Math.floor(b.length / 2)] : null; };
+function renderDv(){
+  const R = dvRows(DVS.y), yl = R.map(x => x.yld).filter(v => v != null), py = R.map(x => x.pay).filter(v => v != null);
+  const total = R.reduce((s, x) => s + x.tot, 0), top10 = R.slice().sort((a, b) => b.tot - a.tot).slice(0, 10).reduce((s, x) => s + x.tot, 0);
+  const bins = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 99]], hist = bins.map(([a, b]) => yl.filter(v => v >= a && v < b).length), hm = Math.max(...hist, 1);
+  const cnt = y => Object.values(DVD.stocks).filter(s => (s.y[y] || {}).cash > 0).length;
+  $("#xpDv").innerHTML = `<div class="box"><h2 class="sec">💰 個股股利排行 <small>按「股利所屬年度」歸戶，同一年度多次配息會加總；殖利率用今天的股價計算</small></h2>
+    <div class="rt-tabs"><button data-t="rank" class="${DVS.tab == "rank" ? "on" : ""}">年度股利排行</button><button data-t="cal" class="${DVS.tab == "cal" ? "on" : ""}">除權息行事曆</button></div>
+    <div id="dvBody"></div></div>`;
+  $("#xpDv").querySelectorAll("[data-t]").forEach(b => b.onclick = () => { DVS.tab = b.dataset.t; renderDv(); });
+  if (DVS.tab == "cal") return dvCal();
+  $("#dvBody").innerHTML = `<div class="dv-ctl"><label>股利所屬年度<select id="dvY">${DVD.years.slice().reverse().map(y => `<option value="${y}" ${y == DVS.y ? "selected" : ""}>${y} 年度（${cnt(y)} 檔）</option>`).join("")}</select></label>
+      <label>排序依據<select id="dvS"><option value="yld">現金殖利率</option><option value="cash">現金股利</option><option value="pay">盈餘配發率</option><option value="eps">EPS</option><option value="stk">股票股利</option><option value="streak">連續配息年數</option><option value="tot">配發總額</option></select></label>
+      <label>顯示檔數<select id="dvT"><option value="100">前 100 檔</option><option value="300">前 300 檔</option><option value="9999">全部</option></select></label>
+      <label class="ck"><input type="checkbox" id="dvE" ${DVS.epsUp ? "checked" : ""}> 只看 EPS 成長</label><label class="ck"><input type="checkbox" id="dv5" ${DVS.y5 ? "checked" : ""}> 只看殖利率 5% 以上</label>
+      <input id="dvQ" placeholder="🔍 搜尋代號或名稱" value="${DVS.q}"></div>
+    <p class="dv-say"><b>白話</b>現金殖利率＝這一年度配的現金股利 ÷ 今天的股價，也就是「現在用這個價格買進、領這一年度股利」的報酬率。盈餘配發率＝公司把賺到的錢拿出幾成來發，超過 100% 代表動用了以前的保留盈餘，不一定能年年維持。</p>
+    <div class="rt-k">${[["配發總額", `${fmt(total / 1e12, 2)} 兆`, `${R.filter(x => x.cash > 0).length} 家配現金・前十大合計 ${total ? Math.round(top10 / total * 100) : 0}%`, "這一年度所有公司發出去的現金股利加總，前十大占比越高代表股利越集中在少數大公司。"],
+      ["殖利率中位數", `${fmt(med(yl), 2)}%`, `5% 以上 ${yl.filter(v => v >= 5).length} 家・3% 以下 ${yl.filter(v => v < 3).length} 家`, "把所有配息公司的殖利率由低到高排，正中間那一家的殖利率。"],
+      ["配發率中位數", `${fmt(med(py), 0)}%`, `超過 100% ${py.filter(v => v > 100).length} 家・低於 30% ${py.filter(v => v < 30).length} 家`, "50% 代表賺 100 元發 50 元；低於 30% 多半把錢留下來擴產或再投資。"],
+      ["殖利率 ≥5% 且配發率 >100%", `${R.filter(x => x.yld >= 5 && x.pay > 100).length} 家`, "高殖利率但配得比賺得多", "這類高殖利率是動用以前的存款發出來的，不代表獲利能力；獲利沒回升的話，之後不一定發得出同樣金額。"]]
+      .map(([a, b, c, d]) => `<div><small>${a}</small><b class="num">${b}</b><i>${c}</i><p>${d}</p></div>`).join("")}</div>
+    <h3 class="mm-h3">殖利率分布 <small style="font-weight:400;color:var(--sub)">${DVS.y} 年度股利 ÷ 現價・家數；中位數 ${fmt(med(yl), 2)}%・紅柱＝5% 以上</small></h3>
+    <div class="dv-hist">${hist.map((h, i) => `<div><b class="num">${h}</b><i style="height:${h / hm * 100}%;background:${bins[i][0] >= 5 ? "#E5484D" : "#3B82F6"}"></i><small>${bins[i][1] == 99 ? "8%+" : bins[i][0] + "–" + bins[i][1] + "%"}</small></div>`).join("")}</div>
+    <div id="dvTab"></div>`;
+  $("#dvS").value = DVS.sort; $("#dvT").value = String(DVS.top);
+  $("#dvY").onchange = e => { DVS.y = e.target.value; renderDv(); }; $("#dvS").onchange = e => { DVS.sort = e.target.value; dvTab(); }; $("#dvT").onchange = e => { DVS.top = +e.target.value; dvTab(); };
+  $("#dvE").onchange = e => { DVS.epsUp = e.target.checked; dvTab(); }; $("#dv5").onchange = e => { DVS.y5 = e.target.checked; dvTab(); }; $("#dvQ").oninput = e => { DVS.q = e.target.value.trim(); dvTab(); };
+  dvTab();
+}
+function dvTab(){
+  const q = DVS.q.toLowerCase(), k = DVS.sort;
+  let L = dvRows(DVS.y).filter(x => (!DVS.epsUp || (x.eps != null && x.epsP != null && x.eps > x.epsP)) && (!DVS.y5 || x.yld >= 5) && (!q || (x.c + x.n).toLowerCase().includes(q)));
+  L.sort((a, b) => (b[k] ?? -1) - (a[k] ?? -1)); const T = L.slice(0, DVS.top);
+  const sp = h => { const m = Math.max(...h, .01); return `<span class="dv-sp">${h.map((v, i) => `<i style="height:${Math.max(2, v / m * 22)}px" title="${DVD.years[i]}：${fmt(v, 2)} 元"></i>`).join("")}</span>`; };
+  $("#dvTab").innerHTML = `<div class="gx-tw" style="max-height:720px"><table class="gx-tb xl3"><thead><tr><th>#</th><th>公司</th><th>產業</th><th>股價</th><th>現金股利</th><th>股票股利</th><th>現金殖利率</th><th>EPS</th><th>配發率</th><th>配息次數</th><th>連續配息</th><th>近 6 年現金股利</th></tr></thead><tbody>
+    ${T.map((x, i) => `<tr data-c="${x.c}"><td class="num">${i + 1}</td><td><b>${x.c} ${x.n}</b></td><td>${x.ind || ""}</td><td class="num">${fmt(x.px, 2)}</td><td class="num"><b>${fmt(x.cash, 2)}</b></td><td class="num">${x.stk ? fmt(x.stk, 2) : "—"}</td>
+      <td class="num ${x.yld >= 5 ? "pos" : ""}"><b>${x.yld == null ? "—" : fmt(x.yld, 2) + "%"}</b></td><td class="num ${x.eps != null && x.epsP != null ? (x.eps > x.epsP ? "pos" : "neg") : ""}">${x.eps == null ? "—" : fmt(x.eps, 2)}</td>
+      <td class="num ${x.pay > 100 ? "neg" : ""}">${x.pay == null ? "—" : fmt(x.pay, 0) + "%"}</td><td class="num">${x.k}</td><td class="num">${x.streak} 年</td><td>${sp(x.hist)}</td></tr>`).join("") || "<tr><td colspan=12>沒有符合條件的公司</td></tr>"}</tbody></table></div>
+    <p class="mknote">共 ${L.length} 家符合；資料來源：公開資訊觀測站股利分派情形彙總表。EPS 紅＝比上一年度成長、綠＝衰退。配發率紅色＝超過 100%。</p>`;
+  $("#dvTab").querySelectorAll("tr[data-c]").forEach(tr => tr.onclick = () => openStock(tr.dataset.c));
+}
+function dvCal(){
+  const U = DVD.up, P = DVD.past.slice(0, 200), px = c => (DVD.stocks[c] || {}).px;
+  const g = {}; U.forEach(x => (g[x.d] = g[x.d] || []).push(x));
+  $("#dvBody").innerHTML = `<h3 class="mm-h3">📅 即將除權息（${U.length} 筆）</h3>
+    ${Object.entries(g).map(([d, a]) => `<div class="dv-day"><b>${d.slice(5).replace("-", "/")}（${"日一二三四五六"[new Date(d).getDay()]}）</b><div>${a.map(x => { const p = px(x.c), y = p && x.cash ? x.cash / p * 100 : null;
+      return `<span class="dv-ev"><b>${x.c} ${x.n}</b><em>${x.k}</em>${x.cash ? `現金 ${fmt(x.cash, 2)} 元${y ? `・殖利率約 ${fmt(y, 2)}%` : ""}` : x.note ? x.note : ""}${x.stk ? `・配股 ${fmt(x.stk, 3)}` : ""}</span>`; }).join("")}</div></div>`).join("") || `<p class="mknote">目前沒有已公告的除權息預告</p>`}
+    <h3 class="mm-h3" style="margin-top:18px">✅ 今年已除權息（最近 200 筆）</h3>
+    <div class="gx-tw" style="max-height:520px"><table class="gx-tb xl3"><thead><tr><th>日期</th><th>股票</th><th>權/息</th><th>除權息前收盤</th><th>參考價</th><th>權值＋息值</th><th>市場</th></tr></thead><tbody>
+    ${P.map(x => `<tr><td>${x.d.slice(5)}</td><td><b>${x.c} ${x.n}</b></td><td>${x.k}</td><td class="num">${fmt(x.before, 2)}</td><td class="num">${fmt(x.ref, 2)}</td><td class="num">${fmt(x.val, 3)}</td><td>${x.m}</td></tr>`).join("")}</tbody></table></div>`;
+}
+
 </script>
 </body>
 </html>
