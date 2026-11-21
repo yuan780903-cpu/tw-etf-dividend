@@ -344,7 +344,7 @@ td.r,th.r{text-align:right}
 .pick .t span{flex-shrink:0}
 .pick .t span{font-size:12px;color:#fff;border-radius:999px;padding:3px 9px;font-weight:700}
 .pick small{color:var(--sub);font-size:12px}
-.why{background:var(--soft);border-left:5px solid #7b2ff7;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.85}
+.plan-steps{padding-left:20px;margin:8px 0;display:flex;flex-direction:column;gap:6px;line-height:1.75}.why{background:var(--soft);border-left:5px solid #7b2ff7;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.85}
 .why b{color:#7b2ff7}
 .why li{margin-left:18px}
 .apply{border:0;border-radius:14px;padding:14px;font-weight:900;font-size:15px;color:#fff;cursor:pointer;background:linear-gradient(90deg,#ff7a18,#ff3d77,#7b2ff7)}
@@ -1054,6 +1054,28 @@ td.r,th.r{text-align:right}
 @media(max-width:1100px){.em-top{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.em-top{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}.em-c b{font-size:20px}.chk-l{grid-template-columns:minmax(0,1fr)}.cal-k{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
   .cal-g{gap:3px}.cal-d{min-height:54px;padding:4px}.cal-d b{font-size:10.5px}.cal-d em{font-size:9.5px}.wl-add{flex-wrap:wrap}.wl-st{width:100%}}
+/* ===== 複利計算器 ===== */
+.ci{margin-bottom:18px}.ci-g{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:18px;margin-top:8px}
+.ci-f{display:flex;flex-direction:column;gap:9px}.ci-f label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--sub);font-weight:700}
+.ci-f .in{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;background:var(--field,var(--panel));padding:0 12px}.ci-f .in input{flex:1;min-width:0;border:0;background:none;padding:10px 0;font-size:16px;font-weight:700;color:var(--ink);outline:0}.ci-f .in em{font-style:normal;color:var(--sub);font-size:13px}
+.ci-f select{border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:15px;background:var(--field,var(--panel));color:var(--ink)}
+.ci-k{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.ci-k div{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.ci-k .hi{grid-column:1/-1;background:linear-gradient(135deg,#2448C8,#4C79F2);color:#fff;border:0}.ci-k .hi small,.ci-k .hi i{color:rgba(255,255,255,.85)}.ci-k .hi b{font-size:32px}
+.ci-k small{display:block;font-size:12.5px;color:var(--sub);font-weight:700}.ci-k b{display:block;font-size:22px;margin:2px 0}.ci-k i{font-style:normal;font-size:12px;color:var(--sub)}.ci-k .pos{color:var(--up)}
+.ci-bar{position:relative;display:flex;justify-content:space-between;height:28px;border-radius:10px;background:color-mix(in srgb,var(--up) 70%,#fff);margin:12px 0;overflow:hidden;font-size:12.5px;font-weight:700;color:#fff;align-items:center;padding:0 10px}
+.ci-bar i{position:absolute;left:0;top:0;bottom:0;background:#C9A24E}.ci-bar span{position:relative}
+.ci-tb summary{cursor:pointer;font-weight:700;padding:6px 0;color:#2F5BEA}
+@media(max-width:900px){.ci-g{grid-template-columns:minmax(0,1fr)}.ci-f{display:grid;grid-template-columns:1fr 1fr;gap:8px}}
+@media(max-width:700px){.ci-k .hi b{font-size:26px}.ci-k b{font-size:18px}}
+/* ===== 總經影響程度 ===== */
+.imp-2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.imp-tb td{text-align:left!important;white-space:normal!important;vertical-align:top}.imp-tb th{text-align:left!important}.imp-tb td:first-child{min-width:150px}
+.imp-tb tr[data-go]{cursor:pointer}.imp-tb tr[data-go]:hover td{background:var(--hover)}
+.imp-l{display:inline-block;font-size:12px;font-weight:800;color:#fff;background:var(--c);border-radius:6px;padding:1px 7px;margin-right:4px;white-space:nowrap}.imp-s{color:#E0A100;font-size:12px;letter-spacing:-1px;white-space:nowrap}
+.imp-x{font-size:12.5px;color:var(--sub);line-height:1.55}
+.imp-f{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}.imp-f div{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:3px}.imp-f b{font-size:14px}.imp-f span{font-size:12.5px;color:var(--sub);line-height:1.55}
+@media(max-width:1200px){.imp-2{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:700px){.imp-tb td:nth-child(5),.imp-tb th:nth-child(5){display:none}.imp-tb td:first-child{min-width:120px}}
 /* ===== 公司檔案 ===== */
 .pf{display:flex;flex-direction:column;gap:12px;margin-top:8px}
 .pf-say{background:color-mix(in srgb,var(--gold) 9%,var(--panel));border:1px solid color-mix(in srgb,var(--gold) 30%,transparent);border-radius:12px;padding:12px 14px}
@@ -1274,7 +1296,7 @@ body.need-login .wrap,body.need-login header,body.need-login footer,body.need-lo
     <button data-tab="etf"><i class="ic">📊</i><span class="lg">ETF 總覽</span><span class="sm">總覽</span></button>
     <button data-tab="vp"><i class="ic">🧠</i><span class="lg">專家選股</span><span class="sm">選股</span></button>
     <button data-tab="calc"><i class="ic">💰</i><span class="lg">我的配息試算</span><span class="sm">試算</span> <span class="n" id="tabN">0</span></button>
-    <button data-tab="plan"><i class="ic">🎯</i><span class="lg">退休規劃</span><span class="sm">退休</span></button>
+    <button data-tab="plan"><i class="ic">🎯</i><span class="lg">退休・複利</span><span class="sm">退休</span></button>
     <button data-tab="learn"><i class="ic">📚</i><span class="lg">投資教學</span><span class="sm">教學</span></button>
     <span class="mini" id="tabMini" data-tab="calc"></span>
   </nav>
@@ -1286,6 +1308,18 @@ body.need-login .wrap,body.need-login header,body.need-login footer,body.need-lo
   <div class="page" id="pg-learn"><div id="learn"></div></div>
 
   <div class="page" id="pg-plan">
+  <div class="box ci" id="ciBox"><h2 class="sec">🧮 複利計算器 <small>本金＋定期投入，看時間的複利效果；所有欄位改了立即重算</small></h2>
+    <div class="ci-g"><div class="ci-f">
+      <label>初始本金<div class="in"><input type="number" id="ciP" value="100000" step="10000"><em>元</em></div></label>
+      <label>年利率（年報酬率）<div class="in"><input type="number" id="ciR" value="6" step="0.1"><em>%</em></div></label>
+      <label>投資期間<div class="in"><input type="number" id="ciN" value="20" step="1" min="1" max="80"><em>年</em></div></label>
+      <label>複利頻率<select id="ciF"><option value="1">每年</option><option value="2">每半年</option><option value="4">每季</option><option value="12" selected>每月</option><option value="365">每日</option><option value="0">連續複利</option></select></label>
+      <label>定期投入<div class="in"><input type="number" id="ciC" value="10000" step="1000"><em>元</em></div></label>
+      <label>投入頻率<select id="ciCF"><option value="12" selected>每月</option><option value="1">每年</option></select></label>
+      <label>投入時點<select id="ciT"><option value="end">期末投入</option><option value="start">期初投入</option></select></label>
+      <label>每年投入增加<div class="in"><input type="number" id="ciG" value="0" step="0.5"><em>%</em></div></label>
+      <label>每年通膨（算實質購買力）<div class="in"><input type="number" id="ciI" value="2" step="0.5"><em>%</em></div></label>
+    </div><div id="ciOut"></div></div></div>
   <div class="plan" id="plan">
     <div class="plan-hd" id="planHd"><h2>🎯 我的退休規劃</h2><span style="color:var(--sub);font-size:13px">填基本資料 → 自動建議投入比例</span></div>
     <div class="plan-bd">
@@ -1295,15 +1329,10 @@ body.need-login .wrap,body.need-login header,body.need-login footer,body.need-lo
         <div class="pf"><label>現在一次投入</label><div class="in"><input type="number" id="pLump" value="1000000" step="10000"><em>元</em></div></div>
         <div class="pf"><label>之後每月投入</label><div class="in"><input type="number" id="pMon" value="20000" step="1000"><em>元/月</em></div></div>
         <div class="pf"><label>退休後希望每月領</label><div class="in"><input type="number" id="pWant" value="50000" step="1000"><em>元/月</em></div></div>
-        <details class="adv"><summary>⚙️ 進階假設（可改）</summary>
-          <div class="g">
-            <div>市值型年報酬 %<input type="number" id="aG" value="7" step="0.5"></div>
-            <div>高股息年報酬 %<input type="number" id="aD" value="6" step="0.5"></div>
-            <div>債券年報酬 %<input type="number" id="aB" value="3" step="0.5"></div>
-            <div>每年通膨 %<input type="number" id="aI" value="2" step="0.5"></div>
-          </div>
-          <p style="margin-top:8px;line-height:1.6">報酬率是「股價漲幅＋配息再投入」的長期平均，故意抓保守。下面會附上資料庫裡這幾類 ETF 的實際數字給你對照。</p>
-        </details>
+        <div class="pf"><label>預期年報酬率（累積期）</label><div class="in"><input type="number" id="aR" value="6" step="0.5"><em>%</em></div></div>
+        <div class="pf"><label>退休後領息殖利率</label><div class="in"><input type="number" id="aY" value="5" step="0.5"><em>%</em></div></div>
+        <div class="pf"><label>每年通膨</label><div class="in"><input type="number" id="aI" value="2" step="0.5"><em>%</em></div></div>
+        <p class="mknote" style="line-height:1.7">年報酬率＝股價漲幅＋配息再投入的長期平均（台股大盤長期約 7～8%，故意抓保守 6%）；退休後只領股息、不賣股，殖利率抓 5%。所有金額都換算成「今天的錢」，比較好懂。</p>
       </div>
       <div class="pres" id="pres"></div>
     </div>
@@ -1970,7 +1999,7 @@ function donut(el, data, cat){
    1. 退休時需要多少本金 = 退休後每月想領 × 12 ÷ 退休組合殖利率(考慮通膨後的金額)
    2. 照現在投入能累積多少 = 一次投入複利 + 每月定期定額複利(依建議比例的加權報酬)
    3. 建議比例依「離退休還有幾年」:越久越偏市值型(讓本金長大)、越近越偏高股息+債券(穩定領息)  */
-const PLAN_KEYS = ["pAge","pRet","pLump","pMon","pWant","aG","aD","aB","aI"];
+const PLAN_KEYS = ["pAge","pRet","pLump","pMon","pWant","aR","aY","aI"];
 try { const v = JSON.parse(localStorage.getItem("etf_plan") || "{}"); PLAN_KEYS.forEach(k => v[k] != null && ($("#"+k).value = v[k])); } catch(e){}
 PLAN_KEYS.forEach(k => $("#"+k).addEventListener("input", () => {
   try { localStorage.setItem("etf_plan", JSON.stringify(Object.fromEntries(PLAN_KEYS.map(k => [k, $("#"+k).value])))); } catch(e){}
@@ -2082,22 +2111,19 @@ function renderPlan(){
   if (!S) return;
   const v = k => +$("#"+k).value || 0;
   const age = v("pAge"), ret = v("pRet"), lump = v("pLump"), mon = v("pMon"), want = v("pWant");
-  const R = [v("aG"), v("aD"), v("aB")].map(x => x/100), infl = v("aI")/100;
-  const years = Math.max(0, ret - age), mix = glide(years);
-  const rAcc = mix.reduce((s,w,i) => s + w/100*R[i], 0);
+  const r = v("aR")/100, yRet = (v("aY") || 5)/100, infl = v("aI")/100;
+  const years = Math.max(0, ret - age), mix = glide(years), rAcc = r;
   const [G, D, B] = pickEtfs(), picks = [G, D, B];
-  // 退休組合殖利率:用實際挑出來 ETF 的近一年殖利率,按退休期配置加權
   const yOf = l => l.length ? l.reduce((s,e)=>s+avgYld(e),0)/l.length/100 : 0;
-  const yRet = RET_MIX.reduce((s,w,i) => s + w/100*yOf(picks[i]), 0) || 0.05;
-  const wantFuture = want * Math.pow(1+infl, years);
-  const need = wantFuture * 12 / yRet;
-  const have = fv(lump, mon, rAcc, years);
-  const monthlyAtRet = have * yRet / 12;
-  const ratio = have / need;
-  // 要達標每月要投入多少 / 不加碼要幾歲才能退休
-  const i = rAcc/12, m = years*12;
-  const needMon = years ? Math.max(0, (need - lump*Math.pow(1+i,m)) * i / (Math.pow(1+i,m)-1)) : 0;
-  let okAge = null; for (let y = years; age + y <= 70; y++) { if (fv(lump, mon, rAcc, y) >= want*Math.pow(1+infl,y)*12/yRet) { okAge = age + y; break; } }
+  // 全部換算成「今天的錢」:累積金額扣掉通膨、目標月領不用再膨脹
+  const deflate = Math.pow(1 + infl, years);
+  const haveNom = fv(lump, mon, r, years), have = haveNom / deflate;        // 退休時累積(今天的錢)
+  const need = want * 12 / yRet;                                             // 需要的本金(今天的錢)
+  const monthlyNow = have * yRet / 12, ratio = need ? have / need : 0;
+  const i = r/12, m = years*12;
+  const needMon = years ? Math.max(0, (need * deflate - lump*Math.pow(1+i,m)) * (i ? i / (Math.pow(1+i,m)-1) : 1/m)) : 0;
+  let okAge = null; for (let y = years; age + y <= 75; y++) { if (fv(lump, mon, r, y) / Math.pow(1+infl, y) >= need) { okAge = age + y; break; } }
+  const wantFuture = want * deflate, monthlyAtRet = monthlyNow * deflate;
 
   const tone = ratio >= 1 ? ["#16a34a","#22c55e","🎉","目標達成！"] : ratio >= .7 ? ["#f59e0b","#f97316","💪","差一點，再加把勁"] : ["#dc2626","#e52e71","⚠️","缺口偏大，要調整"];
   const st = BK.map(b => catStats(b.c));
@@ -2107,12 +2133,12 @@ function renderPlan(){
     <div class="verdict" style="background:linear-gradient(135deg,${tone[0]},${tone[1]})">
       <div class="em">${tone[2]}</div>
       <div><h3>${tone[3]}　預估可達成 ${Math.round(ratio*100)}%</h3>
-      <p>照你現在的投入，${ret} 歲退休時每月約可領 <b>${money(monthlyAtRet)}</b>（換算今天的購買力約 ${money(monthlyAtRet/Math.pow(1+infl,years))}），目標是 ${money(want)}。</p></div>
+      <p>照你現在的投入，${ret} 歲退休時每月約可領 <b>${money(monthlyNow)}</b>（今天的購買力），目標是 ${money(want)}。</p></div>
     </div>
     <div class="bigs">
       <div><small>離退休還有</small><b class="num">${years} 年</b><i>每月投入共 ${years*12} 次</i></div>
-      <div><small>退休時預估累積</small><b class="num">${wan(have)}</b><i>投入本金 ${wan(lump + mon*years*12)}</i></div>
-      <div><small>需要的本金</small><b class="num">${wan(need)}</b><i>以殖利率 ${(yRet*100).toFixed(1)}% 領息</i></div>
+      <div><small>退休時累積（今天的錢）</small><b class="num">${wan(have)}</b><i>帳面 ${wan(haveNom)}・投入本金 ${wan(lump + mon*years*12)}</i></div>
+      <div><small>需要的本金（今天的錢）</small><b class="num">${wan(need)}</b><i>每月 ${money(want)} × 12 ÷ ${(yRet*100).toFixed(1)}%</i></div>
       <div><small>${ratio>=1?"多出":"缺口"}</small><b class="num" style="color:${ratio>=1?"var(--down)":"var(--up)"}">${wan(Math.abs(have-need))}</b><i>${ratio>=1?"可以更保守或提早退休":"見下方調整建議"}</i></div>
     </div>
     <div>
@@ -2124,15 +2150,16 @@ function renderPlan(){
     <div class="picks" id="pkMain">${picks.map((l,bi) => l.map(e => pkCard(e, bi, true)).join("")).join("")}</div>
     <details class="pk-alt"><summary>➕ 其他候選 ETF（可改勾或加勾）</summary><div class="picks">${PLAN_ALT.map((l,bi) => l.map(e => pkCard(e, bi, false)).join("")).join("")}</div></details>
     <div class="why">
-      <b>💬 為什麼這樣配？白話說明</b>
-      <ul style="margin-top:6px">
-        <li><b>你離退休還有 ${years} 年</b>，${years>=20?"時間很長，最怕的不是波動而是本金長不大，所以把最大一塊放「市值型」，跟著台灣整體企業一起長大，中間跌了也有時間等它漲回來。":years>=10?"時間還算夠，市值型和高股息各佔一大塊：一邊讓本金繼續長大，一邊開始累積會配息的部位。":years>=5?"快到退休了，重點從「長大」慢慢轉成「穩定」，高股息變最大塊，債券也加多一點，避免退休前剛好遇到大跌。":"已經很接近退休，以穩定領息為主：高股息加債券佔八成以上，市值型留一點點對抗通膨。"}</li>
-        <li><b>市值型（${G.map(e=>e.id).join("、")||"—"}）</b>：負責「${BK[0].why}」。資料庫裡前幾大市值型近一年平均漲 ${st[0].ret.toFixed(1)}%，但它會大起大落，長期抓 ${v("aG")}% 比較保守。</li>
-        <li><b>高股息（${D.map(e=>e.id).join("、")||"—"}）</b>：負責「${BK[1].why}」。特別挑<b>發放月份錯開</b>的季配息，${new Set(D.flatMap(e=>e.payMonths)).size>=12?"三檔湊起來剛好 1～12 月每個月都有錢入帳":"讓入帳月份盡量分散"}。這幾檔過去幾年平均殖利率約 ${yOf(D)*100 ? (yOf(D)*100).toFixed(1) : "—"}%。</li>
-        <li><b>債券（${B.map(e=>e.id).join("、")||"—"}）</b>：負責「${BK[2].why}」。股市大跌時債券通常比較抗跌，像安全氣囊；退休後比重拉高，讓每月的錢比較穩。</li>
-        <li><b>需要多少本金怎麼算的？</b>你想每月領 ${money(want)}，加上每年 ${v("aI")}% 通膨，${years} 年後要 ${money(wantFuture)} 才買得到一樣的東西，一年就是 ${money(wantFuture*12)}；退休組合殖利率約 ${(yRet*100).toFixed(1)}%，所以本金要 ${money(wantFuture*12)} ÷ ${(yRet*100).toFixed(1)}% ≈ <b>${wan(need)}</b>，而且<b>只領息、不賣股</b>，本金不會越領越少。</li>
-        ${ratio < 1 ? `<li><b>怎麼補缺口？</b>三選一或混著用：①每月投入加到 <b>${money(needMon)}</b>；②${okAge ? `延到 <b>${okAge} 歲</b>退休` : "就算延到 70 歲退休也還不夠，建議搭配①或③"}；③把目標月領調到約 <b>${money(monthlyAtRet/Math.pow(1+infl,years))}</b>（今天的購買力）。</li>` : `<li><b>已經夠了怎麼辦？</b>可以把債券比重再加一點、降低波動；或照這個速度，你有機會比 ${ret} 歲更早退休。</li>`}
-      </ul>
+      <b>🧮 怎麼算的？四步看懂</b>
+      <ol class="plan-steps">
+        <li>現在投入 <b>${money(lump)}</b>，之後每月 <b>${money(mon)}</b>，以年報酬 ${(r*100).toFixed(1)}% 複利滾 <b>${years} 年</b> → 帳面累積 <b>${wan(haveNom)}</b>。</li>
+        <li>扣掉每年 ${(infl*100).toFixed(1)}% 通膨，等於今天的 <b>${wan(have)}</b>（${years} 年後的錢比較薄）。</li>
+        <li>退休後只領息不賣股，以殖利率 ${(yRet*100).toFixed(1)}% 計算 → 每月可領 <b>${money(monthlyNow)}</b>（今天的購買力）。</li>
+        <li>目標每月 ${money(want)} → 需要本金 ${money(want)} × 12 ÷ ${(yRet*100).toFixed(1)}% = <b>${wan(need)}</b>，達成率 <b>${Math.round(ratio*100)}%</b>。</li>
+      </ol>
+      ${ratio < 1 ? `<p><b>怎麼補缺口？</b>三選一或混著用：①每月投入加到 <b>${money(needMon)}</b>；②${okAge ? `延到 <b>${okAge} 歲</b>退休` : "就算延到 75 歲也不夠，建議搭配①或③"}；③把目標月領調到 <b>${money(monthlyNow)}</b>。</p>`
+        : `<p><b>已經夠了：</b>可以把債券比重加一點降低波動，或${okAge && okAge < ret ? `最早 <b>${okAge} 歲</b>就能退休` : "維持現在的節奏"}。</p>`}
+      <p class="mknote">配置建議：離退休 ${years} 年，${years>=20?"時間長，以市值型為主讓本金長大":years>=10?"市值型與高股息並重":years>=5?"以高股息為主、加一點債券":"以高股息＋債券穩定領息為主"}；退休後轉成高股息 55%、債券 35%、市值型 10%。下方 ETF 的近年平均殖利率：高股息約 ${(yOf(D)*100).toFixed(1)}%、債券約 ${(yOf(B)*100).toFixed(1)}%。</p>
     </div>
     <div class="pk-act"><button class="apply" id="applyPlan">✨ 把勾選的 ETF 放入我的配息試算</button>
       <label><input type="radio" name="pkMode" value="add" checked> 加到現有清單</label><label><input type="radio" name="pkMode" value="rep"> 取代現有清單</label></div>
@@ -3803,7 +3830,8 @@ function renderMacro(){
         .map(([a, b, c]) => `<div><small>${a}</small><b class="num">${b}</b><i>${c}</i></div>`).join("")}</div>
       <small class="mc-src">資料：美國聖路易聯準銀行 FRED（官方統計）、Yahoo Finance 即時行情；更新 ${MC.updated}</small></div>
   </div>
-  <nav class="mk-nav mc-nav">${[["mc-fed", "🏦 聯準會"], ["mc-inf", "🔥 通膨"], ["mc-oil", "🛢️ 石油與原物料"], ["mc-job", "👷 就業（非農）"], ["mc-eco", "🛒 景氣"], ["mc-fin", "💹 利率與金融溫度"], ["mc-cal", "📅 公布時間"]].map(([i, t]) => `<button data-to="${i}">${t}</button>`).join("")}</nav>
+  <div class="box" id="mc-imp"><h2 class="sec">📊 哪些總經數據最影響股市？ <small>影響程度沒有固定值，會隨市場當下最關心的主題改變（通膨高時看 CPI、怕衰退時看就業）；以下為一般情況的排序</small></h2><div id="impBody"><div class="sk" style="height:300px"></div></div></div>
+  <nav class="mk-nav mc-nav">${[["mc-imp", "📊 影響程度"], ["mc-fed", "🏦 聯準會"], ["mc-inf", "🔥 通膨"], ["mc-oil", "🛢️ 石油與原物料"], ["mc-job", "👷 就業（非農）"], ["mc-eco", "🛒 景氣"], ["mc-fin", "💹 利率與金融溫度"], ["mc-cal", "📅 公布時間"]].map(([i, t]) => `<button data-to="${i}">${t}</button>`).join("")}</nav>
 
   <div class="box" id="mc-fed"><h2 class="sec">🏦 聯準會升息／降息 <small>目標利率區間歷史、每次決策紀錄，以及期貨市場預期的未來利率</small></h2>
     <div class="mc-say2"><p>目前利率 <b>${fmt(lo[1], 2)}%～${fmt(up[1], 2)}%</b>。這一輪是從 ${cycle.from} 開始的<b>${cycle.dir > 0 ? "升息" : "降息"}循環</b>，已${cycle.dir > 0 ? "升" : "降"} ${cycle.cnt} 次、共 ${Math.abs(cycle.bp)} 個基點（${Math.abs(cycle.bp) / 25} 碼）；近一年升息 ${hikes} 次、降息 ${cuts} 次。<small>（1 碼 = 0.25 個百分點 = 25 個基點）</small></p></div>
@@ -3851,7 +3879,7 @@ function renderMacro(){
   mcChart($("#mcInfCh"), [["CPIAUCSL", "CPI", "#E5484D"], ["CPILFESL", "核心 CPI", "#F59E0B"], ["PCEPILFE", "核心 PCE", "#2F5BEA"], ["PPIFIS", "PPI", "#94A3B8"]].map(([id, n, c]) => ({name: n, color: c, rows: mcS(id).rows.filter(since("2015")), w: id == "PPIFIS" ? 1.4 : 2.2, fmt: v => fmt(v, 2) + "%"})), {ref: 2, refName: "聯準會目標 2%", h: 280});
   mcChart($("#mcJobCh"), [{name: "非農新增（千人）", color: "#2F5BEA", rows: mcS("PAYEMS").rows.slice(-48), fmt: v => fmt(v / 10, 1) + " 萬人"}], {bars: true, band: [100, 250], bandName: "健康區間", zero: true, h: 240});
   mcChart($("#mcCurveCh"), [{name: "10 年 − 2 年", color: "#2F5BEA", rows: mcS("T10Y2Y").rows.filter(since("2010")), fmt: v => sgn(v) + "%"}], {zero: true, h: 220});
-  mcBindCards($("#macro")); gate("#mcZQ", "聯邦基金期貨：市場預期未來幾個月的利率與升降息碼數");
+  impRender(); mcBindCards($("#macro")); gate("#mcZQ", "聯邦基金期貨：市場預期未來幾個月的利率與升降息碼數");
   // 期貨預期
   mcZQ().then(Z => {
     const ef = mcLast("EFFR")[1];
@@ -4900,6 +4928,93 @@ async function renderCal(){
   host.querySelectorAll("[data-m]").forEach(b => b.onclick = () => { CAL.m = b.dataset.m; renderCal(); });
 }
 
+
+/* ---------- 🧮 複利計算器 ---------- */
+const CI_KEYS = ["ciP", "ciR", "ciN", "ciF", "ciC", "ciCF", "ciT", "ciG", "ciI"];
+function ciCalc(){
+  const g = k => $("#" + k).value, P = +g("ciP") || 0, r = (+g("ciR") || 0) / 100, N = Math.max(1, Math.min(80, Math.round(+g("ciN") || 1))), f = +g("ciF");
+  const C = +g("ciC") || 0, cf = +g("ciCF"), start = g("ciT") == "start", gr = (+g("ciG") || 0) / 100, inf = (+g("ciI") || 0) / 100;
+  const eff = f == 0 ? Math.exp(r) - 1 : Math.pow(1 + r / f, f) - 1, mr = Math.pow(1 + eff, 1 / 12) - 1;   // 等效月利率
+  let bal = P, dep = P, rows = [];
+  for (let y = 1; y <= N; y++) {
+    const c = C * Math.pow(1 + gr, y - 1), b0 = bal; let add = 0, int = 0;
+    for (let m = 0; m < 12; m++) {
+      const pay = cf == 12 ? c : (m == (start ? 0 : 11) ? c : 0);
+      if (start && pay) { bal += pay; add += pay; }
+      const it = bal * mr; bal += it; int += it;
+      if (!start && pay) { bal += pay; add += pay; }
+    }
+    dep += add; rows.push({y, b0, add, int, bal, dep, real: bal / Math.pow(1 + inf, y)});
+  }
+  const L = rows[rows.length - 1], tint = L.bal - L.dep, x2 = r > 0 ? Math.log(2) / Math.log(1 + eff) : null;
+  $("#ciOut").innerHTML = `<div class="ci-k">
+      <div class="hi"><small>${N} 年後總金額</small><b class="num">$${fmt(L.bal, 0)}</b><i>實質購買力約 $${fmt(L.real, 0)}（扣通膨 ${(inf * 100).toFixed(1)}%）</i></div>
+      <div><small>總投入本金</small><b class="num">$${fmt(L.dep, 0)}</b><i>初始 $${fmt(P, 0)}＋定期 $${fmt(L.dep - P, 0)}</i></div>
+      <div><small>複利賺到的利息</small><b class="num pos">$${fmt(tint, 0)}</b><i>占總金額 ${L.bal ? (tint / L.bal * 100).toFixed(1) : 0}%</i></div>
+      <div><small>資產翻倍時間</small><b class="num">${x2 ? x2.toFixed(1) + " 年" : "—"}</b><i>72 法則估算約 ${r > 0 ? (72 / (r * 100)).toFixed(1) : "—"} 年・等效年利率 ${(eff * 100).toFixed(2)}%</i></div></div>
+    <div class="ci-bar"><i style="width:${L.bal ? L.dep / L.bal * 100 : 0}%"></i><span>本金 ${L.bal ? (L.dep / L.bal * 100).toFixed(0) : 0}%</span><span class="r">利息 ${L.bal ? (tint / L.bal * 100).toFixed(0) : 0}%</span></div>
+    <div id="ciCh"></div>
+    <details class="ci-tb"><summary>📋 每年明細（${N} 年）</summary><div class="gx-tw" style="max-height:420px"><table class="gx-tb"><thead><tr><th>年</th><th>年初餘額</th><th>本年投入</th><th>本年利息</th><th>年末餘額</th><th>累計投入</th><th>累計利息</th><th>實質價值</th></tr></thead><tbody>
+      ${rows.map(x => `<tr><td>${x.y}</td><td class="num">${fmt(x.b0, 0)}</td><td class="num">${fmt(x.add, 0)}</td><td class="num pos">${fmt(x.int, 0)}</td><td class="num"><b>${fmt(x.bal, 0)}</b></td><td class="num">${fmt(x.dep, 0)}</td><td class="num">${fmt(x.bal - x.dep, 0)}</td><td class="num">${fmt(x.real, 0)}</td></tr>`).join("")}</tbody></table></div></details>
+    <p class="mknote">公式：依複利頻率換算成等效年利率，再折算成每月利率逐月滾算；定期投入可選期初或期末、每年可遞增。報酬率為假設值，實際投資會有波動。</p>`;
+  const y0 = new Date().getFullYear();
+  mcChart($("#ciCh"), [{name: "總金額", color: "#2F5BEA", rows: [[`${y0}-01-01`, P]].concat(rows.map(x => [`${y0 + x.y}-01-01`, Math.round(x.bal)])), fmt: v => "$" + fmt(v, 0)},
+    {name: "投入本金", color: "#C9A24E", rows: [[`${y0}-01-01`, P]].concat(rows.map(x => [`${y0 + x.y}-01-01`, Math.round(x.dep)])), fmt: v => "$" + fmt(v, 0)},
+    {name: "實質購買力", color: "#94A3B8", w: 1.4, rows: [[`${y0}-01-01`, P]].concat(rows.map(x => [`${y0 + x.y}-01-01`, Math.round(x.real)])), fmt: v => "$" + fmt(v, 0)}], {h: 260});
+}
+try { const v = JSON.parse(localStorage.getItem("bfy_ci") || "{}"); CI_KEYS.forEach(k => v[k] != null && ($("#" + k).value = v[k])); } catch (e) {}
+CI_KEYS.forEach(k => $("#" + k).addEventListener("input", () => { try { localStorage.setItem("bfy_ci", JSON.stringify(Object.fromEntries(CI_KEYS.map(k => [k, $("#" + k).value])))); } catch (e) {} ciCalc(); }));
+ciCalc();
+
+/* ---------- 📊 總經影響程度(美國＋台灣) ---------- */
+const IMPL = {極高: [5, "#E5484D"], 高: [4, "#F59E0B"], 中高: [3.5, "#EAB308"], 中: [3, "#2F7FE0"], 中低: [2, "#94A3B8"]};
+async function impRender(){
+  if (!$("#impBody")) return;
+  const mk = await getJ("market"), last = (id, k = 0) => { const s = MC.s[id]; return s && s.rows.length > k ? s.rows[s.rows.length - 1 - k] : null; };
+  const tw = MC.tw || {}, tl = (id, k = 0) => { const s = tw[id]; return s && s.rows && s.rows.length > k ? s.rows[s.rows.length - 1 - k] : null; };
+  const q = s => (typeof GQD != "undefined" && GQD[s]) ? GQD[s] : null;
+  const F = (v, u = "", d = 2) => v == null ? "—" : fmt(v, d) + u, P = (v, d = 1) => v == null ? "—" : sgn(v, d) + "%";
+  const ym = r => r ? r[0].slice(0, 7) : "", dd = r => r ? r[0].slice(0, 10) : "";
+  const R = mk ? Object.fromEntries(mk.cols.map((c, i) => [c, mk.rows[mk.rows.length - 1][i]])) : {}, R5 = mk ? mk.rows.slice(-5).reduce((s, r) => s + (r[mk.cols.indexOf("fi")] || 0), 0) : null;
+  const up = last("DFEDTARU"), lo = last("DFEDTARL"), dec = MC.fed[MC.fed.length - 1];
+  const US = [
+    ["聯準會利率決策（FOMC、點陣圖）", "極高", up ? `${fmt(lo[1], 2)}～${fmt(up[1], 2)}%` : "—", dec ? `上次 ${dec.d} ${dec.bp > 0 ? "升" : "降"} ${Math.abs(dec.bp) / 25} 碼` : "", "決定資金成本與股票評價", "mc-fed"],
+    ["CPI 消費者物價年增率", "極高", P(last("CPIAUCSL")?.[1], 2), `前期 ${P(last("CPIAUCSL", 1)?.[1], 2)}・${ym(last("CPIAUCSL"))}`, "左右降息或升息預期", "mc-inf"],
+    ["核心 PCE 年增率", "極高", P(last("PCEPILFE")?.[1], 2), `前期 ${P(last("PCEPILFE", 1)?.[1], 2)}・目標 2%`, "聯準會最看重的通膨數據", "mc-inf"],
+    ["非農就業新增", "高", last("PAYEMS") ? sgn(last("PAYEMS")[1] / 10, 1) + " 萬人" : "—", `前期 ${last("PAYEMS", 1) ? sgn(last("PAYEMS", 1)[1] / 10, 1) + " 萬" : "—"}・${ym(last("PAYEMS"))}`, "判斷景氣與政策方向", "mc-job"],
+    ["失業率", "高", F(last("UNRATE")?.[1], "%", 1), `前期 ${F(last("UNRATE", 1)?.[1], "%", 1)}`, "上升太快是衰退訊號", "mc-job"],
+    ["美債 10 年期殖利率", "高", F(last("DGS10")?.[1], "%"), `${dd(last("DGS10"))}`, "殖利率升，成長股評價承壓", "mc-fin"],
+    ["製造業景氣（費城聯準會指數，PMI 參考）", "中高", F(last("GACDFSA066MSFRBPHI")?.[1], "", 1), `前期 ${F(last("GACDFSA066MSFRBPHI", 1)?.[1], "", 1)}・大於 0 擴張`, "景氣領先指標（ISM PMI 無免費資料，以此替代）", "mc-eco"],
+    ["零售銷售年增率", "中", P(last("RSAFS")?.[1]), `${ym(last("RSAFS"))}`, "消費占美國 GDP 約七成", "mc-eco"],
+    ["消費者信心（密大）", "中", F(last("UMCSENT")?.[1], "", 1), `前期 ${F(last("UMCSENT", 1)?.[1], "", 1)}`, "消費意願的領先參考", "mc-eco"],
+    ["GDP 成長率（季增年率）", "中", F(last("A191RL1Q225SBEA")?.[1], "%", 1), `${ym(last("A191RL1Q225SBEA"))}`, "落後指標，多半已被市場預期", "mc-eco"],
+    ["PPI 生產者物價年增率", "中低", P(last("PPIFIS")?.[1], 2), `${ym(last("PPIFIS"))}`, "CPI 的前哨，輔助判斷", "mc-inf"],
+    ["初領失業救濟金（週）", "中低", last("ICSA") ? fmt(last("ICSA")[1] / 1e4, 1) + " 萬人" : "—", `${dd(last("ICSA"))}`, "最即時的就業溫度，輔助判斷", "mc-job"]];
+  const sox = q("^SOX"), ndx = q("^IXIC"), twd = q("TWD=X"), light = tw.LIGHT, lc = light ? light.last_color : null;
+  const LC = {紅: "#E5484D", 黃紅: "#F97316", 綠: "#16A34A", 黃藍: "#EAB308", 藍: "#2F7FE0"};
+  const TW = [
+    ["美股（費半、那斯達克）", "極高", sox ? `費半 ${fmt(sox.px, 0)}（${sgn(sox.chg, 2)}%）` : "載入中", ndx ? `那斯達克 ${fmt(ndx.px, 0)}（${sgn(ndx.chg, 2)}%）` : "", "台股與美國科技股連動高（前一晚美股→隔天台股）", "glob"],
+    ["聯準會政策", "極高", up ? `${fmt(lo[1], 2)}～${fmt(up[1], 2)}%` : "—", "影響外資進出台股", "全球資金成本的源頭", "mc-fed"],
+    ["外銷訂單年增率", "高", P(tl("ORDERS")?.[1]), `${ym(tl("ORDERS"))}・${tw.ORDERS && tw.ORDERS.amt ? fmt(tw.ORDERS.amt / 1000, 1) + " 億美元" : ""}`, "台灣為出口導向，領先出口 1～3 個月", null],
+    ["海關出口值年增率", "高", P(tl("EXPORT")?.[1]), `前期 ${P(tl("EXPORT", 1)?.[1])}・${ym(tl("EXPORT"))}`, "企業營收與 GDP 的主要動能", null],
+    ["新台幣匯率（美元兌台幣）", "高", twd ? fmt(twd.px, 3) : "載入中", twd ? `今日 ${sgn(twd.chg, 2)}%（數字變小＝台幣升值）` : "", "台幣升值通常伴隨外資匯入", null],
+    ["外資買賣超（上市）", "高", R.fi != null ? `${sgn(R.fi, 1)} 億` : "—", R5 != null ? `近 5 日 ${sgn(R5, 1)} 億・${R.d || ""}` : "", "外資進出主導大盤方向", "mkt"],
+    ["景氣對策信號（國發會）", "中", light && light.rows.length ? `<span style="color:${LC[lc] || "inherit"}">${lc || ""}燈 ${light.rows[light.rows.length - 1][1]} 分</span>` : "—", light ? `${ym(light.rows[light.rows.length - 1])}・9～16 藍、17～22 黃藍、23～31 綠、32～37 黃紅、38～45 紅` : "", "判斷景氣循環位置（紅燈＝過熱）", null],
+    ["外銷訂單動向指數（PMI 參考）", "中", F(tl("ORDERIDX")?.[1], "", 1), `前期 ${F(tl("ORDERIDX", 1)?.[1], "", 1)}・大於 50 樂觀`, "廠商對未來接單的看法（台灣 PMI 無免費資料，以此替代）", null],
+    ["工業生產指數年增率", "中", P(tl("IPI")?.[1]), `${ym(tl("IPI"))}`, "製造業實際產出", null],
+    ["貨幣總計數 M1B 年增率", "中", P(tl("M1B")?.[1]), `前期 ${P(tl("M1B", 1)?.[1])}・${ym(tl("M1B"))}`, "資金動能：M1B 增速上升，資金較容易流入股市", null],
+    ["五大銀行新承做放款利率", "中", F(tl("LOANRATE")?.[1], "%", 3), `${ym(tl("LOANRATE"))}`, "反映國內利率與央行政策", null],
+    ["中國出口年增率", "中", P(last("XTEXVA01CNM667S")?.[1]), `${ym(last("XTEXVA01CNM667S"))}`, "影響台灣供應鏈與需求（中國 PMI 無免費資料，以出口替代）", null]];
+  const stars = lv => { const [n, c] = IMPL[lv]; return `<span class="imp-l" style="--c:${c}">${lv}</span><span class="imp-s">${"★".repeat(Math.floor(n))}${n % 1 ? "☆" : ""}</span>`; };
+  const tbl = (rows, flag) => `<div class="gx-tw" style="max-height:none"><table class="gx-tb imp-tb"><thead><tr><th>指標</th><th>影響程度</th><th>最新數據</th><th>補充</th><th>為什麼重要</th></tr></thead><tbody>
+    ${rows.map(r => `<tr ${r[5] ? `data-go="${r[5]}"` : ""}><td><b>${r[0]}</b></td><td>${stars(r[1])}</td><td class="num"><b>${r[2]}</b></td><td class="imp-x">${r[3]}</td><td class="imp-x">${r[4]}</td></tr>`).join("")}</tbody></table></div>`;
+  $("#impBody").innerHTML = `<div class="imp-2"><div><h3 class="mm-h3">🇺🇸 美股主要總經指標</h3>${tbl(US)}</div><div><h3 class="mm-h3">🇹🇼 台股主要總經指標</h3>${tbl(TW)}</div></div>
+    <h3 class="mm-h3" style="margin-top:16px">🧩 指標以外，也會左右股市的因素</h3>
+    <div class="imp-f">${[["🏢 企業獲利", "財報與財測，長期最關鍵；台股尤其看台積電與 AI 供應鏈"], ["🔬 產業趨勢", "AI、半導體循環、庫存調整"], ["🌐 地緣政治與政策", "關稅、出口管制、兩岸情勢、戰爭、選舉"], ["💰 資金與籌碼", "外資、投信、融資餘額、ETF 資金流向"], ["😱 市場情緒", "VIX 恐慌指數、評價水位（本益比）"], ["🛢️ 原物料與匯率", "油價、美元指數"], ["⚡ 突發事件", "疫情、金融機構危機等"]].map(([a, b]) => `<div><b>${a}</b><span>${b}</span></div>`).join("")}</div>
+    <p class="mknote">資料：美國聖路易聯準銀行 FRED、國發會景氣指標、經濟部外銷訂單、證交所、Yahoo Finance 即時行情。點表格列可跳到下方詳細圖表。</p>`;
+  $("#impBody").querySelectorAll("tr[data-go]").forEach(tr => tr.onclick = () => { const g = tr.dataset.go; if (g == "mkt" || g == "glob") { go("mkt"); return; } const el = $("#" + g); if (el) window.scrollTo({top: el.getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 70), behavior: "smooth"}); });
+  if (!sox || !twd) setTimeout(() => { if ($("#impBody") && typeof GQD != "undefined" && GQD["^SOX"]) impRender(); }, 8000);
+}
 </script>
 </body>
 </html>
