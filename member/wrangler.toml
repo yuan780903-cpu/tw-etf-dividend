@@ -1,0 +1,9 @@
+name = "etf-member"
+main = "index.js"
+compatibility_date = "2024-11-01"
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "etf-member"
+database_id = "e55792b4-c208-4aa2-ab05-37d7691a15e4"

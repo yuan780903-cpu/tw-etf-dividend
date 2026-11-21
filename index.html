@@ -888,6 +888,55 @@ td.r,th.r{text-align:right}
 .mos-t{font-style:normal;font-size:11.5px;color:var(--sub);max-width:170px;text-align:right;line-height:1.4;margin-top:2px}
 .mos-info{background:color-mix(in srgb,var(--blue,#2F5BEA) 6%,var(--panel));border:1px solid color-mix(in srgb,var(--blue,#2F5BEA) 20%,transparent);border-radius:14px;padding:14px 16px;margin:4px 0 16px;font-size:14px;line-height:1.8}
 .mos-info>b{font-size:15px}.mos-info p{margin-top:6px}.mos-info .g{color:var(--down);font-weight:700}.mos-info .r{color:var(--up);font-weight:700}
+/* ===== 會員 ===== */
+.btn-mem{border:0;border-radius:14px;padding:0 16px;font-weight:700;font-size:14px;cursor:pointer;background:linear-gradient(135deg,#2F5BEA,#5B86F7);color:#fff;box-shadow:0 10px 22px -12px rgba(47,91,234,.8);white-space:nowrap}
+.btn-mem.paid{background:linear-gradient(135deg,#C9A24E,#E9C77B);color:#14213D}
+.gated{position:relative;max-height:560px;overflow:hidden}
+.gated>*:not(.gate):not(h2){filter:blur(7px);pointer-events:none;user-select:none}
+.gate{position:absolute;inset:58px 0 0 0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--panel) 80%,transparent) 35%);z-index:6;padding:16px}
+.gate-c{background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:22px 24px;text-align:center;max-width:440px}
+.gate-i{font-size:34px}.gate-c b{display:block;font-size:18px;margin:4px 0}.gate-c p{font-size:14px;line-height:1.7;color:var(--sub)}
+.gate-c button{margin-top:12px;border:0;border-radius:12px;padding:11px 18px;font-weight:700;font-size:15px;color:#fff;background:linear-gradient(120deg,#2F5BEA,#5B86F7);cursor:pointer}.gate-c small{display:block;margin-top:8px;color:var(--sub);font-size:12px}
+.vpc-lock{cursor:pointer;position:relative}.vpc-lock .ring.lk{background:var(--track);font-size:20px}
+.vpl-b{display:flex;flex-direction:column;gap:8px;margin:14px 0;filter:blur(2px)}.vpl-bar{height:12px;border-radius:6px;background:var(--track)}.vpl-bar.s{width:60%}
+.vpl-t{font-size:13px;color:var(--sub);line-height:1.6;background:color-mix(in srgb,var(--gold) 8%,var(--panel));border-radius:10px;padding:8px 10px}
+.pf-lock{cursor:pointer;font-size:13.5px;line-height:1.7;background:color-mix(in srgb,var(--gold) 9%,var(--panel));border:1px dashed color-mix(in srgb,var(--gold) 45%,transparent);border-radius:12px;padding:12px 14px;margin-top:8px}.pf-lock span{color:var(--blue,#2F5BEA);font-weight:700;margin-left:6px}
+.mov{position:fixed;inset:0;z-index:300;background:rgba(10,16,30,.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:16px}.mov.on{display:flex}
+.mdlg{position:relative;background:var(--panel);color:var(--ink);border-radius:22px;max-width:640px;width:100%;max-height:92vh;overflow:auto;padding:24px;box-shadow:0 30px 80px -20px rgba(0,0,0,.5)}
+.mdlg .x{position:absolute;right:14px;top:14px;border:0;background:var(--track);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:15px;color:var(--ink)}
+.mm-hd{display:flex;gap:14px;align-items:center;padding-right:30px}.mm-hd img{border-radius:50%;flex:none}.mm-hd h2{font-size:22px}.mm-hd p{font-size:13.5px;color:var(--sub);line-height:1.6;margin-top:2px}
+.mm-ben{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:16px 0;font-size:13px}.mm-ben span{background:var(--bg);border-radius:10px;padding:8px 10px;line-height:1.5}
+.mm-plans{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mp-c{position:relative;border:2px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:4px;text-align:center}.mp-c.hot{border-color:#2F5BEA;background:color-mix(in srgb,#2F5BEA 5%,var(--panel))}
+.mp-tag{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:linear-gradient(120deg,#C9A24E,#E9C77B);color:#14213D;font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 10px}
+.mp-c>b{font-size:17px}.mp-c>small{color:var(--sub);font-size:12.5px}.mp-p{font-size:15px;margin:6px 0}.mp-p span{font-size:34px;font-weight:700;color:#2F5BEA}.mp-p s{color:var(--sub);margin-right:6px}
+.mp-c i{font-style:normal;font-size:11.5px;color:var(--down)}.mp-c button{margin-top:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:8px;font-weight:600;cursor:pointer}
+.mm-pay{margin-top:16px;background:color-mix(in srgb,var(--gold) 8%,var(--panel));border-radius:14px;padding:14px}.mm-pay p{font-size:13px;color:var(--sub);margin:4px 0 8px;line-height:1.6}
+.mm-ct{display:flex;gap:8px;flex-wrap:wrap}.mm-ct a{text-decoration:none;border-radius:10px;padding:9px 14px;font-weight:700;font-size:14px}.mm-line{background:#06C755;color:#fff}.mm-tel{background:var(--panel);border:1px solid var(--line);color:var(--ink)}
+.mm-code{margin-top:16px}.mm-code label{font-weight:700;font-size:14px}.mm-code>div{display:flex;gap:8px;margin-top:6px}
+.mm-code input{flex:1;min-width:0;border:1px solid var(--line);background:var(--field,var(--panel));color:inherit;border-radius:12px;padding:11px 12px;font-size:16px;letter-spacing:.08em;text-transform:uppercase}
+.mm-code button{border:0;border-radius:12px;padding:0 20px;font-weight:700;color:#fff;background:#14213D;cursor:pointer}
+.mm-out{margin-top:12px;border:0;background:none;color:var(--sub);text-decoration:underline;cursor:pointer}
+.adm{max-width:1100px}.ad-login{text-align:center;padding:30px 10px}.ad-login img{border-radius:50%}.ad-login h2{margin:10px 0 16px}
+.ad-login input{width:min(280px,100%);border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-size:16px;background:var(--field,var(--panel));color:inherit}.ad-login button{margin-left:8px;border:0;border-radius:12px;padding:11px 18px;background:#2F5BEA;color:#fff;font-weight:700;cursor:pointer}
+.ad-hd{display:flex;align-items:center;gap:10px;padding-right:40px}.ad-hd img{border-radius:50%}.ad-hd b{font-size:18px}.ad-lo{margin-left:auto;border:1px solid var(--line);background:none;color:var(--sub);border-radius:8px;padding:5px 10px;cursor:pointer}
+.ad-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0;border-bottom:1px solid var(--line);padding-bottom:10px}.ad-tabs button{border:0;background:var(--bg);border-radius:10px;padding:8px 14px;font-weight:600;cursor:pointer;color:var(--ink)}.ad-tabs button.on{background:#2F5BEA;color:#fff}
+.ad-b h3{font-size:15px;margin:16px 0 8px}.ad-b h3 small{font-weight:400;color:var(--sub);font-size:12px}
+.ad-k{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}.ad-k div{background:var(--bg);border-radius:12px;padding:10px 12px}.ad-k small{display:block;font-size:12px;color:var(--sub)}.ad-k b{font-size:24px}.ad-k i{display:block;font-style:normal;font-size:11.5px;color:var(--sub)}
+.ad-bars{display:flex;align-items:flex-end;gap:3px;height:180px;border-bottom:1px solid var(--line);padding-top:10px;overflow-x:auto}
+.ad-bars div{position:relative;flex:1;min-width:16px;max-width:38px;height:100%;display:flex;align-items:flex-end;justify-content:center}.ad-bars i{position:absolute;bottom:16px;width:70%;background:#2F5BEA;border-radius:3px 3px 0 0;opacity:.85}
+.ad-bars em{position:absolute;bottom:16px;width:35%;background:#C9A24E;border-radius:3px 3px 0 0}.ad-bars small{position:absolute;bottom:0;font-size:9.5px;color:var(--sub)}
+.ad-bars div i,.ad-bars div em{max-height:calc(100% - 16px)}
+.ad-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ad-f{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:end}.ad-f label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--sub);font-weight:600}.ad-f label.w{grid-column:span 2}
+.ad-f input,.ad-f select{border:1px solid var(--line);border-radius:10px;padding:9px 10px;font-size:14px;background:var(--field,var(--panel));color:var(--ink)}
+.ad-f>button{border:0;border-radius:12px;padding:11px;font-weight:700;color:#fff;background:#2F5BEA;cursor:pointer}
+.ad-out{margin-top:12px;background:color-mix(in srgb,#16A34A 8%,var(--panel));border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.ad-out div{display:flex;gap:8px;align-items:center}.ad-out code,.ad-tb code{font-size:15px;font-weight:700;letter-spacing:.06em}.ad-out button,.ad-ops button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;padding:4px 9px;font-size:12px;cursor:pointer}
+.ad-ops{white-space:nowrap}.ad-ops button+button{margin-left:4px}.ad-st{font-size:12px;font-weight:700;color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent);border-radius:999px;padding:2px 8px}
+.ad-q{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-bottom:8px;background:var(--field,var(--panel));color:inherit}
+.ad-tb td{text-align:left!important}
+@media(max-width:700px){.btn-mem{padding:0 10px;font-size:12.5px}.btn-mem .t{display:none}.mm-ben,.mm-plans,.ad-2{grid-template-columns:1fr}.ad-k{grid-template-columns:repeat(2,minmax(0,1fr))}.ad-f{grid-template-columns:1fr}.ad-f label.w{grid-column:auto}.mdlg{padding:18px;border-radius:18px}.gated{max-height:480px}}
 /* ===== 公司檔案 ===== */
 .pf{display:flex;flex-direction:column;gap:12px;margin-top:8px}
 .pf-say{background:color-mix(in srgb,var(--gold) 9%,var(--panel));border:1px solid color-mix(in srgb,var(--gold) 30%,transparent);border-radius:12px;padding:12px 14px}
@@ -1044,7 +1093,7 @@ h2.sec{font-size:19px}h2.sec small{font-weight:400;letter-spacing:0}
 <body>
 <header>
   <div class="top">
-    <div class="brand"><img class="logo" src="logo.svg" alt="巴菲遠爺爺" width="64" height="64">
+    <div class="brand"><img class="logo" src="logo.svg" alt="巴菲遠爺爺" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
       <p>ETF 配息・巴菲特選股・全球大盤・恐慌度・退休規劃，一站看懂</p></div>
     </div>
@@ -1052,6 +1101,7 @@ h2.sec{font-size:19px}h2.sec small{font-weight:400;letter-spacing:0}
     <div class="tix">
       <div class="tick"><small>加權指數</small><b class="num" id="tx">—</b><small id="txd"></small></div>
       <div class="tick"><small>收錄 ETF</small><b class="num" id="nEtf">—</b><small id="upd"></small></div>
+      <button class="btn-mem" id="btnMem" onclick="memOpen()">🔓 <span class="t">升級付費會員</span></button>
       <button class="btn-th" id="btnTh" title="切換深色/淺色" aria-label="切換深色或淺色模式">🌓</button>
       <button class="btn-up" id="btnUp" title="一鍵更新">🔄 <span class="t">一鍵更新</span></button>
     </div>
@@ -1181,6 +1231,8 @@ h2.sec{font-size:19px}h2.sec small{font-weight:400;letter-spacing:0}
 </button>
 
 <div class="ov" id="ov"><div class="dlg" id="dlg"></div></div>
+<div class="mov" id="memOv"><div class="mdlg" id="memDlg"></div></div>
+<div class="mov adov" id="admOv"><div class="mdlg adm" id="adm"></div></div>
 <div class="tip" id="tip"></div>
 
 <script>
@@ -1790,6 +1842,7 @@ function go(tab, scroll = true){
   document.body.classList.toggle("on-vp", tab == "vp");
   document.body.classList.toggle("on-learn", tab == "learn");      // 延後:MK 等變數在 script 後段才宣告
   if (scroll && scrollY > 200) window.scrollTo({top: 0, behavior: "smooth"});
+  setTimeout(() => { try { memHit(tab); } catch (e) {} });     // 延後:memHit 在 script 後段才宣告
 }
 $("#mbar").onclick = () => go("calc");
 $("#toTop").onclick = () => window.scrollTo({top: 0, behavior: "smooth"});
@@ -2149,6 +2202,7 @@ function renderMkt(){
   <p class="mknote">資料來源：臺灣證券交易所（臺股儀表板、信用交易統計）、臺灣期貨交易所（台指 VIX）、FinMind（三大法人、期貨未平倉）、Yahoo Finance（全球指數、美股 VIX）。融資相關為上市資料。所有區間、分數與機率皆為歷史統計推估，不構成任何投資建議。</p>
   </div>`;
   mkChartUI(); gChartUI(); detailUI(); if (MK.a.fear) fearUI(); else $("#mk-fear").remove(); if (MK.a.drivers) keyUI(); else $("#mk-key").remove(); laUI(); mgUI(); nwUI(); gxUI();
+  gate("#mk-la", "線型分析：任一檔個股自動畫趨勢線、頸線，判斷 W 底／M 頭，並列出全市場符合線型的股票"); gate("#mk-gx", "各國大盤區間查詢：自訂期間的走勢、統計分析、每日明細與 CSV 下載、各國排名"); gate("#mk-det", "大盤 5 年每日明細與 CSV 下載"); gate("#mk-ev", "歷史回測：過去發生同樣情況後，大盤 1 週／1 個月／1 季的實際走勢");
   $("#mkNav").onclick = e => { const b = e.target.closest("[data-to]"); if (!b) return; const el = document.getElementById(b.dataset.to);
     if (el) window.scrollTo({top: el.getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 70), behavior: "smooth"}); };
 }
@@ -2353,9 +2407,9 @@ function drawVP(){
   let L2 = full.filter(x => (vpInd == "全部" || (x.ind || "其他") == vpInd) && (vpZone == "全部" || x.zone == vpZone) && (!q || (x.id + x.name).toLowerCase().includes(q)));
   L2.sort((a, b) => k == "rank" ? a.rank - b.rank : k == "peNow" ? (a.peNow ?? 999) - (b.peNow ?? 999) : (b[k] ?? -999) - (a[k] ?? -999));
   $("#vpCount").textContent = `前 50 名 ${L.length} 家${full.length ? `・51～150 名 ${L2.length} 家` : ""}`;
-  $("#vpList").innerHTML = L.map(vpCard).join("") || `<div class="box empty">前 50 名沒有符合條件的公司</div>`;
+  $("#vpList").innerHTML = L.map(x => isPaid() || x.rank <= 10 ? vpCard(x) : lockCard(x)).join("") || `<div class="box empty">前 50 名沒有符合條件的公司</div>`;
   if (full.length) {
-    const draw2 = () => { $("#vpList2").innerHTML = L2.slice(0, vpN2).map(vpCard).join("") || `<div class="box empty">沒有符合條件的公司</div>`;
+    const draw2 = () => { $("#vpList2").innerHTML = L2.slice(0, vpN2).map(x => isPaid() ? vpCard(x) : lockCard(x)).join("") || `<div class="box empty">沒有符合條件的公司</div>`;
       $("#vpMore2").style.display = L2.length > vpN2 ? "" : "none"; $("#vpMore2").textContent = `顯示更多（還有 ${L2.length - vpN2} 家）`; bindProf("#vpList2"); };
     $("#vpMore2").onclick = () => { vpN2 += 50; draw2(); }; draw2();
   } else $("#vpList2").innerHTML = `<div class="scrollx"><table class="ev"><tr><th>名次</th><th>公司</th><th>產業</th><th class="r">股價</th><th class="r">綜合分數</th><th>目前價位</th></tr>${(VP.others || []).map(x => `<tr><td class="num">${x.rank}</td><td>${x.id} ${x.name}</td><td>${x.ind || ""}</td><td class="r num">${fmt(x.px, 2)}</td><td class="r num">${x.score}</td><td><span class="zp" style="background:${ZC[x.zone]}">${x.zone}</span></td></tr>`).join("")}</table></div>`;
@@ -3147,6 +3201,7 @@ function drawTreemap(el, hold, cat){
 let PROF = null, PNAME = null;
 async function loadProf(){ if (!PROF) { PROF = await getJ("profiles") || {}; PNAME = Object.fromEntries(Object.entries(PROF).map(([c, p]) => [p.name, c])); } return PROF; }
 function profHTML(code, opt = {}){
+  if (!isPaid()) return `<div class="pf-lock" onclick="memOpen()">👑 <b>付費會員專屬</b>：這家公司的產品營收比重、白話商業模式、毛利率與經營資料。<span>查看方案 →</span></div>`;
   const p = PROF && PROF[code]; if (!p) return opt.quiet ? "" : `<p class="mknote">這檔的公司資料還在整理中（每天會補一批）。</p>`;
   const pal = ["#16306B", "#3A5DAE", "#7A1F35", "#21826A", "#6A4BB0", "#A67D2C", "#2F718A", "#916538", "#5B6478", "#B4405A", "#3F8659", "#923434"];
   const mix = (p.mix || []).filter(m => m[1] > 0), mx = Math.max(1, ...mix.map(m => m[1]));
@@ -3526,6 +3581,7 @@ function mcCard(id, o = {}){
 const MC_BAND = {CPIAUCSL: [1.5, 3], CPILFESL: [1.5, 2.7], PCEPILFE: [1.5, 2.5], PPIFIS: [0, 3], T5YIE: [1.8, 2.4], PAYEMS: [100, 250], UNRATE: [3.5, 4.5], ICSA: [180000, 250000], A191RL1Q225SBEA: [1, 3.5], RSAFS: [2, 7], UMCSENT: [75, 95], M2SL: [3, 10], DGS10: [2.5, 4.2], DGS2: [2, 4], T10Y2Y: [0, 2.5], BAMLH0A0HYM2: [3, 4.5]};
 function mcBindCards(root){
   root.querySelectorAll(".mc-c details").forEach(d => d.addEventListener("toggle", () => {
+    if (d.open && !isPaid()) { d.open = false; memOpen(); return; }
     if (!d.open || d.dataset.done) return; d.dataset.done = 1; const id = d.closest(".mc-c").dataset.id, s = mcS(id), m = MCM[id];
     mcChart(d.querySelector(".mc-big"), [{name: m.n, color: "#2F5BEA", rows: s.rows.filter(r => r[0] >= "2015"), fmt: v => mcFmt(id, v)}], {band: MC_BAND[id], bandName: "基準區", zero: ["T10Y2Y", "PAYEMS"].includes(id), bars: id == "PAYEMS"});
   }));
@@ -3633,7 +3689,7 @@ function renderMacro(){
   mcChart($("#mcInfCh"), [["CPIAUCSL", "CPI", "#E5484D"], ["CPILFESL", "核心 CPI", "#F59E0B"], ["PCEPILFE", "核心 PCE", "#2F5BEA"], ["PPIFIS", "PPI", "#94A3B8"]].map(([id, n, c]) => ({name: n, color: c, rows: mcS(id).rows.filter(since("2015")), w: id == "PPIFIS" ? 1.4 : 2.2, fmt: v => fmt(v, 2) + "%"})), {ref: 2, refName: "聯準會目標 2%", h: 280});
   mcChart($("#mcJobCh"), [{name: "非農新增（千人）", color: "#2F5BEA", rows: mcS("PAYEMS").rows.slice(-48), fmt: v => fmt(v / 10, 1) + " 萬人"}], {bars: true, band: [100, 250], bandName: "健康區間", zero: true, h: 240});
   mcChart($("#mcCurveCh"), [{name: "10 年 − 2 年", color: "#2F5BEA", rows: mcS("T10Y2Y").rows.filter(since("2010")), fmt: v => sgn(v) + "%"}], {zero: true, h: 220});
-  mcBindCards($("#macro"));
+  mcBindCards($("#macro")); gate("#mcZQ", "聯邦基金期貨：市場預期未來幾個月的利率與升降息碼數");
   // 期貨預期
   mcZQ().then(Z => {
     const ef = mcLast("EFFR")[1];
@@ -3684,6 +3740,186 @@ function mcCal(){
   ];
 }
 
+/* ---------- 👑 會員:免費／付費(不串金流,聯絡巴菲遠付款後發通關碼) ---------- */
+const MEMAPI = "https://etf-member.yuan780903.workers.dev";
+const LS = {g: k => { try { return localStorage.getItem(k); } catch (e) { return null; } }, s: (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} }};
+const DEV = LS.g("bfy_dev") || (() => { const d = "d" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10); LS.s("bfy_dev", d); return d; })();
+let MEM = (() => { try { return JSON.parse(LS.g("bfy_mem") || "null"); } catch (e) { return null; } })(), MCFG = null, MDISC = null;
+const isPaid = () => !!(MEM && MEM.until > Date.now());
+const mdate = t => { const d = new Date(t); return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`; };
+function memBadge(){
+  const b = $("#btnMem"); if (!b) return;
+  b.classList.toggle("paid", isPaid());
+  b.innerHTML = isPaid() ? `👑 <span class="t">付費會員・到 ${mdate(MEM.until)}</span>` : `🔓 <span class="t">升級付費會員</span>`;
+}
+async function memCheck(){
+  if (!MEM || !MEM.code) return memBadge();
+  try {
+    const r = await fetch(`${MEMAPI}/check?code=${encodeURIComponent(MEM.code)}&dev=${DEV}`).then(r => r.json());
+    const was = isPaid();
+    if (r.ok) { MEM.until = r.paid ? r.until : 0; MEM.plan = r.plan || MEM.plan; if (!r.paid && r.reason) MEM.reason = r.reason; LS.s("bfy_mem", JSON.stringify(MEM)); }
+    if (was != isPaid()) location.reload();
+  } catch (e) {}                                                 // 離線就沿用上次結果
+  memBadge();
+}
+const memHit = page => { try { fetch(MEMAPI + "/hit", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({vid: DEV, page, m: isPaid() ? 1 : 0}), keepalive: true}); } catch (e) {} };
+/* 付費牆:整個區塊模糊 + 中央提示 */
+function gate(sel, what){
+  if (isPaid()) return; const el = typeof sel == "string" ? document.querySelector(sel) : sel; if (!el || el.classList.contains("gated")) return;
+  el.classList.add("gated");
+  el.insertAdjacentHTML("beforeend", `<div class="gate"><div class="gate-c"><div class="gate-i">👑</div><b>付費會員專屬</b><p>${what}</p><button onclick="memOpen()">查看方案・一日 ${MCFG ? MCFG.prices.day : 99} 元起</button><small>已有通關碼？點上方按鈕輸入</small></div></div>`);
+}
+function lockCard(x){
+  return `<div class="vpc vpc-lock" onclick="memOpen()"><div class="vpc-h"><span class="rk">${x.rank}</span><div class="nm"><b>${x.id} ${x.name}</b><small>${x.ind || ""}</small></div><div class="ring lk">🔒</div></div>
+    <div class="vpl-b"><div class="vpl-bar"></div><div class="vpl-bar s"></div><div class="vpl-bar"></div></div><div class="vpl-t">👑 付費會員可看：綜合分數、正常股價區間、安全邊際、選股理由與 10 年走勢</div></div>`;
+}
+/* 方案視窗 */
+async function memOpen(){
+  if (!MCFG) { try { MCFG = await fetch(MEMAPI + "/cfg").then(r => r.json()); } catch (e) { MCFG = {prices: {day: 99, month: 599}, orig: {}, contact: {name: "巴菲遠"}}; } }
+  const P = MCFG.prices, O = MCFG.orig || {}, C = MCFG.contact || {}, off = MDISC ? MDISC.amount : 0;
+  const pr = (k, n, sub) => { const ok = off && P[k] > off, v = ok ? P[k] - off : P[k], o = ok ? P[k] : (O[k] > P[k] ? O[k] : 0);
+    return `<div class="mp-c ${k == "month" ? "hot" : ""}">${k == "month" ? `<span class="mp-tag">最划算</span>` : ""}<b>${n}</b><small>${sub}</small><div class="mp-p">${o ? `<s>${o}</s>` : ""}<span class="num">${v}</span> 元</div>${off ? (ok ? `<i>已套用折扣碼 ${MDISC.code}（折 ${off} 元）</i>` : `<i style="color:var(--sub)">折扣碼不適用此方案</i>`) : ""}<button onclick="memCopy('${n}', ${v})">📋 複製開通訊息</button></div>`; };
+  const lid = (C.line || "").trim(), line = !lid ? "" : /^https?:/.test(lid) ? lid : `https://line.me/R/ti/p/${lid.startsWith("@") ? encodeURIComponent(lid) : "~" + encodeURIComponent(lid)}`;
+  $("#memDlg").innerHTML = `<button class="x" onclick="memClose()" aria-label="關閉">✕</button>
+    <div class="mm-hd"><img src="logo.svg" alt="" width="58" height="58"><div><h2>巴菲遠付費會員</h2><p>${isPaid() ? `你目前是 <b>${MEM.plan || ""}付費會員</b>，到期時間 <b>${mdate(MEM.until)}</b>（還有 ${Math.max(0, Math.ceil((MEM.until - Date.now()) / 36e5))} 小時）` : "解鎖全部進階分析，免費會員仍可使用大盤、ETF、配息試算與退休規劃。"}</p></div></div>
+    <div class="mm-ben">${["🏆 巴菲特選股完整 150 名：股價區間、安全邊際、選股理由", "📐 線型分析：任一檔個股自動畫線＋全市場線型選股", "🔎 各國大盤區間查詢、統計與 CSV 下載", "📋 大盤 5 年明細與歷史回測", "🏛️ 聯準會期貨預期利率、總經指標長期走勢", "🏭 每家公司的產品與商業模式"].map(t => `<span>${t}</span>`).join("")}</div>
+    <div class="mm-plans">${pr("day", "一日通行", "24 小時全部解鎖")}${pr("month", "月費會員", "30 天全部解鎖")}</div>
+    <div class="mm-pay"><b>💳 付款方式：直接聯絡${C.name || "巴菲遠"}</b><p>${C.note || ""}</p>
+      <div class="mm-ct">${line ? `<a class="mm-line" href="${line}" target="_blank" rel="noopener">LINE 聯絡${C.name || "巴菲遠"}</a>` : ""}${C.phone ? `<a class="mm-tel" href="tel:${C.phone.replace(/[^\d+]/g, "")}">📞 ${C.phone}</a>` : ""}${!line && !C.phone ? `<span class="mknote">（請私訊${C.name || "巴菲遠"}）</span>` : ""}</div></div>
+    <div class="mm-code"><label>🎟️ 輸入折扣碼／通關碼</label><div><input id="memIn" placeholder="例如 ABCD2345" autocomplete="off" autocapitalize="characters"><button id="memGo">套用</button></div><p id="memMsg" class="mknote"></p></div>
+    ${isPaid() ? `<button class="mm-out" onclick="memLogout()">這台裝置登出會員</button>` : ""}`;
+  $("#memOv").classList.add("on"); document.body.style.overflow = "hidden";
+  $("#memGo").onclick = memRedeem; $("#memIn").onkeydown = e => { if (e.key == "Enter") memRedeem(); };
+}
+function memClose(){ $("#memOv").classList.remove("on"); document.body.style.overflow = ""; }
+async function memRedeem(){
+  const code = $("#memIn").value.trim(); if (!code) return;
+  $("#memMsg").textContent = "驗證中…";
+  try {
+    const r = await fetch(MEMAPI + "/redeem", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({code, dev: DEV})}).then(r => r.json());
+    if (!r.ok) { $("#memMsg").innerHTML = `<span style="color:var(--up)">❌ ${r.reason}</span>`; return; }
+    if (r.kind == "disc") { MDISC = {code: r.code, amount: r.amount}; toast(`🎉 折扣碼已套用，每個方案折 ${r.amount} 元`, 2500); memOpen(); return; }
+    MEM = {code: r.code, plan: r.plan, until: r.until}; LS.s("bfy_mem", JSON.stringify(MEM));
+    $("#memMsg").innerHTML = `<span style="color:var(--down)">✅ 開通成功！${r.plan}會員到 ${mdate(r.until)}，畫面即將重新整理…</span>`;
+    setTimeout(() => location.reload(), 1400);
+  } catch (e) { $("#memMsg").textContent = "連線失敗，請稍後再試"; }
+}
+function memCopy(n, v){
+  const t = `${(MCFG.contact || {}).name || "巴菲遠"}你好，我想開通【${n}】${v} 元${MDISC ? `（折扣碼 ${MDISC.code}）` : ""}，付款後請給我通關碼，謝謝！`;
+  (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => toast("📋 已複製開通訊息，貼給巴菲遠就可以了", 2500), () => prompt("請複製以下訊息：", t));
+}
+function memLogout(){ if (!confirm("確定這台裝置登出會員？通關碼仍可重新輸入（裝置數會沿用）。")) return; LS.s("bfy_mem", null); location.reload(); }
+document.addEventListener("click", e => { if (e.target.id == "memOv") memClose(); });
+
+/* ---------- 🛠️ 隱藏後台(連點 logo 7 下):價格、折扣碼、發通關碼、會員、統計 ---------- */
+let ADM = { tok: (() => { try { return sessionStorage.getItem("bfy_adm") || ""; } catch (e) { return ""; } })(), tab: "stats" }, admTap = 0, admT = 0;
+async function admApi(path, body){
+  const r = await fetch(MEMAPI + "/admin/" + path, {method: body ? "POST" : "GET", headers: {"Authorization": "Bearer " + ADM.tok, "Content-Type": "application/json"}, body: body ? JSON.stringify(body) : undefined}).then(r => r.json()).catch(() => ({ok: false, reason: "連線失敗"}));
+  if (r.reason == "密碼錯誤") { ADM.tok = ""; try { sessionStorage.removeItem("bfy_adm"); } catch (e) {} }
+  return r;
+}
+function admTapLogo(){ admTap++; clearTimeout(admT); admT = setTimeout(() => admTap = 0, 1500); if (admTap >= 7) { admTap = 0; admOpen(); } }
+async function admOpen(){
+  $("#admOv").classList.add("on"); document.body.style.overflow = "hidden";
+  if (!ADM.tok) { $("#adm").innerHTML = `<button class="x" onclick="admClose()">✕</button><div class="ad-login"><img src="logo.svg" width="72" height="72" alt=""><h2>巴菲遠後台</h2><input id="admPw" type="password" placeholder="管理密碼" autocomplete="current-password"><button id="admLg">登入</button><p id="admLm" class="mknote"></p></div>`;
+    const go = async () => { ADM.tok = $("#admPw").value; const r = await admApi("ping"); if (r.ok) { try { sessionStorage.setItem("bfy_adm", ADM.tok); } catch (e) {} admRender(); } else $("#admLm").textContent = "❌ " + (r.reason || "登入失敗"); };
+    $("#admLg").onclick = go; $("#admPw").onkeydown = e => { if (e.key == "Enter") go(); }; setTimeout(() => $("#admPw").focus(), 50); return; }
+  admRender();
+}
+function admClose(){ $("#admOv").classList.remove("on"); document.body.style.overflow = ""; }
+const AT = [["stats", "📊 統計"], ["pass", "🎟️ 發通關碼"], ["members", "👥 會員清單"], ["disc", "🏷️ 折扣碼"], ["cfg", "⚙️ 價格與聯絡"]];
+function admRender(){
+  $("#adm").innerHTML = `<button class="x" onclick="admClose()">✕</button><div class="ad-hd"><img src="logo.svg" width="40" height="40" alt=""><b>巴菲遠後台</b><button class="ad-lo" onclick="ADM.tok='';try{sessionStorage.removeItem('bfy_adm')}catch(e){};admOpen()">登出</button></div>
+    <nav class="ad-tabs">${AT.map(([k, n]) => `<button data-k="${k}" class="${ADM.tab == k ? "on" : ""}">${n}</button>`).join("")}</nav><div id="adB" class="ad-b"><div class="sk" style="height:240px"></div></div>`;
+  $("#adm").querySelector(".ad-tabs").onclick = e => { const b = e.target.closest("button"); if (b) { ADM.tab = b.dataset.k; admRender(); } };
+  ({stats: admStats, pass: admPass, members: admMembers, disc: admDisc, cfg: admCfg})[ADM.tab]();
+}
+const dt = t => t ? new Date(t).toLocaleString("zh-TW", {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false}) : "—";
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"})[c]);
+async function admStats(){
+  const r = await admApi("stats?days=30"); if (!r.ok) return $("#adB").innerHTML = `<p class="mknote">${r.reason}</p>`;
+  const m = r.mem || {}, D = r.daily || [], mx = Math.max(1, ...D.map(d => d.pv)), PN = {mkt: "大盤儀表板", macro: "總經指標", etf: "ETF 總覽", vp: "巴菲特選股", calc: "配息試算", plan: "退休規劃", learn: "投資教學"};
+  $("#adB").innerHTML = `<div class="ad-k">${[["有效會員", m.active || 0, "目前可使用"], ["3 天內到期", m.soon || 0, "可提醒續約"], ["已發未啟用", m.unused || 0, "通關碼還沒輸入"], ["已到期", m.expired || 0, ""], ["今日瀏覽", r.today.pv, `不重複 ${r.today.uv} 人`], ["近 30 天瀏覽", r.totals.pv, `不重複 ${r.totals.uv} 人`]].map(([a, b, c]) => `<div><small>${a}</small><b class="num">${b}</b><i>${c}</i></div>`).join("")}</div>
+    <h3>📈 近 30 天每日流量 <small>深色＝瀏覽次數、金色＝不重複訪客、👑＝付費會員人數</small></h3>
+    <div class="ad-bars">${D.map(d => `<div title="${d.day}：瀏覽 ${d.pv}、訪客 ${d.uv}、會員 ${d.mv}"><i style="height:${d.pv / mx * 100}%"></i><em style="height:${d.uv / mx * 100}%"></em><small>${d.day.slice(5)}</small></div>`).join("") || `<p class="mknote">還沒有流量資料</p>`}</div>
+    <div class="ad-2"><div><h3>🔥 分頁人氣（近 30 天）</h3><table class="gx-tb"><tr><th>分頁</th><th>瀏覽</th><th>訪客</th></tr>${(r.pages || []).map(p => `<tr><td>${PN[p.page] || p.page}</td><td class="num">${p.pv}</td><td class="num">${p.uv}</td></tr>`).join("")}</table></div>
+      <div><h3>🎟️ 通關碼方案分布</h3><table class="gx-tb"><tr><th>方案</th><th>發出</th><th>已啟用</th></tr>${(r.plans || []).map(p => `<tr><td>${esc(p.plan)}</td><td class="num">${p.n}</td><td class="num">${p.used}</td></tr>`).join("") || "<tr><td colspan=3>尚未發碼</td></tr>"}</table>
+      <h3>🏷️ 折扣碼使用排行</h3><table class="gx-tb"><tr><th>代碼</th><th>折抵</th><th>使用</th></tr>${(r.discs || []).map(d => `<tr><td>${esc(d.code)}</td><td class="num">${d.amount}</td><td class="num">${d.uses}</td></tr>`).join("") || "<tr><td colspan=3>尚無</td></tr>"}</table></div></div>`;
+}
+function admPass(){
+  $("#adB").innerHTML = `<div class="ad-f"><label>方案<select id="apPlan"><option value="1|一日">一日通行（24 小時）</option><option value="30|月費" selected>月費會員（30 天）</option><option value="c|">自訂天數</option></select></label>
+      <label id="apDw" style="display:none">天數<input id="apDays" type="number" min="0.1" step="0.5" value="7"></label>
+      <label>張數<input id="apN" type="number" min="1" max="100" value="1"></label>
+      <label>自訂代碼（選填，張數 1 才有效）<input id="apCode" placeholder="留空＝自動產生 8 碼"></label>
+      <label>最多綁幾台裝置<input id="apDev" type="number" min="1" max="10" value="2"></label>
+      <label>通關碼使用期限（選填，過期未輸入就失效）<input id="apExp" type="date"></label>
+      <label class="w">備註（給誰、收了多少）<input id="apNote" placeholder="例如：小明 月費 599 已轉帳"></label>
+      <button id="apGo">🎟️ 產生通關碼</button></div><div id="apOut"></div>
+    <p class="mknote">會員第一次輸入通關碼才開始計時（例如月費＝輸入後 30 天）。</p>`;
+  $("#apPlan").onchange = e => $("#apDw").style.display = e.target.value.startsWith("c") ? "" : "none";
+  $("#apGo").onclick = async () => {
+    const [d, plan] = $("#apPlan").value.split("|"), days = d == "c" ? +$("#apDays").value : +d, exp = $("#apExp").value ? new Date($("#apExp").value + "T23:59:59").getTime() : null;
+    const r = await admApi("pass/issue", {plan: plan || `${days} 天`, days, n: +$("#apN").value, code: $("#apCode").value.trim(), maxDev: +$("#apDev").value, exp, note: $("#apNote").value.trim()});
+    if (!r.ok) return $("#apOut").innerHTML = `<p class="mknote" style="color:var(--up)">❌ ${r.reason}</p>`;
+    const site = location.origin + location.pathname, msg = c => `你的巴菲遠${plan || days + " 天"}通關碼：${c}\n開啟 ${site} → 右上角「升級付費會員」→ 輸入通關碼即可開通（第一次輸入起算 ${days} 天）。`;
+    $("#apOut").innerHTML = `<div class="ad-out"><b>✅ 已產生 ${r.codes.length} 組</b>${r.codes.map(c => `<div><code>${c}</code><button onclick='admCp(${JSON.stringify(msg(c))})'>複製訊息</button><button onclick='admCp("${c}")'>只複製碼</button></div>`).join("")}</div>`;
+  };
+}
+function admCp(t){ (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => toast("已複製", 1200), () => prompt("請複製：", t)); }
+async function admMembers(){
+  const r = await admApi("codes?kind=pass"); if (!r.ok) return $("#adB").innerHTML = `<p class="mknote">${r.reason}</p>`;
+  const now = Date.now(), st = x => x.revoked ? ["已作廢", "#94a3b8"] : !x.activated ? ["未啟用", "#F59E0B"] : x.until > now ? ["有效", "#16A34A"] : ["已到期", "#E5484D"];
+  $("#adB").innerHTML = `<input id="amQ" class="ad-q" placeholder="🔍 搜尋代碼或備註">
+    <div class="gx-tw" style="max-height:62vh"><table class="gx-tb ad-tb"><thead><tr><th>通關碼</th><th>方案</th><th>狀態</th><th>備註</th><th>到期</th><th>裝置</th><th>最後上線</th><th>操作</th></tr></thead><tbody>
+    ${r.rows.map(x => { const s = st(x); return `<tr data-q="${esc((x.code + " " + (x.note || "")).toLowerCase())}"><td><code>${x.code}</code></td><td>${esc(x.plan)}</td><td><span class="ad-st" style="--c:${s[1]}">${s[0]}</span></td><td>${esc(x.note)}</td><td>${x.until ? dt(x.until) : `${x.days} 天（未啟用）`}</td><td class="num">${x.ndev}/${x.max_dev}</td><td>${dt(x.seen)}</td>
+      <td class="ad-ops"><button onclick="admAct('extend','${x.code}')">延長</button><button onclick="admAct('resetdev','${x.code}')">重設裝置</button><button onclick="admAct('revoke','${x.code}',${x.revoked ? 1 : 0})">${x.revoked ? "復原" : "作廢"}</button></td></tr>`; }).join("") || `<tr><td colspan=8>尚未發出通關碼</td></tr>`}</tbody></table></div>`;
+  $("#amQ").oninput = e => { const q = e.target.value.toLowerCase(); document.querySelectorAll(".ad-tb tr[data-q]").forEach(t => t.style.display = t.dataset.q.includes(q) ? "" : "none"); };
+}
+async function admAct(a, code, undo){
+  let body = {code};
+  if (a == "extend") { const d = prompt(`${code} 要延長幾天？`, "30"); if (!d) return; body.days = +d; }
+  if (a == "resetdev" && !confirm(`清除 ${code} 綁定的裝置？（會員要在新裝置重新輸入通關碼）`)) return;
+  if (a == "revoke") { if (!undo && !confirm(`確定作廢 ${code}？作廢後立即失效。`)) return; body.undo = !!undo; }
+  const r = await admApi(a, body); toast(r.ok ? "✅ 已完成" : "❌ " + r.reason, 1500); ADM.tab == "disc" ? admDisc() : admMembers();
+}
+async function admDisc(){
+  $("#adB").innerHTML = `<div class="ad-f"><label>自訂代碼（選填）<input id="adCode" placeholder="例如 巴菲遠好友，留空自動產生"></label>
+      <label>折抵金額（元）<input id="adAmt" type="number" min="1" value="100"></label>
+      <label>使用方式<select id="adReuse"><option value="forever">可重複使用（公開促銷碼）</option><option value="once">一次性（用過即失效）</option></select></label>
+      <label>張數（自動產生時）<input id="adN" type="number" min="1" max="100" value="1"></label>
+      <label>到期日（選填）<input id="adExp" type="date"></label>
+      <label class="w">備註<input id="adNote" placeholder="例如：雙 11 活動"></label>
+      <button id="adGo">🏷️ 建立折扣碼</button></div><div id="adOut"></div><h3>📋 折扣碼清單</h3><div id="adList"><div class="sk" style="height:160px"></div></div>
+    <p class="mknote">會員在「升級付費會員」視窗輸入折扣碼後，方案價格會直接扣掉折抵金額；聯絡你付款時，訊息會自動帶上折扣碼。</p>`;
+  $("#adGo").onclick = async () => {
+    const r = await admApi("disc/create", {code: $("#adCode").value.trim(), amount: +$("#adAmt").value, reuse: $("#adReuse").value, n: +$("#adN").value, exp: $("#adExp").value ? new Date($("#adExp").value + "T23:59:59").getTime() : null, note: $("#adNote").value.trim()});
+    $("#adOut").innerHTML = r.ok ? `<div class="ad-out"><b>✅ 已建立</b>${r.codes.map(c => `<div><code>${c}</code><button onclick='admCp("${c}")'>複製</button></div>`).join("")}</div>` : `<p class="mknote" style="color:var(--up)">❌ ${r.reason}</p>`;
+    if (r.ok) admDiscList();
+  };
+  admDiscList();
+}
+async function admDiscList(){
+  const r = await admApi("codes?kind=disc"); if (!r.ok || !r.rows) return;
+  const now = Date.now();
+  $("#adList").innerHTML = `<div class="gx-tw" style="max-height:45vh"><table class="gx-tb"><thead><tr><th>代碼</th><th>折抵</th><th>方式</th><th>已使用</th><th>到期</th><th>狀態</th><th>備註</th><th>操作</th></tr></thead><tbody>
+    ${r.rows.map(x => { const s = x.revoked ? "已作廢" : x.exp && now > x.exp ? "已過期" : x.reuse == "once" && x.uses ? "已用完" : "可使用";
+      return `<tr><td><code>${esc(x.code)}</code></td><td class="num">${x.amount} 元</td><td>${x.reuse == "once" ? "一次性" : "可重複"}</td><td class="num">${x.uses}</td><td>${x.exp ? dt(x.exp).slice(0, 10) : "不限"}</td><td>${s}</td><td>${esc(x.note)}</td><td class="ad-ops"><button onclick="admAct('revoke','${esc(x.code)}',${x.revoked ? 1 : 0})">${x.revoked ? "復原" : "作廢"}</button></td></tr>`; }).join("") || "<tr><td colspan=8>尚無折扣碼</td></tr>"}</tbody></table></div>`;
+}
+async function admCfg(){
+  const r = await admApi("cfg"); if (!r.ok) return $("#adB").innerHTML = `<p class="mknote">${r.reason}</p>`;
+  const c = r.contact || {};
+  $("#adB").innerHTML = `<div class="ad-f"><label>一日通行售價（元）<input id="acDay" type="number" value="${r.prices.day}"></label><label>月費會員售價（元）<input id="acMon" type="number" value="${r.prices.month}"></label>
+      <label>一日原價（選填，顯示刪除線）<input id="acOd" type="number" value="${(r.orig || {}).day || ""}"></label><label>月費原價（選填）<input id="acOm" type="number" value="${(r.orig || {}).month || ""}"></label>
+      <label>聯絡人名稱<input id="acName" value="${esc(c.name)}"></label><label>LINE ID 或 LINE 連結<input id="acLine" value="${esc(c.line)}" placeholder="例如 @abc123 或 https://line.me/..."></label>
+      <label>電話（選填）<input id="acTel" value="${esc(c.phone)}"></label><label class="w">付款說明<input id="acNote" value="${esc(c.note)}"></label>
+      <button id="acGo">💾 儲存</button></div><p class="mknote">儲存後，網站上的方案價格與聯絡方式會立即更新。</p>`;
+  $("#acGo").onclick = async () => {
+    const r2 = await admApi("cfg/set", {prices: {day: +$("#acDay").value, month: +$("#acMon").value}, orig: {day: +$("#acOd").value || 0, month: +$("#acOm").value || 0}, contact: {name: $("#acName").value.trim(), line: $("#acLine").value.trim(), phone: $("#acTel").value.trim(), note: $("#acNote").value.trim()}});
+    toast(r2.ok ? "✅ 已儲存" : "❌ " + r2.reason, 1500); MCFG = null;
+  };
+}
+
+memBadge(); memCheck(); setInterval(memCheck, 10 * 60e3);
 </script>
 </body>
 </html>
