@@ -4,3 +4,4 @@ __pycache__/
 .DS_Store
 data/fund/fundamentals.json
 data/breadth/raw/
+member/.wrangler/

@@ -1088,6 +1088,31 @@ h2.sec{font-size:19px}h2.sec small{font-weight:400;letter-spacing:0}
 .brand .logo{flex:none;width:64px;height:64px;border-radius:50%;box-shadow:0 8px 22px -10px rgba(26,53,150,.6);transition:transform .3s}.brand .logo:hover{transform:rotate(-6deg) scale(1.05)}
 .ft-logo{display:flex;align-items:center;gap:10px}.ft-logo img{border-radius:50%}
 @media(max-width:700px){.brand{gap:10px}.brand .logo{width:44px;height:44px}.brand h1{font-size:18px!important;letter-spacing:.02em}.brand p{font-size:11.5px}}
+/* ===== 時鐘固定成獨立一列(不再被擠壓) ===== */
+.clk{order:3;flex:0 0 100%;display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap;text-align:left;margin:4px 0 0;white-space:nowrap;min-width:0}
+.clk .cd{font-size:13px;letter-spacing:.12em}.clk .ct{font-size:30px!important;line-height:1}.clk .cs{margin:0 0 0 auto;flex-wrap:nowrap}
+@media(max-width:900px){.clk .cs{margin:0}}
+@media(max-width:700px){.clk{order:2;gap:6px 10px;margin:6px 0 2px}.clk .cd{flex-basis:100%;font-size:11.5px;letter-spacing:.06em}.clk .ct{font-size:24px!important}.clk .cs{flex-wrap:wrap}}
+/* ===== 全站登入畫面 ===== */
+body.need-login{overflow:hidden}
+body.need-login .wrap,body.need-login header,body.need-login footer,body.need-login .mbar,body.need-login .totop{visibility:hidden}
+.lgov{display:none;position:fixed;inset:0;z-index:9000;overflow:auto;background:radial-gradient(900px 500px at 85% -10%,rgba(91,134,247,.28),transparent 60%),radial-gradient(700px 400px at 0% 110%,rgba(201,162,78,.22),transparent 60%),linear-gradient(135deg,#FFFFFF,#EEF4FF 55%,#FFF7E8)}
+.lgov.on{display:block}
+.lg-wrap{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:32px 16px}
+.lg-card{width:min(460px,100%);background:#fff;border:1px solid #E3E8F2;border-radius:24px;box-shadow:0 30px 70px -30px rgba(47,91,234,.45);padding:28px 26px;text-align:center;color:#14213D}
+.lg-logo{border-radius:50%;box-shadow:0 12px 30px -12px rgba(26,53,150,.6);cursor:pointer;user-select:none;-webkit-user-drag:none}
+.lg-card h1{font-size:22px;margin:12px 0 2px;letter-spacing:.03em}.lg-card h1 .bm{background:linear-gradient(120deg,#A9771F,#D4A443 55%,#B8862F);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-right:.1em}
+.lg-sub{color:#5B6577;font-size:14px}
+.lg-f{display:flex;flex-direction:column;gap:10px;margin-top:18px}.lg-f input{border:1px solid #D9E0EC;border-radius:12px;padding:13px 14px;font-size:16px;background:#F8FAFE;color:#14213D}
+.lg-f input:focus{outline:2px solid #2F5BEA;border-color:transparent}
+.lg-f button{border:0;border-radius:12px;padding:13px;font-size:16px;font-weight:700;color:#fff;background:linear-gradient(120deg,#2F5BEA,#5B86F7);cursor:pointer;box-shadow:0 12px 24px -12px rgba(47,91,234,.8)}.lg-f button:disabled{opacity:.6}
+.lg-f p{min-height:20px;font-size:13.5px}.lg-f .er{color:#CF3A3A}.lg-f .ok{color:#1A8F57}
+.lg-exp{margin-top:8px;font-size:13px;background:#FFF5E5;border-radius:10px;padding:8px 10px;color:#8A5A12}
+.lg-plans{text-align:left}.lg-plans h2{font-size:17px;margin-bottom:12px;text-align:center}
+.lg-plans .mm-plans{grid-template-columns:1fr 1fr}.lg-ft{font-size:12px;color:#8090A8}
+.lgov ~ .mov.adov,.adov{z-index:9500}#toast{z-index:9999}
+.mm-h3{font-size:15px;margin:16px 0 10px}
+@media(max-width:480px){.lg-card{padding:22px 18px}.lg-plans .mm-plans{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -1231,6 +1256,7 @@ h2.sec{font-size:19px}h2.sec small{font-weight:400;letter-spacing:0}
 </button>
 
 <div class="ov" id="ov"><div class="dlg" id="dlg"></div></div>
+<div class="lgov" id="lgOv"></div>
 <div class="mov" id="memOv"><div class="mdlg" id="memDlg"></div></div>
 <div class="mov adov" id="admOv"><div class="mdlg adm" id="adm"></div></div>
 <div class="tip" id="tip"></div>
@@ -3774,8 +3800,20 @@ function lockCard(x){
     <div class="vpl-b"><div class="vpl-bar"></div><div class="vpl-bar s"></div><div class="vpl-bar"></div></div><div class="vpl-t">👑 付費會員可看：綜合分數、正常股價區間、安全邊際、選股理由與 10 年走勢</div></div>`;
 }
 /* 方案視窗 */
-async function memOpen(){
-  if (!MCFG) { try { MCFG = await fetch(MEMAPI + "/cfg").then(r => r.json()); } catch (e) { MCFG = {prices: {day: 99, month: 599}, orig: {}, contact: {name: "巴菲遠"}}; } }
+async function memCfg(){ if (!MCFG) { try { MCFG = await fetch(MEMAPI + "/cfg").then(r => r.json()); } catch (e) { MCFG = {prices: {day: 99, month: 599}, orig: {}, contact: {name: "巴菲遠"}}; } } return MCFG; }
+function planHTML(){
+  const P = MCFG.prices, O = MCFG.orig || {}, C = MCFG.contact || {}, off = MDISC ? MDISC.amount : 0;
+  const pr = (k, n, sub) => { const ok = off && P[k] > off, v = ok ? P[k] - off : P[k], o = ok ? P[k] : (O[k] > P[k] ? O[k] : 0);
+    return `<div class="mp-c ${k == "month" ? "hot" : ""}">${k == "month" ? `<span class="mp-tag">最划算</span>` : ""}<b>${n}</b><small>${sub}</small><div class="mp-p">${o ? `<s>${o}</s>` : ""}<span class="num">${v}</span> 元</div>${off ? (ok ? `<i>已套用折扣碼 ${MDISC.code}（折 ${off} 元）</i>` : `<i style="color:var(--sub)">折扣碼不適用此方案</i>`) : ""}<button onclick="memCopy('${n}', ${v})">📋 複製開通訊息</button></div>`; };
+  const lid = (C.line || "").trim(), line = !lid ? "" : /^https?:/.test(lid) ? lid : `https://line.me/R/ti/p/${lid.startsWith("@") ? encodeURIComponent(lid) : "~" + encodeURIComponent(lid)}`;
+  return `<div class="mm-plans">${pr("day", "一日通行", "24 小時全部功能")}${pr("month", "月費會員", "30 天全部功能")}</div>
+    <div class="mm-pay"><b>💳 付款方式：直接聯絡${C.name || "巴菲遠"}</b><p>付款後${C.name || "巴菲遠"}會給你一組會員帳號密碼，登入即可使用。${C.note && !/通關碼/.test(C.note) ? C.note : ""}</p>
+      <div class="mm-ct">${line ? `<a class="mm-line" href="${line}" target="_blank" rel="noopener">LINE 聯絡${C.name || "巴菲遠"}</a>` : ""}${C.phone ? `<a class="mm-tel" href="tel:${C.phone.replace(/[^\d+]/g, "")}">📞 ${C.phone}</a>` : ""}${!line && !C.phone ? `<span class="mknote">（請私訊${C.name || "巴菲遠"}）</span>` : ""}</div></div>
+    <div class="mm-code"><label>🏷️ 有折扣碼嗎？</label><div><input id="memIn" placeholder="輸入折扣碼" autocomplete="off"><button id="memGo">套用</button></div><p id="memMsg" class="mknote"></p></div>`;
+}
+function bindPlan(){ if ($("#memGo")) { $("#memGo").onclick = memRedeem; $("#memIn").onkeydown = e => { if (e.key == "Enter") memRedeem(); }; } }
+async function memOpenOld(){
+  await memCfg();
   const P = MCFG.prices, O = MCFG.orig || {}, C = MCFG.contact || {}, off = MDISC ? MDISC.amount : 0;
   const pr = (k, n, sub) => { const ok = off && P[k] > off, v = ok ? P[k] - off : P[k], o = ok ? P[k] : (O[k] > P[k] ? O[k] : 0);
     return `<div class="mp-c ${k == "month" ? "hot" : ""}">${k == "month" ? `<span class="mp-tag">最划算</span>` : ""}<b>${n}</b><small>${sub}</small><div class="mp-p">${o ? `<s>${o}</s>` : ""}<span class="num">${v}</span> 元</div>${off ? (ok ? `<i>已套用折扣碼 ${MDISC.code}（折 ${off} 元）</i>` : `<i style="color:var(--sub)">折扣碼不適用此方案</i>`) : ""}<button onclick="memCopy('${n}', ${v})">📋 複製開通訊息</button></div>`; };
@@ -3791,6 +3829,44 @@ async function memOpen(){
   $("#memOv").classList.add("on"); document.body.style.overflow = "hidden";
   $("#memGo").onclick = memRedeem; $("#memIn").onkeydown = e => { if (e.key == "Enter") memRedeem(); };
 }
+/* 會員視窗(已登入):狀態、續約方案、登出 */
+async function memOpen(){
+  if (!isPaid()) return lgShow();
+  await memCfg();
+  $("#memDlg").innerHTML = `<button class="x" onclick="memClose()" aria-label="關閉">✕</button>
+    <div class="mm-hd"><img src="logo.svg" alt="" width="58" height="58"><div><h2>👑 ${esc(MEM.code)}</h2><p><b>${MEM.plan || ""}付費會員</b>・到期 <b>${mdate(MEM.until)}</b>（還有 ${MEM.until - Date.now() > 864e5 ? Math.ceil((MEM.until - Date.now()) / 864e5) + " 天" : Math.max(0, Math.ceil((MEM.until - Date.now()) / 36e5)) + " 小時"}）</p></div></div>
+    <h3 class="mm-h3">續約方案</h3>${planHTML()}
+    <button class="mm-out" onclick="memLogout()">登出這台裝置</button>`;
+  $("#memOv").classList.add("on"); document.body.style.overflow = "hidden"; bindPlan();
+}
+/* 全站登入畫面:沒有有效會員就看不到內容 */
+async function lgShow(){
+  document.body.classList.add("need-login");
+  const o = $("#lgOv"); o.classList.add("on");
+  o.innerHTML = `<div class="lg-wrap"><div class="lg-card">
+      <img class="lg-logo" src="logo.svg" alt="巴菲遠" width="96" height="96" onclick="admTapLogo()">
+      <h1><span class="bm">巴菲遠</span>不負責任財富系統</h1><p class="lg-sub">付費會員專屬・請登入</p>
+      <div class="lg-f"><input id="lgU" placeholder="會員帳號" autocomplete="username" autocapitalize="none"><input id="lgP" type="password" placeholder="密碼" autocomplete="current-password"><button id="lgGo">登入</button><p id="lgMsg"></p></div>
+      ${MEM && MEM.code && !isPaid() ? `<p class="lg-exp">⏰ 你的會員（${esc(MEM.code)}）已到期或已停用，請聯絡巴菲遠續約。</p>` : ""}
+    </div>
+    <div class="lg-card lg-plans"><h2>還不是會員？</h2><div id="lgPlan"><div class="sk" style="height:180px"></div></div></div>
+    <p class="lg-ft">© ${new Date().getFullYear()} 莊政遠 版權所有</p></div>`;
+  const go = async () => {
+    const user = $("#lgU").value.trim(), pw = $("#lgP").value;
+    if (!user || !pw) { $("#lgMsg").textContent = "請輸入帳號和密碼"; return; }
+    $("#lgGo").disabled = true; $("#lgMsg").textContent = "登入中…";
+    try {
+      const r = await fetch(MEMAPI + "/login", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({user, pw, dev: DEV})}).then(r => r.json());
+      if (!r.ok) { $("#lgMsg").innerHTML = `<span class="er">❌ ${esc(r.reason)}</span>`; $("#lgGo").disabled = false; return; }
+      MEM = {code: r.code, plan: r.plan, until: r.until}; LS.s("bfy_mem", JSON.stringify(MEM));
+      $("#lgMsg").innerHTML = `<span class="ok">✅ 歡迎回來！會員到 ${mdate(r.until)}</span>`; setTimeout(() => location.reload(), 900);
+    } catch (e) { $("#lgMsg").textContent = "連線失敗，請稍後再試"; $("#lgGo").disabled = false; }
+  };
+  $("#lgGo").onclick = go; $("#lgP").onkeydown = $("#lgU").onkeydown = e => { if (e.key == "Enter") go(); };
+  setTimeout(() => $("#lgU") && $("#lgU").focus(), 80);
+  try { memHit("login"); } catch (e) {}
+  await memCfg(); $("#lgPlan").innerHTML = planHTML(); bindPlan();
+}
 function memClose(){ $("#memOv").classList.remove("on"); document.body.style.overflow = ""; }
 async function memRedeem(){
   const code = $("#memIn").value.trim(); if (!code) return;
@@ -3798,7 +3874,8 @@ async function memRedeem(){
   try {
     const r = await fetch(MEMAPI + "/redeem", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({code, dev: DEV})}).then(r => r.json());
     if (!r.ok) { $("#memMsg").innerHTML = `<span style="color:var(--up)">❌ ${r.reason}</span>`; return; }
-    if (r.kind == "disc") { MDISC = {code: r.code, amount: r.amount}; toast(`🎉 折扣碼已套用，每個方案折 ${r.amount} 元`, 2500); memOpen(); return; }
+    if (r.kind == "disc") { MDISC = {code: r.code, amount: r.amount}; toast(`🎉 折扣碼已套用，每個方案折 ${r.amount} 元`, 2500);
+      if ($("#lgOv").classList.contains("on")) { $("#lgPlan").innerHTML = planHTML(); bindPlan(); } else memOpen(); return; }
     MEM = {code: r.code, plan: r.plan, until: r.until}; LS.s("bfy_mem", JSON.stringify(MEM));
     $("#memMsg").innerHTML = `<span style="color:var(--down)">✅ 開通成功！${r.plan}會員到 ${mdate(r.until)}，畫面即將重新整理…</span>`;
     setTimeout(() => location.reload(), 1400);
@@ -3812,7 +3889,7 @@ function memLogout(){ if (!confirm("確定這台裝置登出會員？通關碼�
 document.addEventListener("click", e => { if (e.target.id == "memOv") memClose(); });
 
 /* ---------- 🛠️ 隱藏後台(連點 logo 7 下):價格、折扣碼、發通關碼、會員、統計 ---------- */
-let ADM = { tok: (() => { try { return sessionStorage.getItem("bfy_adm") || ""; } catch (e) { return ""; } })(), tab: "stats" }, admTap = 0, admT = 0;
+let ADM = { tok: (() => { try { return sessionStorage.getItem("bfy_adm") || ""; } catch (e) { return ""; } })(), tab: "acct" }, admTap = 0, admT = 0;
 async function admApi(path, body){
   const r = await fetch(MEMAPI + "/admin/" + path, {method: body ? "POST" : "GET", headers: {"Authorization": "Bearer " + ADM.tok, "Content-Type": "application/json"}, body: body ? JSON.stringify(body) : undefined}).then(r => r.json()).catch(() => ({ok: false, reason: "連線失敗"}));
   if (r.reason == "密碼錯誤") { ADM.tok = ""; try { sessionStorage.removeItem("bfy_adm"); } catch (e) {} }
@@ -3827,23 +3904,23 @@ async function admOpen(){
   admRender();
 }
 function admClose(){ $("#admOv").classList.remove("on"); document.body.style.overflow = ""; }
-const AT = [["stats", "📊 統計"], ["pass", "🎟️ 發通關碼"], ["members", "👥 會員清單"], ["disc", "🏷️ 折扣碼"], ["cfg", "⚙️ 價格與聯絡"]];
+const AT = [["acct", "➕ 新增帳號"], ["members", "👥 會員清單"], ["stats", "📊 統計"], ["disc", "🏷️ 折扣碼"], ["cfg", "⚙️ 價格與聯絡"]];
 function admRender(){
   $("#adm").innerHTML = `<button class="x" onclick="admClose()">✕</button><div class="ad-hd"><img src="logo.svg" width="40" height="40" alt=""><b>巴菲遠後台</b><button class="ad-lo" onclick="ADM.tok='';try{sessionStorage.removeItem('bfy_adm')}catch(e){};admOpen()">登出</button></div>
     <nav class="ad-tabs">${AT.map(([k, n]) => `<button data-k="${k}" class="${ADM.tab == k ? "on" : ""}">${n}</button>`).join("")}</nav><div id="adB" class="ad-b"><div class="sk" style="height:240px"></div></div>`;
   $("#adm").querySelector(".ad-tabs").onclick = e => { const b = e.target.closest("button"); if (b) { ADM.tab = b.dataset.k; admRender(); } };
-  ({stats: admStats, pass: admPass, members: admMembers, disc: admDisc, cfg: admCfg})[ADM.tab]();
+  ({stats: admStats, acct: admAcct, pass: admPass, members: admMembers, disc: admDisc, cfg: admCfg})[ADM.tab]();
 }
 const dt = t => t ? new Date(t).toLocaleString("zh-TW", {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false}) : "—";
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"})[c]);
 async function admStats(){
   const r = await admApi("stats?days=30"); if (!r.ok) return $("#adB").innerHTML = `<p class="mknote">${r.reason}</p>`;
   const m = r.mem || {}, D = r.daily || [], mx = Math.max(1, ...D.map(d => d.pv)), PN = {mkt: "大盤儀表板", macro: "總經指標", etf: "ETF 總覽", vp: "巴菲特選股", calc: "配息試算", plan: "退休規劃", learn: "投資教學"};
-  $("#adB").innerHTML = `<div class="ad-k">${[["有效會員", m.active || 0, "目前可使用"], ["3 天內到期", m.soon || 0, "可提醒續約"], ["已發未啟用", m.unused || 0, "通關碼還沒輸入"], ["已到期", m.expired || 0, ""], ["今日瀏覽", r.today.pv, `不重複 ${r.today.uv} 人`], ["近 30 天瀏覽", r.totals.pv, `不重複 ${r.totals.uv} 人`]].map(([a, b, c]) => `<div><small>${a}</small><b class="num">${b}</b><i>${c}</i></div>`).join("")}</div>
+  $("#adB").innerHTML = `<div class="ad-k">${[["有效會員", m.active || 0, "目前可使用"], ["3 天內到期", m.soon || 0, "可提醒續約"], ["已建未登入", m.unused || 0, "帳號還沒登入過"], ["已到期", m.expired || 0, ""], ["今日瀏覽", r.today.pv, `不重複 ${r.today.uv} 人`], ["近 30 天瀏覽", r.totals.pv, `不重複 ${r.totals.uv} 人`]].map(([a, b, c]) => `<div><small>${a}</small><b class="num">${b}</b><i>${c}</i></div>`).join("")}</div>
     <h3>📈 近 30 天每日流量 <small>深色＝瀏覽次數、金色＝不重複訪客、👑＝付費會員人數</small></h3>
     <div class="ad-bars">${D.map(d => `<div title="${d.day}：瀏覽 ${d.pv}、訪客 ${d.uv}、會員 ${d.mv}"><i style="height:${d.pv / mx * 100}%"></i><em style="height:${d.uv / mx * 100}%"></em><small>${d.day.slice(5)}</small></div>`).join("") || `<p class="mknote">還沒有流量資料</p>`}</div>
     <div class="ad-2"><div><h3>🔥 分頁人氣（近 30 天）</h3><table class="gx-tb"><tr><th>分頁</th><th>瀏覽</th><th>訪客</th></tr>${(r.pages || []).map(p => `<tr><td>${PN[p.page] || p.page}</td><td class="num">${p.pv}</td><td class="num">${p.uv}</td></tr>`).join("")}</table></div>
-      <div><h3>🎟️ 通關碼方案分布</h3><table class="gx-tb"><tr><th>方案</th><th>發出</th><th>已啟用</th></tr>${(r.plans || []).map(p => `<tr><td>${esc(p.plan)}</td><td class="num">${p.n}</td><td class="num">${p.used}</td></tr>`).join("") || "<tr><td colspan=3>尚未發碼</td></tr>"}</table>
+      <div><h3>👥 會員方案分布</h3><table class="gx-tb"><tr><th>方案</th><th>發出</th><th>已啟用</th></tr>${(r.plans || []).map(p => `<tr><td>${esc(p.plan)}</td><td class="num">${p.n}</td><td class="num">${p.used}</td></tr>`).join("") || "<tr><td colspan=3>尚未發碼</td></tr>"}</table>
       <h3>🏷️ 折扣碼使用排行</h3><table class="gx-tb"><tr><th>代碼</th><th>折抵</th><th>使用</th></tr>${(r.discs || []).map(d => `<tr><td>${esc(d.code)}</td><td class="num">${d.amount}</td><td class="num">${d.uses}</td></tr>`).join("") || "<tr><td colspan=3>尚無</td></tr>"}</table></div></div>`;
 }
 function admPass(){
@@ -3865,14 +3942,39 @@ function admPass(){
     $("#apOut").innerHTML = `<div class="ad-out"><b>✅ 已產生 ${r.codes.length} 組</b>${r.codes.map(c => `<div><code>${c}</code><button onclick='admCp(${JSON.stringify(msg(c))})'>複製訊息</button><button onclick='admCp("${c}")'>只複製碼</button></div>`).join("")}</div>`;
   };
 }
+function admAcct(){
+  $("#adB").innerHTML = `<div class="ad-f"><label>會員帳號（選填，留空自動產生）<input id="aaU" placeholder="例如 xiaoming" autocapitalize="none"></label>
+      <label>密碼（選填，留空自動產生）<input id="aaP" placeholder="至少 4 碼"></label>
+      <label>方案<select id="aaPlan"><option value="1|一日">一日通行（24 小時）</option><option value="30|月費" selected>月費會員（30 天）</option><option value="c|">自訂天數</option></select></label>
+      <label id="aaDw" style="display:none">天數<input id="aaDays" type="number" min="0.1" step="0.5" value="7"></label>
+      <label>一次建立幾個（自動產生時）<input id="aaN" type="number" min="1" max="50" value="1"></label>
+      <label>最多登入幾台裝置<input id="aaDev" type="number" min="1" max="10" value="2"></label>
+      <label class="w">備註（給誰、收了多少）<input id="aaNote" placeholder="例如：小明 月費 599 已轉帳"></label>
+      <button id="aaGo">➕ 建立帳號</button></div><div id="aaOut"></div>
+    <p class="mknote">會員第一次登入才開始計時（例如月費＝第一次登入後 30 天）。密碼只會在建立時顯示一次，忘記可在「會員清單」按「重設密碼」。</p>`;
+  $("#aaPlan").onchange = e => $("#aaDw").style.display = e.target.value.startsWith("c") ? "" : "none";
+  $("#aaGo").onclick = async () => {
+    const [d, plan] = $("#aaPlan").value.split("|"), days = d == "c" ? +$("#aaDays").value : +d;
+    const r = await admApi("acct/create", {user: $("#aaU").value.trim(), pw: $("#aaP").value.trim(), plan: plan || `${days} 天`, days, n: +$("#aaN").value, maxDev: +$("#aaDev").value, note: $("#aaNote").value.trim()});
+    if (!r.ok) return $("#aaOut").innerHTML = `<p class="mknote" style="color:var(--up)">❌ ${esc(r.reason)}</p>`;
+    const site = location.origin + location.pathname, msg = a => `巴菲遠不負責任財富系統・${plan || days + " 天"}會員\n網址：${site}\n帳號：${a.user}\n密碼：${a.pw}\n（第一次登入起算 ${days} 天，最多 ${$("#aaDev").value} 台裝置）`;
+    $("#aaOut").innerHTML = `<div class="ad-out"><b>✅ 已建立 ${r.accts.length} 個帳號（密碼只顯示這一次）</b>${r.accts.map(a => `<div><code>${esc(a.user)}</code><span>密碼 <code>${esc(a.pw)}</code></span><button onclick='admCp(${JSON.stringify(msg(a))})'>複製給會員</button></div>`).join("")}</div>`;
+  };
+}
+async function admResetPw(code){
+  const pw = prompt(`重設 ${code} 的密碼：輸入新密碼（留空＝自動產生）`, ""); if (pw === null) return;
+  const r = await admApi("acct/resetpw", {code, pw: pw.trim()});
+  if (!r.ok) return toast("❌ " + r.reason, 1800);
+  const t = `帳號：${r.user}\n新密碼：${r.pw}`; admCp(t); alert(`已重設，並已複製：\n${t}`);
+}
 function admCp(t){ (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => toast("已複製", 1200), () => prompt("請複製：", t)); }
 async function admMembers(){
-  const r = await admApi("codes?kind=pass"); if (!r.ok) return $("#adB").innerHTML = `<p class="mknote">${r.reason}</p>`;
+  const r = await admApi("codes?kind=acct"); if (!r.ok) return $("#adB").innerHTML = `<p class="mknote">${r.reason}</p>`;
   const now = Date.now(), st = x => x.revoked ? ["已作廢", "#94a3b8"] : !x.activated ? ["未啟用", "#F59E0B"] : x.until > now ? ["有效", "#16A34A"] : ["已到期", "#E5484D"];
-  $("#adB").innerHTML = `<input id="amQ" class="ad-q" placeholder="🔍 搜尋代碼或備註">
-    <div class="gx-tw" style="max-height:62vh"><table class="gx-tb ad-tb"><thead><tr><th>通關碼</th><th>方案</th><th>狀態</th><th>備註</th><th>到期</th><th>裝置</th><th>最後上線</th><th>操作</th></tr></thead><tbody>
+  $("#adB").innerHTML = `<input id="amQ" class="ad-q" placeholder="🔍 搜尋帳號或備註">
+    <div class="gx-tw" style="max-height:62vh"><table class="gx-tb ad-tb"><thead><tr><th>帳號</th><th>方案</th><th>狀態</th><th>備註</th><th>到期</th><th>裝置</th><th>最後上線</th><th>操作</th></tr></thead><tbody>
     ${r.rows.map(x => { const s = st(x); return `<tr data-q="${esc((x.code + " " + (x.note || "")).toLowerCase())}"><td><code>${x.code}</code></td><td>${esc(x.plan)}</td><td><span class="ad-st" style="--c:${s[1]}">${s[0]}</span></td><td>${esc(x.note)}</td><td>${x.until ? dt(x.until) : `${x.days} 天（未啟用）`}</td><td class="num">${x.ndev}/${x.max_dev}</td><td>${dt(x.seen)}</td>
-      <td class="ad-ops"><button onclick="admAct('extend','${x.code}')">延長</button><button onclick="admAct('resetdev','${x.code}')">重設裝置</button><button onclick="admAct('revoke','${x.code}',${x.revoked ? 1 : 0})">${x.revoked ? "復原" : "作廢"}</button></td></tr>`; }).join("") || `<tr><td colspan=8>尚未發出通關碼</td></tr>`}</tbody></table></div>`;
+      <td class="ad-ops"><button onclick="admResetPw('${x.code}')">重設密碼</button><button onclick="admAct('extend','${x.code}')">延長</button><button onclick="admAct('resetdev','${x.code}')">重設裝置</button><button onclick="admAct('revoke','${x.code}',${x.revoked ? 1 : 0})">${x.revoked ? "復原" : "作廢"}</button></td></tr>`; }).join("") || `<tr><td colspan=8>尚未建立會員帳號，請到「➕ 新增帳號」</td></tr>`}</tbody></table></div>`;
   $("#amQ").oninput = e => { const q = e.target.value.toLowerCase(); document.querySelectorAll(".ad-tb tr[data-q]").forEach(t => t.style.display = t.dataset.q.includes(q) ? "" : "none"); };
 }
 async function admAct(a, code, undo){
@@ -3919,7 +4021,7 @@ async function admCfg(){
   };
 }
 
-memBadge(); memCheck(); setInterval(memCheck, 10 * 60e3);
+memBadge(); if (!isPaid()) lgShow(); memCheck(); setInterval(memCheck, 10 * 60e3);
 </script>
 </body>
 </html>
