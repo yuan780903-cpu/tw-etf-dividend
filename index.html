@@ -1091,6 +1091,16 @@ td.r,th.r{text-align:right}
 @media(max-width:1300px){.bd{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:1000px){.bd{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:700px){.bd,#etfTiles,#xpTiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.bd-t{padding:10px 11px 8px;border-radius:13px}.bd-t>b{font-size:19px}.bd-t em{font-size:12px}.bd-t i{font-size:11px}.bd-t small{font-size:11.5px}.bd-hd h2{font-size:17px}}
+.fr-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:10px 0 6px}
+.fr-card{cursor:pointer;background:var(--panel);border:2px solid var(--line);border-radius:18px;padding:14px 16px 12px;transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden}
+.fr-card::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:var(--c)}
+.fr-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}.fr-card.on{border-color:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 22%,transparent)}
+.fr-card small{font-size:14px;font-weight:800;color:var(--ink)}.fr-cv{display:flex;align-items:baseline;gap:6px;margin:4px 0 6px;flex-wrap:wrap}
+.fr-cv b{font-size:46px;font-weight:900;line-height:1;color:var(--c)}.fr-cv em{font-style:normal;font-size:18px;font-weight:800;color:var(--c)}
+.fr-cv span{margin-left:auto;background:var(--c);color:#fff;font-weight:800;font-size:14px;border-radius:10px;padding:4px 10px}
+.fr-cb{height:8px;border-radius:4px;background:var(--track,#e5e7eb);overflow:hidden}.fr-cb i{display:block;height:100%;background:var(--c);border-radius:4px}
+.fr-card>i{display:block;font-style:normal;font-size:12.5px;color:var(--sub);margin-top:7px}
+@media(max-width:700px){.fr-cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.fr-card{padding:10px 8px 9px;border-radius:14px}.fr-card small{font-size:12px}.fr-cv{gap:3px}.fr-cv b{font-size:32px}.fr-cv em{font-size:13px}.fr-cv span{margin-left:0;font-size:11px;padding:2px 7px}.fr-card>i{font-size:10.5px}.fr-ix{display:none}}
 /* ===== 公司檔案 ===== */
 .pf{display:flex;flex-direction:column;gap:12px;margin-top:8px}
 .pf-say{background:color-mix(in srgb,var(--gold) 9%,var(--panel));border:1px solid color-mix(in srgb,var(--gold) 30%,transparent);border-radius:12px;padding:12px 14px}
@@ -2352,7 +2362,7 @@ function renderMkt(){
     <div id="mgSay" class="mg-say"></div><div class="chart" id="mgChart"></div><div class="scrollx" id="mgTbl" style="max-height:420px"></div></div>
 
   <div class="box" id="mk-fear"><h2 class="sec">😱 市場恐慌度 <small>0＝近 5 年最平靜、100＝最恐慌；每天收盤後自動更新</small></h2>
-    <div class="ctool"><div class="chips" id="fearTabs"></div></div><div id="fearBody"></div></div>
+    <div class="fr-cards" id="fearTabs"></div><div id="fearBody"></div></div>
 
   <div class="box" id="mk-la"><h2 class="sec">📐 線型分析 <small>自動畫趨勢線、頸線、缺口，判斷 W 底／M 頭／頭肩／三角收斂、均線扣抵與葛蘭碧法則；可查任一檔股票</small></h2>
     <div id="laBox"></div>
@@ -2665,7 +2675,11 @@ const fzc = x => x == null ? "#94a3b8" : FZ.find(z => x < z[0])[2];
 function fearUI(){
   const F = MK.a.fear || {};
   $("#fearTabs").innerHTML = [["tw", "台股"], ["us", "美股大盤"], ["sox", "費城半導體"]].filter(([k]) => F[k]).map(([k, n]) =>
-    `<span class="chip ${fearKey == k ? "on" : ""}" data-k="${k}">${n} <b class="num" style="color:${fearKey == k ? "inherit" : fzc(F[k].score)}">${F[k].score ?? "—"}</b></span>`).join("");
+    { const x = F[k], c = fzc(x.score), d = x.score != null && x.prev != null ? x.score - x.prev : null;
+      return `<div class="fr-card ${fearKey == k ? "on" : ""}" data-k="${k}" style="--c:${c}"><small>${n}${x.idx && x.idx != n ? `<span class="fr-ix">・${x.idx}</span>` : ""}</small>
+        <div class="fr-cv"><b class="num">${x.score ?? "—"}</b><em>分</em><span>${x.level || "—"}</span></div>
+        <div class="fr-cb"><i style="width:${x.score ?? 0}%"></i></div>
+        <i>${d == null ? "" : d > 0 ? `比前一日 <b style="color:#dc2626">▲${d}</b>` : d < 0 ? `比前一日 <b style="color:#16a34a">▼${-d}</b>` : "與前一日持平"}${x.w1 != null ? `<span class="fr-ix">・一週前 ${x.w1}</span>` : ""}</i></div>`; }).join("");
   $("#fearTabs").onclick = e => { const c = e.target.closest("[data-k]"); if (c) { fearKey = c.dataset.k; fearUI(); } };
   const f = F[fearKey]; if (!f) return;
   const diff = (a, b) => a == null || b == null ? "" : a > b ? `<span style="color:#dc2626">▲${a - b}</span>` : a < b ? `<span style="color:#16a34a">▼${b - a}</span>` : "持平";
