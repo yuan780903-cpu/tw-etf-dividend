@@ -1155,7 +1155,7 @@ body.need-login .wrap,body.need-login header,body.need-login footer,body.need-lo
 <body>
 <header>
   <div class="top">
-    <div class="brand"><img class="logo" src="logo.svg" alt="巴菲遠" width="64" height="64" onclick="admTapLogo()">
+    <div class="brand"><img class="logo" src="logo.svg" alt="柴犬博士" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
       <p>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
@@ -3881,7 +3881,7 @@ async function lgShow(){
   document.body.classList.add("need-login");
   const o = $("#lgOv"); o.classList.add("on");
   o.innerHTML = `<div class="lg-wrap"><div class="lg-card">
-      <img class="lg-logo" src="logo.svg" alt="巴菲遠" width="96" height="96" onclick="admTapLogo()">
+      <img class="lg-logo" src="logo.svg" alt="柴犬博士" width="96" height="96" onclick="admTapLogo()">
       <h1><span class="bm">巴菲遠</span>不負責任財富系統</h1><p class="lg-sub">付費會員專屬・請登入</p>
       <div class="lg-f"><input id="lgU" placeholder="會員帳號" autocomplete="username" autocapitalize="none"><input id="lgP" type="password" placeholder="密碼" autocomplete="current-password"><button id="lgGo">登入</button><p id="lgMsg"></p></div>
       ${MEM && MEM.code && !isPaid() ? `<p class="lg-exp">⏰ 你的會員（${esc(MEM.code)}）已到期或已停用，請聯絡巴菲遠續約。</p>` : ""}
