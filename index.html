@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0E1726">
+<meta name="theme-color" content="#F1F5FF">
 <title>巴菲遠不負責任財富系統｜ETF 配息・巴菲特選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
 <meta property="og:type" content="website">
@@ -401,7 +401,7 @@ td.r,th.r{text-align:right}
 .mbar .mb-r{text-align:right}
 .mbar i{font-style:normal;font-size:26px;opacity:.85;margin-left:-4px}
 .mbar.flash{animation:flash .7s ease}
-@media(max-width:1099px){body.has-pf:not(.on-calc):not(.on-mkt):not(.on-vp):not(.on-learn) .mbar{display:flex}body.has-pf:not(.on-calc):not(.on-mkt):not(.on-vp):not(.on-learn){padding-bottom:84px}}
+@media(max-width:1099px){body.has-pf:not(.on-calc):not(.on-mkt):not(.on-vp):not(.on-learn):not(.on-macro) .mbar{display:flex}body.has-pf:not(.on-calc):not(.on-mkt):not(.on-vp):not(.on-learn):not(.on-macro){padding-bottom:84px}}
 @media(min-width:701px) and (max-width:1099px){.mbar{max-width:560px;left:50%;right:auto;width:calc(100% - 24px);transform:translateX(-50%)}}
 
 /* ===== 手機:精簡頂部 + 底部分頁列(像 App) ===== */
@@ -431,7 +431,7 @@ td.r,th.r{text-align:right}
   .tabs .ic{font-size:21px;line-height:1}
   .tabs .n{position:absolute;top:3px;left:calc(50% + 6px);font-size:10px;padding:2px 6px;min-width:18px}
   body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
-  body.has-pf:not(.on-calc):not(.on-mkt):not(.on-vp):not(.on-learn){padding-bottom:calc(150px + env(safe-area-inset-bottom))}
+  body.has-pf:not(.on-calc):not(.on-mkt):not(.on-vp):not(.on-learn):not(.on-macro){padding-bottom:calc(150px + env(safe-area-inset-bottom))}
   .mbar{bottom:calc(74px + env(safe-area-inset-bottom))}
   #toast{bottom:calc(150px + env(safe-area-inset-bottom))!important}
   footer{padding:20px 16px 12px}
@@ -836,6 +836,52 @@ td.r,th.r{text-align:right}
   .gx-rg>button{font-size:13px;padding:6px 9px}.gx-cu{margin-left:0;flex-wrap:wrap;width:100%}.gx-cu input{flex:1;min-width:0}
   .gx-chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}.gx-chips button{flex:none}.gx-k{grid-template-columns:repeat(2,minmax(0,1fr))}.gx-k b{font-size:14.5px}
   .gx-tb{font-size:12px}.gx-tb td,.gx-tb th{padding:6px 7px}.gx-ct .hm{display:none}.gx-bar{min-width:96px}}
+.pick{position:relative;cursor:pointer;padding-left:44px!important;transition:opacity .2s,transform .15s}.pick:hover{transform:translateY(-1px)}
+.pick>input{position:absolute;left:14px;top:16px;width:20px;height:20px;accent-color:var(--gold,#C6A15B);cursor:pointer}
+.pick.off{opacity:.55;border-style:dashed!important}
+.pk-hd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.pk-hd b{font-size:15px}.pk-hd small{color:var(--sub);font-size:12.5px}
+.pk-alt summary{cursor:pointer;font-weight:700;font-size:14px;padding:6px 0;color:#9C7A36}.pk-alt .picks{margin-top:8px}
+.pk-act{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.pk-act .apply{flex:1;min-width:240px}.pk-act label{font-size:13px;display:flex;align-items:center;gap:5px;cursor:pointer}
+.pk-act .apply:disabled{opacity:.5;cursor:not-allowed}
+/* ===== 總經指標頁 ===== */
+.mc{display:flex;flex-direction:column;gap:22px}
+.mc-hero{border-radius:var(--r);padding:26px;color:#fff;background:radial-gradient(700px 300px at 90% -20%,rgba(255,255,255,.28),transparent 60%),linear-gradient(135deg,#1E3FAE,#2F5BEA 50%,#5B86F7);box-shadow:var(--shadow)}
+.mc-hero>div>small{opacity:.85;font-size:13px;letter-spacing:.08em}.mc-hero h2{font-family:var(--serif);font-size:28px;margin:6px 0}.mc-hero h2 b{background:#fff;padding:0 10px;border-radius:10px}
+.mc-hero p{font-size:15px;line-height:1.75;opacity:.95;max-width:900px}
+.mc-hk{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:16px}
+.mc-hk div{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);border-radius:14px;padding:12px 14px}
+.mc-hk small{display:block;font-size:12px;opacity:.85}.mc-hk b{display:block;font-size:22px;font-weight:800;margin:2px 0}.mc-hk i{font-style:normal;font-size:11.5px;opacity:.85}
+.mc-src{display:block;margin-top:12px;opacity:.75;font-size:11.5px}
+.mc-nav{position:sticky;top:84px;z-index:20}
+.mc-say2{background:color-mix(in srgb,var(--blue,#2F5BEA) 6%,var(--panel));border:1px solid color-mix(in srgb,var(--blue,#2F5BEA) 18%,transparent);border-radius:12px;padding:12px 14px;margin:8px 0 12px;font-size:14.5px;line-height:1.8}
+.mc-say2 small{color:var(--sub)}
+.mc-ch{position:relative;margin:6px 0}.mc-ch svg{display:block;width:100%;height:auto;touch-action:pan-y}
+.mc-lg{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--sub);margin-top:4px}.mc-lg i{display:inline-block;width:12px;height:3px;border-radius:2px;margin-right:5px;vertical-align:middle}
+.mc-tt{min-height:20px;font-size:12.5px;margin-top:4px}
+.mc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:14px}
+.mc-c{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;box-shadow:0 6px 20px -16px rgba(20,33,61,.35)}
+.mc-ch1{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}.mc-ch1 b{font-size:14.5px;line-height:1.4}
+.mc-pill{flex:none;font-size:11.5px;font-weight:800;color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent);border:1px solid color-mix(in srgb,var(--c) 35%,transparent);border-radius:999px;padding:2px 9px}
+.mc-v{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.mc-v span{font-size:28px;font-weight:800;letter-spacing:-.01em}.mc-v small{color:var(--sub);font-size:12px}
+.mc-d{font-size:12.5px;color:var(--sub)}.mc-d .pos{color:var(--up)}.mc-d .neg{color:var(--down)}
+.mc-sp{display:block;width:100%;height:30px}
+.mc-base{font-size:13px;line-height:1.6;background:color-mix(in srgb,#16A34A 8%,var(--panel));border-radius:10px;padding:8px 10px}.mc-base b{display:block;font-size:12px;color:#15803D}
+.mc-say{font-size:13.5px;line-height:1.75;color:var(--ink)}
+.mc-hl2{font-size:12.8px;line-height:1.65;color:var(--sub);display:grid;grid-template-columns:58px 1fr;gap:6px}.mc-hl2 span{font-weight:800;color:#E5484D}.mc-hl2.lo span{color:#2F7FE0}
+.mc-more summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--blue,#2F5BEA);padding:4px 0}
+.mc-2col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;margin-top:10px}
+.mc-h3{font-family:var(--serif);font-size:15.5px;margin-bottom:8px}
+.mc-zs{font-size:14px;line-height:1.75;margin-bottom:8px}
+.mc-zq{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px}.mc-zq div{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px}
+.mc-zq small{display:block;font-size:11px;color:var(--sub)}.mc-zq b{font-size:16px}.mc-zq i{display:block;font-style:normal;font-size:11.5px;font-weight:700}.mc-zq i.pos{color:var(--up)}.mc-zq i.neg{color:var(--down)}
+.mc-fomc{display:flex;flex-wrap:wrap;gap:6px}.mc-fomc span{border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:13px;font-weight:700}.mc-fomc span.past{opacity:.45;text-decoration:line-through}
+.mc-fomc span.next{background:var(--sel);color:#fff;border-color:transparent}.mc-fomc span b{margin-left:6px;font-size:11px;background:#fff;color:#2F5BEA;border-radius:6px;padding:1px 5px}
+.mc-rg{display:flex;gap:4px;flex-wrap:wrap;margin:4px 0}.mc-rg button{border:0;background:transparent;color:inherit;font-weight:700;font-size:14px;padding:7px 12px;border-radius:999px;cursor:pointer}.mc-rg button.on{background:var(--track)}
+.mc-cal{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}.mc-cal div{border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.mc-cal b{font-size:14px}.mc-cal span{font-size:13.5px;color:var(--blue,#2F5BEA);font-weight:700}.mc-cal em{font-style:normal;font-size:12px;color:var(--sub)}
+.mc-expl{background:color-mix(in srgb,var(--gold) 6%,var(--panel))}
+@media(max-width:1100px){.mc-hk{grid-template-columns:repeat(2,minmax(0,1fr))}.mc-2col{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:700px){.mc-hero{padding:18px}.mc-hero h2{font-size:21px}.mc-hero h2 b{display:inline-block;margin-top:4px}.mc-hk b{font-size:18px}.mc-grid{grid-template-columns:minmax(0,1fr)}.mc-nav{top:0}.mc-v span{font-size:24px}}
 /* ===== 公司檔案 ===== */
 .pf{display:flex;flex-direction:column;gap:12px;margin-top:8px}
 .pf-say{background:color-mix(in srgb,var(--gold) 9%,var(--panel));border:1px solid color-mix(in srgb,var(--gold) 30%,transparent);border-radius:12px;padding:12px 14px}
@@ -923,6 +969,53 @@ footer{border-image:linear-gradient(90deg,var(--gold),#0E1726 60%,var(--gold)) 1
 .mk-nav button:hover,.ln-toc a:hover{background:var(--hover);color:var(--ink)}
 .chip.on{box-shadow:inset 0 -2px 0 var(--gold)}
 .kbar{box-shadow:inset 0 0 0 1px var(--line)}
+/* ===== 明亮版配色(淺色模式):藍金清爽,不壓抑 ===== */
+:root[data-theme="light"]{--bg:#F5F7FC;--panel:#FFFFFF;--ink:#14213D;--sub:#5B6577;--line:#E3E8F2;--track:#EDF1F8;--hover:#EEF3FC;--soft:#F8FAFE;
+  --blue:#2F5BEA;--blue2:#5B86F7;--sel:linear-gradient(120deg,#2F5BEA,#5B86F7);--selink:#FFFFFF;--glass:rgba(255,255,255,.9);
+  --shadow:0 1px 2px rgba(20,33,61,.04),0 14px 34px -20px rgba(47,91,234,.28);--planhd:linear-gradient(90deg,#FFF7E8,#F3F7FF,#EEF4FF)}
+:root[data-theme="light"] header{color:#14213D;background:radial-gradient(800px 360px at 90% -30%,rgba(91,134,247,.22),transparent 60%),radial-gradient(600px 300px at 0% 120%,rgba(201,162,78,.16),transparent 60%),linear-gradient(135deg,#FFFFFF 0%,#F1F5FF 55%,#FFF8EB 100%);border-bottom:1px solid #E3E8F2}
+:root[data-theme="light"] header:after{background:radial-gradient(circle,rgba(91,134,247,.10),transparent 65%)}
+:root[data-theme="light"] .brand h1{color:#14213D}
+:root[data-theme="light"] .brand p{color:#5B6577;opacity:1}
+:root[data-theme="light"] .brand h1 .bm{background:linear-gradient(120deg,#A9771F,#D4A443 55%,#B8862F);-webkit-background-clip:text;background-clip:text}
+:root[data-theme="light"] .tick{background:rgba(255,255,255,.85);border:1px solid #E3E8F2;color:#14213D;box-shadow:0 6px 18px -12px rgba(47,91,234,.35)}
+:root[data-theme="light"] .tick small{color:#8A6A2C}
+:root[data-theme="light"] .tick b{color:#14213D}
+:root[data-theme="light"] .btn-th{background:#fff;border-color:#E3E8F2;color:#14213D}
+:root[data-theme="light"] .btn-up{background:linear-gradient(135deg,#D9B25E,#F0D58F);color:#14213D}
+:root[data-theme="light"] .clk{color:#14213D}
+:root[data-theme="light"] .clk .cd{color:#8A6A2C}
+:root[data-theme="light"] .clk .ct{background:linear-gradient(180deg,#14213D,#2F5BEA);-webkit-background-clip:text;background-clip:text}
+:root[data-theme="light"] .clk .ct small{-webkit-text-fill-color:#8090A8}
+:root[data-theme="light"] .clk .cs span{background:#fff;border-color:#E3E8F2;color:#14213D}
+:root[data-theme="light"] .gtk{background:rgba(255,255,255,.75);border-color:#E3E8F2}
+:root[data-theme="light"] .gt-lb{color:#8A6A2C;border-right-color:#E3E8F2}
+:root[data-theme="light"] .gt-i{border-right-color:#EDF1F8}
+:root[data-theme="light"] .gt-i b{color:#5B6577}
+:root[data-theme="light"] .gt-i em{color:#14213D}
+:root[data-theme="light"] .gt-i i.pos{color:#CF3A3A}
+:root[data-theme="light"] .gt-i i.neg{color:#1A8F57}
+:root[data-theme="light"] .tabs button.on{box-shadow:inset 0 -3px 0 var(--gold),0 8px 18px -10px rgba(47,91,234,.7)}
+:root[data-theme="light"] .big{background:radial-gradient(500px 220px at 90% 0%,rgba(255,255,255,.25),transparent 60%),linear-gradient(135deg,#2F5BEA,#4C79F2 55%,#7EA3FF)}
+:root[data-theme="light"] .big .sum{color:#FFF1C9}
+:root[data-theme="light"] .apply{background:linear-gradient(90deg,#2F5BEA,#5B86F7)}
+:root[data-theme="light"] .mbar{background:linear-gradient(120deg,#2F5BEA,#5B86F7);border-color:rgba(255,255,255,.4);box-shadow:0 16px 32px -14px rgba(47,91,234,.7)}
+:root[data-theme="light"] .mbar b{color:#FFF1C9}
+:root[data-theme="light"] .totop{background:#2F5BEA;border-color:#fff;color:#fff}
+:root[data-theme="light"] footer{border-image:linear-gradient(90deg,var(--gold),#2F5BEA 60%,var(--gold)) 1}
+:root[data-theme="light"] .mk-px{background:radial-gradient(600px 260px at 90% -10%,rgba(255,255,255,.28),transparent 60%),linear-gradient(135deg,#2448C8,#3D6CF0 55%,#6E97FF);border-color:transparent}
+:root[data-theme="light"] .mk-mini div{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.28)}
+:root[data-theme="light"] .vp-hero{background:radial-gradient(700px 300px at 85% -10%,rgba(255,255,255,.25),transparent 60%),linear-gradient(135deg,#8C5E14,#B9852B 55%,#D7A84B);border-color:transparent}
+:root[data-theme="light"] .vp-w span,:root[data-theme="light"] .ln-lv .chip{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.35)}
+:root[data-theme="light"] .ln-hero{background:radial-gradient(700px 300px at 85% -10%,rgba(255,255,255,.25),transparent 60%),linear-gradient(135deg,#0B7A6B,#14A08C 55%,#3CC2AE);border-color:transparent}
+:root[data-theme="light"] .lgo,:root[data-theme="light"] .la-f button{background:linear-gradient(120deg,#2F5BEA,#5B86F7);box-shadow:none}
+:root[data-theme="light"] .nq.hero{background:linear-gradient(135deg,#2448C8,#4C79F2);border-color:transparent}
+:root[data-theme="light"] .nq.hero .nq-v{color:#fff}
+:root[data-theme="light"] .gx-chips button.on{color:rgba(255,255,255,.8)}
+:root[data-theme="light"] .pick>input{accent-color:#2F5BEA}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#F5F7FC;--panel:#FFFFFF;--ink:#14213D;--sub:#5B6577;--line:#E3E8F2;--track:#EDF1F8;--hover:#EEF3FC;--soft:#F8FAFE;
+  --blue:#2F5BEA;--blue2:#5B86F7;--sel:linear-gradient(120deg,#2F5BEA,#5B86F7);--selink:#FFFFFF;--glass:rgba(255,255,255,.9);
+  --shadow:0 1px 2px rgba(20,33,61,.04),0 14px 34px -20px rgba(47,91,234,.28);--planhd:linear-gradient(90deg,#FFF7E8,#F3F7FF,#EEF4FF)}:root:not([data-theme="dark"]) header{color:#14213D;background:radial-gradient(800px 360px at 90% -30%,rgba(91,134,247,.22),transparent 60%),radial-gradient(600px 300px at 0% 120%,rgba(201,162,78,.16),transparent 60%),linear-gradient(135deg,#FFFFFF 0%,#F1F5FF 55%,#FFF8EB 100%);border-bottom:1px solid #E3E8F2}:root:not([data-theme="dark"]) header:after{background:radial-gradient(circle,rgba(91,134,247,.10),transparent 65%)}:root:not([data-theme="dark"]) .brand h1{color:#14213D}:root:not([data-theme="dark"]) .brand p{color:#5B6577;opacity:1}:root:not([data-theme="dark"]) .brand h1 .bm{background:linear-gradient(120deg,#A9771F,#D4A443 55%,#B8862F);-webkit-background-clip:text;background-clip:text}:root:not([data-theme="dark"]) .tick{background:rgba(255,255,255,.85);border:1px solid #E3E8F2;color:#14213D;box-shadow:0 6px 18px -12px rgba(47,91,234,.35)}:root:not([data-theme="dark"]) .tick small{color:#8A6A2C}:root:not([data-theme="dark"]) .tick b{color:#14213D}:root:not([data-theme="dark"]) .btn-th{background:#fff;border-color:#E3E8F2;color:#14213D}:root:not([data-theme="dark"]) .btn-up{background:linear-gradient(135deg,#D9B25E,#F0D58F);color:#14213D}:root:not([data-theme="dark"]) .clk{color:#14213D}:root:not([data-theme="dark"]) .clk .cd{color:#8A6A2C}:root:not([data-theme="dark"]) .clk .ct{background:linear-gradient(180deg,#14213D,#2F5BEA);-webkit-background-clip:text;background-clip:text}:root:not([data-theme="dark"]) .clk .ct small{-webkit-text-fill-color:#8090A8}:root:not([data-theme="dark"]) .clk .cs span{background:#fff;border-color:#E3E8F2;color:#14213D}:root:not([data-theme="dark"]) .gtk{background:rgba(255,255,255,.75);border-color:#E3E8F2}:root:not([data-theme="dark"]) .gt-lb{color:#8A6A2C;border-right-color:#E3E8F2}:root:not([data-theme="dark"]) .gt-i{border-right-color:#EDF1F8}:root:not([data-theme="dark"]) .gt-i b{color:#5B6577}:root:not([data-theme="dark"]) .gt-i em{color:#14213D}:root:not([data-theme="dark"]) .gt-i i.pos{color:#CF3A3A}:root:not([data-theme="dark"]) .gt-i i.neg{color:#1A8F57}:root:not([data-theme="dark"]) .tabs button.on{box-shadow:inset 0 -3px 0 var(--gold),0 8px 18px -10px rgba(47,91,234,.7)}:root:not([data-theme="dark"]) .big{background:radial-gradient(500px 220px at 90% 0%,rgba(255,255,255,.25),transparent 60%),linear-gradient(135deg,#2F5BEA,#4C79F2 55%,#7EA3FF)}:root:not([data-theme="dark"]) .big .sum{color:#FFF1C9}:root:not([data-theme="dark"]) .apply{background:linear-gradient(90deg,#2F5BEA,#5B86F7)}:root:not([data-theme="dark"]) .mbar{background:linear-gradient(120deg,#2F5BEA,#5B86F7);border-color:rgba(255,255,255,.4);box-shadow:0 16px 32px -14px rgba(47,91,234,.7)}:root:not([data-theme="dark"]) .mbar b{color:#FFF1C9}:root:not([data-theme="dark"]) .totop{background:#2F5BEA;border-color:#fff;color:#fff}:root:not([data-theme="dark"]) footer{border-image:linear-gradient(90deg,var(--gold),#2F5BEA 60%,var(--gold)) 1}:root:not([data-theme="dark"]) .mk-px{background:radial-gradient(600px 260px at 90% -10%,rgba(255,255,255,.28),transparent 60%),linear-gradient(135deg,#2448C8,#3D6CF0 55%,#6E97FF);border-color:transparent}:root:not([data-theme="dark"]) .mk-mini div{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.28)}:root:not([data-theme="dark"]) .vp-hero{background:radial-gradient(700px 300px at 85% -10%,rgba(255,255,255,.25),transparent 60%),linear-gradient(135deg,#8C5E14,#B9852B 55%,#D7A84B);border-color:transparent}:root:not([data-theme="dark"]) .vp-w span,:root:not([data-theme="dark"]) .ln-lv .chip{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.35)}:root:not([data-theme="dark"]) .ln-hero{background:radial-gradient(700px 300px at 85% -10%,rgba(255,255,255,.25),transparent 60%),linear-gradient(135deg,#0B7A6B,#14A08C 55%,#3CC2AE);border-color:transparent}:root:not([data-theme="dark"]) .lgo,:root:not([data-theme="dark"]) .la-f button{background:linear-gradient(120deg,#2F5BEA,#5B86F7);box-shadow:none}:root:not([data-theme="dark"]) .nq.hero{background:linear-gradient(135deg,#2448C8,#4C79F2);border-color:transparent}:root:not([data-theme="dark"]) .nq.hero .nq-v{color:#fff}:root:not([data-theme="dark"]) .gx-chips button.on{color:rgba(255,255,255,.8)}:root:not([data-theme="dark"]) .pick>input{accent-color:#2F5BEA}}
 </style>
 </head>
 <body>
@@ -945,10 +1038,11 @@ footer{border-image:linear-gradient(90deg,var(--gold),#0E1726 60%,var(--gold)) 1
 
 <div class="wrap">
   <nav class="tabs" id="tabs">
-    <button data-tab="etf"><i class="ic">📊</i><span class="lg">ETF 總覽</span><span class="sm">總覽</span></button>
-    <button data-tab="calc"><i class="ic">💰</i><span class="lg">我的配息試算</span><span class="sm">配息試算</span> <span class="n" id="tabN">0</span></button>
-    <button data-tab="vp"><i class="ic">🏆</i><span class="lg">巴菲特選股</span><span class="sm">選股</span></button>
     <button data-tab="mkt"><i class="ic">📉</i><span class="lg">大盤儀表板</span><span class="sm">大盤</span></button>
+    <button data-tab="macro"><i class="ic">🛢️</i><span class="lg">總經指標</span><span class="sm">總經</span></button>
+    <button data-tab="etf"><i class="ic">📊</i><span class="lg">ETF 總覽</span><span class="sm">總覽</span></button>
+    <button data-tab="vp"><i class="ic">🏆</i><span class="lg">巴菲特選股</span><span class="sm">選股</span></button>
+    <button data-tab="calc"><i class="ic">💰</i><span class="lg">我的配息試算</span><span class="sm">試算</span> <span class="n" id="tabN">0</span></button>
     <button data-tab="plan"><i class="ic">🎯</i><span class="lg">退休規劃</span><span class="sm">退休</span></button>
     <button data-tab="learn"><i class="ic">📚</i><span class="lg">投資教學</span><span class="sm">教學</span></button>
     <span class="mini" id="tabMini" data-tab="calc"></span>
@@ -956,6 +1050,7 @@ footer{border-image:linear-gradient(90deg,var(--gold),#0E1726 60%,var(--gold)) 1
 
   <div class="page" id="pg-vp"><div id="vp"></div></div>
   <div class="page" id="pg-mkt"><div id="mkt"></div></div>
+  <div class="page" id="pg-macro"><div id="macro"></div></div>
 
   <div class="page" id="pg-learn"><div id="learn"></div></div>
 
@@ -1051,7 +1146,7 @@ footer{border-image:linear-gradient(90deg,var(--gold),#0E1726 60%,var(--gold)) 1
 
 <footer>
   <div class="ft-brand"><div class="ft-logo">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
-  <div class="ft-nav"><b>功能</b><a href="#etf">📊 ETF 總覽</a><a href="#calc">💰 我的配息試算</a><a href="#vp">🏆 巴菲特選股</a><a href="#mkt">📉 大盤儀表板</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
+  <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🏆 巴菲特選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
 </footer>
@@ -1656,7 +1751,7 @@ function placeCalc(){       // 總覽頁(寬螢幕)右側直接顯示試算;試�
 }
 WIDE.addEventListener("change", placeCalc);
 function go(tab, scroll = true){
-  if (!document.getElementById("pg-" + tab)) tab = "etf";
+  if (!document.getElementById("pg-" + tab)) tab = "mkt";
   document.querySelectorAll(".page").forEach(p => p.classList.toggle("on", p.id == "pg-" + tab));
   document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.tab == tab));
   try{ localStorage.setItem("etf_tab", tab) }catch(e){}
@@ -1667,6 +1762,8 @@ function go(tab, scroll = true){
   if (tab == "mkt") setTimeout(loadMkt);
   if (tab == "vp") setTimeout(loadVP);
   if (tab == "learn") setTimeout(loadLearn);
+  if (tab == "macro") setTimeout(loadMacro);
+  document.body.classList.toggle("on-macro", tab == "macro");
   document.body.classList.toggle("on-vp", tab == "vp");
   document.body.classList.toggle("on-learn", tab == "learn");      // 延後:MK 等變數在 script 後段才宣告
   if (scroll && scrollY > 200) window.scrollTo({top: 0, behavior: "smooth"});
@@ -1693,7 +1790,7 @@ function tweenMoney(el, to){
 }
 $("#tabs").onclick = ev => { const t = ev.target.closest("[data-tab]"); if (t) go(t.dataset.tab); };
 window.addEventListener("hashchange", () => go(location.hash.slice(1), false));
-go(location.hash.slice(1) || (()=>{ try{ return localStorage.getItem("etf_tab") }catch(e){} })() || "etf", false);
+go(location.hash.slice(1) || "mkt", false);      // 一打開就是大盤儀表板
 $("#cpY").textContent = Math.max(2026, new Date().getFullYear()) > 2026 ? "2026–" + new Date().getFullYear() : "2026";
 
 function glide(years){            // [市值, 高股息, 債券]
@@ -1718,8 +1815,12 @@ function pickEtfs(){
   const covered = new Set(d.flatMap(e => e.payMonths));
   const bd = S.filter(e => ok(e) && e.category=="債券" && e.ttmYield > 0).sort(byAum);
   const b = []; for (const e of bd) { if (b.length >= 2) break; if (!b.length || e.payMonths.some(m => !b[0].payMonths.includes(m))) b.push(e); }
+  const alt = [S.filter(e => ok(e) && e.category=="市值型" && e.region=="台股" && !g.includes(e)).sort(byAum).slice(0,3),
+               hd.filter(e => !d.includes(e)).slice(0,4), bd.filter(e => !b.includes(e)).slice(0,3)];
+  PLAN_ALT = alt;
   return [g, d, b];
 }
+let PLAN_ALT = [[],[],[]];
 function catStats(c){             // 資料庫裡該類前5大的實際近一年殖利率 / 近一年漲幅
   const l = S.filter(e => e.category==c && e.region=="台股" && e.aum).sort((a,b)=>b.aum-a.aum).slice(0,5);
   const pick = c=="債券" ? S.filter(e => e.category=="債券" && e.aum).sort((a,b)=>b.aum-a.aum).slice(0,5) : l;
@@ -1735,6 +1836,12 @@ function avgYld(e){
 const fv = (lump, mon, r, n) => { const i = r/12, m = n*12; return lump*Math.pow(1+i, m) + (i ? mon*(Math.pow(1+i, m)-1)/i : mon*m); };
 const wan = n => n >= 1e8 ? (n/1e8).toFixed(2) + " 億" : Math.round(n/1e4).toLocaleString() + " 萬";
 
+function pkCard(e, bi, on){
+  return `<label class="pick${on ? "" : " off"}" style="border-color:${col(e.category)}"><input type="checkbox" data-id="${e.id}" data-b="${bi}" ${on ? "checked" : ""}>
+    <div class="t"><b>${e.id} ${e.name}</b><span style="background:${grad(e.category)}">${BK[bi].k}</span></div>
+    <small>${e.freq} · 發放 ${e.payMonths.join("/")} 月 · 近年平均殖利率 ${avgYld(e).toFixed(1)}% · 規模 ${yi(e.aum)}</small>
+    <div class="amt" style="font-size:13px"></div></label>`;
+}
 function renderPlan(){
   if (!S) return;
   const v = k => +$("#"+k).value || 0;
@@ -1777,13 +1884,9 @@ function renderPlan(){
       <div class="alloc">${mix.map((w,i) => w ? `<div style="width:${w}%;background:${colors[i]}">${BK[i].k} ${w}%</div>` : "").join("")}</div>
       <div class="lbl" style="margin-top:8px">退休後轉成：${RET_MIX.map((w,i)=>`${BK[i].k} ${w}%`).join("、")}　→ 以配息為主</div>
     </div>
-    <div class="picks">${picks.map((l,bi) => l.map(e => {
-        const amt = lump * mix[bi]/100 / l.length, mAmt = mon * mix[bi]/100 / l.length;
-        return `<div class="pick" style="border-color:${col(e.category)}">
-          <div class="t"><b>${e.id} ${e.name}</b><span style="background:${grad(e.category)}">${BK[bi].k}</span></div>
-          <small>${e.freq} · 發放 ${e.payMonths.join("/")} 月 · 近年平均殖利率 ${avgYld(e).toFixed(1)}% · 規模 ${yi(e.aum)}</small>
-          <div style="font-size:13px">一次投入 <b class="num">${money(amt)}</b>（約 ${(amt/e.price/1000).toFixed(2)} 張）<br>每月扣款 <b class="num">${money(mAmt)}</b></div>
-        </div>`; }).join("")).join("")}</div>
+    <div class="pk-hd"><b>✅ 自動建議的 ETF</b><small>勾選要放入配息試算的標的；同一類勾幾檔，金額就平均分給幾檔</small></div>
+    <div class="picks" id="pkMain">${picks.map((l,bi) => l.map(e => pkCard(e, bi, true)).join("")).join("")}</div>
+    <details class="pk-alt"><summary>➕ 其他候選 ETF（可改勾或加勾）</summary><div class="picks">${PLAN_ALT.map((l,bi) => l.map(e => pkCard(e, bi, false)).join("")).join("")}</div></details>
     <div class="why">
       <b>💬 為什麼這樣配？白話說明</b>
       <ul style="margin-top:6px">
@@ -1795,12 +1898,24 @@ function renderPlan(){
         ${ratio < 1 ? `<li><b>怎麼補缺口？</b>三選一或混著用：①每月投入加到 <b>${money(needMon)}</b>；②${okAge ? `延到 <b>${okAge} 歲</b>退休` : "就算延到 70 歲退休也還不夠，建議搭配①或③"}；③把目標月領調到約 <b>${money(monthlyAtRet/Math.pow(1+infl,years))}</b>（今天的購買力）。</li>` : `<li><b>已經夠了怎麼辦？</b>可以把債券比重再加一點、降低波動；或照這個速度，你有機會比 ${ret} 歲更早退休。</li>`}
       </ul>
     </div>
-    <button class="apply" id="applyPlan">✨ 把「一次投入」套用到右邊的配息試算</button>
+    <div class="pk-act"><button class="apply" id="applyPlan">✨ 把勾選的 ETF 放入我的配息試算</button>
+      <label><input type="radio" name="pkMode" value="add" checked> 加到現有清單</label><label><input type="radio" name="pkMode" value="rep"> 取代現有清單</label></div>
     <div class="disc">※ 本試算用過去資料與你設定的假設推估，未來報酬與配息不保證，不構成投資建議；高殖利率可能含配發本金，投資前請看公開說明書。</div>`;
+  const pkUpd = () => {                           // 依勾選重算每檔金額
+    const boxes = [...document.querySelectorAll("#pres .pick input")], cnt = [0,1,2].map(bi => boxes.filter(x => x.checked && +x.dataset.b == bi).length);
+    boxes.forEach(x => { const c = x.closest(".pick"), bi = +x.dataset.b, e = S.find(z => z.id == x.dataset.id), n = cnt[bi] || 1;
+      const amt = lump * mix[bi]/100 / n, mAmt = mon * mix[bi]/100 / n; c.classList.toggle("off", !x.checked);
+      c.querySelector(".amt").innerHTML = x.checked ? `一次投入 <b class="num">${money(amt)}</b>（約 ${(amt/e.price/1000).toFixed(2)} 張）<br>每月扣款 <b class="num">${money(mAmt)}</b>` : `<span style="color:var(--sub)">勾選後放入試算</span>`;
+      x.dataset.lots = (amt/e.price/1000).toFixed(3); });
+    const n = boxes.filter(x => x.checked).length; $("#applyPlan").textContent = n ? `✨ 把勾選的 ${n} 檔放入我的配息試算` : "請先勾選 ETF"; $("#applyPlan").disabled = !n;
+  };
+  document.querySelectorAll("#pres .pick input").forEach(x => x.onchange = pkUpd); pkUpd();
   $("#applyPlan").onclick = () => {
-    PF = [];
-    picks.forEach((l,bi) => l.forEach(e => PF.push({id:e.id, lots: +(lump*mix[bi]/100/l.length/e.price/1000).toFixed(3), mode:"auto"})));
-    save(); renderPF(); go("calc");
+    const sel = [...document.querySelectorAll("#pres .pick input:checked")].map(x => ({id: x.dataset.id, lots: +x.dataset.lots || 0, mode: "auto"}));
+    if (!sel.length) return;
+    const repl = document.querySelector('input[name="pkMode"]:checked').value == "rep";
+    if (repl) PF = []; sel.forEach(x => { const o = PF.find(p => p.id == x.id); if (o) o.lots = x.lots; else PF.push(x); });
+    save(); renderPF(); toast(`已放入 ${sel.length} 檔到「我的配息試算」`, 1800); go("calc");
   };
 }
 
@@ -3239,6 +3354,298 @@ function gxUI(keepCmp){
   if (!keepCmp) $("#gxCmp").innerHTML = "";
   gxLoad();
   if (!keepCmp && GX.cmpAuto) gxCompare();
+}
+
+/* ---------- 🛢️ 總經指標:聯準會、通膨、石油、就業、景氣、金融溫度 ---------- */
+let MC = null;
+const MCL = {hot: ["#E5484D", "偏熱"], warm: ["#F59E0B", "留意"], ok: ["#16A34A", "正常"], cold: ["#2F7FE0", "偏冷"], bad: ["#E5484D", "警訊"]};
+// 每個指標:名稱、單位、基準值、白話、偏高/偏低的影響、燈號判斷
+const MCM = {
+  FED: {n: "聯準會基準利率（目標區間）", u: "%", base: "中性利率約 3%（聯準會估計長期不刺激也不壓抑景氣的水準）",
+    say: "聯準會（Fed）是美國的央行，這個利率就是控制全世界資金的「水龍頭」。它決定銀行之間借錢的成本，進而影響房貸、企業貸款、公債殖利率。",
+    hi: "利率高於中性 → 資金變貴，企業獲利與股票本益比被壓縮，科技成長股最受傷；美元走強，資金流回美國，台股外資容易賣超。",
+    lo: "利率低於中性 → 資金便宜，股市、房市容易上漲，但太低太久會吹大泡沫與通膨。", st: v => v >= 4.5 ? "hot" : v >= 3.5 ? "warm" : v >= 2 ? "ok" : "cold"},
+  CPIAUCSL: {n: "美國 CPI 消費者物價年增率", u: "%", base: "聯準會目標 2%；2～3% 可接受，3% 以上偏熱",
+    say: "CPI 就是一籃子民生物價（食物、房租、油錢、衣服、醫療…）跟去年同月比漲了多少。每月中旬（約 10～15 日）晚上 8:30／9:30（台灣時間）公布，是市場最看重的數據之一。",
+    hi: "高於預期 → 市場擔心聯準會升息或延後降息，股債齊跌，尤其高本益比科技股。",
+    lo: "低於預期 → 降息想像空間變大，股市通常上漲；但若低到接近 0 可能代表需求太弱。", st: v => v >= 4 ? "hot" : v >= 3 ? "warm" : v >= 1.5 ? "ok" : "cold"},
+  CPILFESL: {n: "核心 CPI（扣除食物與能源）", u: "%", base: "2～2.5% 為理想",
+    say: "把波動很大的食物和油價拿掉，看「黏性」通膨，例如房租、服務費、薪資推動的物價。聯準會更看重這個，因為它不會因為油價一跌就消失。",
+    hi: "核心通膨降不下來 → 聯準會會維持高利率更久（Higher for longer）。", lo: "核心通膨回到 2% 附近 → 聯準會有降息空間。", st: v => v >= 3.5 ? "hot" : v >= 2.7 ? "warm" : v >= 1.5 ? "ok" : "cold"},
+  PCEPILFE: {n: "核心 PCE 物價年增率", u: "%", base: "聯準會官方目標 2%（最重要的通膨指標）",
+    say: "PCE 是個人消費支出物價，涵蓋範圍比 CPI 更廣，聯準會訂的 2% 通膨目標指的就是它。每月月底公布。",
+    hi: "高於 2.5% → 聯準會很難降息。", lo: "接近或低於 2% → 降息條件成熟。", st: v => v >= 3.2 ? "hot" : v >= 2.5 ? "warm" : v >= 1.5 ? "ok" : "cold"},
+  PPIFIS: {n: "PPI 生產者物價年增率", u: "%", base: "1～3% 為正常",
+    say: "PPI 是工廠和企業端的「批發價」。企業成本先漲，過幾個月才會轉嫁到消費者，所以 PPI 常被當成 CPI 的領先指標。",
+    hi: "PPI 大漲 → 未來 CPI 有上升壓力，企業毛利也可能被壓縮。", lo: "PPI 下滑 → 通膨壓力減輕。", st: v => v >= 5 ? "hot" : v >= 3 ? "warm" : v >= 0 ? "ok" : "cold"},
+  T5YIE: {n: "市場預期未來 5 年通膨（損益平衡通膨率）", u: "%", base: "2～2.5% 代表市場相信聯準會能控制通膨",
+    say: "用一般公債和抗通膨公債的殖利率差，算出「市場押注」的未來通膨。比問卷更即時。",
+    hi: "高於 2.7% → 市場不信任聯準會，長天期殖利率會上升。", lo: "低於 1.8% → 市場擔心景氣衰退、通縮。", st: v => v >= 2.7 ? "hot" : v >= 2.4 ? "warm" : v >= 1.8 ? "ok" : "cold"},
+  PAYEMS: {n: "非農就業新增人數", u: "千人", base: "每月 +10～20 萬人屬於健康；+25 萬以上偏熱；+5 萬以下或負數代表轉弱",
+    say: "美國每月第一個星期五晚上 8:30／9:30（台灣時間）公布，扣除農業的新增工作數。是全球股市波動最大的數據之一，因為它直接影響聯準會怎麼調利率。",
+    hi: "遠高於預期 → 景氣太熱、薪資推升通膨 → 升息壓力，股市可能「好消息變壞消息」下跌。",
+    lo: "遠低於預期或負成長 → 景氣降溫，降息機率上升；但連續疲弱就是衰退警訊，股市會擔心企業獲利。", st: v => v >= 250 ? "hot" : v >= 100 ? "ok" : v >= 0 ? "warm" : "bad", f: v => (v >= 0 ? "+" : "") + fmt(v / 10, 1) + " 萬人"},
+  UNRATE: {n: "美國失業率", u: "%", base: "3.5～4.5% 接近充分就業；短時間上升 0.5 個百分點以上是衰退訊號（薩姆法則）",
+    say: "想工作但找不到工作的人占比，和非農同一天公布。重點不是高低本身，而是「上升速度」。",
+    hi: "快速上升 → 衰退風險升高，聯準會會降息救經濟，但股市通常先跌。", lo: "很低（< 3.8%）→ 勞動市場緊，薪資上漲推高通膨，升息壓力。", st: v => v >= 5.5 ? "bad" : v >= 4.6 ? "warm" : v >= 3.7 ? "ok" : "hot"},
+  ICSA: {n: "初領失業救濟金人數（每週）", u: "人", base: "20～25 萬人為正常；超過 30 萬是警訊",
+    say: "每週四公布，剛失業去申請救濟金的人數。每週都有，是最即時的就業溫度計。",
+    hi: "持續攀升 → 企業開始裁員，景氣轉弱。", lo: "很低 → 企業不太裁員，就業市場強。", st: v => v >= 300000 ? "bad" : v >= 250000 ? "warm" : v >= 180000 ? "ok" : "hot", f: v => fmt(v / 1e4, 1) + " 萬人"},
+  A191RL1Q225SBEA: {n: "美國實質 GDP 成長率（季增年率）", u: "%", base: "約 2% 為長期潛在成長；連續兩季負成長 = 技術性衰退",
+    say: "整個美國經濟這一季成長多少（換算成全年速度）。每季結束後約一個月公布初值。",
+    hi: "成長 3% 以上 → 企業獲利好，但也可能讓聯準會不急著降息。", lo: "接近 0 或負 → 衰退疑慮，股市承壓。", st: v => v >= 3.5 ? "hot" : v >= 1 ? "ok" : v >= 0 ? "warm" : "bad"},
+  RSAFS: {n: "零售銷售年增率", u: "%", base: "3～5% 為健康（消費占美國 GDP 約七成）",
+    say: "美國人在商店、網購、餐廳花了多少錢，跟去年比。消費是美國經濟的引擎，也影響台灣電子、紡織、運動用品的訂單。",
+    hi: "太強 → 通膨壓力。", lo: "轉弱或負成長 → 消費力道下滑，景氣降溫。", st: v => v >= 7 ? "hot" : v >= 2 ? "ok" : v >= 0 ? "warm" : "bad"},
+  UMCSENT: {n: "密西根大學消費者信心指數", u: "", base: "長期平均約 85；低於 60 屬極度悲觀",
+    say: "問卷調查美國民眾對經濟和自身財務的感受。注意它是「反向指標」：歷史上信心跌到極低時，股市往往接近底部。",
+    hi: "信心高 → 願意花錢，景氣好。", lo: "信心極低 → 短期消費保守，但常是長期買點。", st: v => v >= 95 ? "hot" : v >= 75 ? "ok" : v >= 60 ? "warm" : "cold"},
+  M2SL: {n: "M2 貨幣供給年增率", u: "%", base: "4～6% 為正常",
+    say: "市場上流通的錢（現金＋存款）有多少、成長多快。錢越多，越容易流進股市、房市。",
+    hi: "大增 → 資金氾濫，資產價格易漲，但通膨隨後到。", lo: "負成長 → 資金緊縮，對股市不利。", st: v => v >= 10 ? "hot" : v >= 3 ? "ok" : v >= 0 ? "warm" : "cold"},
+  DGS10: {n: "美國 10 年期公債殖利率", u: "%", base: "3.5～4.5% 常態；4.5% 以上會壓抑股市估值",
+    say: "全世界資產定價的「錨」。存美國公債就能拿到這個報酬，所以殖利率越高，股票相對越沒吸引力。",
+    hi: "快速上升 → 股票（尤其成長股）估值下修，房貸利率跟著漲。", lo: "下滑 → 股市估值有撐，但若是因為衰退恐慌而跌，股市也會跟著弱。", st: v => v >= 4.8 ? "hot" : v >= 4.2 ? "warm" : v >= 2.5 ? "ok" : "cold"},
+  DGS2: {n: "美國 2 年期公債殖利率", u: "%", base: "反映市場預期未來 1～2 年聯準會利率",
+    say: "對聯準會政策最敏感的殖利率。2 年期比聯準會利率低很多，代表市場在押注降息；比較高則在押升息。",
+    hi: "高於聯準會利率 → 市場預期升息。", lo: "明顯低於聯準會利率 → 市場預期降息。", st: v => v >= 4.8 ? "hot" : v >= 4 ? "warm" : v >= 2 ? "ok" : "cold"},
+  T10Y2Y: {n: "殖利率曲線（10 年 − 2 年）", u: "%", base: "大於 0 為正常；小於 0 叫「倒掛」",
+    say: "正常情況長天期利率比短天期高。一旦倒掛（短的比長的高），代表市場認為未來會衰退、利率會降。過去 50 年美國每次衰退前都出現倒掛，平均提前 12～24 個月。",
+    hi: "由負轉正（解除倒掛）的時候要特別小心，歷史上衰退往往在這之後真正到來。", lo: "倒掛越深 → 衰退機率越高。", st: v => v < 0 ? "bad" : v < .5 ? "warm" : "ok"},
+  BAMLH0A0HYM2: {n: "高收益債（垃圾債）利差", u: "%", base: "3～5% 為正常；超過 6% 代表信用緊縮、市場恐慌",
+    say: "信用比較差的公司借錢，要比美國政府多付多少利息。投資人越害怕，就要求越高的補償。",
+    hi: "利差急升 → 企業倒閉風險上升，股市通常同步大跌。", lo: "利差很低（< 3%）→ 市場樂觀，但也可能過度自滿。", st: v => v >= 6 ? "bad" : v >= 4.5 ? "warm" : v >= 3 ? "ok" : "hot"},
+  EFFR: {n: "有效聯邦資金利率", u: "%", base: "會落在聯準會目標區間之內", say: "銀行間隔夜借錢實際成交的平均利率。", hi: "", lo: "", st: () => "ok"},
+};
+const MCQ = {  // 即時行情(Yahoo):油價等
+  "CL=F": {n: "西德州原油 WTI", u: "美元/桶", base: "每桶 60～85 美元對經濟最舒服；100 美元以上通膨壓力大；50 美元以下代表需求疲弱",
+    say: "全球最重要的能源價格。油價影響運輸、塑化、電費，最後反映到 CPI。中東局勢、OPEC＋減產、美國庫存、景氣好壞都會牽動油價。",
+    hi: "油價大漲 → 通膨升溫、聯準會難降息；航空、運輸、塑化下游成本增加；但油氣、台塑化等上游受惠。", lo: "油價大跌 → 通膨降溫有利降息，但若是需求崩跌代表景氣轉差。", st: v => v >= 100 ? "hot" : v >= 85 ? "warm" : v >= 55 ? "ok" : "cold"},
+  "BZ=F": {n: "布蘭特原油 Brent", u: "美元/桶", base: "通常比 WTI 高 3～6 美元", say: "歐洲、亞洲（含台灣）進口原油多以布蘭特計價，對台灣中油油價、電價影響更直接。", hi: "同 WTI。", lo: "同 WTI。", st: v => v >= 105 ? "hot" : v >= 90 ? "warm" : v >= 58 ? "ok" : "cold"},
+  "NG=F": {n: "天然氣", u: "美元/百萬英熱", base: "2～4 美元為常態", say: "發電與暖氣的重要燃料，冬季需求高。影響電價與化工成本。", hi: "暴漲 → 電價、化工成本上升。", lo: "低檔 → 能源成本壓力小。", st: v => v >= 6 ? "hot" : v >= 4.5 ? "warm" : v >= 1.8 ? "ok" : "cold"},
+  "GC=F": {n: "黃金", u: "美元/盎司", base: "沒有固定基準，看趨勢：上漲代表避險需求或美元信心下降", say: "最經典的避險資產。戰爭、通膨、央行搶購、實質利率下降時會漲。", hi: "金價急漲 → 市場不安或預期降息。", lo: "金價下跌 → 風險偏好回升、美元走強。", st: () => "ok"},
+  "HG=F": {n: "銅價（銅博士）", u: "美元/磅", base: "看趨勢：銅用在電線、建築、電動車、AI 資料中心", say: "銅被稱為「銅博士」，因為它的需求跟全球製造業景氣高度相關，常領先經濟。", hi: "銅價上漲 → 全球製造業與基建需求好。", lo: "銅價下跌 → 景氣降溫、中國需求轉弱。", st: () => "ok"},
+  "DX-Y.NYB": {n: "美元指數", u: "", base: "95～105 為常見區間；105 以上屬強勢美元", say: "美元對歐元、日圓、英鎊等一籃子貨幣的強弱。", hi: "美元走強 → 資金回流美國，台幣貶值、外資賣台股，新興市場承壓。", lo: "美元走弱 → 資金流向亞洲與新興市場，台股、台幣受惠。", st: v => v >= 108 ? "hot" : v >= 104 ? "warm" : v >= 94 ? "ok" : "cold"},
+  "^VIX": {n: "VIX 恐慌指數", u: "", base: "12～20 為平靜；20～30 緊張；30 以上恐慌", say: "從 S&P 500 選擇權價格算出來的「市場預期波動」。", hi: "VIX 飆高 → 恐慌賣壓，但極端高點常是短線底部。", lo: "VIX 很低 → 市場安逸，要小心突發利空。", st: v => v >= 30 ? "bad" : v >= 20 ? "warm" : v >= 12 ? "ok" : "hot"},
+};
+const FOMC = ["2026-01-28", "2026-03-18", "2026-04-29", "2026-06-17", "2026-07-29", "2026-09-16", "2026-10-28", "2026-12-09"];
+const mcS = id => MC && MC.s[id];
+const mcLast = id => { const s = mcS(id); return s && s.rows.length ? s.rows[s.rows.length - 1] : null; };
+const mcPrev = (id, k = 1) => { const s = mcS(id); return s && s.rows.length > k ? s.rows[s.rows.length - 1 - k] : null; };
+function mcFmt(id, v){ const m = MCM[id] || MCQ[id] || {}; return v == null ? "—" : m.f ? m.f(v) : fmt(v, Math.abs(v) >= 1000 ? 0 : 2) + (m.u == "%" ? "%" : ""); }
+function mcPill(id, v){ const m = MCM[id] || MCQ[id]; if (!m || v == null) return ""; const l = MCL[m.st(v)]; return `<span class="mc-pill" style="--c:${l[0]}">${l[1]}</span>`; }
+function mcLine(series, o = {}){        // series: [{name, color, rows:[[d,v]]}]
+  const sm = innerWidth < 700, k = sm ? 1.6 : 1, W = sm ? 560 : 1000, H = sm ? Math.round((o.h || 260) * .95) : o.h || 260, P = {l: 8, r: sm ? 84 : 58, t: 12, b: sm ? 32 : 24}, all = series.flatMap(s => s.rows);
+  if (!all.length) return "";
+  const ds = [...new Set(all.map(r => r[0]))].sort(), xi = Object.fromEntries(ds.map((d, i) => [d, i]));
+  let lo = Math.min(...all.map(r => r[1]), ...(o.band || []), ...(o.zero ? [0] : [])), hi = Math.max(...all.map(r => r[1]), ...(o.band || []));
+  const pad = (hi - lo) * .08 || 1; lo -= pad; hi += pad;
+  const ts = ds.map(d => Date.parse(d)), t0 = ts[0], t1 = ts[ts.length - 1] || t0 + 1;   // X 軸照日期等比例(週/日資料混合也不會擠)
+  const X = i => P.l + (ts[i] - t0) / Math.max(1, t1 - t0) * (W - P.l - P.r), Y = v => P.t + (1 - (v - lo) / (hi - lo)) * (H - P.t - P.b);
+  const near = t => { let b = 0; ts.forEach((x, i) => { if (Math.abs(x - t) < Math.abs(ts[b] - t)) b = i; }); return b; };
+  const tk = [0, 1, 2, 3].map(k => lo + (hi - lo) * (k + .5) / 4), nl = sm ? 3 : 6, lab = [...Array(nl)].map((_, k) => near(t0 + (t1 - t0) * k / (nl - 1)));
+  const id = "mcl" + Math.random().toString(36).slice(2, 7);
+  return `<div class="mc-ch" id="${id}" data-ds='${JSON.stringify(ds)}'><svg viewBox="0 0 ${W} ${H}">
+    ${o.band ? `<rect x="${P.l}" width="${W - P.l - P.r}" y="${Y(o.band[1])}" height="${Y(o.band[0]) - Y(o.band[1])}" fill="#16A34A" opacity=".09"/><text x="${P.l + 6}" y="${Y(o.band[1]) + 14}" font-size="${12 * k}" fill="#16A34A" font-weight="700">${o.bandName || "基準區"}</text>` : ""}
+    ${tk.map(v => `<line x1="${P.l}" x2="${W - P.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${W - P.r + 6}" y="${Y(v) + 4}" font-size="${12 * k}" fill="var(--sub)" font-weight="700">${fmt(v, Math.abs(v) >= 100 ? 0 : 1)}</text>`).join("")}
+    ${o.zero && lo < 0 ? `<line x1="${P.l}" x2="${W - P.r}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--ink)" stroke-dasharray="5 4" opacity=".5"/>` : ""}
+    ${o.ref != null ? `<line x1="${P.l}" x2="${W - P.r}" y1="${Y(o.ref)}" y2="${Y(o.ref)}" stroke="#E5484D" stroke-dasharray="6 4"/><text x="${W - P.r - 4}" y="${Y(o.ref) - 6}" font-size="${12 * k}" fill="#E5484D" text-anchor="end" font-weight="700">${o.refName}</text>` : ""}
+    ${lab.map(i => `<text x="${X(i)}" y="${H - 6}" font-size="${11.5 * k}" fill="var(--sub)" text-anchor="${i == 0 ? "start" : i == ds.length - 1 ? "end" : "middle"}">${(ds[i] || "").slice(0, 7)}</text>`).join("")}
+    ${series.map(s => o.bars ? s.rows.map(r => { const x = X(xi[r[0]]), w = Math.max(1.5, (W - P.l - P.r) / ds.length * .7); return `<rect x="${x - w / 2}" width="${w}" y="${Math.min(Y(r[1]), Y(0))}" height="${Math.abs(Y(r[1]) - Y(0))}" fill="${r[1] >= 0 ? s.color : "#E5484D"}" opacity=".85"/>`; }).join("")
+      : `<polyline fill="none" stroke="${s.color}" stroke-width="${s.w || 2.2}" ${s.step ? "" : 'stroke-linejoin="round"'} points="${(s.step ? s.rows.flatMap((r, k) => k ? [[xi[r[0]], s.rows[k - 1][1]], [xi[r[0]], r[1]]] : [[xi[r[0]], r[1]]]) : s.rows.map(r => [xi[r[0]], r[1]])).map(([i, v]) => `${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(" ")}"/>`).join("")}
+    <line class="mc-hl" y1="${P.t}" y2="${H - P.b}" stroke="var(--ink)" opacity="0"/></svg>
+    ${series.length > 1 ? `<div class="mc-lg">${series.map(s => `<span><i style="background:${s.color}"></i>${s.name}</span>`).join("")}</div>` : ""}<div class="mc-tt"></div></div>`;
+}
+function mcHover(){                      // 所有圖表的滑過提示
+  document.querySelectorAll(".mc-ch:not([data-b])").forEach(el => {
+    el.dataset.b = 1; const svg = el.querySelector("svg"), ds = JSON.parse(el.dataset.ds), sers = el._s || [], sm = innerWidth < 700, W = sm ? 560 : 1000, P = {l: 8, r: sm ? 84 : 58};
+    const mv = ev => { const r = svg.getBoundingClientRect(), x = ((ev.touches ? ev.touches[0].clientX : ev.clientX) - r.left) / r.width * W;
+      const ts = ds.map(z => Date.parse(z)), t0 = ts[0], t1 = ts[ts.length - 1] || t0 + 1, tt = t0 + (x - P.l) / (W - P.l - P.r) * (t1 - t0);
+      let i = 0; ts.forEach((z, k) => { if (Math.abs(z - tt) < Math.abs(ts[i] - tt)) i = k; }); const d = ds[i], hl = el.querySelector(".mc-hl");
+      hl.setAttribute("x1", P.l + (ts[i] - t0) / Math.max(1, t1 - t0) * (W - P.l - P.r)); hl.setAttribute("x2", hl.getAttribute("x1")); hl.setAttribute("opacity", ".35");
+      el.querySelector(".mc-tt").innerHTML = `<b>${d}</b>　` + sers.map(s => { const row = s.rows.find(z => z[0] == d); return row ? `<span style="color:${s.color}">${s.name} <b>${s.fmt ? s.fmt(row[1]) : fmt(row[1], 2)}</b></span>` : ""; }).join("　"); };
+    svg.addEventListener("mousemove", mv); svg.addEventListener("touchmove", mv, {passive: true});
+    svg.addEventListener("mouseleave", () => { el.querySelector(".mc-hl").setAttribute("opacity", "0"); el.querySelector(".mc-tt").innerHTML = ""; });
+  });
+}
+function mcChart(host, series, o){ host.innerHTML = mcLine(series, o); const el = host.querySelector(".mc-ch"); if (el) el._s = series; mcHover(); }
+function mcSpark(rows, col = "var(--blue,#2F5BEA)"){
+  if (!rows || rows.length < 2) return ""; const v = rows.map(r => r[1]), lo = Math.min(...v), hi = Math.max(...v), W = 120, H = 30;
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" class="mc-sp"><polyline fill="none" stroke="${col}" stroke-width="1.8" points="${v.map((x, i) => `${(i / (v.length - 1) * W).toFixed(1)},${(H - 2 - (x - lo) / ((hi - lo) || 1) * (H - 4)).toFixed(1)}`).join(" ")}"/></svg>`;
+}
+function mcCard(id, o = {}){
+  const m = MCM[id], s = mcS(id); if (!m || !s) return "";
+  const L = mcLast(id), P = mcPrev(id), ch = L && P ? L[1] - P[1] : null, n = s.fq == "d" ? 260 : s.fq == "w" ? 52 : s.fq == "q" ? 16 : 36;
+  const dU = m.u == "%" ? " 個百分點" : "";
+  return `<div class="mc-c" data-id="${id}">
+    <div class="mc-ch1"><b>${m.n}</b>${mcPill(id, L && L[1])}</div>
+    <div class="mc-v"><span class="num">${mcFmt(id, L && L[1])}</span><small>${L ? L[0].slice(0, s.fq == "d" ? 10 : 7) : ""}${s.mom != null ? `・月增 ${sgn(s.mom)}%` : ""}</small></div>
+    ${ch != null ? `<div class="mc-d">比上期 <b class="num ${ch > 0 ? "pos" : ch < 0 ? "neg" : ""}">${id == "PAYEMS" ? (ch >= 0 ? "+" : "") + fmt(ch / 10, 1) + " 萬" : id == "ICSA" ? (ch >= 0 ? "+" : "") + fmt(ch / 1e4, 1) + " 萬" : sgn(ch) + dU}</b></div>` : ""}
+    ${mcSpark(s.rows.slice(-n))}
+    <div class="mc-base"><b>📏 基準值</b>${m.base}</div>
+    <p class="mc-say">${m.say}</p>
+    ${m.hi ? `<div class="mc-hl2"><span>⬆ 偏高</span>${m.hi}</div>` : ""}${m.lo ? `<div class="mc-hl2 lo"><span>⬇ 偏低</span>${m.lo}</div>` : ""}
+    <details class="mc-more"><summary>📈 看長期走勢</summary><div class="mc-big"></div></details></div>`;
+}
+const MC_BAND = {CPIAUCSL: [1.5, 3], CPILFESL: [1.5, 2.7], PCEPILFE: [1.5, 2.5], PPIFIS: [0, 3], T5YIE: [1.8, 2.4], PAYEMS: [100, 250], UNRATE: [3.5, 4.5], ICSA: [180000, 250000], A191RL1Q225SBEA: [1, 3.5], RSAFS: [2, 7], UMCSENT: [75, 95], M2SL: [3, 10], DGS10: [2.5, 4.2], DGS2: [2, 4], T10Y2Y: [0, 2.5], BAMLH0A0HYM2: [3, 4.5]};
+function mcBindCards(root){
+  root.querySelectorAll(".mc-c details").forEach(d => d.addEventListener("toggle", () => {
+    if (!d.open || d.dataset.done) return; d.dataset.done = 1; const id = d.closest(".mc-c").dataset.id, s = mcS(id), m = MCM[id];
+    mcChart(d.querySelector(".mc-big"), [{name: m.n, color: "#2F5BEA", rows: s.rows.filter(r => r[0] >= "2015"), fmt: v => mcFmt(id, v)}], {band: MC_BAND[id], bandName: "基準區", zero: ["T10Y2Y", "PAYEMS"].includes(id), bars: id == "PAYEMS"});
+  }));
+}
+/* 即時行情卡(油價、美元、黃金…) */
+async function mcQuote(sym){
+  const D = await gxFetch(sym, "1y"), B = D.B, last = B[B.length - 1].c, m = D.m;
+  const at = k => B[Math.max(0, B.length - 1 - k)].c;
+  return {sym, last, d1: (last / at(1) - 1) * 100, m1: (last / at(21) - 1) * 100, y1: (last / B[0].c - 1) * 100, hi: m.fiftyTwoWeekHigh, lo: m.fiftyTwoWeekLow, rows: B.map(b => [b.d, b.c])};
+}
+function mcQCard(q){
+  const m = MCQ[q.sym];
+  return `<div class="mc-c" data-q="${q.sym}">
+    <div class="mc-ch1"><b>${m.n}</b>${mcPill(q.sym, q.last)}</div>
+    <div class="mc-v"><span class="num">${fmt(q.last, 2)}</span><small>${m.u}</small></div>
+    <div class="mc-d">今日 <b class="num ${pc(q.d1)}">${sgn(q.d1)}%</b>・1 個月 <b class="num ${pc(q.m1)}">${sgn(q.m1)}%</b>・1 年 <b class="num ${pc(q.y1)}">${sgn(q.y1)}%</b></div>
+    ${mcSpark(q.rows.slice(-120), q.y1 >= 0 ? "var(--up)" : "var(--down)")}
+    <div class="mc-base"><b>📏 基準值</b>${m.base}</div><p class="mc-say">${m.say}</p>
+    <div class="mc-hl2"><span>⬆ 偏高</span>${m.hi}</div><div class="mc-hl2 lo"><span>⬇ 偏低</span>${m.lo}</div></div>`;
+}
+/* 聯邦基金期貨 → 市場預期的利率路徑 */
+async function mcZQ(){
+  const mc = "FGHJKMNQUVXZ", now = new Date(), out = [];
+  for (let k = 0; k < 7; k++) { const d = new Date(now.getFullYear(), now.getMonth() + k, 1); out.push({ym: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`, sym: `ZQ${mc[d.getMonth()]}${String(d.getFullYear()).slice(2)}.CBT`}); }
+  await Promise.all(out.map(o => yc(o.sym, "range=5d&interval=1d").then(j => { const p = j.chart.result[0].meta.regularMarketPrice; if (p) o.r = 100 - p; }).catch(() => {})));
+  return out.filter(o => o.r != null);
+}
+async function loadMacro(){
+  if (MC) return;
+  $("#macro").innerHTML = `<div class="box"><div class="sk" style="height:180px"></div></div><div class="box"><div class="sk" style="height:320px"></div></div>`;
+  MC = await getJ("macro");
+  if (!MC) { $("#macro").innerHTML = `<div class="box empty">總經資料載入失敗，請稍後重新整理</div>`; return; }
+  renderMacro();
+}
+function renderMacro(){
+  const up = mcLast("DFEDTARU"), lo = mcLast("DFEDTARL"), F = MC.fed, lastD = F[F.length - 1];
+  const cpi = mcLast("CPIAUCSL"), core = mcLast("PCEPILFE"), nfp = mcLast("PAYEMS"), ur = mcLast("UNRATE"), y10 = mcLast("DGS10"), cv = mcLast("T10Y2Y");
+  const today = new Date().toISOString().slice(0, 10), nextF = FOMC.find(d => d >= today);
+  // 升降息壓力:鷹派訊號 vs 鴿派訊號
+  const hawk = [cpi[1] >= 3, core[1] >= 2.7, nfp[1] >= 200, ur[1] < 4, mcLast("T5YIE")[1] >= 2.5].filter(Boolean).length;
+  const dove = [cpi[1] < 2.5, core[1] < 2.3, nfp[1] < 75, ur[1] >= 4.5, cv[1] < 0].filter(Boolean).length;
+  const tone = hawk - dove >= 2 ? ["偏向升息／維持高利率", "#E5484D", "通膨仍高、就業不差，聯準會不急著降息，甚至可能再升息；對高本益比科技股與台股評價較不利。"] :
+    dove - hawk >= 2 ? ["偏向降息", "#16A34A", "通膨降溫、就業轉弱，聯準會有降息空間；資金寬鬆對股市評價有利，但要留意景氣衰退風險。"] :
+    ["觀望（按兵不動）", "#F59E0B", "通膨與就業訊號互相拉扯，聯準會傾向觀望，市場會對每一筆數據特別敏感，波動容易放大。"];
+  // 薩姆法則
+  const U = mcS("UNRATE").rows.map(r => r[1]), avg3 = i => (U[i] + U[i - 1] + U[i - 2]) / 3, n = U.length - 1;
+  const sahm = avg3(n) - Math.min(...[...Array(12)].map((_, k) => avg3(n - 1 - k)));
+  // 近一年升降息次數
+  const y1 = F.filter(x => x.d >= new Date(Date.now() - 365 * 864e5).toISOString().slice(0, 10)), hikes = y1.filter(x => x.bp > 0).length, cuts = y1.filter(x => x.bp < 0).length;
+  const cycle = (() => { let k = F.length - 1, dir = Math.sign(F[k].bp), cnt = 0, bp = 0; while (k >= 0 && Math.sign(F[k].bp) == dir) { cnt++; bp += F[k].bp; k--; } return {dir, cnt, bp, from: F[k + 1].d}; })();
+  $("#macro").innerHTML = `<div class="mc">
+  <div class="mc-hero">
+    <div><small>🛢️ 總經指標 ・ 影響全球股市的大方向</small><h2>聯準會現在 <b style="color:${tone[1]}">${tone[0]}</b></h2><p>${tone[2]}</p>
+      <div class="mc-hk">${[["聯準會利率", `${fmt(lo[1], 2)}～${fmt(up[1], 2)}%`, `上次 ${lastD.d} ${lastD.bp > 0 ? "升息" : "降息"} ${Math.abs(lastD.bp) / 25} 碼`],
+        ["CPI 通膨", fmt(cpi[1], 2) + "%", `目標 2%・${cpi[0].slice(0, 7)}`], ["核心 PCE", fmt(core[1], 2) + "%", "聯準會最看重"], ["非農就業", (nfp[1] >= 0 ? "+" : "") + fmt(nfp[1] / 10, 1) + " 萬", `健康 10～20 萬・${nfp[0].slice(0, 7)}`],
+        ["失業率", fmt(ur[1], 1) + "%", `薩姆指標 ${fmt(sahm, 2)}（≥0.5 衰退警訊）`], ["10 年債殖利率", fmt(y10[1], 2) + "%", `殖利率曲線 ${sgn(cv[1])}`], ["WTI 油價", `<span id="mcOil">—</span>`, "美元/桶・即時"], ["下次利率會議", nextF ? nextF.slice(5).replace("-", "/") : "待公告", nextF ? `還有 ${Math.ceil((new Date(nextF) - new Date(today)) / 864e5)} 天` : "2027 日程以官方為準"]]
+        .map(([a, b, c]) => `<div><small>${a}</small><b class="num">${b}</b><i>${c}</i></div>`).join("")}</div>
+      <small class="mc-src">資料：美國聖路易聯準銀行 FRED（官方統計）、Yahoo Finance 即時行情；更新 ${MC.updated}</small></div>
+  </div>
+  <nav class="mk-nav mc-nav">${[["mc-fed", "🏦 聯準會"], ["mc-inf", "🔥 通膨"], ["mc-oil", "🛢️ 石油與原物料"], ["mc-job", "👷 就業（非農）"], ["mc-eco", "🛒 景氣"], ["mc-fin", "💹 利率與金融溫度"], ["mc-cal", "📅 公布時間"]].map(([i, t]) => `<button data-to="${i}">${t}</button>`).join("")}</nav>
+
+  <div class="box" id="mc-fed"><h2 class="sec">🏦 聯準會升息／降息 <small>目標利率區間歷史、每次決策紀錄，以及期貨市場預期的未來利率</small></h2>
+    <div class="mc-say2"><p>目前利率 <b>${fmt(lo[1], 2)}%～${fmt(up[1], 2)}%</b>。這一輪是從 ${cycle.from} 開始的<b>${cycle.dir > 0 ? "升息" : "降息"}循環</b>，已${cycle.dir > 0 ? "升" : "降"} ${cycle.cnt} 次、共 ${Math.abs(cycle.bp)} 個基點（${Math.abs(cycle.bp) / 25} 碼）；近一年升息 ${hikes} 次、降息 ${cuts} 次。<small>（1 碼 = 0.25 個百分點 = 25 個基點）</small></p></div>
+    <div id="mcFedCh"></div>
+    <div class="mc-2col">
+      <div><h3 class="mc-h3">📜 歷次利率決策</h3><div class="gx-tw" style="max-height:340px"><table class="gx-tb"><thead><tr><th>生效日</th><th>動作</th><th>調整後區間</th></tr></thead><tbody>
+        ${F.slice().reverse().map(x => `<tr><td>${x.d}</td><td class="${x.bp > 0 ? "pos" : "neg"}"><b>${x.bp > 0 ? "▲ 升息" : "▼ 降息"} ${Math.abs(x.bp) / 25} 碼</b></td><td class="num">${fmt(x.lo, 2)}～${fmt(x.up, 2)}%</td></tr>`).join("")}</tbody></table></div></div>
+      <div><h3 class="mc-h3">🔮 市場預期的利率（聯邦基金期貨）</h3><div id="mcZQ"><div class="sk" style="height:200px"></div></div>
+        <h3 class="mc-h3" style="margin-top:14px">📅 2026 年利率會議（FOMC）</h3><div class="mc-fomc">${FOMC.map(d => `<span class="${d < today ? "past" : d == nextF ? "next" : ""}">${d.slice(5).replace("-", "/")}${d == nextF ? "<b>下一次</b>" : ""}</span>`).join("")}</div>
+        <p class="mknote">台灣時間通常在會議結束當天的隔日凌晨 2:00／3:00 公布決議，之後主席記者會；每年 3、6、9、12 月會公布「點陣圖」（官員對未來利率的預測）。</p></div></div>
+    ${mcCard("FED") ? "" : ""}
+    <div class="mc-grid">${["DGS2", "EFFR"].map(id => mcCard(id)).join("")}<div class="mc-c mc-expl"><div class="mc-ch1"><b>聯準會利率，白話怎麼看？</b></div><div class="mc-base"><b>📏 基準值</b>${MCM.FED.base}</div><p class="mc-say">${MCM.FED.say}</p><div class="mc-hl2"><span>⬆ 偏高</span>${MCM.FED.hi}</div><div class="mc-hl2 lo"><span>⬇ 偏低</span>${MCM.FED.lo}</div></div></div></div>
+
+  <div class="box" id="mc-inf"><h2 class="sec">🔥 美國通膨 <small>CPI、核心 CPI、核心 PCE、PPI 年增率；紅色虛線是聯準會 2% 目標</small></h2>
+    <div class="mc-say2"><p>最新 CPI 年增 <b>${fmt(cpi[1], 2)}%</b>、核心 CPI <b>${fmt(mcLast("CPILFESL")[1], 2)}%</b>、核心 PCE <b>${fmt(core[1], 2)}%</b>，${core[1] > 2.5 ? `仍高於 2% 目標 ${fmt(core[1] - 2, 1)} 個百分點，聯準會要看到持續降溫才會放心降息。` : "已接近 2% 目標，聯準會降息條件逐漸成熟。"}</p></div>
+    <div id="mcInfCh"></div>
+    <div class="mc-grid">${["CPIAUCSL", "CPILFESL", "PCEPILFE", "PPIFIS", "T5YIE"].map(id => mcCard(id)).join("")}</div></div>
+
+  <div class="box" id="mc-oil"><h2 class="sec">🛢️ 石油價格走勢與原物料 <small>即時行情；點上方區間可看不同期間</small></h2>
+    <div class="mc-rg" id="mcOilRg">${[["1mo", "1個月"], ["6mo", "6個月"], ["1y", "1年"], ["5y", "5年"], ["10y", "10年"]].map(([k, t]) => `<button data-r="${k}" class="${k == "1y" ? "on" : ""}">${t}</button>`).join("")}</div>
+    <div id="mcOilCh"><div class="sk" style="height:260px"></div></div><div class="mc-say2" id="mcOilSay"></div>
+    <div class="mc-grid" id="mcQ"><div class="sk" style="height:200px"></div></div></div>
+
+  <div class="box" id="mc-job"><h2 class="sec">👷 就業市場（非農就業） <small>柱狀＝每月新增工作數（千人），綠色帶＝健康區間 10～25 萬人</small></h2>
+    <div class="mc-say2"><p>最新（${nfp[0].slice(0, 7)}）非農新增 <b>${(nfp[1] >= 0 ? "+" : "") + fmt(nfp[1] / 10, 1)} 萬人</b>，近 3 個月平均 <b>${fmt(mcS("PAYEMS").rows.slice(-3).reduce((s, r) => s + r[1], 0) / 30, 1)} 萬人</b>；失業率 <b>${fmt(ur[1], 1)}%</b>。薩姆指標 ${fmt(sahm, 2)}，${sahm >= .5 ? "<b style='color:#E5484D'>已觸發衰退警訊</b>（過去每次觸發，美國幾乎都進入衰退）。" : sahm >= .3 ? "接近警戒（0.5），要留意。" : "尚未出現衰退訊號。"}</p></div>
+    <div id="mcJobCh"></div>
+    <div class="mc-grid">${["PAYEMS", "UNRATE", "ICSA"].map(id => mcCard(id)).join("")}</div></div>
+
+  <div class="box" id="mc-eco"><h2 class="sec">🛒 景氣與消費 <small>GDP、零售銷售、消費者信心、資金供給</small></h2>
+    <div class="mc-grid">${["A191RL1Q225SBEA", "RSAFS", "UMCSENT", "M2SL"].map(id => mcCard(id)).join("")}</div></div>
+
+  <div class="box" id="mc-fin"><h2 class="sec">💹 利率與金融溫度 <small>公債殖利率、殖利率曲線（衰退預警）、信用利差</small></h2>
+    <div id="mcCurveCh"></div>
+    <div class="mc-grid">${["DGS10", "T10Y2Y", "BAMLH0A0HYM2"].map(id => mcCard(id)).join("")}</div>
+    <div class="mc-grid" id="mcQ2"></div></div>
+
+  <div class="box" id="mc-cal"><h2 class="sec">📅 重要數據公布時間（台灣時間） <small>美國夏令（3～11 月初）早 1 小時</small></h2>
+    <div class="mc-cal">${mcCal().map(r => `<div><b>${r[0]}</b><span>${r[1]}</span><em>${r[2]}</em></div>`).join("")}</div></div>
+  </div>`;
+  // 導覽
+  $("#macro").querySelectorAll(".mc-nav button").forEach(b => b.onclick = () => window.scrollTo({top: $("#" + b.dataset.to).getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 70), behavior: "smooth"}));
+  // 圖表
+  const since = d => r => r[0] >= d;
+  mcChart($("#mcFedCh"), [{name: "目標區間上限", color: "#2F5BEA", rows: mcS("DFEDTARU").rows.filter(since("2015")), step: true, fmt: v => fmt(v, 2) + "%"}, {name: "10 年債殖利率", color: "#C9A24E", rows: mcS("DGS10").rows.filter(since("2015")), w: 1.6, fmt: v => fmt(v, 2) + "%"}, {name: "2 年債殖利率", color: "#8B5CF6", rows: mcS("DGS2").rows.filter(since("2015")), w: 1.4, fmt: v => fmt(v, 2) + "%"}], {h: 280});
+  mcChart($("#mcInfCh"), [["CPIAUCSL", "CPI", "#E5484D"], ["CPILFESL", "核心 CPI", "#F59E0B"], ["PCEPILFE", "核心 PCE", "#2F5BEA"], ["PPIFIS", "PPI", "#94A3B8"]].map(([id, n, c]) => ({name: n, color: c, rows: mcS(id).rows.filter(since("2015")), w: id == "PPIFIS" ? 1.4 : 2.2, fmt: v => fmt(v, 2) + "%"})), {ref: 2, refName: "聯準會目標 2%", h: 280});
+  mcChart($("#mcJobCh"), [{name: "非農新增（千人）", color: "#2F5BEA", rows: mcS("PAYEMS").rows.slice(-48), fmt: v => fmt(v / 10, 1) + " 萬人"}], {bars: true, band: [100, 250], bandName: "健康區間", zero: true, h: 240});
+  mcChart($("#mcCurveCh"), [{name: "10 年 − 2 年", color: "#2F5BEA", rows: mcS("T10Y2Y").rows.filter(since("2010")), fmt: v => sgn(v) + "%"}], {zero: true, h: 220});
+  mcBindCards($("#macro"));
+  // 期貨預期
+  mcZQ().then(Z => {
+    const ef = mcLast("EFFR")[1];
+    if (!Z.length) { $("#mcZQ").innerHTML = `<p class="mknote">期貨報價暫時抓不到。</p>`; return; }
+    const far = Z[Z.length - 1], dif = (far.r - ef) / .25;
+    $("#mcZQ").innerHTML = `<p class="mc-zs">目前實際利率約 <b>${fmt(ef, 2)}%</b>。期貨市場押注到 <b>${far.ym}</b> 利率約 <b>${fmt(far.r, 2)}%</b>，相當於${Math.abs(dif) < .4 ? "<b>大致不變</b>" : dif > 0 ? `<b style="color:#E5484D">再升息約 ${fmt(dif, 1)} 碼</b>` : `<b style="color:#16A34A">降息約 ${fmt(-dif, 1)} 碼</b>`}。</p>
+      <div class="mc-zq">${Z.map(z => { const d = (z.r - ef) / .25; return `<div><small>${z.ym}</small><b class="num">${fmt(z.r, 2)}%</b><i class="${d > .2 ? "pos" : d < -.2 ? "neg" : ""}">${Math.abs(d) < .2 ? "持平" : (d > 0 ? "+" : "") + fmt(d, 1) + " 碼"}</i></div>`; }).join("")}</div>
+      <p class="mknote">算法：聯邦基金期貨價格 = 100 − 市場預期的當月平均利率。這是市場的押注，不是聯準會的承諾。</p>`;
+  });
+  // 油價 & 原物料即時
+  let oilRg = "1y";
+  const drawOil = async () => {
+    $("#mcOilCh").innerHTML = `<div class="sk" style="height:260px"></div>`;
+    try {
+      const [w, b] = await Promise.all(["CL=F", "BZ=F"].map(s => gxFetch(s, oilRg)));
+      const S1 = [{name: "WTI 西德州", color: "#14213D", rows: w.B.map(x => [x.d, x.c]), fmt: v => "$" + fmt(v, 2)}, {name: "Brent 布蘭特", color: "#C9A24E", rows: b.B.map(x => [x.d, x.c]), fmt: v => "$" + fmt(v, 2)}];
+      mcChart($("#mcOilCh"), S1, {band: oilRg == "1mo" ? null : [60, 85], bandName: "舒適區 60～85 美元", h: 280});
+      const L = w.B[w.B.length - 1].c, F0 = w.B[0].c, hi = Math.max(...w.B.map(x => x.c)), lo2 = Math.min(...w.B.map(x => x.c));
+      $("#mcOil") && ($("#mcOil").textContent = "$" + fmt(L, 2));
+      $("#mcOilSay").innerHTML = `<p>WTI 目前 <b>${fmt(L, 2)} 美元</b>，這段期間 ${L >= F0 ? "上漲" : "下跌"} <b class="${pc(L - F0)}">${sgn((L / F0 - 1) * 100, 1)}%</b>（區間最高 ${fmt(hi, 2)}、最低 ${fmt(lo2, 2)}）。${L >= 100 ? "油價已破百，通膨壓力大，聯準會很難降息；航空、運輸、塑化下游成本吃緊。" : L >= 85 ? "油價偏高，會推升下個月的 CPI，對降息不利；油氣上游、台塑化較受惠。" : L >= 55 ? "油價落在舒適區，對通膨和企業成本壓力不大。" : "油價偏低，通膨降溫，但也可能反映全球需求疲弱。"}</p>`;
+    } catch (e) { $("#mcOilCh").innerHTML = `<p class="mknote">油價行情暫時抓不到，稍後再試。</p>`; }
+  };
+  $("#mcOilRg").onclick = e => { const b = e.target.closest("button"); if (!b) return; oilRg = b.dataset.r; $("#mcOilRg").querySelectorAll("button").forEach(x => x.classList.toggle("on", x == b)); drawOil(); };
+  drawOil();
+  Promise.all(Object.keys(MCQ).map(s => mcQuote(s).catch(() => null))).then(Q => {
+    const ok = Q.filter(Boolean), A = ["CL=F", "BZ=F", "NG=F", "GC=F", "HG=F"], B2 = ["DX-Y.NYB", "^VIX"];
+    $("#mcQ").innerHTML = ok.filter(q => A.includes(q.sym)).map(mcQCard).join("") || `<p class="mknote">行情暫時抓不到。</p>`;
+    $("#mcQ2").innerHTML = ok.filter(q => B2.includes(q.sym)).map(mcQCard).join("");
+  });
+}
+function mcCal(){
+  const now = new Date(), y = now.getFullYear(), mo = now.getMonth();
+  const firstFri = (yy, mm) => { const d = new Date(yy, mm, 1); while (d.getDay() != 5) d.setDate(d.getDate() + 1); return d; };
+  let nf = firstFri(y, mo); if (nf < new Date(now.toDateString())) nf = firstFri(y, mo + 1);
+  const dst = d => { const m = d.getMonth(); return m > 2 && m < 10 || (m == 2 && d.getDate() > 8) || (m == 10 && d.getDate() < 3); };
+  const t = d => dst(d) ? "20:30" : "21:30", fd = d => `${d.getMonth() + 1}/${d.getDate()}（${"日一二三四五六"[d.getDay()]}）`;
+  const today = now.toISOString().slice(0, 10), nextF = FOMC.find(d => d >= today);
+  return [
+    ["非農就業＋失業率", `每月第一個週五 ${t(nf)}`, `下一次預計 ${fd(nf)}`],
+    ["CPI 消費者物價", `每月約 10～15 日 ${t(now)}`, "公布當晚美股、台指期夜盤波動最大"],
+    ["PPI 生產者物價", `CPI 前後一兩天 ${t(now)}`, "CPI 的前哨站"],
+    ["PCE 物價", `每月最後幾個工作天 ${t(now)}`, "聯準會最看重的通膨數據"],
+    ["初領失業救濟金", `每週四 ${t(now)}`, "最即時的就業溫度"],
+    ["零售銷售", `每月約 15 日 ${t(now)}`, "消費力道"],
+    ["GDP 初值", `1、4、7、10 月底 ${t(now)}`, "上一季經濟成長"],
+    ["聯準會利率決議", `會議最後一天，台灣時間隔日凌晨 ${dst(now) ? "2:00" : "3:00"}`, nextF ? `下一次 ${nextF.slice(5).replace("-", "/")}` : "2027 日程以官方公告為準"],
+    ["密大消費者信心", "每月第二、第四個週五 23:00 左右", "初值與終值"],
+  ];
 }
 
 </script>

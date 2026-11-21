@@ -138,6 +138,7 @@ def main():
     subprocess.run([sys.executable, os.path.join(HERE, "scan_patterns.py")])   # 線型選股(全市場掃描)
     subprocess.run([sys.executable, os.path.join(HERE, "build_market_analysis.py")])
     subprocess.run([sys.executable, os.path.join(HERE, "fetch_news.py")])        # 盤勢快訊(標題)
+    subprocess.run([sys.executable, os.path.join(HERE, "fetch_macro.py")])       # 美國總經(FRED)
     subprocess.run([sys.executable, os.path.join(HERE, "fetch_profiles.py"), "--max", "150"])   # 公司檔案輪替更新
 
     # 8. 巴菲特選股(財報一季更新一次、已抓過的期別會跳過;股價/月營收每天更新)
