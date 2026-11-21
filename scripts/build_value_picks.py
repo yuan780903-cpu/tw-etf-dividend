@@ -171,7 +171,7 @@ for x in rows:
 rows.sort(key=lambda x: -x["score"])
 for i, x in enumerate(rows, 1): x["rank"] = i
 out = dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), source=F["updated"], years=YEARS, latest=F.get("latest"),
-           universe=len(rows), top=rows[:50], others=[dict(id=x["id"], name=x["name"], ind=x["ind"], score=x["score"], rank=x["rank"], zone=x["zone"], px=x["px"]) for x in rows[50:150]],
+           universe=len(rows), top=rows[:50], others=rows[50:150],   # 第 51~150 名也輸出完整資料(網頁同樣顯示詳細卡片)
            method=dict(weights={"巴菲特品質": 45, "Piotroski F 分數": 15, "神奇公式": 15, "動能（股價＋營收）": 10, "價格（安全邊際＋本益比位置）": 15},
                        gate="5 年以上財報、平均 ROE ≥ 12%、近 5 年每年都賺錢、市值 ≥ 50 億", dcf="自由現金流與 EPS×0.7 取高者（金融業用 EPS×0.8）以過去 EPS 成長率（上限 10%）成長 10 年，折現率 9%，永續成長 2%"))
 json.dump(out, open(os.path.join(DATA, "value_picks.json"), "w"), ensure_ascii=False, separators=(",", ":"))
