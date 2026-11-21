@@ -40,6 +40,26 @@ def inst_day(d):
     fh.save(p, out); print(f"  三大法人 {d}: {len(out)} 檔")
     return out
 
+def margin_day(d):
+    """某日融資、融券餘額(張):{代號: [融資餘額, 融券餘額]}"""
+    p = os.path.join(RAW, f"mg_{d:%Y%m%d}.json")
+    if os.path.exists(p): return json.load(open(p))
+    out = {}
+    j = get(f"https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN?date={d:%Y%m%d}&selectType=ALL&response=json")
+    if not j or j.get("stat") != "OK": return None
+    for t in j.get("tables", []):
+        if len(t.get("data", [])) > 100:
+            for r in t["data"]: out[r[0].strip()] = [int(N(r[6])), int(N(r[12]))]
+    time.sleep(3)
+    j = get(f"https://www.tpex.org.tw/web/stock/margin_trading/margin_balance/margin_bal_result.php?l=zh-tw&o=json&d={d.year - 1911}/{d:%m/%d}")
+    for t in (j or {}).get("tables", []):
+        for r in t.get("data", []):
+            if len(r) >= 15: out[r[0].strip()] = [int(N(r[6])), int(N(r[14]))]
+    time.sleep(3)
+    if len(out) < 500: return None
+    fh.save(p, out); print(f"  融資融券 {d}: {len(out)} 檔")
+    return out
+
 def tdcc():
     """集保股權分散表(最新一週)→ {代號: [千張以上%, 400張以上%, 總人數, 10張以下%]}"""
     b = get("https://opendata.tdcc.com.tw/getOD.ashx?id=1-5", 120, raw=True)
@@ -78,6 +98,9 @@ def main():
             if r: days.append((d, r))
         d -= dt.timedelta(days=1)
     days.sort(key=lambda x: x[0])
+    mg = [(x[0], margin_day(x[0])) for x in days]; mg = [(dd, r) for dd, r in mg if r]
+    for f in os.listdir(RAW):
+        if f.startswith("mg_") and f[3:11] < (days[0][0].strftime("%Y%m%d") if days else "0"): os.remove(os.path.join(RAW, f))
     # 只保留近 30 個交易日的快取
     keep = {f"inst_{x[0]:%Y%m%d}.json" for x in days}
     for f in os.listdir(RAW):
@@ -102,13 +125,18 @@ def main():
             return n * sgn
         s5 = [sum(v[i] for v in ser[-5:]) for i in range(4)]; s20 = [sum(v[i] for v in ser) for i in range(4)]
         big = [h[1].get(c) for h in tdh if h[1].get(c)]
+        ms = [r.get(c) for _, r in mg if r.get(c)]
+        m_now = ms[-1][0] if ms else None; m_0 = ms[0][0] if ms else None; m_y = ms[-2][0] if len(ms) >= 2 else None
         stocks[c] = dict(n=(F.get(c) or {}).get("name", ""), fS=streak(0), tS=streak(1), f5=s5[0], t5=s5[1], d5=s5[2], a5=s5[3], f20=s20[0], t20=s20[1], a20=s20[3],
+                         mg=m_now, mgD=(m_now - m_y) if m_y is not None else None, mg20=(m_now - m_0) if m_0 is not None else None,
+                         mg20p=round((m_now / m_0 - 1) * 100, 1) if m_0 else None, sh=ms[-1][1] if ms else None, ssr=round(ms[-1][1] / ms[-1][0] * 100, 1) if ms and ms[-1][0] else None,
                          big=big[-1][0] if big else None, bigW=round(big[-1][0] - big[-2][0], 2) if len(big) >= 2 else None, b400=big[-1][1] if big else None, hold=big[-1][2] if big else None)
     out = dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), days=[f"{x[0]:%Y-%m-%d}" for x in days], tdcc=day, weeks=[h[0] for h in tdh], stocks=stocks,
                note="法人買賣超單位為張;大戶＝集保持股 1,000 張以上")
     fh.save(os.path.join(DATA, "chips.json"), out)
     # 個股頁用的明細(近 20 日 + 近 26 週)
-    det = {c: dict(inst=[[x[0].strftime("%m-%d")] + x[1].get(c, [0, 0, 0, 0]) for x in days], tdcc=[[h[0]] + h[1][c] for h in tdh if c in h[1]]) for c in stocks}
+    det = {c: dict(inst=[[x[0].strftime("%m-%d")] + x[1].get(c, [0, 0, 0, 0]) for x in days], tdcc=[[h[0]] + h[1][c] for h in tdh if c in h[1]],
+                   mg=[[dd.strftime("%m-%d")] + r[c] for dd, r in mg if c in r]) for c in stocks}
     fh.save(os.path.join(RAW, "detail.json"), det)
     # 熱力圖
     q = quotes(); items = []

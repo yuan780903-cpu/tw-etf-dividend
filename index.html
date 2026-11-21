@@ -1026,6 +1026,34 @@ td.r,th.r{text-align:right}
 @media(max-width:900px){.xp-nav{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:5px}.xp-nav::-webkit-scrollbar{display:none}.xp-nav button{flex:none;min-width:auto!important;padding:9px 13px;font-size:13.5px}}
 @media(max-width:700px){.gsr{margin-top:10px}.gsr input{font-size:14px;padding:11px 13px}.sk-2{grid-template-columns:minmax(0,1fr)}.sk-px b{font-size:24px}.sk-act{width:100%}.sk-act button,.sk-act a{flex:1;text-align:center;padding:8px 6px;font-size:12.5px}
   .sk-k b{font-size:17px}.ev-dl{grid-template-columns:minmax(0,1fr)}}
+/* ===== 定存股估價・體質・速配度・報酬日曆 ===== */
+.em-top{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px;grid-column:1/-1}
+.em-c{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--c);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.em-c small{font-size:12.5px;color:var(--sub);font-weight:700;display:flex;align-items:center;gap:6px;flex-wrap:wrap}.em-c b{font-size:24px;color:var(--c)}.em-c b span{font-size:14px}.em-c i{font-style:normal;font-size:12px;color:var(--sub)}
+.st-sel{border:1px solid var(--line);border-radius:8px;padding:3px 6px;font-size:12px;background:var(--field,var(--panel));color:var(--ink);font-weight:600}
+.vb{display:flex;flex-direction:column;gap:10px}.vb-bar{position:relative;height:18px;border-radius:9px;margin:26px 0 4px;overflow:visible}
+.vb-bar i{position:absolute;top:0;bottom:0;display:block}.vb-bar i:first-child{border-radius:9px 0 0 9px}.vb-bar i:nth-child(4){border-radius:0 9px 9px 0}
+.vb-bar b{position:absolute;top:-6px;bottom:-6px;width:4px;margin-left:-2px;background:#14213D;border-radius:2px}.vb-bar b em{position:absolute;bottom:calc(100% + 2px);left:50%;transform:translateX(-50%);font-style:normal;font-size:12px;font-weight:700;white-space:nowrap;background:#14213D;color:#fff;border-radius:6px;padding:1px 7px}
+.vb-l{display:flex;justify-content:space-between;font-size:12.5px;color:var(--sub)}.vb-l b{display:block;font-size:16px;color:var(--ink)}
+.vb-t td small{display:block;color:var(--sub);font-size:11.5px;white-space:normal;max-width:420px}.vb-avg td{background:color-mix(in srgb,#2F5BEA 6%,transparent)}
+.chk-hd{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:color-mix(in srgb,var(--c) 12%,var(--panel));border:1px solid color-mix(in srgb,var(--c) 35%,transparent);border-radius:14px;padding:14px;margin-bottom:10px;text-align:center}
+.chk-hd small{display:block;font-size:12.5px;color:var(--sub)}.chk-hd b{font-size:26px;color:var(--c)}
+.chk-l{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.chk{border:2px solid #16A34A;border-radius:14px;padding:12px 14px;background:color-mix(in srgb,#16A34A 4%,var(--panel))}.chk.ng{border-color:#E5484D;background:color-mix(in srgb,#E5484D 5%,var(--panel))}
+.chk-t{display:flex;justify-content:space-between;gap:8px;align-items:center}.chk-t b{font-size:14.5px}.chk-t span{font-size:12.5px;font-weight:800;color:#fff;background:#16A34A;border-radius:999px;padding:2px 10px}.chk.ng .chk-t span{background:#E5484D}
+.chk-v{font-size:15px;font-weight:700;margin:6px 0 2px}.chk p{font-size:12.5px;color:var(--sub);line-height:1.6}
+.dc-bar{position:relative;display:block;width:120px;height:10px;border-radius:5px;overflow:hidden}.dc-bar i{position:absolute;top:0;bottom:0}.dc-bar b{position:absolute;top:-2px;bottom:-2px;width:3px;margin-left:-1px;background:#14213D}
+.dc-tb tr[data-c]{cursor:pointer}.dc-tb tr[data-c]:hover td{background:var(--hover)}
+.wl-st{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--sub);font-weight:600;white-space:nowrap}
+.wl-in{width:80px;border:1px solid var(--line);border-radius:8px;padding:5px 7px;font-size:13px;background:var(--field,var(--panel));color:var(--ink);text-align:right}
+.cal-k{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:10px}.cal-k div{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px}.cal-k small{display:block;font-size:12px;color:var(--sub);font-weight:700}.cal-k b{font-size:16px}
+.cal-nav{display:flex;gap:6px;margin-bottom:8px}.cal-nav button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:6px 14px;font-weight:600;cursor:pointer}.cal-nav button.on{background:#2F5BEA;color:#fff;border-color:transparent}
+.cal-g{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}.cal-g>b{text-align:center;font-size:12.5px;color:var(--sub);padding:4px 0}
+.cal-d{min-height:66px;border-radius:10px;padding:6px 7px;background:var(--bg);border:1px solid var(--line);display:flex;flex-direction:column;gap:1px}.cal-d small{font-size:11.5px;color:var(--sub)}
+.cal-d b{font-size:13px;font-variant-numeric:tabular-nums}.cal-d em{font-style:normal;font-size:11px}.cal-d.pos{background:color-mix(in srgb,#CF3A3A 10%,var(--panel));border-color:color-mix(in srgb,#CF3A3A 30%,transparent)}.cal-d.pos b,.cal-d.pos em{color:#CF3A3A}
+.cal-d.neg{background:color-mix(in srgb,#1A8F57 10%,var(--panel));border-color:color-mix(in srgb,#1A8F57 30%,transparent)}.cal-d.neg b,.cal-d.neg em{color:#1A8F57}.cal-d.off{opacity:.45}
+@media(max-width:1100px){.em-top{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.em-top{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}.em-c b{font-size:20px}.chk-l{grid-template-columns:minmax(0,1fr)}.cal-k{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .cal-g{gap:3px}.cal-d{min-height:54px;padding:4px}.cal-d b{font-size:10.5px}.cal-d em{font-size:9.5px}.wl-add{flex-wrap:wrap}.wl-st{width:100%}}
 /* ===== 公司檔案 ===== */
 .pf{display:flex;flex-direction:column;gap:12px;margin-top:8px}
 .pf-say{background:color-mix(in srgb,var(--gold) 9%,var(--panel));border:1px solid color-mix(in srgb,var(--gold) 30%,transparent);border-radius:12px;padding:12px 14px}
@@ -1251,7 +1279,7 @@ body.need-login .wrap,body.need-login header,body.need-login footer,body.need-lo
     <span class="mini" id="tabMini" data-tab="calc"></span>
   </nav>
 
-  <div class="page" id="pg-vp"><div id="xpNav"></div><div id="xpEx"></div><div id="xpQs"></div><div id="vp"></div><div id="xpCk"></div><div id="xpRv"></div><div id="xpRt"></div><div id="xpDv"></div><div id="xpEv"></div><div id="xpWl"></div></div>
+  <div class="page" id="pg-vp"><div id="xpNav"></div><div id="xpEx"></div><div id="xpDc"></div><div id="xpQs"></div><div id="vp"></div><div id="xpCk"></div><div id="xpRv"></div><div id="xpRt"></div><div id="xpDv"></div><div id="xpEv"></div><div id="xpWl"></div></div>
   <div class="page" id="pg-mkt"><div id="mkt"></div></div>
   <div class="page" id="pg-macro"><div id="macro"></div></div>
 
@@ -4132,7 +4160,7 @@ async function admCfg(){
 memBadge(); if (!isPaid()) lgShow(); memCheck(); setInterval(memCheck, 10 * 60e3);
 /* ================= 🧠 專家選股:大師選股 / 巴菲遠綜合 / 券商評等 / 股利排行 ================= */
 let XP = {sub: (() => { try { return localStorage.getItem("bfy_xp") || "ex"; } catch (e) { return "ex"; } })()}, EXD = null, RTD = null, DVD = null;
-const XSUB = [["ex", "🧠 大師選股"], ["qs", "❄️ 量化評分"], ["vp", "🏆 綜合 Top150"], ["ck", "🏦 籌碼排行"], ["rv", "📈 月營收"], ["rt", "📣 券商評等"], ["dv", "💰 股利"], ["ev", "📅 法說會・內部人"], ["wl", "⭐ 自選股"]];
+const XSUB = [["ex", "🧠 大師選股"], ["dc", "💎 定存股"], ["qs", "❄️ 量化評分"], ["vp", "🏆 綜合 Top150"], ["ck", "🏦 籌碼排行"], ["rv", "📈 月營收"], ["rt", "📣 券商評等"], ["dv", "💰 股利"], ["ev", "📅 法說會・內部人"], ["wl", "⭐ 自選股"]];
 function loadXP(){
   if (!$("#xpNav").innerHTML) $("#xpNav").innerHTML = `<div class="xp-nav">${XSUB.map(([k, n]) => `<button data-k="${k}">${n}</button>`).join("")}</div>`;
   $("#xpNav").onclick = e => { const b = e.target.closest("button[data-k]"); if (b) { XP.sub = b.dataset.k; try { localStorage.setItem("bfy_xp", XP.sub); } catch (er) {} xpShow(); } };
@@ -4141,9 +4169,9 @@ function loadXP(){
 function xpShow(){
   $("#xpNav").querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.k == XP.sub));
   if (!XSUB.some(x => x[0] == XP.sub)) XP.sub = "ex";
-  [["ex", "#xpEx"], ["qs", "#xpQs"], ["vp", "#vp"], ["ck", "#xpCk"], ["rv", "#xpRv"], ["rt", "#xpRt"], ["dv", "#xpDv"], ["ev", "#xpEv"], ["wl", "#xpWl"]].forEach(([k, s]) => $(s).style.display = k == XP.sub ? "" : "none");
+  [["ex", "#xpEx"], ["dc", "#xpDc"], ["qs", "#xpQs"], ["vp", "#vp"], ["ck", "#xpCk"], ["rv", "#xpRv"], ["rt", "#xpRt"], ["dv", "#xpDv"], ["ev", "#xpEv"], ["wl", "#xpWl"]].forEach(([k, s]) => $(s).style.display = k == XP.sub ? "" : "none");
   const nb = $("#xpNav").querySelector("button.on"); if (nb && nb.scrollIntoView && innerWidth < 900) nb.scrollIntoView({inline: "center", block: "nearest"});
-  ({ex: loadEx, qs: loadQs, vp: loadVP, ck: loadCk, rv: loadRv, rt: loadRt, dv: loadDv, ev: loadEv, wl: loadWl})[XP.sub]();
+  ({ex: loadEx, dc: loadDc, qs: loadQs, vp: loadVP, ck: loadCk, rv: loadRv, rt: loadRt, dv: loadDv, ev: loadEv, wl: loadWl})[XP.sub]();
 }
 
 /* ---------- 大師插畫肖像(原創插畫,非本人照片) ---------- */
@@ -4427,10 +4455,10 @@ function skRender(){
     <div class="sk-top"><div><div class="sk-sub">${d.c}・${d.mkt || ""}・${d.ind || ""}</div><h2>${d.n}</h2>
       <div class="sk-px"><b class="num">${fmt(d.px, 2)}</b>${chg != null ? `<span class="num ${chg > 0 ? "up" : chg < 0 ? "dn" : ""}">${chg > 0 ? "▲" : chg < 0 ? "▼" : ""} ${Math.abs(chg).toFixed(2)}%</span>` : ""}${d.mcap ? `<small>市值 ${d.mcap >= 10000 ? fmt(d.mcap / 10000, 2) + " 兆" : fmt(d.mcap, 0) + " 億"}</small>` : ""}</div></div>
       <div class="sk-act"><button class="sk-star ${on ? "on" : ""}" onclick="skStar('${d.c}')">${on ? "★ 已加入自選" : "☆ 加入自選股"}</button><button onclick="closeDetail();go('mkt');setTimeout(()=>{laLoad('${d.c}');document.querySelector('#mk-la').scrollIntoView({behavior:'smooth'})},900)">📐 線型分析</button><a href="https://tw.stock.yahoo.com/quote/${d.c}" target="_blank" rel="noopener">即時報價 ↗</a></div></div>
-    <nav class="sk-tabs">${[["ov", "總覽"], ["fin", "財務"], ["rev", "月營收"], ["div", "股利"], ["chip", "籌碼"], ["rt", "法人評等"], ["co", "公司"]].map(([k, n]) => `<button data-k="${k}" class="${SKP.tab == k ? "on" : ""}">${n}</button>`).join("")}</nav></div>
+    <nav class="sk-tabs">${[["ov", "總覽"], ["chk", "體質"], ["river", "河流圖"], ["fin", "財務"], ["rev", "月營收"], ["div", "股利"], ["chip", "籌碼"], ["rt", "法人評等"], ["co", "公司"]].map(([k, n]) => `<button data-k="${k}" class="${SKP.tab == k ? "on" : ""}">${n}</button>`).join("")}</nav></div>
     <div class="dbd sk-bd" style="display:block" id="skBody"></div>`;
   $("#dlg").querySelector(".sk-tabs").onclick = e => { const b = e.target.closest("button"); if (b) { SKP.tab = b.dataset.k; skRender(); } };
-  ({ov: skOv, fin: skFin, rev: skRev, div: skDiv, chip: skChip, rt: skRt, co: skCo})[SKP.tab]();
+  ({ov: () => { skOv(); emOv(); }, chk: emChk, river: emRiver, fin: skFin, rev: skRev, div: skDiv, chip: () => { skChip(); emMargin(); }, rt: skRt, co: skCo})[SKP.tab]();
 }
 function skStar(c){ WATCH = WATCH.includes(c) ? WATCH.filter(x => x != c) : [...WATCH, c]; saveWatch(); toast(WATCH.includes(c) ? "★ 已加入自選股" : "已從自選股移除", 1400); if (SKP.d && SKP.d.c == c) skRender(); if (XP.sub == "wl" && $("#xpWl").style.display != "none") renderWl(); }
 function skOv(){
@@ -4541,9 +4569,9 @@ function renderQs(){
     <p class="dv-say"><b>白話</b>${SKS.note}</p>
     <div class="qs-f">${DIMS.map((x, i) => `<label>${x[0]}<select data-i="${i}"><option value="0">不限</option><option value="80" ${QS.min[i] == 80 ? "selected" : ""}>A 以上</option><option value="60" ${QS.min[i] == 60 ? "selected" : ""}>B+ 以上</option><option value="40" ${QS.min[i] == 40 ? "selected" : ""}>B- 以上</option></select></label>`).join("")}
       <label>產業<select id="qsInd"><option>全部</option>${inds.map(i => `<option ${QS.ind == i ? "selected" : ""}>${i}</option>`).join("")}</select></label>
-      <label>排序<select id="qsSort"><option value="8">總評</option><option value="3">價值</option><option value="4">成長</option><option value="5">獲利</option><option value="6">健康</option><option value="7">股利</option><option value="9">殖利率</option></select></label>
+      <label>我的風格${styleSel("qsSt")}</label><label>排序<select id="qsSort"><option value="99">跟我的風格速配</option><option value="8">總評</option><option value="3">價值</option><option value="4">成長</option><option value="5">獲利</option><option value="6">健康</option><option value="7">股利</option><option value="9">殖利率</option></select></label>
       <input id="qsQ" placeholder="🔍 代號或名稱" value="${QS.q}"></div><div id="qsRes"></div></div>`;
-  $("#qsSort").value = String(QS.sort);
+  $("#qsSort").value = String(QS.sort); $("#qsSt").onchange = e => { setStyle(e.target.value); qsRes(); };
   $("#xpQs").querySelectorAll(".qs-f select[data-i]").forEach(s => s.onchange = () => { QS.min[+s.dataset.i] = +s.value; QS.page = 100; qsRes(); });
   $("#qsInd").onchange = e => { QS.ind = e.target.value; qsRes(); }; $("#qsSort").onchange = e => { QS.sort = +e.target.value; qsRes(); }; $("#qsQ").oninput = e => { QS.q = e.target.value.trim(); qsRes(); };
   qsRes();
@@ -4551,9 +4579,9 @@ function renderQs(){
 function qsRes(){
   const q = QS.q.toLowerCase();
   const L = Object.entries(SKS.stocks).filter(([c, s]) => QS.min.every((m, i) => s[3 + i] >= m) && (QS.ind == "全部" || s[1] == QS.ind) && (!q || (c + s[0]).toLowerCase().includes(q)))
-    .sort((a, b) => (b[1][QS.sort] ?? -1) - (a[1][QS.sort] ?? -1));
-  $("#qsRes").innerHTML = `<p class="mknote">共 ${L.length} 家符合</p><div class="gx-tw" style="max-height:none"><table class="gx-tb xl2 qs-tb"><thead><tr><th>公司</th><th>產業</th><th>股價</th>${DIMS.map(x => `<th>${x[0]}</th>`).join("")}<th>總評</th><th>殖利率</th><th>本益比</th><th>ROE</th><th></th></tr></thead><tbody>
-    ${L.slice(0, QS.page).map(([c, s]) => `<tr data-c="${c}"><td><b>${c} ${s[0]}</b></td><td>${s[1] || ""}</td><td class="num">${fmt(s[2], 2)}</td>${[3, 4, 5, 6, 7].map(i => `<td>${gchip(s[i])}</td>`).join("")}<td>${gchip(s[8])}</td><td class="num">${s[9] ? fmt(s[9], 2) + "%" : "—"}</td><td class="num">${s[10] == null ? "—" : fmt(s[10], 1)}</td><td class="num">${s[11] == null ? "—" : fmt(s[11], 1) + "%"}</td><td><button class="qs-star ${WATCH.includes(c) ? "on" : ""}" data-w="${c}" title="加入自選股">${WATCH.includes(c) ? "★" : "☆"}</button></td></tr>`).join("")}</tbody></table></div>
+    .sort((a, b) => QS.sort == 99 ? fitScore(b[1].slice(3, 9), b[1][12], b[1][13], b[1][14]) - fitScore(a[1].slice(3, 9), a[1][12], a[1][13], a[1][14]) : (b[1][QS.sort] ?? -1) - (a[1][QS.sort] ?? -1));
+  $("#qsRes").innerHTML = `<p class="mknote">共 ${L.length} 家符合</p><div class="gx-tw" style="max-height:none"><table class="gx-tb xl2 qs-tb"><thead><tr><th>公司</th><th>產業</th><th>股價</th>${DIMS.map(x => `<th>${x[0]}</th>`).join("")}<th>總評</th><th>速配</th><th>殖利率</th><th>本益比</th><th>ROE</th><th></th></tr></thead><tbody>
+    ${L.slice(0, QS.page).map(([c, s]) => { const ft = fitScore(s.slice(3, 9), s[12], s[13], s[14]); return `<tr data-c="${c}"><td><b>${c} ${s[0]}</b></td><td>${s[1] || ""}</td><td class="num">${fmt(s[2], 2)}</td>${[3, 4, 5, 6, 7].map(i => `<td>${gchip(s[i])}</td>`).join("")}<td>${gchip(s[8])}</td><td class="num"><b style="color:${fitCol(ft)}">${ft}%</b></td><td class="num">${s[9] ? fmt(s[9], 2) + "%" : "—"}</td><td class="num">${s[10] == null ? "—" : fmt(s[10], 1)}</td><td class="num">${s[11] == null ? "—" : fmt(s[11], 1) + "%"}</td><td><button class="qs-star ${WATCH.includes(c) ? "on" : ""}" data-w="${c}" title="加入自選股">${WATCH.includes(c) ? "★" : "☆"}</button></td></tr>`; }).join("")}</tbody></table></div>
     ${L.length > QS.page ? `<button class="gx-more" id="qsMore">顯示更多（還有 ${L.length - QS.page} 家）</button>` : ""}`;
   $("#qsRes").querySelectorAll("tr[data-c]").forEach(tr => tr.onclick = e => { const w = e.target.closest("[data-w]"); if (w) { e.stopPropagation(); skStar(w.dataset.w); qsRes(); return; } openStock(tr.dataset.c); });
   if ($("#qsMore")) $("#qsMore").onclick = () => { QS.page += 200; qsRes(); };
@@ -4563,17 +4591,26 @@ function qsRes(){
 async function loadWl(){ if (!SKS) SKS = await getJ("scores"); if (!HMD) HMD = await getJ("heatmap"); if (!CKD) CKD = await getJ("chips"); renderWl(); }
 function renderWl(){
   const hm = Object.fromEntries(((HMD || {}).items || []).map(x => [x[0], x])), S2 = (SKS || {}).stocks || {}, C2 = (CKD || {}).stocks || {};
-  $("#xpWl").innerHTML = `<div class="box"><h2 class="sec">⭐ 我的自選股 <small>存在這台裝置；在任何個股頁或量化評分表按 ☆ 就能加入</small></h2>
-    <div class="wl-add"><input id="wlQ" placeholder="輸入代號或名稱加入，例如 2330"><button id="wlGo">＋ 加入</button></div>
-    ${WATCH.length ? `<div class="gx-tw" style="max-height:none"><table class="gx-tb xl1 wl-tb"><thead><tr><th>公司</th><th>股價</th><th>漲跌</th><th>總評</th><th>價值</th><th>成長</th><th>獲利</th><th>殖利率</th><th>外資</th><th>千張大戶</th><th></th></tr></thead><tbody>
-      ${WATCH.map(c => { const s = S2[c] || [], h = hm[c], k = C2[c]; return `<tr data-c="${c}"><td><b>${c} ${s[0] || (h ? h[1] : "")}</b></td><td class="num">${h ? fmt(h[5], 2) : s[2] ? fmt(s[2], 2) : "—"}</td><td class="num ${h ? pc(h[4]) : ""}">${h ? sgn(h[4], 2) + "%" : "—"}</td>
-        <td>${s.length ? gchip(s[8]) : "—"}</td><td>${s.length ? gchip(s[3]) : "—"}</td><td>${s.length ? gchip(s[4]) : "—"}</td><td>${s.length ? gchip(s[5]) : "—"}</td><td class="num">${s[9] ? fmt(s[9], 2) + "%" : "—"}</td>
-        <td class="num">${k ? (k.fS > 0 ? `<span class="pos">連買${k.fS}</span>` : k.fS < 0 ? `<span class="neg">連賣${-k.fS}</span>` : "—") : "—"}</td><td class="num">${k && k.big != null ? fmt(k.big, 1) + "%" : "—"}</td><td><button class="wl-del" data-w="${c}" title="移除">✕</button></td></tr>`; }).join("")}</tbody></table></div>`
-      : `<div class="empty" style="padding:30px;text-align:center;color:var(--sub)">還沒有自選股。用上方輸入框，或在任何個股頁按「☆ 加入自選股」。</div>`}</div>`;
-  $("#xpWl").querySelectorAll("tr[data-c]").forEach(tr => tr.onclick = e => { const w = e.target.closest("[data-w]"); if (w) { e.stopPropagation(); skStar(w.dataset.w); renderWl(); return; } openStock(tr.dataset.c); });
+  $("#xpWl").innerHTML = `<div class="box"><h2 class="sec">⭐ 我的自選股 <small>存在這台裝置；填入張數與成本就能算損益、看報酬日曆</small></h2>
+    <div class="wl-add"><input id="wlQ" placeholder="輸入代號或名稱加入，例如 2330"><button id="wlGo">＋ 加入</button><label class="wl-st">我的投資風格 ${styleSel("wlSt")}</label></div>
+    ${WATCH.length ? `<div class="gx-tw" style="max-height:none"><table class="gx-tb xl1 wl-tb"><thead><tr><th>公司</th><th>股價</th><th>漲跌</th><th>速配度</th><th>估價</th><th>總評</th><th>殖利率</th><th>主力</th><th>張數</th><th>成本</th><th>損益</th><th></th></tr></thead><tbody>
+      ${WATCH.map(c => { const s = S2[c] || [], h = hm[c], k = C2[c], px = h ? h[5] : s[2], hd = HOLD[c] || {}, ft = s.length ? fitScore(s.slice(3, 9), s[12], s[13], s[14]) : null;
+        const pl = hd.lots && hd.cost && px ? (px - hd.cost) * hd.lots * 1000 : null;
+        return `<tr data-c="${c}"><td><b>${c} ${s[0] || (h ? h[1] : "")}</b></td><td class="num">${px ? fmt(px, 2) : "—"}</td><td class="num ${h ? pc(h[4]) : ""}">${h ? sgn(h[4], 2) + "%" : "—"}</td>
+        <td class="num">${ft == null ? "—" : `<b style="color:${fitCol(ft)}">${ft}%</b>`}</td><td>${s[14] ? `<span class="zp" style="background:${ZONEC[s[14]]}">${s[14]}</span>` : "—"}</td><td>${s.length ? gchip(s[8]) : "—"}</td><td class="num">${s[9] ? fmt(s[9], 2) + "%" : "—"}</td>
+        <td class="num">${s[12] != null ? `<span class="${s[12] >= 60 ? "pos" : s[12] < 40 ? "neg" : ""}">${s[12]}</span>` : "—"}</td>
+        <td><input class="wl-in" data-h="${c}" data-k="lots" type="number" min="0" step="0.001" value="${hd.lots ?? ""}" placeholder="0"></td><td><input class="wl-in" data-h="${c}" data-k="cost" type="number" min="0" step="0.01" value="${hd.cost ?? ""}" placeholder="均價"></td>
+        <td class="num ${pc(pl)}">${pl == null ? "—" : (pl >= 0 ? "+" : "−") + "$" + fmt(Math.abs(pl), 0)}</td><td><button class="wl-del" data-w="${c}" title="移除">✕</button></td></tr>`; }).join("")}</tbody></table></div>
+      <p class="mknote">速配度＝這檔股票跟「${STYLES[MYSTYLE][0]}」風格的契合程度（${STYLES[MYSTYLE][1]}）。主力＝法人、千張大戶、融資綜合分數，60 以上偏多。</p>`
+      : `<div class="empty" style="padding:30px;text-align:center;color:var(--sub)">還沒有自選股。用上方輸入框，或在任何個股頁按「☆ 加入自選股」。</div>`}</div>
+    <div class="box"><h2 class="sec">📅 報酬日曆 <small>每天賺賠多少，用月曆一眼看清楚</small></h2><div id="wlCal"></div></div>`;
+  $("#xpWl").querySelectorAll("tr[data-c]").forEach(tr => tr.onclick = e => { if (e.target.closest("input")) return; const w = e.target.closest("[data-w]"); if (w) { e.stopPropagation(); skStar(w.dataset.w); renderWl(); return; } openStock(tr.dataset.c); });
+  $("#xpWl").querySelectorAll(".wl-in").forEach(inp => inp.onchange = () => { const c = inp.dataset.h, h = HOLD[c] = HOLD[c] || {}; h[inp.dataset.k] = inp.value === "" ? null : +inp.value; saveHold(); CAL.px = CAL.px; renderWl(); });
+  $("#wlSt").onchange = e => { setStyle(e.target.value); renderWl(); };
   const add = async () => { await loadNames(); const v = $("#wlQ").value.trim().toLowerCase(); const x = NAMES.find(n => n[0].toLowerCase() == v) || NAMES.find(n => n[1].toLowerCase().includes(v));
     if (!v || !x) { toast("找不到這檔股票", 1400); return; } if (!WATCH.includes(x[0])) { WATCH.push(x[0]); saveWatch(); } renderWl(); };
   $("#wlGo").onclick = add; $("#wlQ").onkeydown = e => { if (e.key == "Enter") add(); };
+  renderCal();
 }
 
 /* ================= 🏦 籌碼排行・📈 營收創新高・📅 法說會・🕵️ 內部人・🗺️ 熱力圖 ================= */
@@ -4700,6 +4737,169 @@ function heatDraw(){
 }
 
 gsInit();
+/* ================= 💎 定存股估價・🩺 體質檢查・🌊 河流圖・🎯 速配度・📅 報酬日曆 ================= */
+const ZONEC = {"便宜": "#16A34A", "合理": "#2F7FE0", "偏貴": "#F59E0B", "昂貴": "#E5484D"};
+const STYLES = {stock: ["🏦 存股領息", "穩定配息、體質好、價格合理"], growth: ["🚀 成長股", "營收獲利高速成長、法人加碼"], value: ["💰 價值投資", "買得便宜、財務穩健"], swing: ["📈 波段操作", "籌碼集中、主力在買、成長動能"], safe: ["🛡️ 穩健保守", "財務健康、低風險、穩定配息"]};
+let MYSTYLE = (() => { try { return localStorage.getItem("bfy_style") || "stock"; } catch (e) { return "stock"; } })();
+function setStyle(k){ MYSTYLE = k; try { localStorage.setItem("bfy_style", k); } catch (e) {} }
+/* 速配度:s=[價值,成長,獲利,健康,股利,總評]、chip 主力分數、warn 體質警示數、zone 估價位置 */
+function fitScore(s, chip, warn, zone, st = MYSTYLE){
+  if (!s) return null;
+  const [v, g, p, h, d] = s, body = Math.max(0, 10 - (warn ?? 3)) * 10, ch = chip ?? 50;
+  let x = {stock: d * .35 + h * .25 + p * .2 + v * .1 + body * .1, growth: g * .45 + p * .25 + ch * .2 + h * .1, value: v * .45 + h * .2 + p * .2 + d * .15,
+    swing: ch * .45 + g * .3 + p * .15 + v * .1, safe: h * .35 + d * .25 + v * .2 + body * .2}[st];
+  if (st == "stock" || st == "value" || st == "safe") x += {便宜: 8, 合理: 3, 偏貴: -3, 昂貴: -8}[zone] || 0;
+  return Math.max(0, Math.min(100, Math.round(x)));
+}
+const fitTxt = f => f == null ? "—" : f >= 80 ? "非常適合" : f >= 65 ? "適合" : f >= 50 ? "普通" : f >= 35 ? "不太適合" : "不適合";
+const fitCol = f => f >= 80 ? "#16A34A" : f >= 65 ? "#2F7FE0" : f >= 50 ? "#F59E0B" : "#E5484D";
+function styleSel(id){ return `<select id="${id}" class="st-sel">${Object.entries(STYLES).map(([k, v]) => `<option value="${k}" ${k == MYSTYLE ? "selected" : ""}>${v[0]}</option>`).join("")}</select>`; }
+
+/* 估價燈號條 */
+function valBar(v, px){
+  if (!v) return `<p class="mknote">資料不足，無法估價（需要多年度的股價、EPS 或股利）。</p>`;
+  const [c, f, r] = v.avg, lo = Math.min(c * .75, px * .95), hi = Math.max(r * 1.2, px * 1.05), X = x => ((x - lo) / (hi - lo) * 100).toFixed(1) + "%";
+  const M = {div: "股利法", pe: "本益比法", pb: "股價淨值比法"}, MW = {div: "近 5 年平均現金股利 × 15／20／30 倍（＝殖利率 6.7%／5%／3.3%）", pe: "近四季 EPS × 自己歷年本益比的低／中／高（20%／50%／80% 分位）", pb: "最新每股淨值 × 自己歷年股價淨值比的低／中／高"};
+  return `<div class="vb"><div class="vb-bar"><i style="left:0;width:${X(c)};background:#BBF7D0"></i><i style="left:${X(c)};width:calc(${X(f)} - ${X(c)});background:#BFDBFE"></i><i style="left:${X(f)};width:calc(${X(r)} - ${X(f)});background:#FDE68A"></i><i style="left:${X(r)};right:0;background:#FECACA"></i><b style="left:${X(px)}"><em>現價 ${fmt(px, 2)}</em></b></div>
+    <div class="vb-l"><span>便宜價<b class="num">${fmt(c, 2)}</b></span><span>合理價<b class="num">${fmt(f, 2)}</b></span><span>昂貴價<b class="num">${fmt(r, 2)}</b></span></div>
+    <table class="gx-tb xl1 vb-t"><thead><tr><th>估價方法</th><th>便宜</th><th>合理</th><th>昂貴</th></tr></thead><tbody>${Object.entries(v.m).map(([k, a]) => `<tr><td><b>${M[k]}</b><small>${MW[k]}</small></td><td class="num">${fmt(a[0], 2)}</td><td class="num">${fmt(a[1], 2)}</td><td class="num">${fmt(a[2], 2)}</td></tr>`).join("")}
+    <tr class="vb-avg"><td><b>三法平均</b></td><td class="num"><b>${fmt(c, 2)}</b></td><td class="num"><b>${fmt(f, 2)}</b></td><td class="num"><b>${fmt(r, 2)}</b></td></tr></tbody></table></div>`;
+}
+/* 總覽頂部:估價燈號、體質、主力、速配度 */
+function emOv(){
+  const d = SKP.d; if (!d) return;
+  const w = (d.chk || []).filter(x => !x[1]).length, fit = fitScore(d.s, d.chip ? d.chip[0] : null, w, d.val ? d.val.zone : null), z = d.val ? d.val.zone : null;
+  $("#skBody").insertAdjacentHTML("afterbegin", `<div class="em-top">
+    <div class="em-c" style="--c:${z ? ZONEC[z] : "#94A3B8"}"><small>💎 估價位置</small><b>${z || "—"}</b><i>${d.val ? `便宜 ${fmt(d.val.avg[0], 1)}・合理 ${fmt(d.val.avg[1], 1)}・昂貴 ${fmt(d.val.avg[2], 1)}` : "資料不足"}</i></div>
+    <div class="em-c" style="--c:${w <= 1 ? "#16A34A" : w <= 3 ? "#F59E0B" : "#E5484D"}"><small>🩺 體質檢查</small><b>${w <= 1 ? "正常" : w <= 3 ? "注意" : "警示"}</b><i>${10 - w}/10 項正常${w ? `・${w} 項警示` : ""}</i></div>
+    <div class="em-c" style="--c:${d.chip ? (d.chip[0] >= 60 ? "#CF3A3A" : d.chip[0] < 40 ? "#1A8F57" : "#64748B") : "#94A3B8"}"><small>🏦 主力動向</small><b>${d.chip ? d.chip[1] : "—"}</b><i>法人＋大戶＋融資綜合 ${d.chip ? d.chip[0] : "—"} 分</i></div>
+    <div class="em-c" style="--c:${fit != null ? fitCol(fit) : "#94A3B8"}"><small>🎯 速配度 ${styleSel("emSt")}</small><b>${fit ?? "—"}<span>%</span></b><i>${fitTxt(fit)}・${STYLES[MYSTYLE][1]}</i></div></div>
+    <div class="box"><h3 class="mm-h3">💎 便宜價・合理價・昂貴價 <span class="zp" style="background:${z ? ZONEC[z] : "#94A3B8"}">${z || "—"}</span></h3>${valBar(d.val, d.px)}
+      <p class="mknote">參考「定存股」常用的三種估價法。股價低於便宜價＝可以考慮分批買進；高於昂貴價＝偏貴，存股族通常會等回檔。</p></div>`);
+  $("#emSt").onchange = e => { setStyle(e.target.value); skRender(); };
+}
+/* 體質分頁 */
+function emChk(){
+  const C = SKP.d.chk || [], w = C.filter(x => !x[1]).length;
+  $("#skBody").innerHTML = `<div class="box"><div class="chk-hd" style="--c:${w <= 1 ? "#16A34A" : w <= 3 ? "#F59E0B" : "#E5484D"}"><div><small>投資體質</small><b>${w <= 1 ? "正常" : w <= 3 ? "注意" : "警示"}</b></div><div><small>不良項目</small><b>${w}/10</b></div></div>
+    <p class="dv-say"><b>白話</b>用 10 個問題幫你避開地雷股：只要有任何一項「警示」，就要先弄清楚原因再決定要不要買；警示越多，越不適合長期存股。</p>
+    <div class="chk-l">${C.map((x, i) => `<div class="chk ${x[1] ? "ok" : "ng"}"><div class="chk-t"><b>${i + 1}. ${x[0]}</b><span>${x[1] ? "正常" : "警示"}</span></div><div class="chk-v">${x[2]}</div><p>${x[3]}</p></div>`).join("")}</div></div>`;
+}
+/* 河流圖 */
+let RIV = {k: "pe"};
+async function emRiver(){
+  const d = SKP.d, f = d.fin;
+  $("#skBody").innerHTML = `<div class="box"><h3 class="mm-h3">🌊 價值河流圖</h3>
+    <div class="rt-tabs"><button data-r="pe" class="${RIV.k == "pe" ? "on" : ""}">本益比河流圖</button><button data-r="pb" class="${RIV.k == "pb" ? "on" : ""}">股價淨值比河流圖</button></div>
+    <p class="dv-say"><b>白話</b>五條帶狀線是用這家公司自己歷年的${RIV.k == "pe" ? "本益比" : "股價淨值比"}（由低到高）乘上當時的${RIV.k == "pe" ? "每股盈餘" : "每股淨值"}畫出來的。股價跑到最下面的河道＝歷史上很便宜的位置；跑到最上面＝歷史上很貴的位置。</p>
+    <div id="rivCh"><div class="sk" style="height:300px"></div></div><div id="rivTb"></div></div>`;
+  $("#skBody").querySelectorAll("[data-r]").forEach(b => b.onclick = () => { RIV.k = b.dataset.r; emRiver(); });
+  const base = RIV.k == "pe" ? f.eps : f.bps, Y = f.y, ttmV = RIV.k == "pe" ? d.m.eps : d.bpsT;
+  const mults = Y.map((y, i) => f.pxY[i] && base[i] && base[i] > 0 ? f.pxY[i] / base[i] : null).filter(v => v != null);
+  if (mults.length < 4) { $("#rivCh").innerHTML = `<p class="mknote">歷史資料不足（需要至少 4 個年度的正數${RIV.k == "pe" ? "EPS" : "淨值"}）。</p>`; return; }
+  const q = p => { const a = mults.slice().sort((x, y) => x - y), k = (a.length - 1) * p, i = Math.floor(k); return a[i] + (a[Math.min(i + 1, a.length - 1)] - a[i]) * (k - i); };
+  const M = [.1, .3, .5, .7, .9].map(q);
+  const st0 = `${+Y[Y.length - 1] - 5}-01-01`;
+  let P = [];
+  try { const j = await fetch(`https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockPrice&data_id=${d.c}&start_date=${st0}`).then(r => r.json()); P = (j.data || []).filter(x => x.close > 0); } catch (e) {}
+  if (!$("#rivCh")) return;
+  if (P.length < 20) { $("#rivCh").innerHTML = `<p class="mknote">股價資料暫時抓不到。</p>`; return; }
+  const lastFull = +Y[Y.length - 1], baseOf = dt => { const yr = +dt.slice(0, 4); if (yr > lastFull) return ttmV; const i = Y.indexOf(String(yr - 1)); return i >= 0 ? base[i] : null; };
+  const W = P.filter((x, i) => i % 5 == 0 || i == P.length - 1);      // 每週一點
+  const cols = ["#16A34A", "#84CC16", "#2F7FE0", "#F59E0B", "#E5484D"];
+  const series = M.map((m, k) => ({name: `${fmt(m, 1)} 倍`, color: cols[k], w: 1.4, rows: W.map(x => { const b = baseOf(x.date); return b && b > 0 ? [x.date, +(b * m).toFixed(2)] : null; }).filter(Boolean), fmt: v => fmt(v, 2)}))
+    .concat([{name: "股價", color: "#14213D", w: 2.4, rows: W.map(x => [x.date, x.close]), fmt: v => fmt(v, 2)}]);
+  mcChart($("#rivCh"), series, {h: 300});
+  const now = ttmV ? d.px / ttmV : null, pos = now == null ? null : M.filter(m => now >= m).length;
+  $("#rivTb").innerHTML = `<div class="mc-say2"><p>目前${RIV.k == "pe" ? "本益比" : "股價淨值比"} <b>${now == null ? "—" : fmt(now, 1) + " 倍"}</b>，歷年區間 ${fmt(Math.min(...mults), 1)}～${fmt(Math.max(...mults), 1)} 倍，
+    ${pos == null ? "" : pos <= 1 ? "落在<b style='color:#16A34A'>歷史低檔區（便宜）</b>" : pos <= 2 ? "落在<b style='color:#2F7FE0'>偏低區</b>" : pos <= 3 ? "落在<b>中間區</b>" : pos <= 4 ? "落在<b style='color:#F59E0B'>偏高區</b>" : "落在<b style='color:#E5484D'>歷史高檔區（昂貴）</b>"}。</p></div>
+    <table class="gx-tb xl1"><thead><tr><th>河道</th>${M.map((m, k) => `<th style="color:${cols[k]}">${["最便宜", "便宜", "中間", "偏貴", "最貴"][k]}</th>`).join("")}</tr></thead><tbody>
+    <tr><td>倍數</td>${M.map(m => `<td class="num">${fmt(m, 1)}</td>`).join("")}</tr><tr><td>對應股價</td>${M.map(m => `<td class="num"><b>${ttmV ? fmt(ttmV * m, 1) : "—"}</b></td>`).join("")}</tr></tbody></table>`;
+}
+/* 籌碼分頁加融資融券 */
+function emMargin(){
+  const c = SKP.d.ch, s = SKP.d.cs; if (!c || !c.mg || !c.mg.length || !$("#skBody")) return;
+  const box = document.createElement("div"); box.className = "box";
+  box.innerHTML = `<h3 class="mm-h3">💳 融資融券（散戶指標）</h3>
+    <div class="rt-k">${[["融資餘額", s && s.mg != null ? fmt(s.mg, 0) + " 張" : "—", s && s.mgD != null ? `今日 ${sgn(s.mgD, 0)} 張` : ""], ["融資 20 日變化", s && s.mg20 != null ? `<span class="${pc(-s.mg20)}">${sgn(s.mg20, 0)} 張</span>` : "—", s && s.mg20p != null ? `${sgn(s.mg20p, 1)}%` : ""],
+      ["融券餘額", s && s.sh != null ? fmt(s.sh, 0) + " 張" : "—", "放空的張數"], ["券資比", s && s.ssr != null ? fmt(s.ssr, 1) + "%" : "—", "高代表軋空潛力大"]].map(([a, b, x]) => `<div><small>${a}</small><b>${b}</b><i>${x}</i></div>`).join("")}</div>
+    <div id="emMg"></div><p class="mknote">融資是散戶借錢買股。股價漲、融資減少＝籌碼乾淨（散戶退場、主力接手）；股價跌、融資卻增加＝散戶攤平，籌碼凌亂。券商分點資料受驗證碼保護無法自動取得，主力動向以法人、千張大戶與融資綜合判斷。</p>`;
+  $("#skBody").appendChild(box);
+  mcChart($("#emMg"), [{name: "融資餘額", color: "#F59E0B", rows: c.mg.map(r => [md2d(r[0]), r[1]]), fmt: v => fmt(v, 0) + " 張"}, {name: "融券餘額", color: "#6A4BB0", rows: c.mg.map(r => [md2d(r[0]), r[2]]), fmt: v => fmt(v, 0) + " 張"}], {h: 200});
+}
+
+/* ---------- 💎 定存股名單 ---------- */
+let DCD = null, DCS = {zone: "便宜合理", y: 0, ind: "全部", q: "", page: 100};
+async function loadDc(){
+  if (!DCD) { $("#xpDc").innerHTML = `<div class="box"><div class="sk" style="height:300px"></div></div>`; DCD = await getJ("dingcun"); }
+  if (!DCD) { $("#xpDc").innerHTML = `<div class="box empty">定存股資料載入失敗</div>`; return; }
+  renderDc();
+}
+function renderDc(){
+  const A = DCD.stocks, cnt = z => A.filter(x => x[7] == z).length, inds = [...new Set(A.map(x => x[2]).filter(Boolean))].sort();
+  $("#xpDc").innerHTML = `<div class="box"><h2 class="sec">💎 定存股名單 <small>幫你找到體質良好、價格合理的長期存股標的</small></h2>
+    <p class="dv-say"><b>白話</b>${DCD.note}「便宜」代表現價低於便宜價，可以考慮分批買進；「合理」可以小量布局；「偏貴、昂貴」先放觀察名單等回檔。</p>
+    <div class="rt-k">${[["便宜", cnt("便宜")], ["合理", cnt("合理")], ["偏貴", cnt("偏貴")], ["昂貴", cnt("昂貴")]].map(([z, n]) => `<div style="border-left:4px solid ${ZONEC[z]}"><small>目前${z}</small><b class="num">${n} 檔</b><i>共 ${A.length} 檔體質良好</i></div>`).join("")}</div>
+    <div class="dv-ctl"><label>目前位置<select id="dcZ"><option value="便宜合理">便宜＋合理</option><option value="便宜">只看便宜</option><option value="全部">全部</option></select></label>
+      <label>殖利率至少<select id="dcY"><option value="0">不限</option><option value="4">4%</option><option value="5">5%</option><option value="6">6%</option></select></label>
+      <label>產業<select id="dcI"><option>全部</option>${inds.map(i => `<option ${DCS.ind == i ? "selected" : ""}>${i}</option>`).join("")}</select></label><input id="dcQ" placeholder="🔍 代號或名稱" value="${DCS.q}"></div><div id="dcRes"></div></div>`;
+  $("#dcZ").value = DCS.zone; $("#dcY").value = String(DCS.y);
+  $("#dcZ").onchange = e => { DCS.zone = e.target.value; dcRes(); }; $("#dcY").onchange = e => { DCS.y = +e.target.value; dcRes(); }; $("#dcI").onchange = e => { DCS.ind = e.target.value; dcRes(); }; $("#dcQ").oninput = e => { DCS.q = e.target.value.trim(); dcRes(); };
+  dcRes();
+}
+function dcRes(){
+  const q = DCS.q.toLowerCase();
+  const L = DCD.stocks.filter(x => (DCS.zone == "全部" || DCS.zone.includes(x[7])) && x[8] >= DCS.y && (DCS.ind == "全部" || x[2] == DCS.ind) && (!q || (x[0] + x[1]).toLowerCase().includes(q)));
+  const bar = x => { const [c, f, r] = [x[4], x[5], x[6]], px = x[3], lo = Math.min(c * .75, px * .95), hi = Math.max(r * 1.2, px * 1.05), X = v => ((v - lo) / (hi - lo) * 100).toFixed(1) + "%";
+    return `<span class="dc-bar"><i style="left:0;width:${X(c)};background:#BBF7D0"></i><i style="left:${X(c)};width:calc(${X(f)} - ${X(c)});background:#BFDBFE"></i><i style="left:${X(f)};width:calc(${X(r)} - ${X(f)});background:#FDE68A"></i><i style="left:${X(r)};right:0;background:#FECACA"></i><b style="left:${X(px)}"></b></span>`; };
+  $("#dcRes").innerHTML = `<p class="mknote">共 ${L.length} 檔</p><div class="gx-tw" style="max-height:none"><table class="gx-tb xl2 dc-tb"><thead><tr><th>公司</th><th>產業</th><th>股價</th><th>目前位置</th><th>價位</th><th>便宜價</th><th>合理價</th><th>昂貴價</th><th>殖利率</th><th>連續配息</th><th>體質</th><th></th></tr></thead><tbody>
+    ${L.slice(0, DCS.page).map(x => `<tr data-c="${x[0]}"><td><b>${x[0]} ${x[1]}</b></td><td>${x[2] || ""}</td><td class="num">${fmt(x[3], 2)}</td><td><span class="zp" style="background:${ZONEC[x[7]]}">${x[7]}</span></td><td>${bar(x)}</td><td class="num">${fmt(x[4], 2)}</td><td class="num">${fmt(x[5], 2)}</td><td class="num">${fmt(x[6], 2)}</td><td class="num"><b>${fmt(x[8], 2)}%</b></td><td class="num">${x[9]} 年</td><td>${x[10] ? `<span class="neg">${x[10]} 項警示</span>` : `<span class="pos">全部正常</span>`}</td><td><button class="qs-star ${WATCH.includes(x[0]) ? "on" : ""}" data-w="${x[0]}">${WATCH.includes(x[0]) ? "★" : "☆"}</button></td></tr>`).join("")}</tbody></table></div>
+    ${L.length > DCS.page ? `<button class="gx-more" id="dcMore">顯示更多（還有 ${L.length - DCS.page} 檔）</button>` : ""}`;
+  $("#dcRes").querySelectorAll("tr[data-c]").forEach(tr => tr.onclick = e => { const w = e.target.closest("[data-w]"); if (w) { e.stopPropagation(); skStar(w.dataset.w); dcRes(); return; } openStock(tr.dataset.c); });
+  if ($("#dcMore")) $("#dcMore").onclick = () => { DCS.page += 200; dcRes(); };
+}
+
+/* ---------- 📅 報酬日曆(自選股持股 + 配息試算的 ETF) ---------- */
+let HOLD = (() => { try { return JSON.parse(localStorage.getItem("bfy_hold") || "{}"); } catch (e) { return {}; } })(), CAL = {m: null, px: {}};
+const saveHold = () => { try { localStorage.setItem("bfy_hold", JSON.stringify(HOLD)); } catch (e) {} };
+function calHoldings(){
+  const H = {};
+  WATCH.forEach(c => { const h = HOLD[c]; if (h && +h.lots > 0) H[c] = {lots: +h.lots, cost: +h.cost || null}; });
+  (typeof PF != "undefined" ? PF : []).forEach(p => { if (+p.lots > 0) H[p.id] = H[p.id] || {lots: +p.lots, cost: null, etf: 1}; });
+  return H;
+}
+async function calLoad(){
+  const H = calHoldings(), codes = Object.keys(H), st0 = new Date(Date.now() - 120 * 864e5).toISOString().slice(0, 10);
+  await Promise.all(codes.filter(c => !CAL.px[c]).map(c => fetch(`https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockPrice&data_id=${c}&start_date=${st0}`).then(r => r.json()).then(j => { CAL.px[c] = Object.fromEntries((j.data || []).filter(x => x.close > 0).map(x => [x.date, x.close])); }).catch(() => { CAL.px[c] = {}; })));
+  return H;
+}
+async function renderCal(){
+  const host = $("#wlCal"); if (!host) return;
+  const H = calHoldings(), codes = Object.keys(H);
+  if (!codes.length) { host.innerHTML = `<p class="mknote">在上方自選股填入「張數」（也可以填成本），或在「我的配息試算」加入 ETF，這裡就會自動算出每天的損益月曆。</p>`; return; }
+  host.innerHTML = `<div class="sk" style="height:260px"></div>`;
+  await calLoad();
+  const days = [...new Set(codes.flatMap(c => Object.keys(CAL.px[c] || {})))].sort();
+  if (!days.length) { host.innerHTML = `<p class="mknote">股價資料暫時抓不到，稍後再試。</p>`; return; }
+  const pnl = {}, base = {};
+  days.forEach((d, i) => { if (!i) return; let p = 0, b = 0; codes.forEach(c => { const P = CAL.px[c] || {}, prev = days.slice(0, i).reverse().find(x => P[x]); if (P[d] && prev && P[prev]) { p += (P[d] - P[prev]) * H[c].lots * 1000; b += P[prev] * H[c].lots * 1000; } }); pnl[d] = p; base[d] = b; });
+  const months = [...new Set(days.map(d => d.slice(0, 7)))].slice(-4); CAL.m = CAL.m && months.includes(CAL.m) ? CAL.m : months[months.length - 1];
+  const [yy, mm] = CAL.m.split("-").map(Number), first = new Date(yy, mm - 1, 1), nd = new Date(yy, mm, 0).getDate();
+  const md = days.filter(d => d.startsWith(CAL.m) && pnl[d] != null), mt = md.reduce((s, d) => s + pnl[d], 0);
+  const best = md.slice().sort((a, b) => pnl[b] - pnl[a])[0], worst = md.slice().sort((a, b) => pnl[a] - pnl[b])[0];
+  const last = days[days.length - 1], mv = codes.reduce((s, c) => s + ((CAL.px[c] || {})[last] || 0) * H[c].lots * 1000, 0);
+  const cost = codes.reduce((s, c) => s + (H[c].cost ? H[c].cost * H[c].lots * 1000 : 0), 0), mvC = codes.reduce((s, c) => s + (H[c].cost ? ((CAL.px[c] || {})[last] || 0) * H[c].lots * 1000 : 0), 0);
+  const cells = []; for (let i = 0; i < (first.getDay() + 6) % 7; i++) cells.push(null);
+  for (let d = 1; d <= nd; d++) cells.push(`${CAL.m}-${String(d).padStart(2, "0")}`);
+  const money = v => (v >= 0 ? "+" : "−") + "$" + fmt(Math.abs(v), 0), cl = v => v > 0 ? "pos" : v < 0 ? "neg" : "";
+  host.innerHTML = `<div class="cal-k">${[["本月損益", `<span class="${cl(mt)}">${money(mt)}</span>`], ["持股市值", "$" + fmt(mv, 0)], ["未實現損益", cost ? `<span class="${cl(mvC - cost)}">${money(mvC - cost)}（${sgn((mvC / cost - 1) * 100, 2)}%）</span>` : "填成本才會計算"], ["最好／最差的一天", best ? `<span class="pos">${best.slice(8)} 日 ${money(pnl[best])}</span>／<span class="neg">${worst.slice(8)} 日 ${money(pnl[worst])}</span>` : "—"]].map(([a, b]) => `<div><small>${a}</small><b>${b}</b></div>`).join("")}</div>
+    <div class="cal-nav">${months.map(m => `<button data-m="${m}" class="${m == CAL.m ? "on" : ""}">${+m.slice(5)} 月</button>`).join("")}</div>
+    <div class="cal-g">${["一", "二", "三", "四", "五", "六", "日"].map(w => `<b>${w}</b>`).join("")}${cells.map(d => { if (!d) return `<i></i>`; const v = pnl[d], pct = v != null && base[d] ? v / base[d] * 100 : null;
+      return `<div class="cal-d ${v == null ? "off" : cl(v)}"><small>${+d.slice(8)}</small>${v != null ? `<b>${Math.abs(v) >= 1e4 ? (v >= 0 ? "+" : "−") + fmt(Math.abs(v) / 1e4, 1) + "萬" : money(v)}</b><em>${sgn(pct, 2)}%</em>` : ""}</div>`; }).join("")}</div>
+    <p class="mknote">每日損益＝持有張數 × 1,000 股 ×（當天收盤 − 前一個交易日收盤）。持股包含自選股填的張數，以及「我的配息試算」裡的 ETF。股價來源 FinMind。</p>`;
+  host.querySelectorAll("[data-m]").forEach(b => b.onclick = () => { CAL.m = b.dataset.m; renderCal(); });
+}
+
 </script>
 </body>
 </html>

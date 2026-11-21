@@ -238,7 +238,9 @@ def build(ps, latest):
         Icur, Iprev, Ccur, Cprev, Bcur = load("is", yy, q), load("is", yy - 1, q), load("cf", yy, q), load("cf", yy - 1, q), load("bs", yy, q)
         for c, d in comp.items():
             full = d["y"].get(yy - 1)
-            if not full or c not in Icur or c not in Iprev: continue
+            if not full: continue
+            if c not in Icur or c not in Iprev:              # 最新一季還沒公布(例如金控較晚):先用上一個完整年度
+                d["ttm"] = dict(full); d["ttmLabel"] = f"{yy - 1} 全年"; continue
             ttm = {}
             for k in ("rev", "gp", "op", "ni", "niP", "eps", "pt"):
                 a, b, f = Icur[c].get(k), Iprev[c].get(k), full.get(k)
