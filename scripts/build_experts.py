@@ -11,18 +11,22 @@ UA = {"User-Agent": "Mozilla/5.0"}
 
 def director_pct():
     """董監持股合計(股)→ 之後除以總股數"""
-    out = {}
-    for url in ("https://openapi.twse.com.tw/v1/opendata/t187ap11_L", "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap11_O"):
+    out = {}; cp = os.path.join(DATA, "fund", "raw", "directors.json")
+    cache = json.load(open(cp)) if os.path.exists(cp) else {}
+    for key, url in (("twse", "https://openapi.twse.com.tw/v1/opendata/t187ap11_L"), ("tpex", "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap11_O")):
         try:
             rows = json.loads(urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=120).read())
         except Exception as e:
-            print("董監持股失敗", url, e); continue
+            print("董監持股失敗,沿用上次資料", url, e); out.update(cache.get(key, {})); continue
+        part = {}
         for r in rows:
             c = r.get("公司代號") or r.get("SecuritiesCompanyCode"); t = r.get("職稱") or r.get("Title") or ""
             if not c or not any(k in t for k in ("董事", "監察人")): continue
             try: v = float(str(r.get("目前持股") or r.get("CurrentShareholding") or 0).replace(",", ""))
             except ValueError: continue
-            out[c] = out.get(c, 0) + v
+            part[c] = part.get(c, 0) + v
+        if part: cache[key] = part; out.update(part)
+    if cache: fh.save(cp, cache)
     print("董監持股", len(out), "家"); return out
 
 def g(a, b):                       # 成長率 %
