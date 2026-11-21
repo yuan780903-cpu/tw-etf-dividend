@@ -13,6 +13,7 @@
 <meta property="og:image" content="https://yuan780903-cpu.github.io/tw-etf-dividend/og.jpg">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -883,6 +884,10 @@ td.r,th.r{text-align:right}
 @media(max-width:1100px){.mc-hk{grid-template-columns:repeat(2,minmax(0,1fr))}.mc-2col{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:700px){.mc-hero{padding:18px}.mc-hero h2{font-size:21px}.mc-hero h2 b{display:inline-block;margin-top:4px}.mc-hk b{font-size:18px}.mc-grid{grid-template-columns:minmax(0,1fr)}.mc-nav{top:0}.mc-v span{font-size:24px}}
 .vp-sec2{margin-top:10px}.vp-sec2>h2.sec{margin:6px 0 14px}
+.mosb{display:flex;flex-direction:column;align-items:flex-end}.mos-q{cursor:help}.mos-q i{display:inline-grid;place-items:center;width:15px;height:15px;border-radius:50%;background:var(--track);color:var(--sub);font-style:normal;font-size:10.5px;font-weight:700;margin-left:2px;vertical-align:1px}
+.mos-t{font-style:normal;font-size:11.5px;color:var(--sub);max-width:170px;text-align:right;line-height:1.4;margin-top:2px}
+.mos-info{background:color-mix(in srgb,var(--blue,#2F5BEA) 6%,var(--panel));border:1px solid color-mix(in srgb,var(--blue,#2F5BEA) 20%,transparent);border-radius:14px;padding:14px 16px;margin:4px 0 16px;font-size:14px;line-height:1.8}
+.mos-info>b{font-size:15px}.mos-info p{margin-top:6px}.mos-info .g{color:var(--down);font-weight:700}.mos-info .r{color:var(--up);font-weight:700}
 /* ===== 公司檔案 ===== */
 .pf{display:flex;flex-direction:column;gap:12px;margin-top:8px}
 .pf-say{background:color-mix(in srgb,var(--gold) 9%,var(--panel));border:1px solid color-mix(in srgb,var(--gold) 30%,transparent);border-radius:12px;padding:12px 14px}
@@ -1030,14 +1035,18 @@ h2.sec{font-size:19px}h2.sec small{font-weight:400;letter-spacing:0}
 .tabs button,.dtabs button{font-weight:600;letter-spacing:.01em}.tabs button.on{font-weight:700}
 .ft-logo{font-family:var(--font);font-weight:700}
 .mk-nav button,.chip,.gx-rg>button,.mc-rg button{font-weight:600}
+.brand{display:flex;align-items:center;gap:14px}.brand>div{min-width:0}
+.brand .logo{flex:none;width:64px;height:64px;border-radius:50%;box-shadow:0 8px 22px -10px rgba(26,53,150,.6);transition:transform .3s}.brand .logo:hover{transform:rotate(-6deg) scale(1.05)}
+.ft-logo{display:flex;align-items:center;gap:10px}.ft-logo img{border-radius:50%}
+@media(max-width:700px){.brand{gap:10px}.brand .logo{width:44px;height:44px}.brand h1{font-size:18px!important;letter-spacing:.02em}.brand p{font-size:11.5px}}
 </style>
 </head>
 <body>
 <header>
   <div class="top">
-    <div class="brand">
-      <h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p>ETF 配息・巴菲特選股・全球大盤・恐慌度・退休規劃，一站看懂</p>
+    <div class="brand"><img class="logo" src="logo.svg" alt="巴菲遠爺爺" width="64" height="64">
+      <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
+      <p>ETF 配息・巴菲特選股・全球大盤・恐慌度・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="tix">
@@ -1159,7 +1168,7 @@ h2.sec{font-size:19px}h2.sec small{font-weight:400;letter-spacing:0}
 </div>
 
 <footer>
-  <div class="ft-brand"><div class="ft-logo">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🏆 巴菲特選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -2320,6 +2329,9 @@ function renderVP(){
     <select id="vpInd"><option>全部</option>${inds.map(i => `<option ${vpInd == i ? "selected" : ""}>${i}</option>`).join("")}</select>
   </div>
   <div class="bar"><div class="flt"><b class="fl">目前價位</b><div class="chips" id="vpZ">${["全部", "便宜", "合理偏低", "合理偏高", "偏貴"].map(z => `<span class="chip ${vpZone == z ? "on" : ""}" data-z="${z}">${z}</span>`).join("")}</div></div><span class="count" id="vpCount"></span></div>
+  <div class="mos-info"><b>💡 「安全邊際」是什麼？為什麼排名很前面的公司也可能是紅色？</b>
+    <p><b>安全邊際＝（估算內在價值 − 股價）÷ 內在價值</b>。內在價值是用公司未來能賺的現金折算回今天的「合理身價」。<span class="g">綠色正數</span>＝股價低於內在價值，等於打折買，就算估錯也有緩衝（巴菲特偏好 25% 以上）；<span class="r">紅色負數</span>＝股價已經高於估算的內在價值，等於溢價買。</p>
+    <p>排名主要看<b>公司好不好</b>（巴菲特品質 45%＋F 分數 15%＋神奇公式 15%＋動能 10%），<b>價格只占 15%</b>。所以體質非常好的公司即使股價偏貴、安全邊際是紅的，仍可能排在前面——這類公司適合先放觀察名單，等股價回到「便宜」或「合理偏低」區、安全邊際轉為正數再分批買進。想直接找便宜的，可以把排序改成「安全邊際大→小」或上方價位選「便宜」。</p></div>
   <div class="vp-list" id="vpList"></div>
 
   <div class="vp-sec2" id="vpSec2"><h2 class="sec">📋 第 51～150 名 <small>也通過門檻、但綜合分數較低的公司；一樣有完整評分、正常股價區間與選股理由</small></h2>
@@ -2366,7 +2378,8 @@ function vpCard(x){
       <div class="nm"><b>${x.id} ${x.name}</b><small>${x.ind || ""}・${x.mkt || ""}・市值 ${fmt(x.mcap)} 億</small></div>
       <div class="ring" style="background:${ring}"><span class="num">${Math.round(x.score)}</span></div></div>
     <div class="vpc-p"><div><small>股價</small><b class="num">${fmt(x.px, 2)}</b> <span class="zp" style="background:${ZC[x.zone]}">${x.zone}</span></div>
-      <div style="text-align:right"><small>安全邊際</small><b class="num" style="color:${(x.mos ?? 0) >= 0 ? "var(--down)" : "var(--up)"}">${x.mos == null ? "—" : (x.mos > 0 ? "+" : "") + x.mos + "%"}</b></div></div>
+      <div style="text-align:right" class="mosb"><small class="mos-q" title="安全邊際＝（估算內在價值 − 股價）÷ 內在價值。正數＝股價比估算價值便宜；負數＝股價已比估算價值貴">安全邊際 <i>?</i></small><b class="num" style="color:${(x.mos ?? 0) >= 0 ? "var(--down)" : "var(--up)"}">${x.mos == null ? "—" : (x.mos > 0 ? "+" : "") + x.mos + "%"}</b>
+        <em class="mos-t">${x.mos == null ? "" : x.mos >= 25 ? `股價比估算價值便宜 ${x.mos}%，緩衝充足` : x.mos >= 0 ? `股價比估算價值便宜 ${x.mos}%` : `股價已比估算價值貴 ${-x.mos}%，宜等回檔`}</em></div></div>
     <div class="pband"><div class="seg" style="left:0;width:${X(b.cheap)};background:#bbf7d0"></div><div class="seg" style="left:${X(b.cheap)};width:calc(${X(b.fair)} - ${X(b.cheap)});background:#bae6fd"></div>
       <div class="seg" style="left:${X(b.fair)};width:calc(${X(b.rich)} - ${X(b.fair)});background:#fde68a"></div><div class="seg" style="left:${X(b.rich)};right:0;background:#fecaca"></div>
       <i style="left:${X(x.px)}"></i></div>
