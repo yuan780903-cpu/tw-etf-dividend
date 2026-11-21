@@ -160,10 +160,13 @@ def monthly_revenue(n=3):
         p = os.path.join(RAW, f"rev_{m:%Y%m}.json")
         if os.path.exists(p) and m < (TODAY.replace(day=1) - dt.timedelta(days=40)).replace(day=1): rows = json.load(open(p))
         else:
-            rows = {}
+            rows = {}; bad = False
             for mk in ("sii", "otc"):
-                try: b = urllib.request.urlopen(urllib.request.Request(f"https://mopsov.twse.com.tw/nas/t21/{mk}/t21sc03_{m.year - 1911}_{m.month}_0.html", headers=UA), timeout=90).read()
-                except Exception as e: print("  月營收", m, mk, "失敗", e); continue
+                b = None
+                for k in range(3):
+                    try: b = urllib.request.urlopen(urllib.request.Request(f"https://mopsov.twse.com.tw/nas/t21/{mk}/t21sc03_{m.year - 1911}_{m.month}_0.html", headers=UA), timeout=90).read(); break
+                    except Exception as e: print("  月營收", m, mk, "失敗", e); time.sleep(8)
+                if b is None: bad = True; continue
                 t = b.decode("cp950", errors="ignore")
                 for r in re.findall(r"<tr[^>]*>(.*?)</tr>", t, re.S):
                     td = [re.sub(r"<[^>]+>|&nbsp;", "", x).strip() for x in re.findall(r"<td[^>]*>(.*?)</td>", r, re.S | re.I)]   # 有些格子寫成 <Td
@@ -171,7 +174,7 @@ def monthly_revenue(n=3):
                         rows[td[0]] = [num(td[2]), num(td[4]), num(td[7]), num(td[8])]
                 time.sleep(4)
             if len(rows) < 500: print(f"  {m:%Y-%m} 月營收尚未齊全({len(rows)} 家),略過"); continue
-            fh.save(p, rows)
+            if not bad: fh.save(p, rows)                      # 有市場抓失敗就不存快取,下次重抓
         got += 1; print(f"{m:%Y-%m} 月營收 {len(rows)} 家")
         for c, v in rows.items(): out.setdefault(c, []).append([f"{m:%Y%m}"] + v)
     return out
@@ -249,7 +252,7 @@ def build(ps, latest):
     now = current_prices(); ind = industries()
     p1m = prices_on(TODAY - dt.timedelta(days=30), "px_1m", cache=False)       # 價格動能:1 個月前、1 年前
     p12m = prices_on(TODAY - dt.timedelta(days=365), "px_12m", cache=False)
-    rev = monthly_revenue(3)
+    rev = monthly_revenue(24)                          # 近 2 年月營收(個股頁趨勢、營收創新高)
     for c, d in comp.items():
         d["px"] = now.get(c); d["pxY"] = {y: px_year[y].get(c) for y in years if px_year[y].get(c)}
         d["px1m"], d["px12m"] = p1m.get(c), p12m.get(c); d["vol5"] = VOL.get(c)

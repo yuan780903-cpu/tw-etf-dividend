@@ -148,6 +148,9 @@ def main():
         subprocess.run([sys.executable, os.path.join(HERE, "build_experts.py")])      # 專家選股(9 位大師條件)
     subprocess.run([sys.executable, os.path.join(HERE, "fetch_divs.py")])               # 個股股利排行+除權息行事曆
     subprocess.run([sys.executable, os.path.join(HERE, "fetch_ratings.py")])            # 券商評等/法人共識目標價
+    subprocess.run([sys.executable, os.path.join(HERE, "fetch_chips.py")])              # 三大法人個股、集保大戶、熱力圖
+    subprocess.run([sys.executable, os.path.join(HERE, "fetch_events.py")])             # 法說會、內部人持股轉讓
+    subprocess.run([sys.executable, os.path.join(HERE, "build_stock_pages.py")])        # 量化評分、個股分析頁、月營收排行、搜尋名單
     print(f"完成。FinMind 用了 {used}/{BUDGET} 次")
 
 if __name__ == "__main__":
