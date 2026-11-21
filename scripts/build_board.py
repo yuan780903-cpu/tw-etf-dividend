@@ -66,6 +66,11 @@ def main():
                 return None if not x else dict(last=N(x["Last"]), chg=N(x["Change"]), pct=N(x["%"]), hi=N(x["High"]), lo=N(x["Low"]), op=N(x["Open"]), vol=N(x["Volume"]), oi=N(x["OpenInterest"]), d=x["Date"])
             day, night = sess("一般"), sess("盤後")
             B["tx"] = dict(month=near, day=day, night=night, basis=round(day["last"] - last["tx"], 2) if day and day["last"] else None)
+    # 恐慌度、收錄個股數
+    ma = L("market_analysis.json") or {}
+    B["fear"] = {k: dict(v=x.get("score"), lv=x.get("level"), prev=x.get("prev")) for k, x in (ma.get("fear") or {}).items() if isinstance(x, dict)}
+    sc = L("scores.json")
+    B["nStk"] = len(sc["stocks"]) if sc else len(F)
     B["updated"] = dt.datetime.now().strftime("%Y-%m-%d %H:%M")
     fh.save(os.path.join(DATA, "board.json"), B)
     print("board.json:", {k: (v.get("v") if isinstance(v, dict) and "v" in v else "…") for k, v in B.items() if k != "updated"})

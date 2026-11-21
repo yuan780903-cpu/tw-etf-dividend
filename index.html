@@ -1292,6 +1292,23 @@ body.need-login .wrap,body.need-login header,body.need-login footer,body.need-lo
 /* ===== 中等寬度(平板/小筆電)頁籤不溢出 ===== */
 @media(min-width:701px) and (max-width:1320px){.tabs button{padding:11px 12px!important;font-size:15px!important;gap:6px}.tabs .mini{display:none!important}}
 @media(min-width:701px) and (max-width:900px){.tabs button .lg{display:none!important}.tabs button .sm{display:inline!important}.tabs button{flex:1;justify-content:center}}
+/* ===== 頂部重排:按鈕一列+數字列+加大跑馬燈 ===== */
+.hacts{display:flex;gap:10px;align-items:stretch;align-self:center}
+.hacts>button{height:52px}.hacts .btn-mem{display:flex;align-items:center;gap:6px;font-size:15px;padding:0 20px}.hacts .btn-th{width:52px}.hacts .btn-up{padding:0 20px}
+.hst{position:relative;z-index:1;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-top:18px}
+.hst .tick{min-width:0;padding:12px 16px;cursor:pointer;transition:transform .15s}.hst .tick:hover{transform:translateY(-2px)}
+.hst .tick small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hst .tick b{font-size:24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hst-n{cursor:default!important}.hst-n b{font-size:17px!important;line-height:1.35;white-space:normal!important}.hst-n b span{display:block}.hst-n b i{display:none}
+.gsr{max-width:none}.gsr input{font-size:16px;padding:14px 18px}
+.hst .up{color:#CF3A3A}.hst .dn{color:#1A8F57}
+.gtk{height:50px;margin-top:16px;border-radius:14px}.gt-lb{font-size:14px;padding:0 16px}.gt-i{font-size:16.5px;padding:0 22px;gap:9px}.gt-i i{font-size:15px}
+@media(max-width:1399px){.hst{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:700px){
+  .hacts{order:3;flex-basis:100%;display:grid;grid-template-columns:3fr 1fr 2fr;gap:8px}.hacts>button{height:44px;width:auto!important}
+  .hacts .btn-mem{justify-content:center;font-size:13.5px;padding:0 8px}.hacts .btn-mem .t{display:inline!important}.hacts .btn-up{padding:0 8px!important;justify-content:center;font-size:14px}.hacts .btn-up .t{display:inline!important;font-size:13.5px}
+  .hst{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}.hst .tick{padding:9px 11px}.hst .tick b{font-size:18px}.hst-n b{font-size:14.5px!important}.gsr input{font-size:14px;padding:11px 13px}
+  .gtk{height:42px;margin-top:12px}.gt-lb{font-size:12px;padding:0 10px}.gt-i{font-size:14.5px;padding:0 15px}.gt-i i{font-size:13px}
+}
 </style>
 </head>
 <body>
@@ -1302,13 +1319,19 @@ body.need-login .wrap,body.need-login header,body.need-login footer,body.need-lo
       <p>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
-    <div class="tix">
-      <div class="tick"><small>加權指數</small><b class="num" id="tx">—</b><small id="txd"></small></div>
-      <div class="tick"><small>收錄 ETF</small><b class="num" id="nEtf">—</b><small id="upd"></small></div>
+    <div class="hacts">
       <button class="btn-mem" id="btnMem" onclick="memOpen()">🔓 <span class="t">升級付費會員</span></button>
       <button class="btn-th" id="btnTh" title="切換深色/淺色" aria-label="切換深色或淺色模式">🌓</button>
       <button class="btn-up" id="btnUp" title="一鍵更新">🔄 <span class="t">一鍵更新</span></button>
     </div>
+  </div>
+  <div class="hst" id="hst">
+    <div class="tick" data-go="mk-sum"><small>加權指數</small><b class="num" id="tx">—</b><small id="txd"></small></div>
+    <div class="tick" data-go="mk-board"><small>櫃買指數</small><b class="num" id="hOtc">—</b><small id="hOtcD"></small></div>
+    <div class="tick" data-go="mk-board"><small>🌙 台指期夜盤</small><b class="num" id="hNt">—</b><small id="hNtD"></small></div>
+    <div class="tick" data-go="mk-fear"><small>😱 台股恐慌度</small><b class="num" id="hFr">—</b><small id="hFrD"></small></div>
+    <div class="tick" data-go="mk-mg"><small>外資買賣超（上市）</small><b class="num" id="hFi">—</b><small id="hFiD"></small></div>
+    <div class="tick hst-n"><small>收錄標的</small><b class="num"><span id="nEtf">—</span><i>・</i><span id="nStk">—</span></b><small id="upd"></small></div>
   </div>
   <div class="gsr"><input id="gsQ" type="search" placeholder="🔍 查個股：代號或名稱（如 2330、台積電）" autocomplete="off"><div id="gsL" class="gs-list"></div></div>
   <div class="gtk" id="gtk"></div>
@@ -1489,7 +1512,7 @@ function save(){ try{ localStorage.setItem("etf_pf", JSON.stringify(PF)) }catch(
 fetch("data/summary.json?" + Date.now()).then(r => r.json()).then(d => {
   S = d.etfs; TX = d.taiex; STAMP = d.updated;
   $("#tx").textContent = fmt(TX.price, 2); $("#txd").textContent = TX.date;
-  $("#nEtf").textContent = S.length + " 檔"; $("#upd").textContent = "更新 " + d.updated;
+  $("#nEtf").textContent = "ETF " + S.length + " 檔"; $("#upd").textContent = "更新 " + d.updated;
   buildCats(); buildChips(); render(); renderPF(); renderPlan();
   fetch("data/upcoming.json?" + Date.now()).then(r => r.ok ? r.json() : []).then(u => {
     (u || []).forEach(x => { if (!UP[x.id] || x.ex < UP[x.id].ex) UP[x.id] = x; }); buildChips(); render();
@@ -5113,6 +5136,22 @@ async function xpBoard(){
     {t: "📅 未來 7 天法說會", v: wk + " 場", sub: "附簡報下載", go: "xp:ev"}].filter(Boolean);
   $("#xpTiles").innerHTML = T.map(tile).join(""); bindTiles($("#xpTiles"));
 }
+
+/* ---------- 頂部數字列 ---------- */
+async function hdrStats(){
+  const B = await getJ("board"); if (!B) return;
+  const sg = v => (v > 0 ? "▲" : v < 0 ? "▼" : "") + fmt(Math.abs(v), 2), col = v => v > 0 ? "up" : v < 0 ? "dn" : "";
+  const set = (id, v, d, c) => { const e = $("#" + id); if (e) { e.textContent = v; e.className = "num " + (c || ""); } const f = $("#" + id + "D"); if (f) f.innerHTML = d; };
+  if (B.otc) set("hOtc", fmt(B.otc.v, 2), `<span class="${col(B.otc.chg)}">${sg(B.otc.pct)}%</span>・${B.otc.d ? B.otc.d.slice(-4).replace(/^(\d\d)(\d\d)$/, "$1/$2") : ""}`);
+  const n = B.tx && B.tx.night;
+  if (n) set("hNt", fmt(n.last, 0), `<span class="${col(n.chg)}">${n.chg > 0 ? "+" : ""}${fmt(n.chg, 0)}（${sg(n.pct)}%）</span>・${+n.d.slice(4, 6)}/${+n.d.slice(6)} 盤`);
+  const f = B.fear && B.fear.tw;
+  if (f) { set("hFr", f.v + " 分", `${f.lv}${f.prev != null ? `・前日 ${f.prev}` : ""}`); $("#hFr").style.color = fzc(f.v); }
+  if (B.foreign) set("hFi", (B.foreign.v > 0 ? "+" : "") + fmt(B.foreign.v, 1) + " 億", `近 5 日 <span class="${col(B.foreign.d5)}">${B.foreign.d5 > 0 ? "+" : ""}${fmt(B.foreign.d5, 0)} 億</span>`, col(B.foreign.v));
+  if (B.nStk) $("#nStk").textContent = "個股 " + fmt(B.nStk, 0) + " 家";
+}
+$("#hst").addEventListener("click", e => { const t = e.target.closest("[data-go]"); if (!t) return; go("mkt"); setTimeout(() => { const el = $("#" + t.dataset.go); if (el) window.scrollTo({top: el.getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 70), behavior: "smooth"}); }, 400); });
+setTimeout(hdrStats, 300);
 </script>
 </body>
 </html>
