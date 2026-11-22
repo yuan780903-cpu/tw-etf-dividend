@@ -1337,6 +1337,13 @@ body:not(.on-mkt) .hst{display:none}
 .gt-tm{font-style:normal;font-size:11.5px;font-weight:700;letter-spacing:0;opacity:.85;flex-basis:100%;padding-left:14px}
 .clk .cs b{font-weight:800}
 @media(max-width:700px){.gtk{height:48px}.gt-i{font-size:15.5px;padding:0 16px}.gt-i i{font-size:14px}.gt-lb{font-size:12px;max-width:96px;padding:0 8px}.gt-tm{font-size:10px;padding-left:12px}.clk .cs span{white-space:normal;line-height:1.4}}
+/* ===== 頂部只留跑馬燈+搜尋;總表 6 欄 ===== */
+.gtk{height:64px;margin-top:18px;border-radius:16px}.gt-i{font-size:20px;padding:0 26px;gap:10px}.gt-i i{font-size:17px}.gt-lb{font-size:15px;max-width:170px;padding:0 18px}.gt-tm{font-size:12px}
+.gsr{margin-top:12px}
+.bd{grid-template-columns:repeat(6,minmax(0,1fr))}.bd-n{font-size:19px;line-height:1.35;display:block}
+@media(max-width:1300px){.bd{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:1000px){.bd{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:700px){.gtk{height:54px;margin-top:12px}.gt-i{font-size:17px;padding:0 18px}.gt-i i{font-size:15px}.gt-lb{font-size:13px;max-width:104px;padding:0 9px}.gt-tm{font-size:10.5px}.bd{grid-template-columns:repeat(2,minmax(0,1fr))}.bd-n{font-size:15px}}
 </style>
 </head>
 <body>
@@ -1354,16 +1361,8 @@ body:not(.on-mkt) .hst{display:none}
       <button class="btn-up" id="btnUp" title="一鍵更新">🔄 <span class="t">一鍵更新</span></button>
     </div>
   </div>
-  <div class="hst" id="hst">
-    <div class="tick" data-go="mk-sum"><small>加權指數</small><b class="num" id="tx">—</b><small id="txd"></small></div>
-    <div class="tick" data-go="mk-board"><small>櫃買指數</small><b class="num" id="hOtc">—</b><small id="hOtcD"></small></div>
-    <div class="tick" data-go="mk-board"><small>🌙 台指期夜盤</small><b class="num" id="hNt">—</b><small id="hNtD"></small></div>
-    <div class="tick" data-go="mk-fear"><small>😱 台股恐慌度</small><b class="num" id="hFr">—</b><small id="hFrD"></small></div>
-    <div class="tick" data-go="mk-mg"><small>外資買賣超（上市）</small><b class="num" id="hFi">—</b><small id="hFiD"></small></div>
-    <div class="tick hst-n"><small>收錄標的</small><b class="num"><span id="nEtf">—</span><i>・</i><span id="nStk">—</span></b><small id="upd"></small></div>
-  </div>
-  <div class="gsr"><input id="gsQ" type="search" placeholder="🔍 查個股：代號或名稱（如 2330、台積電）" autocomplete="off"><div id="gsL" class="gs-list"></div></div>
   <div class="gtk" id="gtk"></div>
+  <div class="gsr"><input id="gsQ" type="search" placeholder="🔍 查個股：代號或名稱（如 2330、台積電）" autocomplete="off"><div id="gsL" class="gs-list"></div></div>
 </header>
 
 <div class="wrap">
@@ -1540,8 +1539,7 @@ function save(){ try{ localStorage.setItem("etf_pf", JSON.stringify(PF)) }catch(
 
 fetch("data/summary.json?" + Date.now()).then(r => r.json()).then(d => {
   S = d.etfs; TX = d.taiex; STAMP = d.updated;
-  $("#tx").textContent = fmt(TX.price, 2); $("#txd").textContent = TX.date;
-  $("#nEtf").textContent = "ETF " + S.length + " 檔"; $("#upd").textContent = "更新 " + d.updated;
+  ETFUPD = d.updated; if ($("#bdTiles")) setTimeout(boardUI, 0);
   buildCats(); buildChips(); render(); renderPF(); renderPlan();
   fetch("data/upcoming.json?" + Date.now()).then(r => r.ok ? r.json() : []).then(u => {
     (u || []).forEach(x => { if (!UP[x.id] || x.ex < UP[x.id].ex) UP[x.id] = x; }); buildChips(); render();
@@ -2302,7 +2300,7 @@ async function liveQuotes(){
     n++; t = q.t || t;
   });
   const tx = Q["T00"];                     // 加權指數即時
-  if (tx) { $("#tx").textContent = fmt(tx.px, 2); $("#txd").textContent = `即時 ${tx.t}（${(tx.px / tx.y - 1) * 100 >= 0 ? "▲" : "▼"}${fmt(Math.abs((tx.px / tx.y - 1) * 100), 2)}%）`; }
+  if (tx) { LIVETX = tx; bdLiveTx(); }
   let nv = 0;
   if (VP) {                                // 巴菲特選股:用即時股價重算價位、安全邊際、本益比
     const all = VP.top.concat(VP.others), Q2 = await mis(all.map(x => `${x.mkt == "上櫃" ? "otc" : "tse"}_${x.id}.tw`));
@@ -2344,7 +2342,7 @@ $("#btnUp").onclick = async () => {
   const b = $("#btnUp"); b.disabled = true; b.innerHTML = "⏳ <span class=\"t\">更新中…</span>";
   const {n, t, nv, tx} = await liveQuotes();
   buildCats(); render(); renderPF(); renderPlan();
-  $("#upd").textContent = n ? `即時報價 ${t}` : $("#upd").textContent;
+  if (n) ETFUPD = `即時報價 ${t}`;
   const how = await triggerCloud();
   toast(`✅ 即時更新完成${t ? "（" + t + "）" : ""}：ETF ${n} 檔${tx ? `、加權指數 ${fmt(tx.px, 2)}` : ""}${nv ? `、選股 ${nv} 檔（價位與安全邊際已重算）` : ""}<br>${{started: "☁️ 已通知雲端重抓全部資料（財報、融資、法人、配息等），約 10～20 分鐘，完成會自動重新載入", running: "☁️ 雲端已經在更新中，完成會自動重新載入", recent: "☁️ 雲端 10 分鐘內剛更新過，資料已是最新；若還在跑，完成會自動重新載入", manual: "☁️ 已開啟 GitHub 頁面，按綠色「Run workflow」就會重抓全部資料，完成後這頁會自動重新載入"}[how]}`, 9000);
   watchCloud(STAMP);
@@ -5186,7 +5184,7 @@ function bdSpark(a, col){ a = (a || []).filter(v => v != null); if (a.length < 3
   return `<svg class="bd-sp" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><polyline fill="none" stroke="${col}" stroke-width="2" points="${a.map((v, i) => `${(i / (a.length - 1) * W).toFixed(1)},${(H - 3 - (v - lo) / ((hi - lo) || 1) * (H - 6)).toFixed(1)}`).join(" ")}"/></svg>`; }
 function bdBar(p){ return p == null ? "" : `<div class="bd-pb"><i style="left:${p}%"></i>${[25, 50, 75].map(x => `<b style="left:${x}%"></b>`).join("")}</div>`; }
 function tile(o){
-  return `<div class="bd-t ${o.go ? "go" : ""}" ${o.go ? `data-go="${o.go}"` : ""} style="--c:${o.col || "var(--ink)"}"><small>${o.t}</small><b class="num">${o.v}</b>${o.c ? `<em class="num">${o.c}</em>` : ""}${o.bar != null ? bdBar(o.bar) : ""}${o.sub ? `<i>${o.sub}</i>` : ""}${o.spark ? bdSpark(o.spark, o.sc || "#2F5BEA") : ""}</div>`;
+  return `<div class="bd-t ${o.go ? "go" : ""}" ${o.go ? `data-go="${o.go}"` : ""} style="--c:${o.col || "var(--ink)"}"><small>${o.t}</small><b class="num" ${o.id ? `id="${o.id}"` : ""}>${o.v}</b>${o.c ? `<em class="num">${o.c}</em>` : ""}${o.bar != null ? bdBar(o.bar) : ""}${o.sub ? `<i>${o.sub}</i>` : ""}${o.spark ? bdSpark(o.spark, o.sc || "#2F5BEA") : ""}</div>`;
 }
 const UPC = v => v > 0 ? "#CF3A3A" : v < 0 ? "#1A8F57" : "var(--ink)";
 function bindTiles(host){ host.querySelectorAll("[data-go]").forEach(t => t.onclick = () => { const g = t.dataset.go;
@@ -5198,7 +5196,7 @@ async function boardUI(){
   const t = B.taiex, o = B.otc, tv = B.turn, br = B.breadth, a2 = B.a200, pe = B.pe, fo = B.foreign, mg = B.margin, tx = B.tx;
   const sg = (v, d = 2) => v == null ? "—" : (v > 0 ? "+" : "") + fmt(v, d), md = s => s ? `${+s.slice(4, 6)}/${+s.slice(6, 8)}` : "";
   const T = [
-    {t: "加權指數", v: fmt(t.v, 2), c: `${sg(t.chg)}（${sg(t.pct)}%）`, col: UPC(t.chg), sub: `距近 5 年高點 ${t.fromHi}%`, spark: t.spark, sc: UPC(t.chg), go: "mk-sum"},
+    {id: "bdTx", t: "加權指數", v: fmt(t.v, 2), c: `${sg(t.chg)}（${sg(t.pct)}%）`, col: UPC(t.chg), sub: `距近 5 年高點 ${t.fromHi}%`, spark: t.spark, sc: UPC(t.chg), go: "mk-sum"},
     o ? {t: "櫃買指數", v: fmt(o.v, 2), c: `${sg(o.chg)}（${sg(o.pct)}%）`, col: UPC(o.chg), sub: `本月以來 ${sg(o.mtd, 1)}%`, spark: o.spark, sc: UPC(o.chg)} : null,
     tx && tx.day ? {t: `台指期・一般盤（${+tx.month.slice(4)} 月）`, v: fmt(tx.day.last, 0), c: `${sg(tx.day.chg, 0)}（${sg(tx.day.pct)}%）`, col: UPC(tx.day.chg), sub: `${tx.basis >= 0 ? "正" : "逆"}價差 ${fmt(Math.abs(tx.basis), 0)} 點・未平倉 ${fmt(tx.day.oi, 0)} 口`} : null,
     tx && tx.night ? {t: "🌙 台指期・夜盤", v: fmt(tx.night.last, 0), c: `${sg(tx.night.chg, 0)}（${sg(tx.night.pct)}%）`, col: UPC(tx.night.chg), sub: `${md(tx.night.d)} 交易日夜盤（前一晚 15:00～清晨 5:00）・高 ${fmt(tx.night.hi, 0)}／低 ${fmt(tx.night.lo, 0)}・${fmt(tx.night.vol, 0)} 口`} : null,
@@ -5207,8 +5205,10 @@ async function boardUI(){
     a2 ? {t: "站上 200 日線的股票", v: fmt(a2.v, 1) + "%", bar: a2.pct, sub: `近 ${a2.years} 年第 <b>${a2.pct}</b> 百分位${a2.pct <= 10 ? "（極度悲觀）" : a2.pct >= 90 ? "（過熱）" : ""}`, go: "mk-fear"} : null,
     pe ? {t: "大盤本益比（上市櫃）", v: fmt(pe.v, 1) + " 倍", bar: pe.pct, sub: `${pe.years} 第 <b>${pe.pct}</b> 百分位・區間 ${pe.lo}～${pe.hi} 倍`} : null,
     fo ? {t: "外資買賣超（上市）", v: sg(fo.v, 1) + " 億", col: UPC(fo.v), sub: `近 5 日 <b style="color:${UPC(fo.d5)}">${sg(fo.d5, 1)} 億</b>`, spark: fo.spark, sc: UPC(fo.d5), go: "mk-mg"} : null,
-    mg ? {t: "融資餘額（上市）", v: fmt(mg.v, 0) + " 億", sub: `較前一日 <b style="color:${UPC(mg.chg)}">${sg(mg.chg, 1)} 億</b>・${mg.d.slice(5)}`, spark: mg.spark, sc: "#F59E0B", go: "mk-mg"} : null].filter(Boolean);
-  $("#bdTiles").innerHTML = T.map(tile).join(""); $("#bdUpd").textContent = `資料更新 ${B.updated}`; bindTiles($("#bdTiles"));
+    mg ? {t: "融資餘額（上市）", v: fmt(mg.v, 0) + " 億", sub: `較前一日 <b style="color:${UPC(mg.chg)}">${sg(mg.chg, 1)} 億</b>・${mg.d.slice(5)}`, spark: mg.spark, sc: "#F59E0B", go: "mk-mg"} : null,
+    B.fear && B.fear.tw ? {t: "😱 台股恐慌度", v: `${B.fear.tw.v} 分`, col: fzc(B.fear.tw.v), bar: B.fear.tw.v, sub: `${B.fear.tw.lv}・前一日 ${B.fear.tw.prev ?? "—"}${B.fear.us ? `・美股 ${B.fear.us.v}` : ""}`, go: "mk-fear"} : null,
+    {t: "📚 收錄標的", v: `<span class="bd-n">ETF ${typeof S != "undefined" && S ? S.length : "—"} 檔<br>個股 ${B.nStk ? fmt(B.nStk, 0) : "—"} 家</span>`, sub: ETFUPD ? `ETF ${ETFUPD.startsWith("即時") ? ETFUPD : "更新 " + ETFUPD}` : "", go: "mk-board"}].filter(Boolean);
+  $("#bdTiles").innerHTML = T.map(tile).join(""); $("#bdUpd").textContent = `資料更新 ${B.updated}`; bindTiles($("#bdTiles")); bdLiveTx();
 }
 async function etfBoard(){
   if (!$("#etfTiles") || typeof S == "undefined" || !S || !S.length) { setTimeout(etfBoard, 800); return; }
@@ -5244,21 +5244,9 @@ async function xpBoard(){
   $("#xpTiles").innerHTML = T.map(tile).join(""); bindTiles($("#xpTiles"));
 }
 
-/* ---------- 頂部數字列 ---------- */
-async function hdrStats(){
-  const B = await getJ("board"); if (!B) return;
-  const sg = v => (v > 0 ? "▲" : v < 0 ? "▼" : "") + fmt(Math.abs(v), 2), col = v => v > 0 ? "up" : v < 0 ? "dn" : "";
-  const set = (id, v, d, c) => { const e = $("#" + id); if (e) { e.textContent = v; e.className = "num " + (c || ""); } const f = $("#" + id + "D"); if (f) f.innerHTML = d; };
-  if (B.otc) set("hOtc", fmt(B.otc.v, 2), `<span class="${col(B.otc.chg)}">${sg(B.otc.pct)}%</span>・${B.otc.d ? B.otc.d.slice(-4).replace(/^(\d\d)(\d\d)$/, "$1/$2") : ""}`);
-  const n = B.tx && B.tx.night;
-  if (n) set("hNt", fmt(n.last, 0), `<span class="${col(n.chg)}">${n.chg > 0 ? "+" : ""}${fmt(n.chg, 0)}（${sg(n.pct)}%）</span>・${+n.d.slice(4, 6)}/${+n.d.slice(6)} 盤`);
-  const f = B.fear && B.fear.tw;
-  if (f) { set("hFr", f.v + " 分", `${f.lv}${f.prev != null ? `・前日 ${f.prev}` : ""}`); $("#hFr").style.color = fzc(f.v); }
-  if (B.foreign) set("hFi", (B.foreign.v > 0 ? "+" : "") + fmt(B.foreign.v, 1) + " 億", `近 5 日 <span class="${col(B.foreign.d5)}">${B.foreign.d5 > 0 ? "+" : ""}${fmt(B.foreign.d5, 0)} 億</span>`, col(B.foreign.v));
-  if (B.nStk) $("#nStk").textContent = "個股 " + fmt(B.nStk, 0) + " 家";
-}
-$("#hst").addEventListener("click", e => { const t = e.target.closest("[data-go]"); if (!t) return; go("mkt"); setTimeout(() => { const el = $("#" + t.dataset.go); if (el) window.scrollTo({top: el.getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 70), behavior: "smooth"}); }, 400); });
-setTimeout(hdrStats, 300);
+let ETFUPD = "", LIVETX = null;
+function bdLiveTx(){ const tx = LIVETX, b = $("#bdTx"); if (!tx || !b) return; const pct = (tx.px / tx.y - 1) * 100;
+  b.textContent = fmt(tx.px, 2); const e = b.parentElement.querySelector("em"); if (e) { e.textContent = `${tx.px - tx.y >= 0 ? "+" : ""}${fmt(tx.px - tx.y, 2)}（${pct >= 0 ? "+" : ""}${fmt(pct, 2)}%）・即時 ${tx.t}`; e.style.color = UPC(pct); } b.style.color = UPC(pct); }
 
 /* ================= 🔔 自選股體質追蹤:加入時記下基準,之後每天比對 ================= */
 let BASE = (() => { try { return JSON.parse(localStorage.getItem("bfy_base") || "{}"); } catch (e) { return {}; } })(), HLA = {}, HLD = null;
