@@ -1309,6 +1309,34 @@ body.need-login .wrap,body.need-login header,body.need-login footer,body.need-lo
   .hst{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}.hst .tick{padding:9px 11px}.hst .tick b{font-size:18px}.hst-n b{font-size:14.5px!important}.gsr input{font-size:14px;padding:11px 13px}
   .gtk{height:42px;margin-top:12px}.gt-lb{font-size:12px;padding:0 10px}.gt-i{font-size:14.5px;padding:0 15px}.gt-i i{font-size:13px}
 }
+/* ===== 總經好壞判定 ===== */
+.jd{display:inline-block;background:var(--c);color:#fff;font-weight:800;font-size:12.5px;border-radius:7px;padding:2px 8px;white-space:nowrap}.jd-w{display:block;font-size:12px;color:var(--sub);margin-top:3px;line-height:1.45}
+.imp-tb td.jd-c{min-width:120px}
+.jd-sum{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:9px 12px;margin-bottom:8px;font-size:13px}.jd-sum span{color:var(--sub);font-size:12.5px}
+.imp-f>div{border-left:4px solid var(--c)!important}.jf-h{display:flex!important;flex-direction:row!important;justify-content:space-between;align-items:center;gap:6px;padding:0!important;border:0!important;background:none!important}
+.imp-f em{font-style:normal;font-weight:700;font-size:13px;color:var(--ink);line-height:1.5}.imp-f small{font-size:12px;color:var(--c);font-weight:700}
+@media(max-width:700px){.imp-tb td:nth-child(6),.imp-tb th:nth-child(6),.imp-tb td:nth-child(5),.imp-tb th:nth-child(5){display:none}.imp-tb td.jd-c{min-width:96px}}
+/* ===== 新生代大師 ===== */
+.ex-gh{grid-column:1/-1;font-weight:800;font-size:15px;margin:6px 0 -2px;color:var(--ink)}.ex-gh small{font-weight:600;font-size:12px;color:var(--sub);margin-left:6px}
+.ex-c{position:relative}.ex-rg{position:absolute;left:10px;top:8px;font-style:normal;font-size:11px;font-weight:800;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:1px 7px;z-index:1}
+/* ===== 體質追蹤 ===== */
+.btn-bell{position:relative;border:1px solid #F5C26B;background:#FFF7E6;border-radius:14px;width:52px;font-size:21px;cursor:pointer;animation:bell 1.6s ease-in-out infinite}
+.btn-bell b{position:absolute;top:-6px;right:-6px;background:#E5484D;color:#fff;font-size:11.5px;border-radius:999px;min-width:20px;height:20px;line-height:20px;padding:0 5px;font-family:Inter,sans-serif}
+@keyframes bell{0%,80%,100%{transform:rotate(0)}85%{transform:rotate(12deg)}90%{transform:rotate(-10deg)}95%{transform:rotate(6deg)}}
+.hl-b{display:inline-block;font-size:12px;font-weight:800;border-radius:8px;padding:2px 8px;white-space:nowrap}.hl-b.ok{background:#E8F7EE;color:#1A8F57}.hl-b.bad{background:#FDECEC;color:#CF3A3A}
+.hl-box{border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:6px 0 12px;background:var(--bg)}.hl-box.warn{border-color:#F5B3B3;background:color-mix(in srgb,#FDECEC 55%,var(--panel))}
+.hl-hd{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.hl-hd span{flex:1;min-width:220px;font-size:12.5px;color:var(--sub);line-height:1.6}.hl-hd button{border:0;background:#2F5BEA;color:#fff;font-weight:700;border-radius:10px;padding:7px 12px;cursor:pointer}.hl-hd em{font-style:normal;font-size:12.5px;color:#1A8F57;font-weight:700}
+.hl-it{display:grid;grid-template-columns:150px 1fr auto;gap:10px;align-items:start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:8px}
+.hl-it small{display:block;font-size:11.5px;color:var(--sub)}.hl-it ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:3px;font-size:13px}.hl-it li.bad{color:#CF3A3A;font-weight:700}.hl-it li.good{color:#1A8F57}
+.hl-act{display:flex;flex-direction:column;gap:6px}.hl-act button{border:1px solid var(--line);background:var(--bg);border-radius:9px;padding:5px 10px;font-size:12px;cursor:pointer;white-space:nowrap;color:var(--ink)}
+.hl-none{margin:8px 0 0;font-weight:700;color:#1A8F57}
+@media(max-width:700px){.hl-it{grid-template-columns:1fr}.hl-act{flex-direction:row}.hacts{grid-template-columns:2.7fr 1fr 1fr 2.3fr!important}.hacts .btn-up,.hacts .btn-mem{white-space:nowrap;overflow:hidden}.hacts .btn-up .t{font-size:13px!important}.hacts .btn-bell[hidden]{display:none}.hacts:not(:has(.btn-bell:not([hidden]))){grid-template-columns:3fr 1fr 2fr!important}}
+/* ===== 頂部數字列只在大盤頁、跑馬燈再加大 ===== */
+body:not(.on-mkt) .hst{display:none}
+.gtk{height:56px}.gt-i{font-size:18px;padding:0 24px}.gt-i i{font-size:16px}.gt-lb{flex-direction:column;justify-content:center;gap:1px;font-size:14px;line-height:1.2}.gt-lb{flex-direction:row;flex-wrap:wrap;align-content:center;max-width:150px}
+.gt-tm{font-style:normal;font-size:11.5px;font-weight:700;letter-spacing:0;opacity:.85;flex-basis:100%;padding-left:14px}
+.clk .cs b{font-weight:800}
+@media(max-width:700px){.gtk{height:48px}.gt-i{font-size:15.5px;padding:0 16px}.gt-i i{font-size:14px}.gt-lb{font-size:12px;max-width:96px;padding:0 8px}.gt-tm{font-size:10px;padding-left:12px}.clk .cs span{white-space:normal;line-height:1.4}}
 </style>
 </head>
 <body>
@@ -1321,6 +1349,7 @@ body.need-login .wrap,body.need-login header,body.need-login footer,body.need-lo
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
       <button class="btn-mem" id="btnMem" onclick="memOpen()">🔓 <span class="t">升級付費會員</span></button>
+      <button class="btn-bell" id="btnBell" title="自選股體質變化" aria-label="自選股體質變化通知" hidden>🔔<b id="bellN">0</b></button>
       <button class="btn-th" id="btnTh" title="切換深色/淺色" aria-label="切換深色或淺色模式">🌓</button>
       <button class="btn-up" id="btnUp" title="一鍵更新">🔄 <span class="t">一鍵更新</span></button>
     </div>
@@ -3500,7 +3529,7 @@ function gqPaint(){
   const items = GQ.filter(([s]) => GQD[s]);
   if (!items.length) return;
   const one = ([s, n]) => { const d = GQD[s], c = d.chg; return `<span class="gt-i"><b>${n}</b><em class="num">${gqFmt(s, d.px)}</em><i class="num ${pc(c)}">${c == null ? "" : (c >= 0 ? "▲" : "▼") + Math.abs(c).toFixed(2) + "%"}</i></span>`; };
-  if ($("#gtk")) { const h = items.map(one).join(""); $("#gtk").innerHTML = `<div class="gt-lb"><i class="dot"></i>全球即時</div><div class="gt-vw"><div class="gt-tr">${h}${h}</div></div>`; }
+  if ($("#gtk")) { const h = items.map(one).join(""); $("#gtk").innerHTML = `<div class="gt-lb"><i class="dot"></i>全球即時<em class="gt-tm">${new Date().toLocaleTimeString("zh-TW", {hour12: false, hour: "2-digit", minute: "2-digit"})} 更新</em></div><div class="gt-vw"><div class="gt-tr">${h}${h}</div></div>`; }
   if ($("#nwQ")) $("#nwQ").innerHTML = [["tw", "台股"], ["us", "美股"], ["as", "亞股"], ["mc", "匯率・利率・原物料"]].map(([g, gn]) => `<div class="nq-g"><small>${gn}</small><div class="nq-row">${items.filter(x => x[2] == g).map(([s, n]) => { const d = GQD[s], c = d.chg;
     return `<div class="nq ${c > 0 ? "up" : c < 0 ? "dn" : ""}${s == "^TWII" ? " hero" : ""}"><div class="nq-h"><b>${n}</b>${d.live ? `<i class="dot" title="交易中"></i>` : `<small>${new Date(d.t * 1000).toLocaleString("zh-TW", {month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false})}</small>`}</div>
       <div class="nq-v num">${gqFmt(s, d.px)}</div><div class="nq-c num">${c == null ? "—" : `${c >= 0 ? "▲" : "▼"}<span class="ab"> ${gqFmt(s, Math.abs(d.px - d.prev))}（</span>${sgn(c)}%<span class="ab">）</span>`}</div>${gqSpark(d.sp, c >= 0)}</div>`; }).join("")}</div></div>`).join("");
@@ -3541,10 +3570,17 @@ function clkTick(){
   const tp = tz("Asia/Taipei"), ny = tz("America/New_York"), p2 = n => String(n).padStart(2, "0");
   const wk = "日一二三四五六"[tp.getDay()], m = (d) => d.getHours() * 60 + d.getMinutes();
   const twOpen = tp.getDay() % 6 && m(tp) >= 540 && m(tp) < 810, usOpen = ny.getDay() % 6 && m(ny) >= 570 && m(ny) < 960;
-  const twTxt = twOpen ? "台股 盤中" : tp.getDay() % 6 && m(tp) < 540 ? "台股 09:00 開盤" : "台股 已收盤";
+  const twTxt = twOpen ? "台股 盤中" : tp.getDay() % 6 && m(tp) < 540 ? "台股 尚未開盤" : "台股 已收盤";
+  // 下一次開盤/收盤(週一～五;不含國定假日)。美股換算成台北時間
+  const off = tp - ny, W = "日一二三四五六";
+  const nxt = (loc, o, c) => { const cur = m(loc), wd = loc.getDay() % 6;
+    if (wd && cur >= o && cur < c) return {k: "收盤", d: new Date(loc.getFullYear(), loc.getMonth(), loc.getDate(), 0, c)};
+    const d = new Date(loc.getFullYear(), loc.getMonth(), loc.getDate(), 0, o); if (!(wd && cur < o)) do d.setDate(d.getDate() + 1); while (!(d.getDay() % 6)); return {k: "開盤", d}; };
+  const fd = (d, base) => `${d.toDateString() == base.toDateString() ? "今天" : new Date(base.getTime() + 864e5).toDateString() == d.toDateString() ? "明天" : `${d.getMonth() + 1}/${d.getDate()}（${W[d.getDay()]}）`} ${p2(d.getHours())}:${p2(d.getMinutes())}`;
+  const twN = nxt(tp, 540, 810), usN0 = nxt(ny, 570, 960), usN = {k: usN0.k, d: new Date(usN0.d.getTime() + off)};
   el.innerHTML = `<div class="cd">${tp.getFullYear()} 年 ${tp.getMonth() + 1} 月 ${tp.getDate()} 日　星期${wk}</div>
     <div class="ct">${p2(tp.getHours())}:${p2(tp.getMinutes())}:${p2(tp.getSeconds())}<small>台北</small></div>
-    <div class="cs"><span><i class="${twOpen ? "on" : ""}"></i>${twTxt}</span><span><i class="${usOpen ? "on" : ""}"></i>美股 ${usOpen ? "盤中" : "休市"}（紐約 ${p2(ny.getHours())}:${p2(ny.getMinutes())}）</span></div>`;
+    <div class="cs"><span title="台股交易時間 09:00～13:30（不含國定假日）"><i class="${twOpen ? "on" : ""}"></i>${twTxt}・下次${twN.k} <b>${fd(twN.d, tp)}</b></span><span title="美股交易時間紐約 09:30～16:00，已換算台北時間（不含美國假日）"><i class="${usOpen ? "on" : ""}"></i>美股 ${usOpen ? "盤中" : "休市"}・下次${usN.k} <b>${fd(usN.d, tp)}</b>（台北）</span></div>`;
 }
 clkTick(); setInterval(clkTick, 1000);
 /* ---------- 各國大盤:區間明細查詢 + 統計分析 ---------- */
@@ -4270,11 +4306,20 @@ const AVC = {
   yusko:  {bg: ["#A67D2C", "#6E5114"], hair: "#C9B9A0", style: "bald", tie: "#7A1F35"},
   sivy:   {bg: ["#3F8659", "#24543A"], hair: "#2A2A33", style: "short", glass: "round", must: "#2A2A33", tie: "#B91C1C"},
   price:  {bg: ["#5B6478", "#333A49"], hair: "#9CA3AF", style: "swept", tie: "#0E4F43"},
+  pabrai: {bg: ["#E07A2E", "#9A4710"], hair: "#2A2A33", style: "short", glass: "rect", tie: "#14213D"},
+  burry:  {bg: ["#334155", "#0F172A"], hair: "#3B2A1E", style: "short", tie: "#64748B"},
+  dorsey: {bg: ["#0F766E", "#064E48"], hair: "#6B4A2E", style: "short", glass: "round", tie: "#C6A15B"},
+  wood:   {bg: ["#DB2777", "#831843"], hair: "#E8C77A", style: "bob", tie: "#F9A8D4"},
+  raohs:  {bg: ["#2563EB", "#1E3A8A"], hair: "#1F1F25", style: "short", glass: "rect", tie: "#F59E0B"},
+  mj:     {bg: ["#7C3AED", "#4C1D95"], hair: "#1F1F25", style: "short", tie: "#22C55E"},
+  chenzm: {bg: ["#B45309", "#78350F"], hair: "#2A2A33", style: "short", glass: "rect", tie: "#DC2626"},
+  warrentw:{bg: ["#15803D", "#14532D"], hair: "#1F1F25", style: "swept", glass: "round", tie: "#1E3A8A"},
 };
 let AVN = 0;
 function exAvatar(id, size = 64){
   const c = AVC[id] || AVC.lynch, u = "av" + id + (++AVN), H = c.hair, brow = c.brow || (c.style == "bald" ? H : H == "#F4F4F2" || H == "#F2F2F0" ? "#D1D5DB" : H);
   const hair = {
+    bob: `<path d="M140 300 C118 200 150 100 256 92 C362 100 394 200 372 300 C366 318 348 322 338 312 C352 250 346 190 326 170 C296 150 216 150 186 170 C166 190 160 250 174 312 C164 322 146 318 140 300 Z" fill="${H}"/>`,
     full: `<path d="M150 214 C138 150 170 100 256 96 C342 100 374 150 362 214 C350 180 330 160 256 156 C182 160 162 180 150 214 Z" fill="${H}"/>`,
     swept: `<path d="M156 222 C140 176 162 128 206 112 C232 98 290 96 318 114 C356 132 374 178 358 222 C350 196 338 176 320 166 C300 150 270 146 252 150 C224 152 198 160 182 178 C168 192 162 206 156 222 Z" fill="${H}"/><path d="M150 226 C138 240 140 270 156 284 C152 262 154 244 162 230 Z M362 226 C374 240 372 270 356 284 C360 262 358 244 350 230 Z" fill="${H}"/>`,
     short: `<path d="M160 214 C150 168 160 120 196 100 C222 86 290 84 318 98 C354 116 364 166 352 214 C348 190 342 172 334 162 C316 150 290 146 256 146 C222 146 196 150 178 162 C170 172 164 190 160 214 Z" fill="${H}"/>`,
@@ -4310,6 +4355,14 @@ const XRM = {   // 每位大師各條件對應的指標(顯示用)
   yusko: [["ptMin5", "稅前淨利最低年成長", "%"], ["ptG5", "稅前淨利成長(5年均)", "%"], ["gm", "毛利率(近4季)", "%"]],
   sivy: [["pe", "本益比", ""], ["revMin5", "營收最低年成長", "%"], ["roe", "ROE(近4季)", "%"], ["debt", "負債比", "%"]],
   price: [["pb", "股價淨值比", ""], ["dir", "董監持股", "%"], ["debt", "負債比", "%"]],
+  pabrai: [["pe", "本益比", ""], ["roe", "ROE(近4季)", "%"], ["debt", "負債比", "%"], ["fcf", "自由現金流(近4季)", "億"]],
+  burry: [["pb", "股價淨值比", ""], ["fcfYld", "自由現金流殖利率", "%"], ["cur", "流動比率", "%"], ["roe", "ROE(近4季)", "%"]],
+  dorsey: [["roeMin5", "5年最低ROE", "%"], ["gm", "毛利率(近4季)", "%"], ["fcfMin5", "5年最低自由現金流", "億"], ["pe", "本益比", ""]],
+  wood: [["revG3", "營收成長(3年均)", "%"], ["revTg", "近4季營收成長", "%"], ["gm", "毛利率(近4季)", "%"]],
+  raohs: [["roeMin5", "5年最低ROE", "%"], ["cfoMin5", "5年最低營業現金流", "億"], ["fcfSum5", "5年自由現金流合計", "億"], ["debt", "負債比", "%"], ["pe", "本益比", ""]],
+  mj: [["cfoNi5", "營業現金流÷淨利(5年)", "%"], ["om", "營益率(近4季)", "%"], ["roe", "ROE(近4季)", "%"], ["debt", "負債比", "%"]],
+  chenzm: [["divN5", "近5年配息次數", "年"], ["yld", "現金殖利率", "%"], ["epsMin5", "5年最低EPS", "元"], ["payAvg", "平均配息率", "%"]],
+  warrentw: [["roe5", "5年平均ROE", "%"], ["roe", "ROE(近4季)", "%"], ["divN5", "近5年配息次數", "年"], ["pe", "本益比", ""]],
 };
 let EX = {sel: [], mode: "and", q: "", ind: "全部", near: false, sort: "n", page: 60};
 async function loadEx(){
@@ -4322,9 +4375,9 @@ async function loadEx(){
 }
 function renderEx(){
   const E = EXD.experts, inds = [...new Set(Object.values(EXD.stocks).map(s => s.ind).filter(Boolean))].sort();
-  $("#xpEx").innerHTML = `<div class="xp-hero"><div><h2>🧠 專家選股</h2><p>把 9 位世界級投資大師公開的選股條件，套用到<b>全台灣 ${Object.keys(EXD.stocks).length} 家上市櫃公司</b>的最新財報。可以點大師看他的選股邏輯，也可以<b>複選多位大師</b>，找出同時被好幾位大師看上的公司。</p>
+  $("#xpEx").innerHTML = `<div class="xp-hero"><div><h2>🧠 專家選股</h2><p>把 <b>${E.length} 位</b>國內外投資大師（${E.filter(e => e.gen != "new").length} 位經典大師＋${E.filter(e => e.gen == "new").length} 位新生代，其中台灣 ${E.filter(e => e.region == "台灣").length} 位）公開的選股條件，套用到<b>全台灣 ${Object.keys(EXD.stocks).length} 家上市櫃公司</b>的最新財報。可以點大師看他的選股邏輯，也可以<b>複選多位大師</b>，找出同時被好幾位大師看上的公司。</p>
       <small>財報：${EXD.years} 年＋${EXD.ttm} 近四季・${EXD.filter}・資料更新 ${EXD.updated}・${EXD.source}</small></div></div>
-    <div class="ex-grid">${E.map(e => `<div class="ex-c ${EX.sel.includes(e.id) ? "on" : ""}" data-id="${e.id}">
+    <div class="ex-grid">${E.map((e, i) => `${i == 0 ? `<div class="ex-gh">🏛️ 經典大師</div>` : e.gen == "new" && E[i - 1].gen != "new" ? `<div class="ex-gh">🌱 新生代大師 <small>依本人公開著作、訪談、股東信歸納的簡化條件，非本人推薦</small></div>` : ""}<div class="ex-c ${EX.sel.includes(e.id) ? "on" : ""} ${e.gen == "new" ? "nw" : ""}" data-id="${e.id}">${e.gen == "new" ? `<i class="ex-rg">${e.region == "台灣" ? "🇹🇼 台灣" : "🌏 國外"}</i>` : ""}
         <label class="ex-ck"><input type="checkbox" ${EX.sel.includes(e.id) ? "checked" : ""}><span></span></label>
         ${exAvatar(e.id, 72)}<div class="ex-t"><b>${e.name}</b><small>${e.en}・${e.tag}</small><em>符合 <b class="num">${e.n}</b> 家</em></div>
         <button class="ex-more" data-m="${e.id}">選股邏輯 ›</button></div>`).join("")}</div>
@@ -4545,7 +4598,7 @@ function skRender(){
   $("#dlg").querySelector(".sk-tabs").onclick = e => { const b = e.target.closest("button"); if (b) { SKP.tab = b.dataset.k; skRender(); } };
   ({ov: () => { skOv(); emOv(); }, chk: emChk, river: emRiver, fin: skFin, rev: skRev, div: skDiv, chip: () => { skChip(); emMargin(); }, rt: skRt, co: skCo})[SKP.tab]();
 }
-function skStar(c){ WATCH = WATCH.includes(c) ? WATCH.filter(x => x != c) : [...WATCH, c]; saveWatch(); toast(WATCH.includes(c) ? "★ 已加入自選股" : "已從自選股移除", 1400); if (SKP.d && SKP.d.c == c) skRender(); if (XP.sub == "wl" && $("#xpWl").style.display != "none") renderWl(); }
+function skStar(c){ WATCH = WATCH.includes(c) ? WATCH.filter(x => x != c) : [...WATCH, c]; saveWatch(); if (WATCH.includes(c)) hlSnap(c, true); else { delete BASE[c]; saveBase(); } setTimeout(hlCheck, 50); toast(WATCH.includes(c) ? "★ 已加入自選股" : "已從自選股移除", 1400); if (SKP.d && SKP.d.c == c) skRender(); if (XP.sub == "wl" && $("#xpWl").style.display != "none") renderWl(); }
 function skOv(){
   const d = SKP.d, s = d.s, m = d.m, good = DIMS.filter((x, i) => s[i] >= 70).map(x => x[0]), bad = DIMS.filter((x, i) => s[i] <= 30).map(x => x[0]);
   const say = `${d.n}的綜合評分是 <b style="color:${GRC(gradeOf(s[5]))}">${gradeOf(s[5])}</b>（勝過全市場 ${s[5]}% 的公司）。${good.length ? `強項在<b>${good.join("、")}</b>` : "沒有特別突出的面向"}${bad.length ? `；要留意<b>${bad.join("、")}</b>偏弱` : ""}。`;
@@ -4677,11 +4730,13 @@ async function loadWl(){ if (!SKS) SKS = await getJ("scores"); if (!HMD) HMD = a
 function renderWl(){
   const hm = Object.fromEntries(((HMD || {}).items || []).map(x => [x[0], x])), S2 = (SKS || {}).stocks || {}, C2 = (CKD || {}).stocks || {};
   $("#xpWl").innerHTML = `<div class="box"><h2 class="sec">⭐ 我的自選股 <small>存在這台裝置；填入張數與成本就能算損益、看報酬日曆</small></h2>
+    <div id="hlPanel"></div>
     <div class="wl-add"><input id="wlQ" placeholder="輸入代號或名稱加入，例如 2330"><button id="wlGo">＋ 加入</button><label class="wl-st">我的投資風格 ${styleSel("wlSt")}</label></div>
-    ${WATCH.length ? `<div class="gx-tw" style="max-height:none"><table class="gx-tb xl1 wl-tb"><thead><tr><th>公司</th><th>股價</th><th>漲跌</th><th>速配度</th><th>估價</th><th>總評</th><th>殖利率</th><th>主力</th><th>張數</th><th>成本</th><th>損益</th><th></th></tr></thead><tbody>
+    ${WATCH.length ? `<div class="gx-tw" style="max-height:none"><table class="gx-tb xl1 wl-tb"><thead><tr><th>公司</th><th>體質</th><th>股價</th><th>漲跌</th><th>速配度</th><th>估價</th><th>總評</th><th>殖利率</th><th>主力</th><th>張數</th><th>成本</th><th>損益</th><th></th></tr></thead><tbody>
       ${WATCH.map(c => { const s = S2[c] || [], h = hm[c], k = C2[c], px = h ? h[5] : s[2], hd = HOLD[c] || {}, ft = s.length ? fitScore(s.slice(3, 9), s[12], s[13], s[14]) : null;
         const pl = hd.lots && hd.cost && px ? (px - hd.cost) * hd.lots * 1000 : null;
-        return `<tr data-c="${c}"><td><b>${c} ${s[0] || (h ? h[1] : "")}</b></td><td class="num">${px ? fmt(px, 2) : "—"}</td><td class="num ${h ? pc(h[4]) : ""}">${h ? sgn(h[4], 2) + "%" : "—"}</td>
+        const al = (HLA[c] || []).filter(x => x.lv == "bad").length;
+        return `<tr data-c="${c}"><td><b>${c} ${s[0] || (h ? h[1] : "")}</b></td><td>${al ? `<span class="hl-b bad">⚠️ ${al} 項轉弱</span>` : `<span class="hl-b ok">✅ 正常</span>`}</td><td class="num">${px ? fmt(px, 2) : "—"}</td><td class="num ${h ? pc(h[4]) : ""}">${h ? sgn(h[4], 2) + "%" : "—"}</td>
         <td class="num">${ft == null ? "—" : `<b style="color:${fitCol(ft)}">${ft}%</b>`}</td><td>${s[14] ? `<span class="zp" style="background:${ZONEC[s[14]]}">${s[14]}</span>` : "—"}</td><td>${s.length ? gchip(s[8]) : "—"}</td><td class="num">${s[9] ? fmt(s[9], 2) + "%" : "—"}</td>
         <td class="num">${s[12] != null ? `<span class="${s[12] >= 60 ? "pos" : s[12] < 40 ? "neg" : ""}">${s[12]}</span>` : "—"}</td>
         <td><input class="wl-in" data-h="${c}" data-k="lots" type="number" min="0" step="0.001" value="${hd.lots ?? ""}" placeholder="0"></td><td><input class="wl-in" data-h="${c}" data-k="cost" type="number" min="0" step="0.01" value="${hd.cost ?? ""}" placeholder="均價"></td>
@@ -4695,7 +4750,7 @@ function renderWl(){
   const add = async () => { await loadNames(); const v = $("#wlQ").value.trim().toLowerCase(); const x = NAMES.find(n => n[0].toLowerCase() == v) || NAMES.find(n => n[1].toLowerCase().includes(v));
     if (!v || !x) { toast("找不到這檔股票", 1400); return; } if (!WATCH.includes(x[0])) { WATCH.push(x[0]); saveWatch(); } renderWl(); };
   $("#wlGo").onclick = add; $("#wlQ").onkeydown = e => { if (e.key == "Enter") add(); };
-  renderCal();
+  renderCal(); hlPanel();
 }
 
 /* ================= 🏦 籌碼排行・📈 營收創新高・📅 法說會・🕵️ 內部人・🗺️ 熱力圖 ================= */
@@ -5062,13 +5117,66 @@ async function impRender(){
     ["貨幣總計數 M1B 年增率", "中", P(tl("M1B")?.[1]), `前期 ${P(tl("M1B", 1)?.[1])}・${ym(tl("M1B"))}`, "資金動能：M1B 增速上升，資金較容易流入股市", null],
     ["五大銀行新承做放款利率", "中", F(tl("LOANRATE")?.[1], "%", 3), `${ym(tl("LOANRATE"))}`, "反映國內利率與央行政策", null],
     ["中國出口年增率", "中", P(last("XTEXVA01CNM667S")?.[1]), `${ym(last("XTEXVA01CNM667S"))}`, "影響台灣供應鏈與需求（中國 PMI 無免費資料，以出口替代）", null]];
+  /* ---- 好壞判定(以股市角度):[標籤, 理由] ---- */
+  const [GL, BD] = await Promise.all([getJ("global"), getJ("board")]);
+  const v0 = (id, k = 0) => last(id, k)?.[1], t0 = (id, k = 0) => tl(id, k)?.[1];
+  const ch20 = rows => rows && rows.length > 21 ? (rows[rows.length - 1][1] / rows[rows.length - 21][1] - 1) * 100 : null;
+  const G = "利多", B = "利空", N = "中性", cmp = (a, b, eps = 0) => a == null || b == null ? 0 : a - b > eps ? 1 : b - a > eps ? -1 : 0;
+  const twdR = GL && GL.macro["TWD=X"] ? GL.macro["TWD=X"].rows : null, twd20 = ch20(twdR), oil20 = GL && GL.macro["CL=F"] ? ch20(GL.macro["CL=F"].rows) : null;
+  const sox20 = GL && GL.idx["^SOX"] ? ch20(GL.idx["^SOX"].rows) : null;
+  const fedJ = () => !dec ? [N, "無最新決議"] : dec.bp < 0 ? [G, `剛降息 ${Math.abs(dec.bp) / 25} 碼，資金成本下降`] : dec.bp > 0 ? [B, `升息 ${dec.bp / 25} 碼，資金成本上升`] : [N, "維持利率不變"];
+  const infJ = (v, pv, tgt) => v == null ? [N, ""] : v <= tgt + .5 ? [G, `接近目標 ${tgt}%，降息空間大`] : cmp(v, pv, .05) > 0 ? [B, `通膨回升（${sgn(v - pv, 2)}），降息預期降溫`] : cmp(v, pv, .05) < 0 ? [G, `通膨降溫（${sgn(v - pv, 2)}）`] : [N, `持平但仍高於目標 ${tgt}%`];
+  const nfp = v0("PAYEMS"), ur = v0("UNRATE"), urP = v0("UNRATE", 3), y10 = v0("DGS10"), y10P = v0("DGS10", 20), ph = v0("GACDFSA066MSFRBPHI"), phP = v0("GACDFSA066MSFRBPHI", 1);
+  const rs = v0("RSAFS"), um = v0("UMCSENT"), umP = v0("UMCSENT", 1), gdp = v0("A191RL1Q225SBEA"), ppi = v0("PPIFIS"), ppiP = v0("PPIFIS", 1), ic = v0("ICSA");
+  const JUS = [fedJ(), infJ(v0("CPIAUCSL"), v0("CPIAUCSL", 1), 2), infJ(v0("PCEPILFE"), v0("PCEPILFE", 1), 2),
+    nfp == null ? [N, ""] : nfp < 50 ? [B, "新增不到 5 萬，景氣明顯降溫"] : nfp > 300 ? [N, "過熱，可能延後降息"] : [G, "就業穩健，景氣不差"],
+    ur == null ? [N, ""] : ur - urP >= .3 ? [B, `3 個月升 ${fmt(ur - urP, 1)} 個百分點，留意衰退`] : ur - urP <= -.2 ? [G, "失業率下降"] : [N, "大致持平"],
+    y10 == null ? [N, ""] : cmp(y10, y10P, .1) > 0 ? [B, `一個月升 ${fmt(y10 - y10P, 2)}%，股票評價承壓`] : cmp(y10, y10P, .1) < 0 ? [G, `一個月降 ${fmt(y10P - y10, 2)}%，有利評價`] : [N, "一個月內持平"],
+    ph == null ? [N, ""] : ph > 0 && ph >= phP ? [G, "擴張且轉強"] : ph > 0 ? [N, "仍在擴張但轉弱"] : [B, "落入收縮區"],
+    rs == null ? [N, ""] : rs > 3 ? [G, "消費強勁"] : rs < 0 ? [B, "消費衰退"] : [N, "溫和成長"],
+    um == null ? [N, ""] : cmp(um, umP, 1) > 0 ? [G, "信心回升"] : cmp(um, umP, 1) < 0 ? [B, "信心下滑"] : [N, "大致持平"],
+    gdp == null ? [N, ""] : gdp >= 2 ? [G, "成長穩健"] : gdp < 0 ? [B, "負成長"] : [N, "成長偏慢"],
+    ppi == null ? [N, ""] : cmp(ppi, ppiP, .1) > 0 ? [B, "上游成本升溫"] : cmp(ppi, ppiP, .1) < 0 ? [G, "上游成本降溫"] : [N, "持平"],
+    ic == null ? [N, ""] : ic < 250000 ? [G, "低於 25 萬，就業仍好"] : ic > 300000 ? [B, "高於 30 萬，裁員增加"] : [N, "25～30 萬之間"]];
+  const ord = t0("ORDERS"), ex = t0("EXPORT"), oi = t0("ORDERIDX"), oiP = t0("ORDERIDX", 1), ipi = t0("IPI"), m1 = t0("M1B"), m1P = t0("M1B", 1), lr = t0("LOANRATE"), lrP = t0("LOANRATE", 1), cn = v0("XTEXVA01CNM667S");
+  const lsc = light && light.rows.length ? light.rows[light.rows.length - 1][1] : null;
+  const JTW = [sox ? (sox.chg >= 1 ? [G, "前一晚美國科技股大漲"] : sox.chg <= -1 ? [B, "前一晚美國科技股大跌，台股開盤易受壓"] : [N, "前一晚美股小幅波動"]) : [N, "載入中"],
+    fedJ(),
+    ord == null ? [N, ""] : ord >= 10 ? [G, "接單大幅成長，未來出口有撐"] : ord >= 0 ? [N, "小幅成長"] : [B, "接單衰退"],
+    ex == null ? [N, ""] : ex >= 10 ? [G, "出口強勁"] : ex >= 0 ? [N, "小幅成長"] : [B, "出口衰退"],
+    twd20 == null ? [N, ""] : twd20 <= -1.5 ? [G, `一個月台幣升值 ${fmt(-twd20, 1)}%，外資匯入；但出口商有匯損`] : twd20 >= 1.5 ? [B, `一個月台幣貶值 ${fmt(twd20, 1)}%，外資匯出`] : [N, `一個月變動 ${sgn(twd20, 1)}%，匯率穩定`],
+    R5 == null ? [N, ""] : R5 > 100 ? [G, "近 5 日外資明顯買超"] : R5 < -100 ? [B, "近 5 日外資明顯賣超"] : [N, "外資進出不大"],
+    lsc == null ? [N, ""] : lsc >= 38 ? [N, "紅燈：景氣過熱，留意反轉"] : lsc >= 23 ? [G, `${lc}燈：景氣穩健擴張`] : [B, `${lc}燈：景氣偏弱（長線常是布局時機）`],
+    oi == null ? [N, ""] : oi >= 50 && oi >= oiP ? [G, "廠商看好且轉強"] : oi >= 50 ? [N, "仍樂觀但轉弱"] : [B, "廠商看淡未來接單"],
+    ipi == null ? [N, ""] : ipi >= 5 ? [G, "生產擴張"] : ipi >= 0 ? [N, "小幅成長"] : [B, "生產衰退"],
+    m1 == null ? [N, ""] : cmp(m1, m1P, .2) > 0 ? [G, "資金動能增強"] : cmp(m1, m1P, .2) < 0 ? [B, "資金動能轉弱"] : [N, "資金動能持平"],
+    lr == null ? [N, ""] : cmp(lr, lrP, .01) > 0 ? [B, "利率走升"] : cmp(lr, lrP, .01) < 0 ? [G, "利率走降"] : [N, "利率持平"],
+    cn == null ? [N, ""] : cn >= 5 ? [G, "中國需求回溫"] : cn >= 0 ? [N, "小幅成長"] : [B, "中國出口衰退"]];
+  US.forEach((r, i) => r[6] = JUS[i]); TW.forEach((r, i) => r[6] = JTW[i]);
+  const JC = {利多: "#CF3A3A", 利空: "#1A8F57", 中性: "#64748B"}, jb = j => j ? `<span class="jd" style="--c:${JC[j[0]]}">${j[0]}</span><small class="jd-w">${j[1]}</small>` : "";
+  const tally = rows => { const c = {利多: 0, 利空: 0, 中性: 0}; rows.forEach(r => c[r[6][0]]++); const w = {極高: 3, 高: 2, 中高: 1.5, 中: 1, 中低: .5}, sc = rows.reduce((t, r) => t + (r[6][0] == G ? 1 : r[6][0] == B ? -1 : 0) * w[r[1]], 0);
+    return `<div class="jd-sum"><b>綜合判定：<span style="color:${sc > 1 ? JC.利多 : sc < -1 ? JC.利空 : JC.中性}">${sc > 3 ? "明顯偏多" : sc > 1 ? "偏多" : sc < -3 ? "明顯偏空" : sc < -1 ? "偏空" : "多空交雜"}</span></b><span>利多 ${c.利多}・利空 ${c.利空}・中性 ${c.中性}（依影響程度加權）</span></div>`; };
+  /* ---- 指標以外的因素:現況+判定 ---- */
+  const RVs = (await getJ("rev_rank"))?.stocks, rvA = RVs ? Object.values(RVs).filter(x => x[4] != null) : [], rvUp = rvA.length ? rvA.filter(x => x[4] > 0).length / rvA.length * 100 : null, tsm = RVs && RVs["2330"];
+  const NW = (typeof NWS != "undefined" && NWS && Object.keys(NWS).length ? NWS : (await getJ("news"))?.feeds) || {}, hl = Object.values(NW).flat().filter(x => x && x.ts > Date.now() / 1000 - 3 * 86400);
+  const geoK = /關稅|制裁|出口管制|台海|兩岸|共軍|戰爭|飛彈|衝突|選舉|川普|貿易戰|禁令/, geo = hl.filter(x => geoK.test(x.t)), shockK = /危機|倒閉|擠兌|疫情|違約|崩盤|熔斷|黑天鵝|斷頭/, shock = hl.filter(x => shockK.test(x.t));
+  const fr = BD && BD.fear && BD.fear.tw, pe = BD && BD.pe, vixU = R.vixUs, mgC = BD && BD.margin ? BD.margin.chg : null;
+  const FAC = [
+    ["🏢 企業獲利", "財報與財測，長期最關鍵；台股尤其看台積電與 AI 供應鏈", rvUp == null ? "—" : `${fmt(rvUp, 0)}% 公司月營收年增${tsm ? `；台積電年增 ${sgn(tsm[4], 1)}%` : ""}`, rvUp == null ? [N, ""] : rvUp >= 55 ? [G, "多數公司營收成長"] : rvUp < 45 ? [B, "多數公司營收衰退"] : [N, "成長與衰退約各半"]],
+    ["🔬 產業趨勢", "AI、半導體循環、庫存調整", sox20 == null ? "—" : `費城半導體近一個月 ${sgn(sox20, 1)}%`, sox20 == null ? [N, ""] : sox20 >= 5 ? [G, "半導體走強"] : sox20 <= -5 ? [B, "半導體走弱"] : [N, "半導體盤整"]],
+    ["🌐 地緣政治與政策", "關稅、出口管制、兩岸情勢、戰爭、選舉", `近 3 天相關新聞 ${geo.length} 則${geo[0] ? `：「${esc(geo[0].t.slice(0, 26))}…」` : ""}`, geo.length >= 8 ? [B, "相關消息密集，風險升高"] : geo.length >= 3 ? [N, "有零星消息，持續觀察"] : [G, "近期沒有明顯事件"]],
+    ["💰 資金與籌碼", "外資、投信、融資餘額、ETF 資金流向", R5 == null ? "—" : `外資近 5 日 ${sgn(R5, 0)} 億${mgC != null ? `；融資 ${sgn(mgC, 0)} 億` : ""}`, R5 == null ? [N, ""] : R5 > 100 ? [G, "外資回補"] : R5 < -100 ? [B, mgC < -100 ? "外資賣、融資也在斷頭出場" : "外資持續賣超"] : [N, "資金進出不大"]],
+    ["😱 市場情緒", "VIX 恐慌指數、評價水位（本益比）", fr ? `台股恐慌度 ${fr.v} 分${pe ? `；本益比 ${pe.v} 倍（第 ${pe.pct} 百分位）` : ""}` : "—", !fr ? [N, ""] : fr.v >= 75 ? [B, "短線恐慌、長線常是分批布局點"] : fr.v <= 25 ? [N, "市場過度樂觀，留意追高"] : [N, "情緒正常"]],
+    ["🛢️ 原物料與匯率", "油價、美元指數、新台幣", `${oil20 == null ? "" : `油價近一個月 ${sgn(oil20, 1)}%`}${twd20 == null ? "" : `；美元兌台幣 ${sgn(twd20, 1)}%`}`, oil20 == null ? [N, ""] : oil20 >= 10 ? [B, "油價大漲推升通膨"] : oil20 <= -10 ? [G, "油價回落，通膨壓力減"] : twd20 != null && twd20 >= 1.5 ? [B, "台幣走貶，外資匯出"] : [N, "大致穩定"]],
+    ["⚡ 突發事件", "疫情、金融機構危機等", `${vixU != null ? `美股 VIX ${fmt(vixU, 1)}` : ""}；近 3 天相關新聞 ${shock.length} 則`, vixU != null && vixU >= 30 ? [B, "VIX 高於 30，市場正承受突發壓力"] : shock.length >= 5 ? [B, "危機相關消息增加"] : [N, "沒有明顯突發事件"]]];
+
   const stars = lv => { const [n, c] = IMPL[lv]; return `<span class="imp-l" style="--c:${c}">${lv}</span><span class="imp-s">${"★".repeat(Math.floor(n))}${n % 1 ? "☆" : ""}</span>`; };
-  const tbl = (rows, flag) => `<div class="gx-tw" style="max-height:none"><table class="gx-tb imp-tb"><thead><tr><th>指標</th><th>影響程度</th><th>最新數據</th><th>補充</th><th>為什麼重要</th></tr></thead><tbody>
-    ${rows.map(r => `<tr ${r[5] ? `data-go="${r[5]}"` : ""}><td><b>${r[0]}</b></td><td>${stars(r[1])}</td><td class="num"><b>${r[2]}</b></td><td class="imp-x">${r[3]}</td><td class="imp-x">${r[4]}</td></tr>`).join("")}</tbody></table></div>`;
-  $("#impBody").innerHTML = `<div class="imp-2"><div><h3 class="mm-h3">🇺🇸 美股主要總經指標</h3>${tbl(US)}</div><div><h3 class="mm-h3">🇹🇼 台股主要總經指標</h3>${tbl(TW)}</div></div>
+  const tbl = (rows, flag) => `<div class="gx-tw" style="max-height:none"><table class="gx-tb imp-tb"><thead><tr><th>指標</th><th>影響程度</th><th>最新數據</th><th>好壞判定</th><th>補充</th><th>為什麼重要</th></tr></thead><tbody>
+    ${rows.map(r => `<tr ${r[5] ? `data-go="${r[5]}"` : ""}><td><b>${r[0]}</b></td><td>${stars(r[1])}</td><td class="num"><b>${r[2]}</b></td><td class="jd-c">${jb(r[6])}</td><td class="imp-x">${r[3]}</td><td class="imp-x">${r[4]}</td></tr>`).join("")}</tbody></table></div>`;
+  $("#impBody").innerHTML = `<div class="imp-2"><div><h3 class="mm-h3">🇺🇸 美股主要總經指標</h3>${tally(US)}${tbl(US)}</div><div><h3 class="mm-h3">🇹🇼 台股主要總經指標</h3>${tally(TW)}${tbl(TW)}</div></div>
     <h3 class="mm-h3" style="margin-top:16px">🧩 指標以外，也會左右股市的因素</h3>
-    <div class="imp-f">${[["🏢 企業獲利", "財報與財測，長期最關鍵；台股尤其看台積電與 AI 供應鏈"], ["🔬 產業趨勢", "AI、半導體循環、庫存調整"], ["🌐 地緣政治與政策", "關稅、出口管制、兩岸情勢、戰爭、選舉"], ["💰 資金與籌碼", "外資、投信、融資餘額、ETF 資金流向"], ["😱 市場情緒", "VIX 恐慌指數、評價水位（本益比）"], ["🛢️ 原物料與匯率", "油價、美元指數"], ["⚡ 突發事件", "疫情、金融機構危機等"]].map(([a, b]) => `<div><b>${a}</b><span>${b}</span></div>`).join("")}</div>
-    <p class="mknote">資料：美國聖路易聯準銀行 FRED、國發會景氣指標、經濟部外銷訂單、證交所、Yahoo Finance 即時行情。點表格列可跳到下方詳細圖表。</p>`;
+    <div class="imp-f">${FAC.map(([a, b, c, j]) => `<div style="--c:${JC[j[0]]}"><div class="jf-h"><b>${a}</b><span class="jd" style="--c:${JC[j[0]]}">${j[0]}</span></div><span>${b}</span><em class="num">${c}</em><small>${j[1]}</small></div>`).join("")}</div>
+    <p class="mknote">資料：美國聖路易聯準銀行 FRED、國發會景氣指標、經濟部外銷訂單、證交所、Yahoo Finance 即時行情。點表格列可跳到下方詳細圖表。好壞判定以「對股市」的影響為準、依規則自動產生，僅供參考；地緣政治與突發事件依近 3 天新聞標題關鍵字粗估。</p>`;
   $("#impBody").querySelectorAll("tr[data-go]").forEach(tr => tr.onclick = () => { const g = tr.dataset.go; if (g == "mkt" || g == "glob") { go("mkt"); return; } const el = $("#" + g); if (el) window.scrollTo({top: el.getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 70), behavior: "smooth"}); });
   if (!sox || !twd) setTimeout(() => { if ($("#impBody") && typeof GQD != "undefined" && GQD["^SOX"]) impRender(); }, 8000);
 }
@@ -5123,7 +5231,6 @@ let XPB = false;
 async function xpBoard(){
   if (XPB || !$("#xpTiles")) return; XPB = true;
   const [ex, dc, sc, ck, rv, ev] = await Promise.all(["experts", "dingcun", "scores", "chips", "rev_rank", "events"].map(n => getJ(n)));
-  if (ex && !EXD) EXD = ex; if (dc && !DCD) DCD = dc; if (sc && !SKS) SKS = sc; if (ck && !CKD) CKD = ck; if (rv && !RVD) RVD = rv; if (ev && !EVD) EVD = ev;
   const top = ex ? Object.entries(ex.stocks).sort((a, b) => b[1].hit.length - a[1].hit.length)[0] : null;
   const cheap = dc ? dc.stocks.filter(x => x[7] == "便宜").length : 0, aa = sc ? Object.values(sc.stocks).filter(s => s[8] >= 80).length : 0;
   const fb = ck ? Object.entries(ck.stocks).sort((a, b) => b[1].fS - a[1].fS)[0] : null, hi = rv ? Object.values(rv.stocks).filter(s => s[7]).length : 0;
@@ -5152,6 +5259,69 @@ async function hdrStats(){
 }
 $("#hst").addEventListener("click", e => { const t = e.target.closest("[data-go]"); if (!t) return; go("mkt"); setTimeout(() => { const el = $("#" + t.dataset.go); if (el) window.scrollTo({top: el.getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 70), behavior: "smooth"}); }, 400); });
 setTimeout(hdrStats, 300);
+
+/* ================= 🔔 自選股體質追蹤:加入時記下基準,之後每天比對 ================= */
+let BASE = (() => { try { return JSON.parse(localStorage.getItem("bfy_base") || "{}"); } catch (e) { return {}; } })(), HLA = {}, HLD = null;
+const saveBase = () => { try { localStorage.setItem("bfy_base", JSON.stringify(BASE)); } catch (e) {} };
+async function hlData(){
+  if (HLD) return HLD;
+  const [sc, dc, eh, rv] = await Promise.all([getJ("scores"), getJ("dingcun"), getJ("expert_hits"), getJ("rev_rank")]);
+  if (!sc) return null;
+  HLD = {sc: sc.stocks, dc: Object.fromEntries(((dc || {}).stocks || []).map(x => [x[0], x[7]])), eh: (eh || {}).h || {}, nm: (eh || {}).names || {}, rv: (rv || {}).stocks || {}, d: sc.updated};
+  return HLD;
+}
+function hlNow(c){
+  const D = HLD, s = D.sc[c]; if (!s) return null;
+  return {d: new Date().toISOString().slice(0, 10), n: s[0], tot: s[8], warn: s[13], zone: s[14], hit: D.eh[c] || [], dc: D.dc[c] || null, ry: D.rv[c] ? D.rv[c][4] : null, px: s[2]};
+}
+async function hlSnap(c, force){ if (!await hlData()) return; if (!force && BASE[c]) return; const k = hlNow(c); if (k) { BASE[c] = k; saveBase(); } }
+function hlDiff(b, k){
+  const out = [], N = id => HLD.nm[id] || id;
+  b.hit.filter(x => !k.hit.includes(x)).forEach(x => out.push({lv: "bad", t: `不再符合「${N(x)}」的選股條件`}));
+  if (b.dc && !k.dc) out.push({lv: "bad", t: "已從💎定存股名單剔除（獲利或配息穩定度不再符合）"});
+  if (b.tot != null && k.tot != null && b.tot - k.tot >= 15) out.push({lv: "bad", t: `量化總評從 ${gradeOf(b.tot)} 降到 ${gradeOf(k.tot)}`});
+  if (k.warn > (b.warn || 0)) out.push({lv: "bad", t: `體質警示由 ${b.warn || 0} 項增加到 ${k.warn} 項（看個股頁的體質健診）`});
+  if (k.ry != null && k.ry <= -20 && !(b.ry != null && b.ry <= -20)) out.push({lv: "bad", t: `最新月營收年減 ${fmt(-k.ry, 1)}%`});
+  k.hit.filter(x => !b.hit.includes(x)).forEach(x => out.push({lv: "good", t: `新符合「${N(x)}」的選股條件`}));
+  if (k.dc && !b.dc) out.push({lv: "good", t: "新列入💎定存股名單"});
+  if (k.zone != b.zone && k.zone == "昂貴") out.push({lv: "info", t: "股價已進入昂貴區，可考慮分批停利"});
+  if (k.zone != b.zone && k.zone == "便宜") out.push({lv: "good", t: "股價進入便宜區，體質不變的話可考慮加碼"});
+  return out;
+}
+async function hlCheck(){
+  if (!WATCH.length) { HLA = {}; hlBell(); return; }
+  if (!await hlData()) return;
+  let ch = false; WATCH.forEach(c => { if (!BASE[c]) { const k = hlNow(c); if (k) { BASE[c] = k; ch = true; } } }); if (ch) saveBase();
+  HLA = {}; WATCH.forEach(c => { const b = BASE[c], k = hlNow(c); if (b && k) { const d = hlDiff(b, k); if (d.length) HLA[c] = d; } });
+  hlBell();
+  const bad = Object.entries(HLA).filter(([, v]) => v.some(x => x.lv == "bad")), key = bad.map(([c, v]) => c + v.length).join(",");
+  let seen = ""; try { seen = localStorage.getItem("bfy_hl_seen") || ""; } catch (e) {}
+  if (bad.length && key != seen) {
+    try { localStorage.setItem("bfy_hl_seen", key); } catch (e) {}
+    toast(`🔔 你有 ${bad.length} 檔自選股體質轉弱，點右上角鈴鐺查看`, 4000);
+    try { if (window.Notification && Notification.permission == "granted") new Notification("巴菲遠：自選股體質變化", {body: bad.map(([c, v]) => `${c} ${BASE[c].n}：${v.filter(x => x.lv == "bad").map(x => x.t).join("、")}`).join("\n").slice(0, 300), icon: "logo.svg"}); } catch (e) {}
+  }
+}
+function hlBell(){
+  const n = Object.values(HLA).filter(v => v.some(x => x.lv == "bad")).length, b = $("#btnBell"); if (!b) return;
+  b.hidden = !n; $("#bellN").textContent = n;
+}
+function hlPanel(){
+  const host = $("#hlPanel"); if (!host) return;
+  const L = Object.entries(HLA).filter(([c]) => WATCH.includes(c)), perm = window.Notification ? Notification.permission : "unsupported";
+  host.innerHTML = `<div class="hl-box ${L.some(([, v]) => v.some(x => x.lv == "bad")) ? "warn" : ""}">
+    <div class="hl-hd"><b>🔔 體質追蹤</b><span>每檔股票加入時會記下當時的體質（被哪些大師選中、是否為定存股、總評、警示數、營收），之後每天更新資料後自動比對，轉弱就提醒你。</span>
+      ${perm == "default" ? `<button id="hlPerm">開啟瀏覽器通知</button>` : perm == "granted" ? `<em>✓ 已開啟瀏覽器通知</em>` : ""}</div>
+    ${L.length ? L.map(([c, v]) => `<div class="hl-it"><div><b>${c} ${BASE[c].n}</b><small>基準日 ${BASE[c].d}</small></div><ul>${v.map(x => `<li class="${x.lv}">${x.lv == "bad" ? "⚠️" : x.lv == "good" ? "👍" : "💡"} ${x.t}</li>`).join("")}</ul>
+      <div class="hl-act"><button data-ok="${c}">知道了，以今天為新基準</button><button data-go="${c}">看個股</button></div></div>`).join("")
+      : `<p class="hl-none">${WATCH.length ? "✅ 你的自選股體質都跟加入時一樣，沒有轉弱。" : "加入自選股後就會開始追蹤。"}</p>`}
+    <p class="mknote">提醒會在你打開網站時跳出（右上角🔔顯示檔數）；開啟瀏覽器通知後，打開網站時也會跳系統通知。網站關閉時無法主動推播。</p></div>`;
+  host.querySelectorAll("[data-ok]").forEach(b => b.onclick = e => { e.stopPropagation(); hlSnap(b.dataset.ok, true).then(() => { delete HLA[b.dataset.ok]; hlBell(); hlPanel(); renderWl(); }); });
+  host.querySelectorAll("[data-go]").forEach(b => b.onclick = () => openStock(b.dataset.go));
+  if ($("#hlPerm")) $("#hlPerm").onclick = () => Notification.requestPermission().then(() => hlPanel());
+}
+$("#btnBell").onclick = () => { go("vp"); setTimeout(() => { XP.sub = "wl"; try { localStorage.setItem("bfy_xp", "wl"); } catch (e) {} if (typeof loadXP == "function") loadXP(); xpShow(); setTimeout(() => $("#hlPanel") && $("#hlPanel").scrollIntoView({behavior: "smooth", block: "center"}), 600); }, 200); };
+setTimeout(hlCheck, 2500);
 </script>
 </body>
 </html>

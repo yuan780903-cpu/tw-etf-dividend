@@ -64,6 +64,12 @@ def taiwan():
             if len(r) >= 3 and r[1].isdigit() and len(r[1]) == 5: rows.append((f"{int(r[1][:3]) + 1911}{r[1][3:]}", float(r[2])))
         ser("ORDERS", rows, "yoy"); tw["ORDERS"]["amt"] = rows[-1][1] if rows else None
     except Exception as e: print("  外銷訂單失敗", e)
+    for k in ("ORDERS", "LIGHT", "EXPORT", "M1B", "TWUNEMP", "ORDERIDX", "LOANRATE", "IPI"):   # 抓不到時沿用上次資料(經濟部擋雲端 IP)
+        if not (tw.get(k) or {}).get("rows"):
+            try:
+                old = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "macro.json"), encoding="utf-8")).get("tw", {}).get(k)
+                if old: tw[k] = old; print("  沿用舊資料", k)
+            except Exception: pass
     print("  台灣總經:", "、".join(f"{k} {v['rows'][-1] if v.get('rows') else '-'}" for k, v in tw.items()))
     return tw
 

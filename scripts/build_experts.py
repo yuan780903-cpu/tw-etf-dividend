@@ -68,10 +68,40 @@ EXPERTS = [
   dict(id="price", name="麥克普萊斯", en="Michael Price", tag="深度價值派",
        say="共同基金傳奇經理人，以找「被低估的資產」聞名。他喜歡股價低於淨值（等於打折買公司資產）、經營階層自己持股很多（跟股東站同一邊）、負債又低的公司。",
        rules=["股價淨值比小於 1", "董監持股比率大於 40%", "最近一季負債比小於 20%"]),
+  # ---- 新生代大師(依本人公開著作、訪談、股東信歸納的簡化條件,非本人推薦) ----
+  dict(id="pabrai", name="莫尼斯帕布萊", en="Mohnish Pabrai", tag="Dhandho 低風險高報酬", gen="new", region="國外",
+       say="1964 年生，帕布萊投資基金創辦人，著有《下注的本事（The Dhandho Investor）》，曾花 65 萬美元與巴菲特共進午餐。他的口訣是「正面我大賺、反面我小賠」：只買簡單好懂、賺錢能力強、幾乎不借錢，而且價格明顯便宜的公司。",
+       rules=["本益比小於 12", "近 4 季股東權益報酬率大於 15%", "最近一季負債比小於 40%", "近 4 季自由現金流大於 0"]),
+  dict(id="burry", name="麥可貝瑞", en="Michael Burry", tag="《大賣空》深度價值", gen="new", region="國外",
+       say="1971 年生，Scion 資產管理創辦人，電影《大賣空》主角原型，2008 年押注次貸崩盤一戰成名。選股偏「冷門、被市場嫌棄、但很會賺現金」的公司：用自由現金流殖利率找便宜貨，同時要財務夠安全。",
+       rules=["股價淨值比小於 1.2", "自由現金流殖利率大於 8%", "最新財報流動比率大於 150%", "近 4 季 EPS 大於 0"]),
+  dict(id="dorsey", name="派特杜西", en="Pat Dorsey", tag="護城河選股", gen="new", region="國外",
+       say="晨星前股票研究總監、Dorsey 資產管理創辦人，著有《護城河投資優勢》。他認為長期贏家要有「別人很難搶走的獲利能力」：股東權益報酬率長年都高、毛利率高、而且年年都賺得到真金白銀的現金。",
+       rules=["近 5 年股東權益報酬率每年都大於 15%", "近 4 季毛利率大於 30%", "近 5 年自由現金流每年都大於 0", "本益比小於 25"]),
+  dict(id="wood", name="凱西伍德", en="Cathie Wood", tag="顛覆式創新", gen="new", region="國外",
+       say="方舟投資（ARK Invest）創辦人，被稱為「木頭姐」，專買 AI、機器人、基因、區塊鏈等顛覆式創新公司。她看的是未來 5 年的爆發力而不是現在的本益比，所以條件重成長、重毛利，波動也最大。",
+       rules=["近 3 年營收成長率平均大於 25%", "近 4 季營收比上一年度成長 20% 以上", "近 4 季毛利率大於 35%"]),
+  dict(id="raohs", name="雷浩斯", en="Lei Haosi", tag="台灣價值投資", gen="new", region="台灣",
+       say="台灣價值投資作家，著有《雷浩斯教你 6 步驟存好股》等書，強調「好公司＋好價格」。他用股東權益報酬率長期穩定在高檔來找好公司，再用自由現金流檢查賺的是不是真錢，並避開借太多錢的公司。",
+       rules=["近 5 年股東權益報酬率每年都大於 15%", "近 5 年營業現金流每年都大於 0", "近 5 年自由現金流合計大於 0", "最近一季負債比小於 50%", "本益比小於 20"]),
+  dict(id="mj", name="林明樟（MJ 老師）", en="MJ Lin", tag="財報現金流檢查", gen="new", region="台灣",
+       say="兩岸知名財報講師，著有《用生活常識就能看懂財務報表》。他教大家用現金流量表抓「真賺錢」的公司：營業現金流要大於帳上獲利、本業利潤率要夠高、股東權益報酬率要好，財務結構也要穩。",
+       rules=["近 5 年營業現金流合計大於稅後淨利（比率大於 100%）", "近 4 季營業利益率大於 10%", "近 4 季股東權益報酬率大於 15%", "最近一季負債比小於 50%"]),
+  dict(id="chenzm", name="陳重銘", en="Chen Chung-Ming", tag="不敗教主存股", gen="new", region="台灣",
+       say="人稱「不敗教主」，前高職老師，靠存股累積上千張股票，著有《6 年存到 300 張股票》等書。他的存股原則是：公司要年年賺錢、年年發現金股利，殖利率夠高，用股利再買股讓資產像滾雪球。",
+       rules=["近 5 年每年都發現金股利", "現金殖利率大於 5%", "近 5 年每年 EPS 都大於 0 元", "近 5 年平均配息率小於 90%"]),
+  dict(id="warrentw", name="華倫老師（周文偉）", en="Warren Chou", tag="ROE 存股法", gen="new", region="台灣",
+       say="台灣知名存股達人，從負債到資產破億，著有《華倫存股術》系列。他用「股東權益報酬率長期大於 15% 的好公司＋本益比便宜時買進＋領股利再投入」，強調要挑能長期穩定賺錢、穩定配息的公司。",
+       rules=["近 5 年平均股東權益報酬率大於 15%", "近 4 季股東權益報酬率大於 15%", "近 5 年每年都發現金股利", "本益比小於 15"]),
 ]
+NEW_RULE_NOTE = "新生代大師條件依其公開著作、訪談與股東信歸納為可量化的簡化版本，非本人推薦或背書"
+
+def divs():
+    p = os.path.join(DATA, "stock_div.json")
+    return json.load(open(p))["stocks"] if os.path.exists(p) else {}
 
 def main():
-    dpct = director_pct()
+    dpct = director_pct(); DV = divs()
     stocks, passn = {}, {e["id"]: 0 for e in EXPERTS}
     for c, d in F["companies"].items():
         t = d.get("ttm") or {}; px = d.get("px"); vol = d.get("vol5")
@@ -91,12 +121,31 @@ def main():
         rv2, rv3, rv5 = rates(rev, 2), rates(rev, 3), rates(rev, 5)
         pt5, eps5 = rates(pt, 5), rates(eps, 5)
         dir_ = dpct[c] / sh * 100 if sh and c in dpct else None
+        # 新生代大師用:現金流、ROE 歷年、股利
+        niP, eqP, cfo, cfi = ser(d, "niP"), ser(d, "eqP"), ser(d, "cfo"), ser(d, "cfi")
+        roeY = [ratio(niP[i], eqP[i]) if eqP[i] and eqP[i] > 0 else None for i in range(len(Y))]
+        fcfY = [cfo[i] + cfi[i] if cfo[i] is not None and cfi[i] is not None else None for i in range(len(Y))]
+        fcfT = t["cfo"] + t["cfi"] if t.get("cfo") is not None and t.get("cfi") is not None else None
+        mcap = px * sh if sh else None
+        fcfYld = fcfT * 1000 / mcap * 100 if fcfT is not None and mcap else None
+        r5, f5, c5, n5 = roeY[-5:], fcfY[-5:], cfo[-5:], niP[-5:]
+        cfoNi5 = sum(c5) / sum(n5) * 100 if all(x is not None for x in c5 + n5) and sum(n5) > 0 else None
+        dy = (DV.get(c) or {}).get("y", {}); cash5 = [(dy.get(y) or {}).get("cash") for y in Y[-5:]]; pay5 = [(dy.get(y) or {}).get("pay") for y in Y[-5:]]
+        lastCash = (dy.get(Y[-1]) or {}).get("cash")
+        yld = lastCash / px * 100 if lastCash and px else None
+        payAvg = avg([x for x in pay5 if x is not None]) if any(x is not None for x in pay5) else None
+        revTg = g(t.get("rev"), last.get("rev")) if last.get("rev") else None
         m = dict(pe=R(pe, 1), pb=R(pb, 2), roe=R(roe, 1), roeUp=R(roeUp, 1), debt=R(debt, 1), cur=R(cur, 0), rps=R(rps, 2), rev12=R(t.get("rev") / 1e5 if t.get("rev") else None, 1),
                  revG2=R(avg(rv2), 1), revG3=R(avg(rv3), 1), revG5=R(avg(rv5), 1), revMin5=R(min(rv5), 1) if rv5 else None,
                  ptG5=R(avg(pt5), 1), ptMin5=R(min(pt5), 1) if pt5 else None, epsG5=R(avg(eps5), 1),
                  epsMin5=R(min(x for x in eps[-5:]), 2) if all(x is not None for x in eps[-5:]) else None,
                  gmMin5=R(min(gmY[-5:]), 1) if all(x is not None for x in gmY[-5:]) else None, gm=R(gmT, 1),
-                 omMin3=R(min(omY[-3:]), 1) if all(x is not None for x in omY[-3:]) else None, om=R(omT, 1), dir=R(dir_, 1))
+                 omMin3=R(min(omY[-3:]), 1) if all(x is not None for x in omY[-3:]) else None, om=R(omT, 1), dir=R(dir_, 1),
+                 roeMin5=R(min(r5), 1) if all(x is not None for x in r5) else None, roe5=R(avg(r5), 1) if all(x is not None for x in r5) else None,
+                 fcfYld=R(fcfYld, 1), fcf=R(fcfT / 1e5, 1) if fcfT is not None else None,
+                 fcfMin5=R(min(f5) / 1e5, 1) if all(x is not None for x in f5) else None, fcfSum5=R(sum(f5) / 1e5, 1) if all(x is not None for x in f5) else None,
+                 cfoMin5=R(min(c5) / 1e5, 1) if all(x is not None for x in c5) else None, cfoNi5=R(cfoNi5, 0),
+                 divN5=sum(1 for x in cash5 if x and x > 0), yld=R(yld, 2), payAvg=R(payAvg, 0), revTg=R(revTg, 1))
         ok = lambda v, f: v is not None and f(v)
         test = {
           "lynch": [ok(m["pe"], lambda v: v < 20), ok(m["revG2"], lambda v: v > 25), ok(m["ptG5"], lambda v: v > 7), ok(m["debt"], lambda v: v < 30)],
@@ -108,6 +157,14 @@ def main():
           "yusko": [ok(m["ptMin5"], lambda v: v > 5), ok(m["ptG5"], lambda v: v > 10), ok(m["gm"], lambda v: v > 4)],
           "sivy": [ok(m["pe"], lambda v: v < 20), ok(m["revMin5"], lambda v: v > 10), ok(m["roe"], lambda v: v > 15), ok(m["debt"], lambda v: v < 20)],
           "price": [ok(m["pb"], lambda v: v < 1), ok(m["dir"], lambda v: v > 40), ok(m["debt"], lambda v: v < 20)],
+          "pabrai": [ok(m["pe"], lambda v: v < 12), ok(m["roe"], lambda v: v > 15), ok(m["debt"], lambda v: v < 40), ok(m["fcf"], lambda v: v > 0)],
+          "burry": [ok(m["pb"], lambda v: v < 1.2), ok(m["fcfYld"], lambda v: v > 8), ok(m["cur"], lambda v: v > 150), ok(t.get("eps"), lambda v: v > 0)],
+          "dorsey": [ok(m["roeMin5"], lambda v: v > 15), ok(m["gm"], lambda v: v > 30), ok(m["fcfMin5"], lambda v: v > 0), ok(m["pe"], lambda v: v < 25)],
+          "wood": [ok(m["revG3"], lambda v: v > 25), ok(m["revTg"], lambda v: v > 20), ok(m["gm"], lambda v: v > 35)],
+          "raohs": [ok(m["roeMin5"], lambda v: v > 15), ok(m["cfoMin5"], lambda v: v > 0), ok(m["fcfSum5"], lambda v: v > 0), ok(m["debt"], lambda v: v < 50), ok(m["pe"], lambda v: v < 20)],
+          "mj": [ok(m["cfoNi5"], lambda v: v > 100), ok(m["om"], lambda v: v > 10), ok(m["roe"], lambda v: v > 15), ok(m["debt"], lambda v: v < 50)],
+          "chenzm": [m["divN5"] >= 5, ok(m["yld"], lambda v: v > 5), ok(m["epsMin5"], lambda v: v > 0), ok(m["payAvg"], lambda v: v < 90)],
+          "warrentw": [ok(m["roe5"], lambda v: v > 15), ok(m["roe"], lambda v: v > 15), m["divN5"] >= 5, ok(m["pe"], lambda v: v < 15)],
         }
         liquid = px >= 5 and (vol or 0) >= 500
         hit = [e["id"] for e in EXPERTS if liquid and all(test[e["id"]])]
@@ -117,8 +174,11 @@ def main():
                          t={k: "".join("1" if x else "0" for x in v) for k, v in test.items()}, **m)
     for e in EXPERTS: e["n"] = passn[e["id"]]
     out = dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), ttm=F.get("latest"), years=f"{Y[0]}~{Y[-1]}",
-               source="選股條件參考 MoneyDJ 大師選股；財報來自公開資訊觀測站", filter="排除股價 5 元以下、五日均量 500 張以下", experts=EXPERTS, stocks=stocks)
+               source="經典大師條件參考 MoneyDJ 大師選股；" + NEW_RULE_NOTE + "；財報來自公開資訊觀測站", filter="排除股價 5 元以下、五日均量 500 張以下", experts=EXPERTS, stocks=stocks)
     fh.save(os.path.join(DATA, "experts.json"), out)
+    # 自選股體質追蹤用的精簡檔:每檔目前被哪些大師選中
+    nm = {e["id"]: e["name"] for e in EXPERTS}
+    fh.save(os.path.join(DATA, "expert_hits.json"), dict(updated=out["updated"], names=nm, h={c: v["hit"] for c, v in stocks.items() if v["hit"]}))
     print("experts.json:", "、".join(f"{e['name']} {e['n']}" for e in EXPERTS), f"(共 {len(stocks)} 家)")
 
 if __name__ == "__main__":
