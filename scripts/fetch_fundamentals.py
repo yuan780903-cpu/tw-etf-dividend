@@ -260,10 +260,20 @@ def build(ps, latest):
         d["px1m"], d["px12m"] = p1m.get(c), p12m.get(c); d["vol5"] = VOL.get(c)
         if c in rev: d["rev"] = sorted(rev[c], reverse=True)
         d.update(ind.get(c, {}))
+    fill_parent(comp)
     out = dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), years=years, latest=f"{latest[0]}Q{latest[1]}" if latest else None,
                unit="財報金額單位:仟元;EPS 元", companies=comp)
     fh.save(os.path.join(FD, "fundamentals.json"), out)
     print(f"fundamentals.json: {len(comp)} 家公司,{years[0]}~{years[-1]}" + (f" + {out['latest']}" if latest else ""))
+
+def fill_parent(comp):
+    """沒有子公司的公司財報只列「本期淨利」「權益總計」,不另列歸屬母公司 → 直接等於母公司(否則 ROE、本益比會算不出來)"""
+    n = 0
+    for d in comp.values():
+        for per in list(d.get("y", {}).values()) + ([d["ttm"]] if d.get("ttm") else []):
+            if per.get("niP") is None and per.get("ni") is not None: per["niP"] = per["ni"]; n += 1
+            if per.get("eqP") is None and per.get("eq") is not None: per["eqP"] = per["eq"]
+    print(f"  補母公司淨利/權益 {n} 筆")
 
 if __name__ == "__main__":
     ps, latest = fetch_mops()

@@ -1315,7 +1315,7 @@ body.need-login .wrap,body.need-login header,body.need-login footer,body.need-lo
 .jd-sum{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:9px 12px;margin-bottom:8px;font-size:13px}.jd-sum span{color:var(--sub);font-size:12.5px}
 .imp-f>div{border-left:4px solid var(--c)!important}.jf-h{display:flex!important;flex-direction:row!important;justify-content:space-between;align-items:center;gap:6px;padding:0!important;border:0!important;background:none!important}
 .imp-f em{font-style:normal;font-weight:700;font-size:13px;color:var(--ink);line-height:1.5}.imp-f small{font-size:12px;color:var(--c);font-weight:700}
-@media(max-width:700px){.imp-tb td:nth-child(6),.imp-tb th:nth-child(6),.imp-tb td:nth-child(5),.imp-tb th:nth-child(5){display:none}.imp-tb td.jd-c{min-width:96px}}
+@media(max-width:700px){.imp-tb td:nth-child(6),.imp-tb th:nth-child(6),.imp-tb td:nth-child(5),.imp-tb th:nth-child(5){display:none}.imp-tb td.jd-c{min-width:96px}.imp-tb .imp-s{display:none}.imp-tb td:first-child{min-width:96px!important}.imp-tb td,.imp-tb th{padding-left:7px!important;padding-right:7px!important}}
 /* ===== 新生代大師 ===== */
 .ex-gh{grid-column:1/-1;font-weight:800;font-size:15px;margin:6px 0 -2px;color:var(--ink)}.ex-gh small{font-weight:600;font-size:12px;color:var(--sub);margin-left:6px}
 .ex-c{position:relative}.ex-rg{position:absolute;left:10px;top:8px;font-style:normal;font-size:11px;font-weight:800;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:1px 7px;z-index:1}
@@ -2175,7 +2175,7 @@ function avgYld(e){
   const ys = Object.entries(e.yearYields || {}).filter(([y]) => y < thisY).slice(-5).map(([,v]) => v.yld);
   return ys.length ? ys.reduce((a,b)=>a+b,0)/ys.length : e.ttmYield;
 }
-const fv = (lump, mon, r, n) => { const i = r/12, m = n*12; return lump*Math.pow(1+i, m) + (i ? mon*(Math.pow(1+i, m)-1)/i : mon*m); };
+const fv = (lump, mon, r, n) => { const i = Math.pow(1 + r, 1/12) - 1, m = n*12;   /* 年報酬率換算成等效月利率 */ return lump*Math.pow(1+i, m) + (i ? mon*(Math.pow(1+i, m)-1)/i : mon*m); };
 const wan = n => n >= 1e8 ? (n/1e8).toFixed(2) + " 億" : Math.round(n/1e4).toLocaleString() + " 萬";
 
 function pkCard(e, bi, on){
@@ -2197,7 +2197,7 @@ function renderPlan(){
   const haveNom = fv(lump, mon, r, years), have = haveNom / deflate;        // 退休時累積(今天的錢)
   const need = want * 12 / yRet;                                             // 需要的本金(今天的錢)
   const monthlyNow = have * yRet / 12, ratio = need ? have / need : 0;
-  const i = r/12, m = years*12;
+  const i = Math.pow(1 + r, 1/12) - 1, m = years*12;
   const needMon = years ? Math.max(0, (need * deflate - lump*Math.pow(1+i,m)) * (i ? i / (Math.pow(1+i,m)-1) : 1/m)) : 0;
   let okAge = null; for (let y = years; age + y <= 75; y++) { if (fv(lump, mon, r, y) / Math.pow(1+infl, y) >= need) { okAge = age + y; break; } }
   const wantFuture = want * deflate, monthlyAtRet = monthlyNow * deflate;
@@ -5122,7 +5122,8 @@ async function impRender(){
   const G = "利多", B = "利空", N = "中性", cmp = (a, b, eps = 0) => a == null || b == null ? 0 : a - b > eps ? 1 : b - a > eps ? -1 : 0;
   const twdR = GL && GL.macro["TWD=X"] ? GL.macro["TWD=X"].rows : null, twd20 = ch20(twdR), oil20 = GL && GL.macro["CL=F"] ? ch20(GL.macro["CL=F"].rows) : null;
   const sox20 = GL && GL.idx["^SOX"] ? ch20(GL.idx["^SOX"].rows) : null;
-  const fedJ = () => !dec ? [N, "無最新決議"] : dec.bp < 0 ? [G, `剛降息 ${Math.abs(dec.bp) / 25} 碼，資金成本下降`] : dec.bp > 0 ? [B, `升息 ${dec.bp / 25} 碼，資金成本上升`] : [N, "維持利率不變"];
+  const fedJ = () => { if (!dec) return [N, "無最新決議"]; const ago = (Date.now() - new Date(dec.d)) / 864e5, when = `${+dec.d.slice(5, 7)}/${+dec.d.slice(8, 10)}`, held = ago > 45 ? "，之後按兵不動" : "";
+    return dec.bp < 0 ? [G, `${when} 降息 ${Math.abs(dec.bp) / 25} 碼${held}，資金成本下降`] : dec.bp > 0 ? [B, `${when} 升息 ${dec.bp / 25} 碼${held}，資金成本偏高`] : [N, "維持利率不變"]; };
   const infJ = (v, pv, tgt) => v == null ? [N, ""] : v <= tgt + .5 ? [G, `接近目標 ${tgt}%，降息空間大`] : cmp(v, pv, .05) > 0 ? [B, `通膨回升（${sgn(v - pv, 2)}），降息預期降溫`] : cmp(v, pv, .05) < 0 ? [G, `通膨降溫（${sgn(v - pv, 2)}）`] : [N, `持平但仍高於目標 ${tgt}%`];
   const nfp = v0("PAYEMS"), ur = v0("UNRATE"), urP = v0("UNRATE", 3), y10 = v0("DGS10"), y10P = v0("DGS10", 20), ph = v0("GACDFSA066MSFRBPHI"), phP = v0("GACDFSA066MSFRBPHI", 1);
   const rs = v0("RSAFS"), um = v0("UMCSENT"), umP = v0("UMCSENT", 1), gdp = v0("A191RL1Q225SBEA"), ppi = v0("PPIFIS"), ppiP = v0("PPIFIS", 1), ic = v0("ICSA");
@@ -5201,7 +5202,7 @@ async function boardUI(){
     tx && tx.day ? {t: `台指期・一般盤（${+tx.month.slice(4)} 月）`, v: fmt(tx.day.last, 0), c: `${sg(tx.day.chg, 0)}（${sg(tx.day.pct)}%）`, col: UPC(tx.day.chg), sub: `${tx.basis >= 0 ? "正" : "逆"}價差 ${fmt(Math.abs(tx.basis), 0)} 點・未平倉 ${fmt(tx.day.oi, 0)} 口`} : null,
     tx && tx.night ? {t: "🌙 台指期・夜盤", v: fmt(tx.night.last, 0), c: `${sg(tx.night.chg, 0)}（${sg(tx.night.pct)}%）`, col: UPC(tx.night.chg), sub: `${md(tx.night.d)} 交易日夜盤（前一晚 15:00～清晨 5:00）・高 ${fmt(tx.night.hi, 0)}／低 ${fmt(tx.night.lo, 0)}・${fmt(tx.night.vol, 0)} 口`} : null,
     tv ? {t: "成交金額（上市）", v: fmt(tv.v, 0) + " 億", sub: `近 20 日平均的 <b>${tv.ratio}</b> 倍${tv.ratio >= 1.3 ? "（爆量）" : tv.ratio <= .7 ? "（量縮）" : ""}`, spark: tv.spark, sc: "#64748B"} : null,
-    br ? {t: "上漲／下跌家數", v: `<span style="color:#CF3A3A">${br.adv}</span> / <span style="color:#1A8F57">${br.dec}</span>`, sub: `漲停 <b style="color:#CF3A3A">${br.lu}</b>・跌停 <b style="color:#1A8F57">${br.ld}</b>`, go: "mk-fear"} : null,
+    br ? {t: "上漲／下跌家數（上市櫃）", v: `<span style="color:#CF3A3A">${br.adv}</span> / <span style="color:#1A8F57">${br.dec}</span>`, sub: `漲停 <b style="color:#CF3A3A">${br.lu}</b>・跌停 <b style="color:#1A8F57">${br.ld}</b>`, go: "mk-fear"} : null,
     a2 ? {t: "站上 200 日線的股票", v: fmt(a2.v, 1) + "%", bar: a2.pct, sub: `近 ${a2.years} 年第 <b>${a2.pct}</b> 百分位${a2.pct <= 10 ? "（極度悲觀）" : a2.pct >= 90 ? "（過熱）" : ""}`, go: "mk-fear"} : null,
     pe ? {t: "大盤本益比（上市櫃）", v: fmt(pe.v, 1) + " 倍", bar: pe.pct, sub: `${pe.years} 第 <b>${pe.pct}</b> 百分位・區間 ${pe.lo}～${pe.hi} 倍`} : null,
     fo ? {t: "外資買賣超（上市）", v: sg(fo.v, 1) + " 億", col: UPC(fo.v), sub: `近 5 日 <b style="color:${UPC(fo.d5)}">${sg(fo.d5, 1)} 億</b>`, spark: fo.spark, sc: UPC(fo.d5), go: "mk-mg"} : null,

@@ -140,10 +140,11 @@ def main():
     fh.save(os.path.join(RAW, "detail.json"), det)
     # 熱力圖
     q = quotes(); items = []
+    import shares; FIX = shares.par_fix(F)
     for c, f in F.items():
         t = f.get("ttm") or {}; cap = t.get("cap")
         if c not in q or not cap: continue
-        cl, ch, vol = q[c]; mcap = cl * cap * 100 / 1e8                 # 億元
+        cl, ch, vol = q[c]; mcap = cl * (FIX.get(c) or cap * 100) / 1e8     # 億元(非 10 元面額用實際股數)
         items.append([c, f.get("name"), f.get("ind") or "其他", round(mcap, 1), ch, cl, vol])
     items.sort(key=lambda x: -x[3])
     fh.save(os.path.join(DATA, "heatmap.json"), dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), date=out["days"][-1] if out["days"] else None, items=items))

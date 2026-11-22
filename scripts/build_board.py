@@ -3,7 +3,7 @@
 """
 import json, os, sys, datetime as dt, urllib.request
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
-import fetch_history as fh
+import fetch_history as fh, shares
 DATA = fh.DATA; UA = {"User-Agent": "Mozilla/5.0"}
 L = lambda n, d=None: json.load(open(os.path.join(DATA, n))) if os.path.exists(os.path.join(DATA, n)) else d
 N = lambda x: float(str(x).replace(",", "").replace("%", "")) if str(x).replace(",", "").replace("%", "").replace("-", "", 1).replace(".", "", 1).isdigit() else None
@@ -42,12 +42,16 @@ def main():
         a2 = [r["a200"] for r in rows]
         B["a200"] = dict(v=x["a200"], pct=pct(a2, x["a200"]), spark=a2[-60:], years=round(len(rows) / 250))
     # 大盤本益比(上市櫃全部公司:總市值 ÷ 近四季稅後淨利),與自己歷年比較
-    F = L("fund/fundamentals.json")["companies"]; ys = sorted({y for f in F.values() for y in f.get("y", {})}, key=int)
-    cap = sum((f["px"] or 0) * f["ttm"]["cap"] * 100 for f in F.values() if f.get("px") and f.get("ttm") and f["ttm"].get("cap") and f["ttm"].get("niP") is not None)
+    F = L("fund/fundamentals.json")["companies"]; ys = sorted({y for f in F.values() for y in f.get("y", {})}, key=int); FIX = shares.par_fix(F)
+    cap = sum((f["px"] or 0) * (FIX.get(c) or f["ttm"]["cap"] * 100) for c, f in F.items() if f.get("px") and f.get("ttm") and f["ttm"].get("cap") and f["ttm"].get("niP") is not None)
+    def capY(c, f, y):   # 歷年市值:非 10 元面額用 年底股價 ÷ 當年 EPS × 淨利(股數隨面額變動,不能用股本換算)
+        d = f["y"][y]
+        if c in FIX and d.get("eps"): return f["pxY"][y] / d["eps"] * d["niP"] * 1000
+        return f["pxY"][y] * d["cap"] * 100
     ni = sum(f["ttm"]["niP"] * 1000 for f in F.values() if f.get("px") and f.get("ttm") and f["ttm"].get("cap") and f["ttm"].get("niP") is not None)
     hist = []
     for y in ys:
-        c = sum(f["pxY"][y] * f["y"][y]["cap"] * 100 for f in F.values() if f.get("pxY", {}).get(y) and f["y"].get(y, {}).get("cap") and f["y"][y].get("niP") is not None)
+        c = sum(capY(k, f, y) for k, f in F.items() if f.get("pxY", {}).get(y) and f["y"].get(y, {}).get("cap") and f["y"][y].get("niP") is not None)
         n = sum(f["y"][y]["niP"] * 1000 for f in F.values() if f.get("pxY", {}).get(y) and f["y"].get(y, {}).get("cap") and f["y"][y].get("niP") is not None)
         if n > 0: hist.append(round(c / n, 1))
     pe = round(cap / ni, 1) if ni > 0 else None

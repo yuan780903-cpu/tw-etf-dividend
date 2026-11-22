@@ -4,7 +4,7 @@
 """
 import json, os, sys, datetime as dt
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
-import fetch_history as fh
+import fetch_history as fh, shares
 DATA = fh.DATA
 L = lambda n, d=None: (json.load(open(os.path.join(DATA, n))) if os.path.exists(os.path.join(DATA, n)) else d)
 F = L("fund/fundamentals.json")["companies"]; EX = L("experts.json", {"stocks": {}})["stocks"]; DV = L("stock_div.json", {"stocks": {}, "years": []})
@@ -12,6 +12,12 @@ RT = L("ratings.json", {"items": []})["items"]; CH = L("chips/raw/detail.json", 
 VPj = L("value_picks.json", {"top": [], "others": []}); VP = {x["id"]: x for x in VPj.get("top", []) + VPj.get("others", []) if isinstance(x, dict) and "id" in x}
 HM = {x[0]: x for x in L("heatmap.json", {"items": []})["items"]}
 OUT = os.path.join(DATA, "stk"); os.makedirs(OUT, exist_ok=True)
+FIX = shares.par_fix(F)          # 非 10 元面額:{代號: 實際股數}
+def cashA(c, e):
+    """每股現金股利;非 10 元面額改用「發放總額 ÷ 目前股數」(面額變更前的每股股利會失真)"""
+    if not e: return None
+    if c in FIX and e.get("tot"): return e["tot"] / FIX[c]
+    return e.get("cash")
 R = lambda x, n=2: None if x is None else round(x, n)
 def ratio(a, b): return None if a is None or not b else a / b * 100
 
@@ -45,19 +51,19 @@ def qtl(xs, q):
     k = (len(xs) - 1) * q; f = int(k); c = min(f + 1, len(xs) - 1)
     return xs[f] + (xs[c] - xs[f]) * (k - f)
 
-def valuation(f, px, cash_hist):
+def valuation(f, px, cash_hist, sh=None):
     """三種方法算 便宜/合理/昂貴 價:股利法、本益比法、股價淨值比法"""
     t = f.get("ttm") or {}; ys = sorted(f["y"], key=int); out = {}
     cs = [v for v in cash_hist if v and v > 0]
     if len(cs) >= 3:
         a = sum(cs) / len(cs); out["div"] = [round(a * 15, 2), round(a * 20, 2), round(a * 30, 2)]
     pes = [f["pxY"].get(y) / f["y"][y]["eps"] for y in ys if f.get("pxY", {}).get(y) and (f["y"][y].get("eps") or 0) > 0]
-    eps = t.get("eps")
+    eps = t["niP"] * 1000 / sh if sh and t.get("niP") is not None else t.get("eps")
     if eps and eps > 0 and len(pes) >= 4:
         out["pe"] = [round(eps * qtl(pes, .2), 2), round(eps * qtl(pes, .5), 2), round(eps * qtl(pes, .8), 2)]
     def bps(d): return d["eqP"] * 10 / d["cap"] if d.get("eqP") and d.get("cap") else None
-    pbs = [f["pxY"].get(y) / bps(f["y"][y]) for y in ys if f.get("pxY", {}).get(y) and bps(f["y"][y]) and bps(f["y"][y]) > 0]
-    b = bps(t)
+    pbs = [] if sh else [f["pxY"].get(y) / bps(f["y"][y]) for y in ys if f.get("pxY", {}).get(y) and bps(f["y"][y]) and bps(f["y"][y]) > 0]
+    b = t["eqP"] * 1000 / sh if sh and t.get("eqP") else bps(t)
     if b and b > 0 and len(pbs) >= 4:
         out["pb"] = [round(b * qtl(pbs, .2), 2), round(b * qtl(pbs, .5), 2), round(b * qtl(pbs, .8), 2)]
     if not out: return None
@@ -104,7 +110,7 @@ def main():
     M = {}
     for c in U:
         f = F[c]; t = f["ttm"]; e = EX.get(c, {}); d = (DV["stocks"].get(c) or {}).get("y", {})
-        cash = (d.get(lastY) or {}).get("cash") if lastY else None
+        cash = cashA(c, d.get(lastY)) if lastY else None
         yld = cash / f["px"] * 100 if cash and f["px"] else 0.0
         streak = 0
         for y in reversed(DV.get("years", [])[:-1]):
@@ -144,8 +150,8 @@ def main():
     VAL, CHK = {}, {}
     yrs = DV.get("years", [])[:-1][-5:]
     for c in U:
-        d = (DV["stocks"].get(c) or {}).get("y", {}); cash5 = [(d.get(y) or {}).get("cash") for y in yrs]
-        VAL[c] = valuation(F[c], F[c]["px"], cash5); CHK[c] = checks(F[c], cash5)
+        d = (DV["stocks"].get(c) or {}).get("y", {}); cash5 = [cashA(c, d.get(y)) for y in yrs]
+        VAL[c] = valuation(F[c], F[c]["px"], cash5, FIX.get(c)); CHK[c] = checks(F[c], cash5)
     # ---- 輸出:評分總表(篩選器用)----
     sc = {c: [F[c]["name"], F[c].get("ind"), F[c]["px"], *scores[c], R(M[c]["yld"], 2), R(M[c]["pe"], 1), R(M[c]["roe"], 1), chip[c][0], sum(1 for x in CHK[c] if not x[1]), (VAL[c] or {}).get("zone"), M[c]["streak"]] for c in U}
     fh.save(os.path.join(DATA, "scores.json"), dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), cols=["名稱", "產業", "股價", "價值", "成長", "獲利", "健康", "股利", "總評", "殖利率", "本益比", "ROE", "主力", "體質警示數", "估價", "連續配息"], stocks=sc,
@@ -184,10 +190,10 @@ def main():
                    om=[R(ratio(f["y"][y].get("op"), f["y"][y].get("rev")), 1) for y in ys], debt=[R(ratio(f["y"][y].get("tl"), f["y"][y].get("ta")), 1) for y in ys],
                    bps=[R(f["y"][y]["eqP"] * 10 / f["y"][y]["cap"], 2) if f["y"][y].get("eqP") and f["y"][y].get("cap") else None for y in ys], pxY=[f.get("pxY", {}).get(y) for y in ys])
         d = (DV["stocks"].get(c) or {}).get("y", {})
-        dv = [[y, R(d[y].get("cash"), 3), R(d[y].get("stk"), 3), d[y].get("pay"), R(d[y]["cash"] / f["px"] * 100, 2) if d[y].get("cash") and f["px"] else None] for y in DV.get("years", []) if y in d]
+        dv = [[y, R(d[y].get("cash"), 3), R(d[y].get("stk"), 3), d[y].get("pay"), R(cashA(c, d[y]) / f["px"] * 100, 2) if cashA(c, d[y]) and f["px"] else None] for y in DV.get("years", []) if y in d]
         vp = VP.get(c); hm = HM.get(c)
         doc = dict(c=c, n=f["name"], ind=f.get("ind"), mkt=f.get("mkt"), px=f["px"], chg=hm[4] if hm else None, mcap=hm[3] if hm else None, ttmL=f.get("ttmLabel"),
-                   s=scores[c], chip=chip[c], val=VAL[c], chk=CHK[c], bpsT=R(t["eqP"] * 10 / t["cap"], 2) if t.get("eqP") and t.get("cap") else None, m={k: R(m[k], 2) for k in ("pe", "pb", "yld", "roe", "gm", "om", "debt", "cur", "revG3", "epsG", "yoy3", "cfoQ", "pay")} | dict(streak=m["streak"], eps=t.get("eps")),
+                   s=scores[c], chip=chip[c], val=VAL[c], chk=CHK[c], bpsT=R(t["eqP"] * 1000 / FIX[c], 2) if c in FIX and t.get("eqP") else R(t["eqP"] * 10 / t["cap"], 2) if t.get("eqP") and t.get("cap") else None, m={k: R(m[k], 2) for k in ("pe", "pb", "yld", "roe", "gm", "om", "debt", "cur", "revG3", "epsG", "yoy3", "cfoQ", "pay")} | dict(streak=m["streak"], eps=R(t["niP"] * 1000 / FIX[c], 2) if c in FIX and t.get("niP") is not None else t.get("eps")),
                    fin=fin, rv=(m["rs"] or {}).get("ser", [])[-24:], dv=dv, ch=CH.get(c), cs=CS.get(c), rt=rtg.get(c, [])[:10], ex=EX.get(c, {}).get("hit", []),
                    vp=dict(rank=vp.get("rank"), score=vp.get("score"), zone=vp.get("zone"), band=vp.get("band"), mos=vp.get("mos"), iv=vp.get("iv"), why=vp.get("why")) if vp else None)
         fh.save(os.path.join(OUT, f"{c}.json"), doc); n += 1

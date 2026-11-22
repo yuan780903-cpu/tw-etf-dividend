@@ -10,10 +10,11 @@
 正常股價區間:歷年本益比 25% / 50% / 75% 分位 × 近四季 EPS
 內在價值:自由現金流(或 EPS)以過去成長率(上限 10%)成長 10 年、折現率 9%、永續成長 2%
 """
-import json, os, math, statistics as st, datetime as dt
+import json, os, sys, math, statistics as st, datetime as dt
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import shares
 DATA = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
 F = json.load(open(os.path.join(DATA, "fund", "fundamentals.json")))
-YEARS = F["years"]
+YEARS = F["years"]; FIX = shares.par_fix(F["companies"])
 
 def r(x, n=1): return None if x is None else round(x, n)
 def div(a, b): return a / b if a is not None and b not in (None, 0) else None
@@ -49,10 +50,10 @@ for code, c in F["companies"].items():
                       op=d.get("op"), ta=d.get("ta"), cl=d.get("cl"), ncl=d.get("ncl"), rev=d.get("rev"))
     last = ser[ys[-1]]; ttm = c.get("ttm") or {}
     cap = (ttm.get("cap") or get(ys[-1]).get("cap"))                     # 股本(仟元) -> 股數(千股) = cap/10
-    shares_k = cap / 10 if cap else None
+    shares_k = FIX[code] / 1000 if code in FIX else cap / 10 if cap else None   # 非 10 元面額用實際股數
     px = c["px"]; mcap = px * shares_k * 1000 / 1e8 if shares_k else None   # 億元
     if not mcap or mcap < 50: continue
-    eps_ttm = ttm.get("eps") if ttm.get("eps") is not None else last["eps"]
+    eps_ttm = ttm["niP"] * 1000 / FIX[code] if code in FIX and ttm.get("niP") is not None else ttm.get("eps") if ttm.get("eps") is not None else last["eps"]
     roes = [ser[y]["roe"] for y in ys]; eps = [ser[y]["eps"] for y in ys]
     roe_avg = mean(roes); roe_min5 = min([x for x in roes[-5:] if x is not None], default=None)
     pos_years = sum(1 for x in eps if x is not None and x > 0)

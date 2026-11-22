@@ -4,7 +4,7 @@
 """
 import json, os, sys, statistics as st, datetime as dt, urllib.request
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
-import fetch_history as fh
+import fetch_history as fh, shares
 DATA = fh.DATA; F = json.load(open(os.path.join(DATA, "fund", "fundamentals.json")))
 YEARS = F["years"]; Y = [str(y) for y in YEARS]
 UA = {"User-Agent": "Mozilla/5.0"}
@@ -101,13 +101,16 @@ def divs():
     return json.load(open(p))["stocks"] if os.path.exists(p) else {}
 
 def main():
-    dpct = director_pct(); DV = divs()
+    dpct = director_pct(); DV = divs(); FIX = shares.par_fix(F["companies"])
     stocks, passn = {}, {e["id"]: 0 for e in EXPERTS}
     for c, d in F["companies"].items():
         t = d.get("ttm") or {}; px = d.get("px"); vol = d.get("vol5")
         if not px or not t: continue
         eps, rev, pt, gp, op = ser(d, "eps"), ser(d, "rev"), ser(d, "pt"), ser(d, "gp"), ser(d, "op")
-        cap = t.get("cap"); sh = cap * 100 if cap else None          # 股本(仟元)→股數
+        cap = t.get("cap"); sh = FIX.get(c) or (cap * 100 if cap else None)   # 股本(仟元)→股數;非 10 元面額用實際發行股數
+        if c in FIX:   # 面額變更前的每股數字會失真:EPS 改用 淨利 ÷ 目前股數
+            t = dict(t, eps=t["niP"] * 1000 / sh if t.get("niP") is not None else None)
+            eps = [((d["y"].get(y) or {}).get("niP") or 0) * 1000 / sh if (d["y"].get(y) or {}).get("niP") is not None else None for y in Y]
         bvps = t["eqP"] * 1000 / sh if sh and t.get("eqP") else None
         pe = px / t["eps"] if t.get("eps") and t["eps"] > 0 else None
         pb = px / bvps if bvps and bvps > 0 else None
@@ -131,7 +134,7 @@ def main():
         r5, f5, c5, n5 = roeY[-5:], fcfY[-5:], cfo[-5:], niP[-5:]
         cfoNi5 = sum(c5) / sum(n5) * 100 if all(x is not None for x in c5 + n5) and sum(n5) > 0 else None
         dy = (DV.get(c) or {}).get("y", {}); cash5 = [(dy.get(y) or {}).get("cash") for y in Y[-5:]]; pay5 = [(dy.get(y) or {}).get("pay") for y in Y[-5:]]
-        lastCash = (dy.get(Y[-1]) or {}).get("cash")
+        le = dy.get(Y[-1]) or {}; lastCash = le["tot"] / sh if c in FIX and le.get("tot") and sh else le.get("cash")
         yld = lastCash / px * 100 if lastCash and px else None
         payAvg = avg([x for x in pay5 if x is not None]) if any(x is not None for x in pay5) else None
         revTg = g(t.get("rev"), last.get("rev")) if last.get("rev") else None
