@@ -1564,6 +1564,10 @@ button{-webkit-tap-highlight-color:transparent}
   .hacts:has(.btn-bell:not([hidden])){grid-template-columns:minmax(0,3fr) minmax(0,2.2fr) 44px 40px!important}
   .hacts .btn-th{height:40px!important;width:40px!important}
 }
+/* 大師財富 */
+.ex-t em.ex-w{display:flex;flex-direction:column;font-style:normal;font-weight:800;font-size:13px;color:#B45309;margin-top:2px;line-height:1.3}.ex-t em.ex-w i{font-style:normal;font-weight:500;font-size:11px;color:var(--sub)}.ex-t em.ex-w.na{color:var(--sub);font-weight:700}
+.ex-grid .ex-c{padding-bottom:30px!important;align-items:flex-start}.ex-grid .ex-c .xav{margin-top:4px}
+.ex-wb{background:var(--bg);border-radius:14px;padding:12px 14px;margin-bottom:8px}.ex-wb>b{font-size:24px;font-weight:900;color:#B45309;margin-right:8px}.ex-wb>span{color:var(--sub);font-weight:700}.ex-wb p{margin:6px 0 0;font-size:14px;line-height:1.7}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="巴菲遠">
@@ -4661,6 +4665,7 @@ async function loadEx(){
   if (EXD) return;
   $("#xpEx").innerHTML = `<div class="box"><div class="sk" style="height:300px"></div></div>`;
   EXD = await getJ("experts");
+  try { const G = await getJ("global"), r = G && G.macro && G.macro["TWD=X"] && G.macro["TWD=X"].rows; if (r && r.length) USDTWD = r[r.length - 1][1]; } catch (e) {}
   if (!EXD) { $("#xpEx").innerHTML = `<div class="box empty">專家選股資料載入失敗，請稍後重新整理</div>`; return; }
   EX.sel = [EXD.experts[2].id];               // 預設選巴菲特
   renderEx();
@@ -4671,9 +4676,9 @@ function renderEx(){
       <small>財報：${EXD.years} 年＋${EXD.ttm} 近四季・${EXD.filter}・資料更新 ${EXD.updated}・${EXD.source}</small></div></div>
     <div class="ex-grid">${E.map((e, i) => `${i == 0 ? `<div class="ex-gh">🏛️ 經典大師</div>` : e.gen == "new" && E[i - 1].gen != "new" ? `<div class="ex-gh">🌱 新生代大師 <small>依本人公開著作、訪談、股東信歸納的簡化條件，非本人推薦</small></div>` : ""}<div class="ex-c ${EX.sel.includes(e.id) ? "on" : ""} ${e.gen == "new" ? "nw" : ""}" data-id="${e.id}">${e.gen == "new" ? `<i class="ex-rg">${e.region == "台灣" ? "🇹🇼 台灣" : "🌏 國外"}</i>` : ""}
         <label class="ex-ck"><input type="checkbox" ${EX.sel.includes(e.id) ? "checked" : ""}><span></span></label>
-        ${exAvatar(e.id, 72)}<div class="ex-t"><b>${e.name}</b><small>${e.en}・${e.tag}</small><em>符合 <b class="num">${e.n}</b> 家</em></div>
+        ${exAvatar(e.id, 72)}<div class="ex-t"><b>${e.name}</b><small>${e.en}・${e.tag}</small><em>符合 <b class="num">${e.n}</b> 家</em>${exWealthLine(e.id)}</div>
         <button class="ex-more" data-m="${e.id}">選股邏輯 ›</button></div>`).join("")}</div>
-    <p class="mknote">※ 大師頭像為原創插畫示意，非本人照片。</p>
+    <p class="mknote">※ 大師頭像為原創插畫示意，非本人照片。💰 財富為公開報導或媒體估算，標示來源與可信度，沒有公開數字的不猜測；美元換算台幣用最新匯率。</p>
     <div class="ex-bar"><div class="ex-mode"><b>多位大師時：</b><button data-mode="and" class="${EX.mode == "and" ? "on" : ""}">同時符合（交集）</button><button data-mode="or" class="${EX.mode == "or" ? "on" : ""}">符合任一（聯集）</button></div>
       <div class="ex-ops"><button id="exAll">全選</button><button id="exNone">清除</button><label><input type="checkbox" id="exNear" ${EX.near ? "checked" : ""}> 只差一個條件也列出</label></div></div>
     <div class="bar"><input id="exQ" placeholder="🔍 搜尋代號或名稱" value="${EX.q}"><select id="exInd"><option>全部</option>${inds.map(i => `<option ${EX.ind == i ? "selected" : ""}>${i}</option>`).join("")}</select>
@@ -4692,7 +4697,7 @@ function exInfo(id){
   const e = EXD.experts.find(x => x.id == id);
   $("#dlg").innerHTML = `<div class="dhd" style="background:linear-gradient(135deg,${AVC[id].bg[0]},${AVC[id].bg[1]})"><i class="grab"></i><button class="x" onclick="closeDetail()" aria-label="關閉">✕</button>
     <div style="display:flex;gap:16px;align-items:center">${exAvatar(id, 88)}<div><div style="opacity:.85;font-weight:600">${e.en}・${e.tag}</div><h2>${e.name}的選股法</h2><div class="tags"><span>全台符合 ${e.n} 家</span></div></div></div></div>
-    <div class="dbd" style="display:block"><div class="box"><h3 class="mm-h3">💬 白話說明</h3><p style="line-height:1.85;font-size:15px">${e.say}</p>
+    <div class="dbd" style="display:block"><div class="box"><h3 class="mm-h3">💬 白話說明</h3><p style="line-height:1.85;font-size:15px">${e.say}</p>${exWealthBox(id)}
       <h3 class="mm-h3">📏 選股條件（全部都要符合）</h3><ol class="ex-rules">${e.rules.map((r, i) => `<li><b>${r}</b><small>${exWhy(id, i)}</small></li>`).join("")}</ol>
       <p class="mknote">共同過濾：排除股價 5 元以下、五日均量 500 張以下的冷門股。條件參考 MoneyDJ 大師選股；流動比率依格拉罕原意採 200%。</p>
       <button class="lgo" onclick="closeDetail();EX.sel=['${id}'];EX.page=60;renderEx();document.querySelector('#exRes').scrollIntoView({behavior:'smooth'})">看 ${e.name} 選出的 ${e.n} 家公司 →</button></div></div>`;
@@ -6614,6 +6619,46 @@ async function mmapUI(){
     <p class="in-say"><b>白話判讀：</b>目前 ${sm.n} 個可信度中以上的指標，依「現在的狀態」回看歷史，台股之後 6 個月的中位數是 ${sgn(sm.med, 1)}%，${sm.med > c.r + 1 ? "比平常好" : sm.med < c.r - 1 ? "比平常差" : "跟平常差不多"}（平常 ${sgn(c.r, 1)}%）。其中 ${sm.better} 項指向比平常好、${sm.worse} 項比平常差。指標「高於／低於基準」不一定是壞事，要看歷史上那一區之後台股怎麼走；把滑鼠停在每一列可看完整說明。</p>
     <div class="gx-tw" style="max-height:none"><table class="gx-tb mm-tb"><thead><tr><th>指標</th><th>目前</th><th>基準（合理值）</th><th>狀態</th><th>目前這一區<small>之後 6 個月</small></th><th>對應指數</th><th>回到基準區<small>之後 6 個月</small></th><th>基準對應指數</th><th>可信度</th></tr></thead><tbody>${rows}</tbody></table></div>
     <p class="mknote">${esc(M.note)}。更新 ${M.updated}</p>`;
+}
+
+/* ================= 💰 大師財富估算(公開報導/媒體估算,標來源與可信度;未公開不猜)================= */
+var USDTWD = 31;
+const WEALTH = {
+  buffett: {usd: 149e9, src: "Forbes 即時富豪榜", d: "2026/11/11", lv: "Forbes", url: "https://www.forbes.com/profile/warren-buffett/", note: "11/16 宣布再捐出約 54.7 億美元的波克夏股票給四個家族基金會，數字會再往下調；他承諾把 99% 以上財產捐出。2026 年 11 月排全球第 10 名。"},
+  kfisher: {usd: 15e9, src: "Forbes 2026 美國富豪榜（媒體轉述）", d: "2026", lv: "Forbes", url: "https://www.forbes.com/profile/kenneth-fisher/", note: "主要來自自己創辦的 Fisher Investments 股權（2024 年賣出少數股權時，公司估值約 128 億美元）。也是 Forbes 專欄寫最久的作者（1984～2017）。"},
+  lynch: {usd: 450e6, src: "Celebrity Net Worth 等媒體估算", d: "2026", lv: "媒體估算", note: "沒有官方數字；2006 年《波士頓雜誌》估 3.52 億美元。主要來自在富達管理麥哲倫基金的薪酬與持股。"},
+  price: {usd: 1.23e9, src: "Forbes（2017 年）", d: "2017/05", lv: "Forbes", dead: "2022 年過世", note: "1996 年把 Heine Securities（共同股份基金）賣給富蘭克林約 6.7 億美元；這是過世前的最後公開數字。"},
+  graham: {none: 1, dead: "1976 年過世", note: "沒有可靠的遺產紀錄，網路上 5 千萬～2 億美元的說法都沒有出處。他一生捐了不少錢，最大的財富是教出巴菲特等學生、寫下《智慧型股票投資人》。"},
+  burry: {usd: 300e6, range: "2～3.5 億美元", src: "多家媒體估算", d: "2026", lv: "媒體估算", note: "本人從未公開；2008 年做空次貸，替客戶賺約 7 億美元、自己約 1 億美元（電影《大賣空》主角）。"},
+  wood: {usd: 250e6, src: "Celebrity Net Worth（Bloomberg 估約 2.2 億美元）", d: "2026/06", lv: "媒體估算", note: "主要是 ARK Invest 的股權，跟著 ARK 基金漲跌：2021 年高峰約 4 億美元、2022 年低點約 1.5 億美元。"},
+  pabrai: {usd: 150e6, range: "1.5 億～10 億美元（說法差很多）", src: "網路估算", d: "2026", lv: "粗估", note: "本人未公開；10 億美元的說法多半把他管理的基金規模也算進去了。財富來自基金管理費、早年賣掉科技公司 TransTech、版稅。"},
+  osh: {none: 1, note: "未公開。2021 年把自己的 OSAM（管理約 64 億美元）賣給富蘭克林坦伯頓，成交價沒有公開。"},
+  murphy: {none: 1, note: "未公開。主要收入是科技股投資通訊（California Technology Stock Letter、New World Investor），寫了 30 多年。"},
+  yusko: {none: 1, note: "未公開。網路上 2～3 億美元的說法沒有可靠出處；他的 Morgan Creek 管理約 30 億美元，那是客戶的錢，不是他個人的。"},
+  sivy: {none: 1, note: "未公開。他是《Money》雜誌的投資專欄作家，靠寫作與編輯，不是基金經理人。"},
+  dorsey: {none: 1, note: "未公開。Dorsey Asset Management 申報的持股約 12.6 億美元（2026 年第一季），那是客戶的錢。"},
+  raohs: {twd: 1e8, src: "鏡週刊 2024 年報導", d: "2024", lv: "媒體報導", note: "2010 年資產 500 萬元就辭職當全職投資人；2023 年重押 AI 股，資產滾到約 1 億元。"},
+  mj: {none: 1, note: "未公開。主要事業是「超級數字力」財報課程（學員超過 2 萬人）與著作；課程募資金額是營收，不等於個人資產。"},
+  chenzm: {twd: 1e8, plus: 1, src: "經濟日報作者簡介（本人自述）", d: "2026", lv: "本人自述", note: "自述「九位數身價、年領千萬股利」；2019 年報導約 3,000 萬元，靠存金融股、把股利再買回去一路滾大。"},
+  warrentw: {twd: 7.5e7, src: "鏡週刊 2025 年報導（本人自述）", d: "2025/08", lv: "本人自述", note: "存股 21 年累積約 7,500 萬元，年領約 300 萬元股息；34 歲時股票只有 116 萬元。"},
+};
+function wFmt(x, cur){                                   // 金額 → 白話(億/兆)
+  if (cur == "usd") return x >= 1e10 ? `${fmt(x / 1e8, 0)} 億美元` : x >= 1e9 ? `${fmt(x / 1e8, 1).replace(/\.0$/, "")} 億美元` : `${fmt(x / 1e8, x >= 1e8 ? 1 : 2).replace(/\.0$/, "")} 億美元`;
+  return x >= 1e12 ? `${fmt(x / 1e12, 1)} 兆元` : x >= 1e8 ? `${fmt(x / 1e8, 1).replace(/\.0$/, "")} 億元` : `${fmt(x / 1e4, 0)} 萬元`;
+}
+function wVal(w){
+  if (!w || w.none) return {v: "未公開", sub: w && w.dead ? w.dead : "沒有可靠數字，不猜"};
+  if (w.usd) { const t = w.usd * USDTWD; return {v: `約 ${wFmt(w.usd, "usd")}`, sub: `≈ 新台幣 ${wFmt(t, "twd")}・${w.lv}${w.d < "2025" ? " " + w.d.slice(0, 4) + " 年" : ""}${w.dead ? "・" + w.dead : ""}`}; }
+  return {v: `約 ${wFmt(w.twd, "twd")}${w.plus ? "以上" : ""}`, sub: w.lv};
+}
+function exWealthLine(id){ const w = WEALTH[id], x = wVal(w); return `<em class="ex-w ${!w || w.none ? "na" : ""}">💰 ${x.v}<i>${x.sub}</i></em>`; }
+function exWealthBox(id){
+  const w = WEALTH[id]; if (!w) return ""; const x = wVal(w);
+  const LV = {Forbes: "#1A8F57", 媒體報導: "#2F5BEA", 媒體估算: "#B45309", 本人自述: "#7C3AED", 粗估: "#CF3A3A"};
+  return `<h3 class="mm-h3">💰 目前財富估算</h3><div class="ex-wb"><b class="num">${x.v}</b>${w.none ? "" : `<span>${x.sub.split("・")[0]}</span>`}
+    ${w.none ? "" : `<p><span class="mm-st" style="--c:${LV[w.lv] || "#64748B"}">${w.lv}</span> 來源：${w.url ? `<a href="${w.url}" target="_blank" rel="noopener">${w.src}</a>` : w.src}・${w.d}${w.range ? `・估計範圍 ${w.range}` : ""}${w.dead ? `・${w.dead}` : ""}</p>`}
+    <p>${w.note}</p></div>
+    <p class="kid-mini">👶 <b>白話</b>：這是「大家估他身家有多少」。很多大師的錢主要來自幫別人管錢收的管理費、自己公司的股權、寫書或上課，不全是自己炒股賺的；所以財富多寡不等於選股法好不好、適不適合你。可信度：Forbes＞媒體報導＞本人自述＞媒體估算＞粗估。</p>`;
 }
 </script>
 </body>
