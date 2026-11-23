@@ -105,6 +105,8 @@ def step(script, *args, quiet=False):
 
 def main():
     global used
+    if os.environ.get("MODE") == "ptt":     # iPhone 上傳完 PTT 後:只重算 PTT 熱度(約 1 分鐘)
+        subprocess.run([sys.executable, os.path.join(HERE, "fetch_ptt.py")], timeout=300); return
     new_ids = []
     try:                       # ETF 價格/配息階段:任何意外都不能讓後面的大盤、選股、驗證步驟停擺
         # 1. ETF 清單(新上市)

@@ -7,10 +7,10 @@ on:
   workflow_dispatch:            # 網頁「一鍵更新」或 GitHub 頁面手動觸發
     inputs:
       mode:
-        description: "quick=快速(只更新大盤/法人/籌碼,約10～15分) full=完整"
+        description: "quick=快速(只更新大盤/法人/籌碼,約3分) full=完整 ptt=只算PTT熱度(iPhone上傳後)"
         default: full
         type: choice
-        options: [full, quick]
+        options: [full, quick, ptt]
 permissions:
   contents: write
 concurrency:
@@ -28,12 +28,14 @@ jobs:
         with:
           python-version: "3.12"
       - name: 還原市場廣度快取(近一年全部個股收盤價,不進 git)
+        if: github.event.inputs.mode != 'ptt'
         uses: actions/cache@v4
         with:
           path: data/breadth/raw
           key: breadth-${{ github.run_id }}
           restore-keys: breadth-
       - name: 還原財報快取(fundamentals.json 太大不進 git;快速模式的籌碼/本益比要用)
+        if: github.event.inputs.mode != 'ptt'
         uses: actions/cache@v4
         with:
           path: data/fund/fundamentals.json

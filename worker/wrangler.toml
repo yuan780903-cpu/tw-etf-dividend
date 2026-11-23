@@ -6,3 +6,8 @@ workers_dev = true
 # 看門狗:台北 18:30、23:30(週一～五)與隔天 07:30 檢查資料是否更新成功
 [triggers]
 crons = ["30 10 * * 1-5", "30 15 * * 1-5", "30 23 * * 1-5"]
+
+# PTT 股版:站長 iPhone 捷徑讀 PTT 後上傳到這裡(PTT 擋雲端主機),雲端更新時取用
+[[kv_namespaces]]
+binding = "PTTKV"
+id = "25ea48002ce84ea98d00e4083c6ba8bd"
