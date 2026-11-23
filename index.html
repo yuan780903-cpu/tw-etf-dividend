@@ -6365,7 +6365,7 @@ async function pttUI(){
   const mx = Math.max(...P.top.map(x => x[2]), 1);
   host.innerHTML = `<div class="ptt-2"><div><h4>🔥 最常被討論（最近 ${P.n} 篇標題）</h4>${P.top.slice(0, 15).map(x => `<div class="ptt-r" data-c="${x[0]}"><b>${x[0]} ${x[1]}</b><span class="ptt-bar"><i style="width:${x[2] / mx * 100}%"></i></span><em>${x[2]} 篇${x[3] ? `・看多 ${x[3]}` : ""}${x[4] ? `・看空 ${x[4]}` : ""}</em></div>`).join("")}</div>
     <div><h4>🎯 最新 [標的] 文（網友的多空看法）</h4>${(P.tgt || []).slice(0, 10).map(x => `<a class="ptt-a" href="${x.u}" target="_blank" rel="noopener">${esc(x.t)}<small>${x.d}・推 ${x.p}</small></a>`).join("") || `<p class="mknote">最近沒有標的文</p>`}</div></div>
-    <p class="mknote">⚠️ 討論熱度≠會漲。歷史上散戶最熱烈討論時常是短線高點。只統計標題、不收集帳號。更新 ${P.updated}</p>`;
+    <p class="mknote">⚠️ 討論熱度≠會漲。歷史上散戶最熱烈討論時常是短線高點。只統計標題、不收集帳號。PTT 不開放雲端主機讀取，改由站長的電腦每天 08:10、12:40、15:50、21:10 抓取（電腦關機時會停在上一次）。更新 ${P.updated}</p>`;
   host.querySelectorAll(".ptt-r[data-c]").forEach(r => r.onclick = () => openStock(r.dataset.c));
 }
 /* ---- 🐳 大戶吸籌 ---- */
