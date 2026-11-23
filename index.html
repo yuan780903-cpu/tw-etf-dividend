@@ -1453,6 +1453,25 @@ button{-webkit-tap-highlight-color:transparent}
 .nav-b em.ok{background:#EEF2FF;color:#2F5BEA}.nav-b em.hi{background:#FDECEC;color:#CF3A3A}.nav-b em.lo{background:#E8F7EE;color:#1A8F57}
 .nav-l{display:block;font-size:12px;margin-bottom:2px;opacity:.95}
 @media(min-width:1301px){.bd{grid-template-columns:repeat(7,minmax(0,1fr))}}
+/* 價位提醒 */
+.px-b{border:1px dashed var(--line);background:var(--panel);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap}.px-b.on{border:1px solid #F59E0B;background:#FFF7E6;color:#B45309}
+#pxDlg{position:fixed;inset:0;z-index:9860;background:rgba(10,15,30,.45);display:none;align-items:center;justify-content:center;padding:16px}#pxDlg.on{display:flex}
+.px-box{background:var(--panel);border-radius:18px;padding:18px;width:min(420px,100%);box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}.px-box h3{margin:0 0 6px}
+.px-box label{display:block;margin:10px 0;font-weight:700;font-size:14px}.px-box input{width:110px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:16px;margin:0 6px;background:var(--bg);color:var(--ink)}
+.px-act{display:flex;gap:8px;margin-top:12px}.px-act button{flex:1;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:11px;padding:10px;font-weight:800;cursor:pointer}.px-act .ok{background:#2F5BEA;color:#fff;border:0}
+.bp-px{margin:6px 0 2px}
+/* ===== 投資組合 ===== */
+.pt-k{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:8px 0}.pt-k div{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.pt-k .hi{background:linear-gradient(135deg,#2448C8,#4C79F2);color:#fff;border:0}.pt-k .hi small,.pt-k .hi i{color:rgba(255,255,255,.85)}.pt-k small{display:block;font-size:12.5px;color:var(--sub);font-weight:700}.pt-k b{display:block;font-size:22px;margin:2px 0}.pt-k i{font-style:normal;font-size:12px;color:var(--sub)}
+.pt-vs{border-radius:14px;padding:11px 14px;font-size:14px;line-height:1.7;margin:8px 0}.pt-vs.win{background:#FFF1F1;border:1px solid #F5B3B3}.pt-vs.lose{background:#EEF7F1;border:1px solid #A7E3C2}
+:root[data-theme="dark"] .pt-vs.win{background:#3a1f22}:root[data-theme="dark"] .pt-vs.lose{background:#16302a}
+.pt-act{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}.pt-act button,.pt-up{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:11px;padding:9px 14px;font-weight:800;cursor:pointer;font-size:13.5px}.pt-act .ok{background:#2F5BEA;color:#fff;border:0}.pt-fee{font-size:13px;margin-left:auto}.pt-fee select{border:1px solid var(--line);border-radius:8px;padding:5px;background:var(--panel);color:var(--ink)}
+.pt-imp{background:#FFF7E6;border:1px solid #F5C26B;border-radius:12px;padding:9px 12px;font-size:13.5px;margin:6px 0}.pt-imp button{border:0;background:#F59E0B;color:#fff;font-weight:800;border-radius:8px;padding:5px 10px;margin-left:6px;cursor:pointer}
+.pt-f{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}.pt-f label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;font-weight:700;color:var(--sub)}.pt-f input,.pt-f select{border:1px solid var(--line);border-radius:9px;padding:8px;font-size:15px;background:var(--panel);color:var(--ink);min-width:0}.pt-f .pt-act,.pt-f p{grid-column:1/-1}
+.pt-2{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:14px}.pt-tb td small{display:block;font-size:11px}
+.pt-dn{display:flex;gap:10px;align-items:center}.pt-dn svg{width:130px;height:130px;flex:none}.pt-dn ul{list-style:none;margin:0;padding:0;font-size:12.5px;flex:1;min-width:0}.pt-dn li{display:flex;align-items:center;gap:6px;margin:3px 0}.pt-dn li i{width:10px;height:10px;border-radius:3px;flex:none}.pt-dn li b{margin-left:auto}
+.pt-warn{background:#FDECEC;border-radius:10px;padding:8px 10px;font-size:13px;color:#CF3A3A;font-weight:700}.pt-log summary{cursor:pointer;font-weight:800;color:#2F5BEA;margin:10px 0}
+@media(max-width:900px){.pt-2{grid-template-columns:1fr}.pt-k{grid-template-columns:repeat(2,minmax(0,1fr))}.pt-k .hi{grid-column:1/-1}.pt-f{grid-template-columns:repeat(2,minmax(0,1fr))}.pt-fee{margin-left:0}}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="巴菲遠">
@@ -1488,7 +1507,7 @@ button{-webkit-tap-highlight-color:transparent}
     <span class="mini" id="tabMini" data-tab="calc"></span>
   </nav>
 
-  <div class="page" id="pg-vp"><div class="bd-wrap" id="xpBoard"><div class="bd-hd"><h2>📋 選股總表</h2><span>點卡片直接看名單</span></div><div class="bd" id="xpTiles"><div class="sk" style="height:120px;grid-column:1/-1"></div></div></div><div id="xpNav"></div><div id="xpKid"></div><div id="xpEx"></div><div id="xpDc"></div><div id="xpQs"></div><div id="vp"></div><div id="xpCk"></div><div id="xpRv"></div><div id="xpRt"></div><div id="xpDv"></div><div id="xpEv"></div><div id="xpWl"></div><div id="xpRd"></div><div id="xpRk"></div></div>
+  <div class="page" id="pg-vp"><div class="bd-wrap" id="xpBoard"><div class="bd-hd"><h2>📋 選股總表</h2><span>點卡片直接看名單</span></div><div class="bd" id="xpTiles"><div class="sk" style="height:120px;grid-column:1/-1"></div></div></div><div id="xpNav"></div><div id="xpKid"></div><div id="xpEx"></div><div id="xpDc"></div><div id="xpQs"></div><div id="vp"></div><div id="xpCk"></div><div id="xpRv"></div><div id="xpRt"></div><div id="xpDv"></div><div id="xpEv"></div><div id="xpWl"></div><div id="xpRd"></div><div id="xpRk"></div><div id="xpPt"></div></div>
   <div class="page" id="pg-mkt"><div id="mkt"></div></div>
   <div class="page" id="pg-macro"><div id="macro"></div></div>
 
@@ -4421,7 +4440,7 @@ async function admCfg(){
 memBadge(); if (!isPaid()) lgShow(); memCheck(); setInterval(memCheck, 10 * 60e3);
 /* ================= 🧠 專家選股:大師選股 / 巴菲遠綜合 / 券商評等 / 股利排行 ================= */
 let XP = {sub: (() => { try { return localStorage.getItem("bfy_xp") || "ex"; } catch (e) { return "ex"; } })()}, EXD = null, RTD = null, DVD = null;
-const XSUB = [["rd", "⚡ 盤中雷達"], ["rk", "⚠️ 風險股"], ["ex", "🧠 大師選股"], ["dc", "💎 定存股"], ["qs", "❄️ 量化評分"], ["vp", "🏆 綜合 Top150"], ["ck", "🏦 籌碼排行"], ["rv", "📈 月營收"], ["rt", "📣 券商評等"], ["dv", "💰 股利"], ["ev", "📅 法說會・內部人"], ["wl", "⭐ 自選股"]];
+const XSUB = [["rd", "⚡ 盤中雷達"], ["pt", "💼 投資組合"], ["rk", "⚠️ 風險股"], ["ex", "🧠 大師選股"], ["dc", "💎 定存股"], ["qs", "❄️ 量化評分"], ["vp", "🏆 綜合 Top150"], ["ck", "🏦 籌碼排行"], ["rv", "📈 月營收"], ["rt", "📣 券商評等"], ["dv", "💰 股利"], ["ev", "📅 法說會・內部人"], ["wl", "⭐ 自選股"]];
 function loadXP(){
   if (!$("#xpNav").innerHTML) $("#xpNav").innerHTML = `<div class="xp-nav">${XSUB.map(([k, n]) => `<button data-k="${k}">${n}</button>`).join("")}</div>`;
   $("#xpNav").onclick = e => { const b = e.target.closest("button[data-k]"); if (b) { XP.sub = b.dataset.k; try { localStorage.setItem("bfy_xp", XP.sub); } catch (er) {} xpShow(); } };
@@ -4430,9 +4449,9 @@ function loadXP(){
 function xpShow(){
   $("#xpNav").querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.k == XP.sub));
   if (!XSUB.some(x => x[0] == XP.sub)) XP.sub = "ex";
-  [["ex", "#xpEx"], ["dc", "#xpDc"], ["qs", "#xpQs"], ["vp", "#vp"], ["ck", "#xpCk"], ["rv", "#xpRv"], ["rt", "#xpRt"], ["dv", "#xpDv"], ["ev", "#xpEv"], ["wl", "#xpWl"], ["rd", "#xpRd"], ["rk", "#xpRk"]].forEach(([k, s]) => $(s).style.display = k == XP.sub ? "" : "none"); kidSub();
+  [["ex", "#xpEx"], ["dc", "#xpDc"], ["qs", "#xpQs"], ["vp", "#vp"], ["ck", "#xpCk"], ["rv", "#xpRv"], ["rt", "#xpRt"], ["dv", "#xpDv"], ["ev", "#xpEv"], ["wl", "#xpWl"], ["rd", "#xpRd"], ["rk", "#xpRk"], ["pt", "#xpPt"]].forEach(([k, s]) => $(s).style.display = k == XP.sub ? "" : "none"); kidSub();
   const nb = $("#xpNav").querySelector("button.on"); if (nb && nb.scrollIntoView && innerWidth < 900) nb.scrollIntoView({inline: "center", block: "nearest"});
-  ({ex: loadEx, dc: loadDc, qs: loadQs, vp: loadVP, ck: loadCk, rv: loadRv, rt: loadRt, dv: loadDv, ev: loadEv, wl: loadWl, rd: loadRd, rk: loadRk})[XP.sub]();
+  ({ex: loadEx, dc: loadDc, qs: loadQs, vp: loadVP, ck: loadCk, rv: loadRv, rt: loadRt, dv: loadDv, ev: loadEv, wl: loadWl, rd: loadRd, rk: loadRk, pt: loadPt})[XP.sub]();
 }
 
 /* ---------- 大師插畫肖像(原創插畫,非本人照片) ---------- */
@@ -5496,13 +5515,13 @@ function bpBox(d){
     <div class="bp-hd"><span class="bp big" style="--c:${b.col}">${b.l}</span><p>${b.why}。</p></div>
     <div class="bp-row"><span>估價位置 <b>${b.zone || "—"}</b></span><span>線型訊號 <b style="color:${b.sig[1]}">${b.sig[0]}</b></span><span>均線 <b>${t[2]}</b></span><span>技術分數 <b>${t[0]}</b>/100</span><span>RSI <b>${t[3] ?? "—"}</b></span><span>5 日 <b class="${pc(t[5])}">${sgn(t[5], 1)}%</b></span><span>20 日 <b class="${pc(t[6])}">${sgn(t[6], 1)}%</b></span>${t[11] ? `<span>MACD <b>${t[11] == "gold" ? "黃金交叉" : "死亡交叉"}</b></span>` : ""}</div>
     <div class="bp-lv">${lv("20日支撐", t[9], d.px ? sgn((t[9] / d.px - 1) * 100, 1) + "%" : "")}${lv("月線 MA20", t[7], t[4] != null ? `離月線 ${sgn(t[4], 1)}%` : "")}${lv("季線 MA60", t[8])}${lv("半年線", t[12])}${lv("20日壓力", t[10], d.px ? sgn((t[10] / d.px - 1) * 100, 1) + "%" : "")}</div>
-    <p class="mknote">怎麼用：價格便宜＋線型轉強＝最佳買點；便宜但還在跌，先等站回月線或 MACD 黃金交叉再進場；跌破 20 日支撐要設停損。線型以收盤價計算，盤中變化請看「⚡ 盤中雷達」。</p></div>`;
+    <button class="lgo bp-px" onclick="pxEdit('${d.c}')">🎯 設定價位提醒（跌破／漲過時通知我）</button><p class="mknote">怎麼用：價格便宜＋線型轉強＝最佳買點；便宜但還在跌，先等站回月線或 MACD 黃金交叉再進場；跌破 20 日支撐要設停損。線型以收盤價計算，盤中變化請看「⚡ 盤中雷達」。</p></div>`;
 }
 
 /* ================= ⚡ 盤中雷達:當沖參考 + 即時警示(自己人評估用) ================= */
 const RDK = {list: "bfy_rd", cfg: "bfy_rd_cfg", on: "bfy_rd_on", log: "bfy_rd_log"};
 const rdLS = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }, rdSave = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} if (k == "bfy_rd" || k == "bfy_rd_cfg") setTimeout(() => typeof cpSync == "function" && cpSync(), 300); };
-const RD = {list: rdLS(RDK.list, null), cfg: Object.assign({drop: 2, win: 15, pct: -5, lim: -8, sell: 3, up: true, sound: true}, rdLS(RDK.cfg, {})), on: rdLS(RDK.on, false),
+const RD = {list: rdLS(RDK.list, null), cfg: Object.assign({drop: 2, win: 15, pct: -5, lim: -8, sell: 3, up: true, sound: true, brief: true, px: {}}, rdLS(RDK.cfg, {})), on: rdLS(RDK.on, false),
   q: {}, smp: {}, bars: {}, ref: {}, log: [], fired: {}, unread: 0, t: null, barT: 0, last: null, err: null, sw: null, wake: null};
 (() => { const L = rdLS(RDK.log, {d: "", log: [], fired: {}}), td = new Date().toLocaleDateString("sv", {timeZone: "Asia/Taipei"}); if (L.d == td) { RD.log = L.log; RD.fired = L.fired; } })();
 const rdToday = () => new Date().toLocaleDateString("sv", {timeZone: "Asia/Taipei"});
@@ -5583,6 +5602,9 @@ function rdRules(c, nm, v, prev){
   if (crossDn(r.S1)) rdFire(c, "s1", `📉 ${N} 跌破支撐 S1`, `跌破今日支撐 ${P2(r.S1)}（下一支撐 S2 ${P2(r.S2)}）`, true);
   if (crossDn(r.ma20)) rdFire(c, "ma20", `📉 ${N} 跌破月線`, `跌破 20 日均線 ${P2(r.ma20)}，中期轉弱`, true);
   if (crossDn(r.sup)) rdFire(c, "sup", `🛑 ${N} 跌破 20 日支撐`, `跌破近 20 日最低收盤 ${P2(r.sup)}，持股者留意停損`, true);
+  const pr = cf.px && cf.px[c];
+  if (pr && pr[0] && px <= pr[0]) rdFire(c, "plo", `🎯 ${N} 跌到你設定的價位`, `現價 ${P2(px)}，已跌破你設的 ${P2(pr[0])} 元（今日 ${sgn(pct, 2)}%）`, true);
+  if (pr && pr[1] && px >= pr[1]) rdFire(c, "phi", `🎯 ${N} 漲到你設定的價位`, `現價 ${P2(px)}，已漲過你設的 ${P2(pr[1])} 元（今日 ${sgn(pct, 2)}%）`, false);
   if (pct <= cf.pct) rdFire(c, "pct", `⚠️ ${N} 跌幅擴大`, `今日 ${sgn(pct, 2)}%（${P2(px)}）`, true);
   if (pct <= cf.lim) rdFire(c, "lim", `🚨 ${N} 接近跌停`, `今日 ${sgn(pct, 2)}%，跌停價 ${P2(v.q.dn || v.q.y * .9)}`, true);
   if (cf.up) {
@@ -5636,22 +5658,22 @@ function rdPaint(){
         <label>急跌：<input type="number" step=".5" data-cf="win" value="${cf.win}"> 分鐘內跌 <input type="number" step=".5" data-cf="drop" value="${cf.drop}"> %</label>
         <label>跌幅達 <input type="number" step="1" data-cf="pct" value="${cf.pct}"> %、接近跌停 <input type="number" step="1" data-cf="lim" value="${cf.lim}"> %</label>
         <label>委賣是委買 <input type="number" step=".5" data-cf="sell" value="${cf.sell}"> 倍以上＝大量賣壓</label>
-        <label><input type="checkbox" data-cf="up" ${cf.up ? "checked" : ""}> 也提醒上漲訊號（突破、急漲）</label><label><input type="checkbox" data-cf="sound" ${cf.sound ? "checked" : ""}> 警示音</label>
+        <label><input type="checkbox" data-cf="up" ${cf.up ? "checked" : ""}> 也提醒上漲訊號（突破、急漲）</label><label><input type="checkbox" data-cf="sound" ${cf.sound ? "checked" : ""}> 警示音</label><label><input type="checkbox" data-cf="brief" ${cf.brief ? "checked" : ""}> ☀️ 每天 08:30 晨報、🔔 13:45 收盤摘要推播（需開「關網站也通知」）</label>
         <p class="mknote">固定會提醒：跌破開盤 15 分鐘低點、跌破今日支撐 S1、跌破月線、跌破 20 日支撐。每檔每種警示一天提醒一次（急跌、賣壓 20～30 分鐘可再提醒）。</p></div></details></div>
-    ${codes.length ? `<div class="gx-tw" style="max-height:none"><table class="gx-tb rd-tb"><thead><tr><th>股票</th><th>即時價</th><th>漲跌</th><th>當沖偏向</th><th>買點（日線）</th><th>均價線</th><th>開盤區間</th><th>S2</th><th>S1</th><th>樞紐 P</th><th>R1</th><th>R2</th><th>委買/委賣</th><th>今日高/低</th><th>提示</th><th></th></tr></thead><tbody>
+    ${codes.length ? `<div class="gx-tw" style="max-height:none"><table class="gx-tb rd-tb"><thead><tr><th>股票</th><th>即時價</th><th>漲跌</th><th>當沖偏向</th><th>買點（日線）</th><th>均價線</th><th>開盤區間</th><th>S2</th><th>S1</th><th>樞紐 P</th><th>R1</th><th>R2</th><th>委買/委賣</th><th>今日高/低</th><th>提示</th><th>🎯 價位提醒</th><th></th></tr></thead><tbody>
       ${codes.map(c => { const v = rdView(c), r = RD.ref[c] || {}, b = RD.bars[c] || {};
         if (!v) return `<tr data-c="${c}"><td><b>${c} ${nm(c)}</b></td><td colspan="14" class="mknote">${RD.on || !ses.open ? "載入中…" : "按「開始監控」或「立即更新」取得報價"}</td><td><button class="wl-del" data-x="${c}">✕</button></td></tr>`;
         return `<tr data-c="${c}" class="${v.sc <= -3 ? "rd-bad" : v.sc >= 3 ? "rd-good" : ""}"><td><b>${c} ${nm(c)}</b>${riskTag(c)}<small class="rd-t">${v.q.live ? v.q.t || "" : "尚未成交・顯示昨收"}</small></td><td class="num"><b class="${pc(v.pct)}">${P2(v.px)}</b></td><td class="num ${pc(v.pct)}">${sgn(v.pct, 2)}%</td>
           <td><span class="rd-bias" style="--c:${v.bias[1]}">${v.bias[0]}</span></td><td>${bpBadge(c)}</td>${lvl(v.px, b.vwap)}<td class="num">${b.orL ? `${P2(b.orL)}～${P2(b.orH)}` : "09:15 後"}</td>
           ${lvl(v.px, r.S2)}${lvl(v.px, r.S1)}${lvl(v.px, r.P)}${lvl(v.px, r.R1)}${lvl(v.px, r.R2)}<td class="num ${v.ratio == null ? "" : v.ratio < 1 ? "neg" : "pos"}">${v.ratio == null ? "—" : fmt(v.ratio, 2)}</td>
-          <td class="num">${v.q.h ? `${P2(v.q.h)} / ${P2(v.q.l)}` : `漲停 ${P2(v.q.upL)}<br>跌停 ${P2(v.q.dn)}`}</td><td class="rd-tip">${v.tips.join("・") || "—"}</td><td><button class="wl-del" data-x="${c}">✕</button></td></tr>`; }).join("")}</tbody></table></div>`
+          <td class="num">${v.q.h ? `${P2(v.q.h)} / ${P2(v.q.l)}` : `漲停 ${P2(v.q.upL)}<br>跌停 ${P2(v.q.dn)}`}</td><td class="rd-tip">${v.tips.join("・") || "—"}</td><td><button class="px-b ${pxOn(c) ? "on" : ""}" data-px="${c}">${pxTxt(c)}</button></td><td><button class="wl-del" data-x="${c}">✕</button></td></tr>`; }).join("")}</tbody></table></div>`
       : `<div class="empty" style="padding:24px;text-align:center;color:var(--sub)">雷達還是空的。輸入代號加入，或按「⭐ 匯入自選股」。</div>`}
     ${codes.length ? `<div class="rd-cards">${codes.map(c => { const v = rdView(c), r = RD.ref[c] || {}, b = RD.bars[c] || {};
       if (!v) return `<div class="rd-card" data-c="${c}"><div class="rc-h"><b>${c} ${nm(c)}</b><button class="wl-del" data-x="${c}">✕</button></div><p class="mknote">載入中…</p></div>`;
       const F = x => x == null ? "—" : fmt(x, x >= 1000 ? 0 : x >= 100 ? 1 : 2), lv = (n, x) => x == null ? "" : `<span class="${v.px >= x ? "pos" : "neg"}"><small>${n}</small>${F(x)}</span>`;
       return `<div class="rd-card ${v.sc <= -3 ? "rd-bad" : v.sc >= 3 ? "rd-good" : ""}" data-c="${c}">
         <div class="rc-h"><div><b>${c} ${nm(c)}</b>${riskTag(c)}<small>${v.q.live ? v.q.t || "" : "尚未成交・顯示昨收"}</small></div><div class="rc-px"><b class="num ${pc(v.pct)}">${P2(v.px)}</b><i class="${pc(v.pct)}">${sgn(v.pct, 2)}%</i></div><button class="wl-del" data-x="${c}">✕</button></div>
-        <div class="rc-tags"><span class="rd-bias" style="--c:${v.bias[1]}">當沖 ${v.bias[0]}</span>${bpBadge(c)}${v.ratio != null ? `<span class="rc-r ${v.ratio < 1 ? "neg" : "pos"}">委買/賣 ${fmt(v.ratio, 2)}</span>` : ""}</div>
+        <div class="rc-tags"><span class="rd-bias" style="--c:${v.bias[1]}">當沖 ${v.bias[0]}</span>${bpBadge(c)}${v.ratio != null ? `<span class="rc-r ${v.ratio < 1 ? "neg" : "pos"}">委買/賣 ${fmt(v.ratio, 2)}</span>` : ""}<button class="px-b ${pxOn(c) ? "on" : ""}" data-px="${c}">${pxTxt(c)}</button></div>
         <div class="rc-lv">${lv("S2", r.S2)}${lv("S1", r.S1)}${lv("P", r.P)}${lv("R1", r.R1)}${lv("R2", r.R2)}</div>
         <div class="rc-lv sm">${lv("均價線", b.vwap)}${b.orL ? `<span><small>開盤區間</small>${F(b.orL)}～${F(b.orH)}</span>` : ""}${v.q.h ? `<span><small>高/低</small>${F(v.q.h)}/${F(v.q.l)}</span>` : `<span><small>漲停</small>${F(v.q.upL)}</span><span><small>跌停</small>${F(v.q.dn)}</span>`}</div>
         ${v.tips.length ? `<p class="rc-tip">${v.tips.join("・")}</p>` : ""}</div>`; }).join("")}</div>` : ""}
@@ -5677,6 +5699,7 @@ function rdPaint(){
     if (!v || !x) { toast("找不到這檔股票", 1400); return; } RD.list = [...new Set([...rdCodes(), x[0]])]; rdSave(RDK.list, RD.list); rdPaint(); rdTick(true); };
   bind("rdGo", add); const qi = $("#rdQ"); if (qi) qi.onkeydown = e => { if (e.key == "Enter") add(); };
   bind("rdSync", () => { RD.list = [...new Set([...rdCodes(), ...WATCH])]; rdSave(RDK.list, RD.list); toast(`已匯入 ${WATCH.length} 檔自選股`, 1400); rdPaint(); rdTick(true); });
+  host.querySelectorAll("[data-px]").forEach(b => b.onclick = e => { e.stopPropagation(); pxEdit(b.dataset.px); });
   host.querySelectorAll("[data-x]").forEach(b => b.onclick = e => { e.stopPropagation(); RD.list = rdCodes().filter(x => x != b.dataset.x); rdSave(RDK.list, RD.list); rdPaint(); });
   host.querySelectorAll("tr[data-c],.rd-card[data-c]").forEach(tr => tr.onclick = () => openStock(tr.dataset.c));
   host.querySelectorAll("[data-cf]").forEach(i => i.onchange = () => { const k = i.dataset.cf; RD.cfg[k] = i.type == "checkbox" ? i.checked : +i.value; rdSave(RDK.cfg, RD.cfg); });
@@ -5898,6 +5921,7 @@ const PAGEHELP = {
   plan: ["退休・複利", "算算看現在存多少、存多久，退休時夠不夠用。", "像滾雪球：雪球（本金）越早開始滾、山坡（時間）越長，最後越大。複利計算器讓你看到時間的魔法。", ["上方複利計算器：改金額、年數立即看結果", "下方退休規劃：填年齡和每月想領多少", "看「怎麼補缺口」建議"]],
   learn: ["投資教學", "從零開始學投資的 15 堂動畫課，每課都有生活例子。", "像學騎腳踏車：先認識車子（基本名詞）、再學平衡（看懂數字）、最後上路（實戰案例）。", ["依序點課程", "看動畫和「現在的實際數字」", "不懂的詞按右下角 📖 術語"]],
   "vp:rd": ["⚡ 盤中雷達", "開盤時幫你盯著股票，快跌、被大量賣出、跌破重要價位時馬上通知你。", "像請一位保全幫你看守倉庫：有人搬東西（大量賣壓）、門被撞開（跌破支撐），保全立刻打電話給你。", ["加入要盯的股票（或匯入自選股）", "按「開始監控」和「關網站也通知」", "當沖偏向＝今天買方還是賣方比較強"]],
+  "vp:pt": ["💼 投資組合", "記下每一筆買賣和領到的股利，算出你到底賺多少、一年平均賺幾 %、有沒有贏過大盤。", "像記帳本：每次買菜、賣東西、收到紅包都記下來，月底就知道錢花到哪、賺了多少。再拿隔壁只買 0050 的鄰居來比，看誰比較會理財。", ["按「＋ 新增交易」記錄買進、賣出、股利（手續費和稅會自動算）", "看「總損益」和「年化報酬率」", "和「如果全部買 0050」比較，知道自己有沒有贏大盤"]],
   "vp:rk": ["⚠️ 風險股", "把最近被交易所警告、被大戶放空、外資在撤退的股票列出來，提醒你小心。", "像學校的警示名單：誰被罰站（處置股）、誰被口頭警告（注意股）、誰被很多人說壞話（借券賣出）。名單上的不一定是壞學生，但要多注意。", ["先看自己的自選股有沒有在名單上（勾「只看我的自選股」）", "處置股買賣比較難成交", "借券暴增代表有大戶在空"]],
   "vp:ex": ["🧠 大師選股", "把 17 位投資大師挑股票的方法，套用到全台灣的公司，看哪些公司被大師看上。", "像請 17 位不同口味的美食評審試吃全台灣的餐廳：有人愛便宜大碗、有人愛食材高級、有人愛新口味。被越多評審推薦的餐廳越值得去。", ["點大師看他的挑選標準", "可以複選多位大師找共同推薦", "一定要看「買點」欄：便宜但還在跌就先等"]],
   "vp:dc": ["💎 定存股", "每年穩定賺錢、穩定發股利的股票，適合長期放著領息。", "像挑一隻會天天下蛋的母雞：不用跑得快，只要健康、天天有蛋。再挑雞價便宜的時候買。", ["「目前位置」看價格便宜還是貴", "看「買點」：便宜又轉強才是好時機", "連續配息年數越多越穩"]],
@@ -6019,6 +6043,163 @@ function navTile(){ const L = Object.entries(INAV).filter(([, n]) => n.prem != n
   const hi = L.sort((a, b) => b[1].prem - a[1].prem)[0], n1 = L.filter(([, n]) => n.prem >= 1).length;
   return {t: "💸 溢價最高的 ETF", v: `${hi[0]} ${sgn(hi[1].prem, 2)}%`, col: hi[1].prem >= 1 ? "#CF3A3A" : "var(--ink)", sub: `溢價超過 1% 的有 ${n1} 檔（買貴了要小心）`}; }
 navLoad(); setInterval(() => { if (!document.hidden && typeof rdSession == "function" && rdSession().open) navLoad(); }, 120e3);
+
+/* ================= 🎯 自訂價位提醒 ================= */
+const pxOn = c => { const r = RD.cfg.px && RD.cfg.px[c]; return !!(r && (r[0] || r[1])); };
+function pxTxt(c){ const r = RD.cfg.px && RD.cfg.px[c]; if (!r || !(r[0] || r[1])) return "＋ 設定"; return [r[0] ? `≤${fmt(r[0], r[0] >= 100 ? 0 : 2)}` : "", r[1] ? `≥${fmt(r[1], r[1] >= 100 ? 0 : 2)}` : ""].filter(Boolean).join(" / "); }
+async function pxEdit(c){
+  await loadNames(); const n = (NAMES || []).find(x => x[0] == c), r = (RD.cfg.px || {})[c] || [0, 0], q = RD.q[c], ref = q ? q.px : null;
+  let d = $("#pxDlg"); if (!d) { d = document.createElement("div"); d.id = "pxDlg"; document.body.append(d); }
+  d.innerHTML = `<div class="px-box"><h3>🎯 價位提醒：${c} ${n ? n[1] : ""}</h3>
+    <p class="mknote">👶 白話：先說好「跌到幾塊」或「漲到幾塊」要叫你，就像跟水果攤老闆說「蘋果跌到 20 元打電話給我」。到價時會跳出通知（開了「關網站也通知」，網站關著也收得到），每天各提醒一次。${ref ? `<br>目前價格約 <b>${fmt(ref, 2)}</b> 元。` : ""}</p>
+    <label>📉 跌破（小於等於）<input type="number" step="0.01" id="pxLo" value="${r[0] || ""}" placeholder="${ref ? fmt(ref * .95, 1) : "例如 1900"}"> 元時通知我</label>
+    <label>📈 漲過（大於等於）<input type="number" step="0.01" id="pxHi" value="${r[1] || ""}" placeholder="${ref ? fmt(ref * 1.05, 1) : "例如 2100"}"> 元時通知我</label>
+    <div class="px-act"><button id="pxSave" class="ok">儲存</button><button id="pxDel">清除提醒</button><button id="pxX">取消</button></div></div>`;
+  d.classList.add("on");
+  const close = () => d.classList.remove("on");
+  $("#pxX").onclick = close; d.onclick = e => { if (e.target == d) close(); };
+  $("#pxDel").onclick = () => { if (RD.cfg.px) delete RD.cfg.px[c]; rdSave(RDK.cfg, RD.cfg); close(); rdPaint(); toast("已清除價位提醒", 1400); };
+  $("#pxSave").onclick = () => { const lo = +$("#pxLo").value || 0, hi = +$("#pxHi").value || 0;
+    if (!lo && !hi) { toast("請至少填一個價位", 1400); return; }
+    if (lo && hi && lo >= hi) { toast("跌破價要小於漲過價", 1600); return; }
+    RD.cfg.px = RD.cfg.px || {}; RD.cfg.px[c] = [lo, hi];
+    if (!rdCodes().includes(c)) RD.list = [...rdCodes(), c];
+    rdSave(RDK.list, RD.list); rdSave(RDK.cfg, RD.cfg); close(); rdPaint();
+    toast(`🎯 已設定 ${c} 價位提醒${CP.on ? "（雲端也同步了）" : "；開「關網站也通知」網站關著也收得到"}`, 2600);
+    if (!RD.on) { RD.on = true; rdSave(RDK.on, true); rdLoop(); } };
+  setTimeout(() => $("#pxLo").focus(), 50);
+}
+
+/* ================= 💼 投資組合:交易紀錄、損益、XIRR、對比 0050 ================= */
+let PTX = (() => { try { return JSON.parse(localStorage.getItem("bfy_tx") || "[]"); } catch (e) { return []; } })();
+let PTFEE = (() => { try { return Object.assign({disc: .6, min: 20}, JSON.parse(localStorage.getItem("bfy_fee") || "{}")); } catch (e) { return {disc: .6, min: 20}; } })();
+const ptSave = () => { try { localStorage.setItem("bfy_tx", JSON.stringify(PTX)); localStorage.setItem("bfy_fee", JSON.stringify(PTFEE)); } catch (e) {} if (typeof syncPush == "function") syncPush(); };
+const isEtf = c => /^00/.test(c);
+const ptFee = (amt, sh) => amt <= 0 ? 0 : Math.max(sh < 1000 ? 1 : PTFEE.min, Math.floor(amt * .001425 * PTFEE.disc));
+const ptTax = (amt, c) => Math.floor(amt * (isEtf(c) ? .001 : .003));
+let PT0050 = null, PTHM = null;
+async function loadPt(){
+  await loadNames(); if (!SKS) SKS = await getJ("scores"); if (!PTHM) PTHM = await getJ("heatmap");
+  if (!PT0050) { const [px, dv] = await Promise.all([getJ("prices/0050").catch(() => null), getJ("dividends/0050").catch(() => null)]); PT0050 = {px: px || [], dv: dv || []}; }
+  renderPt();
+}
+function ptPx(c){
+  if (RD.q[c] && RD.q[c].live) return RD.q[c].px;
+  if (typeof INAV != "undefined" && INAV[c] && INAV[c].px) return INAV[c].px;
+  const e = typeof S != "undefined" && S ? S.find(x => x.id == c) : null; if (e) return e.price;
+  const h = PTHM && PTHM.items.find(x => x[0] == c); if (h) return h[5];
+  return SKS && SKS.stocks[c] ? SKS.stocks[c][2] : null;
+}
+const ptName = c => (NAMES || []).find(x => x[0] == c)?.[1] || c;
+const ptInd = c => isEtf(c) ? "ETF" : (SKS && SKS.stocks[c] ? SKS.stocks[c][1] : "") || "其他";
+function ptCalc(){
+  const T = [...PTX].sort((a, b) => a.d.localeCompare(b.d)), P = {}; let realized = 0, divs = 0, fees = 0, taxes = 0; const cf = [];
+  for (const t of T) {
+    const p = P[t.c] = P[t.c] || {sh: 0, cost: 0, real: 0, div: 0};
+    if (t.t == "buy") { const amt = t.sh * t.px + (t.fee || 0); p.sh += t.sh; p.cost += amt; cf.push([t.d, -amt]); fees += t.fee || 0; }
+    else if (t.t == "sell") { const avg = p.sh ? p.cost / p.sh : 0, sh = Math.min(t.sh, p.sh), net = sh * t.px - (t.fee || 0) - (t.tax || 0), r = net - avg * sh;
+      p.sh -= sh; p.cost -= avg * sh; p.real += r; realized += r; cf.push([t.d, net]); fees += t.fee || 0; taxes += t.tax || 0; }
+    else if (t.t == "div") { p.div += t.amt || 0; divs += t.amt || 0; cf.push([t.d, t.amt || 0]); }
+  }
+  let value = 0, cost = 0; const H = [];
+  for (const [c, p] of Object.entries(P)) { if (p.sh <= 0) continue; const px = ptPx(c), v = px ? px * p.sh : p.cost; value += v; cost += p.cost; H.push({c, sh: p.sh, avg: p.cost / p.sh, px, v, un: v - p.cost, unp: p.cost ? (v / p.cost - 1) * 100 : 0, real: p.real, div: p.div}); }
+  const today = new Date().toISOString().slice(0, 10); if (value > 0) cf.push([today, value]);
+  return {T, P, H: H.sort((a, b) => b.v - a.v), value, cost, realized, divs, fees, taxes, un: value - cost, total: value - cost + realized + divs, cf, x: xirr(cf), days: T.length ? (new Date(today) - new Date(T[0].d)) / 864e5 : 0};
+}
+function xirr(cf){
+  if (cf.length < 2 || !cf.some(x => x[1] < 0) || !cf.some(x => x[1] > 0)) return null;
+  const s = [...cf].sort((a, b) => a[0].localeCompare(b[0])), t0 = new Date(s[0][0]), f = r => s.reduce((a, [d, v]) => a + v / Math.pow(1 + r, (new Date(d) - t0) / 864e5 / 365.25), 0);
+  let lo = -.99, hi = 10, flo = f(lo), fhi = f(hi); if (flo * fhi > 0) return null;
+  for (let i = 0; i < 120; i++) { const m = (lo + hi) / 2, fm = f(m); if (Math.abs(fm) < 1e-7) return m; if (flo * fm < 0) { hi = m; fhi = fm; } else { lo = m; flo = fm; } }
+  return (lo + hi) / 2;
+}
+function ptBench(R){                       // 同樣的錢、同樣的時間買 0050(含配息)
+  const px = PT0050 && PT0050.px; if (!px || !px.length || !R.T.length) return null;
+  const at = d => { let v = null; for (const r of px) { if (r[0] > d) break; v = r[4]; } return v || px[0][4]; };
+  let sh = 0, cash = 0; const cf = [], dv = (PT0050.dv || []).map(x => [x.ex, x.cash]).sort();
+  const ev = R.T.map(t => [t.d, t]).concat(dv.map(x => [x[0], {t: "bdiv", cash: x[1]}])).sort((a, b) => a[0].localeCompare(b[0]));
+  for (const [d, t] of ev) {
+    if (t.t == "buy") { const a = t.sh * t.px + (t.fee || 0); sh += a / at(d); cf.push([d, -a]); }
+    else if (t.t == "sell") { const a = t.sh * t.px - (t.fee || 0) - (t.tax || 0), s2 = Math.min(sh, a / at(d)); sh -= s2; cf.push([d, s2 * at(d)]); }
+    else if (t.t == "bdiv" && sh > 0 && d >= R.T[0].d) cash += sh * t.cash;
+  }
+  const today = new Date().toISOString().slice(0, 10), p0 = ptPx("0050") || px[px.length - 1][4], v = sh * p0 + cash; cf.push([today, v]);
+  const inv = R.T.filter(t => t.t == "buy").reduce((a, t) => a + t.sh * t.px + (t.fee || 0), 0), out = R.T.filter(t => t.t == "sell").reduce((a, t) => a + t.sh * t.px - (t.fee || 0) - (t.tax || 0), 0);
+  return {v, total: v + out - inv, x: xirr(cf)};
+}
+function ptDonut(items){
+  const tot = items.reduce((a, x) => a + x[1], 0); if (!tot) return "";
+  const C = ["#2F5BEA", "#C9A24E", "#CF3A3A", "#1A8F57", "#7C3AED", "#EA580C", "#0F766E", "#DB2777", "#64748B", "#84CC16"]; let a0 = 0;
+  const arc = (a1, a2) => { const r = 54, R2 = 80, p = (a, rr) => [100 + rr * Math.sin(a), 100 - rr * Math.cos(a)], [x1, y1] = p(a1, R2), [x2, y2] = p(a2, R2), [x3, y3] = p(a2, r), [x4, y4] = p(a1, r), L = a2 - a1 > Math.PI ? 1 : 0;
+    return `M${x1},${y1} A${R2},${R2} 0 ${L} 1 ${x2},${y2} L${x3},${y3} A${r},${r} 0 ${L} 0 ${x4},${y4}Z`; };
+  const top = items.slice(0, 9), rest = items.slice(9).reduce((a, x) => a + x[1], 0); if (rest) top.push(["其他", rest]);
+  return `<div class="pt-dn"><svg viewBox="0 0 200 200">${top.map((x, i) => { const a1 = a0, a2 = a0 + x[1] / tot * Math.PI * 2 - .001; a0 = a2 + .001; return `<path d="${arc(a1, a2)}" fill="${C[i % C.length]}"/>`; }).join("")}</svg>
+    <ul>${top.map((x, i) => `<li><i style="background:${C[i % C.length]}"></i>${esc(x[0])}<b>${fmt(x[1] / tot * 100, 1)}%</b></li>`).join("")}</ul></div>`;
+}
+function renderPt(){
+  const host = $("#xpPt"); if (!host) return;
+  const R = ptCalc(), B = ptBench(R), M = v => (v < 0 ? "−" : "") + "$" + fmt(Math.abs(v), 0), cls = v => v > 0 ? "pos" : v < 0 ? "neg" : "";
+  const short = R.days < 90, hold = WATCH.filter(c => HOLD[c] && +HOLD[c].lots > 0 && +HOLD[c].cost > 0 && !PTX.some(t => t.c == c));
+  const byInd = {}; R.H.forEach(h => { const k = ptInd(h.c); byInd[k] = (byInd[k] || 0) + h.v; });
+  host.innerHTML = `<div class="box pt-box"><h2 class="sec">💼 我的投資組合 <small>資料存在這台裝置${typeof SYNC != "undefined" && SYNC.on ? "，並已同步到你的會員帳號" : ""}；價格盤中即時、收盤後用收盤價</small></h2>
+    ${hold.length ? `<div class="pt-imp">📥 自選股裡有 ${hold.length} 檔已填張數和成本（${hold.map(c => c + " " + ptName(c)).slice(0, 4).join("、")}${hold.length > 4 ? "…" : ""}），<button id="ptImp">一鍵轉成交易紀錄</button></div>` : ""}
+    <div class="pt-k">
+      <div class="hi"><small>目前市值</small><b class="num">${M(R.value)}</b><i>持有成本 ${M(R.cost)}</i></div>
+      <div><small>總損益</small><b class="num ${cls(R.total)}">${R.total >= 0 ? "+" : ""}${M(R.total)}</b><i>＝未實現＋已實現＋股利</i></div>
+      <div><small>未實現損益</small><b class="num ${cls(R.un)}">${R.un >= 0 ? "+" : ""}${M(R.un)}</b><i>${R.cost ? sgn((R.value / R.cost - 1) * 100, 2) + "%" : "—"}（還沒賣、帳面上）</i></div>
+      <div><small>已實現損益</small><b class="num ${cls(R.realized)}">${R.realized >= 0 ? "+" : ""}${M(R.realized)}</b><i>已賣掉入袋</i></div>
+      <div><small>領到的股利</small><b class="num pos">${M(R.divs)}</b><i>手續費 ${M(R.fees)}・證交稅 ${M(R.taxes)}</i></div>
+      <div><small>年化報酬率（XIRR）</small><b class="num ${cls(R.x)}">${R.x == null ? "—" : sgn(R.x * 100, 2) + "%"}</b><i>${short ? "持有未滿 3 個月，年化數字參考性低" : "考慮每筆錢投入的時間"}</i></div>
+    </div>
+    ${B ? `<div class="pt-vs ${R.total >= B.total ? "win" : "lose"}"><b>${R.total >= B.total ? "🏆 你贏過大盤" : "📉 暫時輸給大盤"}</b>：如果同樣的錢、同樣的時間都拿去買 0050（含配息），現在總損益是 <b class="${cls(B.total)}">${B.total >= 0 ? "+" : ""}${M(B.total)}</b>${B.x != null && !short ? `、年化 ${sgn(B.x * 100, 2)}%` : ""}；你是 <b class="${cls(R.total)}">${R.total >= 0 ? "+" : ""}${M(R.total)}</b>，差 ${M(Math.abs(R.total - B.total))}。</div>` : ""}
+    <div class="pt-act"><button id="ptAdd" class="ok">＋ 新增交易</button><button id="ptCsv">⬇️ 匯出 CSV</button><label class="pt-up">⬆️ 匯入 CSV<input type="file" id="ptFile" accept=".csv,text/csv" hidden></label>
+      <label class="pt-fee">手續費折扣 <select id="ptDisc">${[1, .8, .65, .6, .5, .38, .28, .2].map(v => `<option value="${v}" ${PTFEE.disc == v ? "selected" : ""}>${v == 1 ? "不打折" : (v * 10).toFixed(v * 10 % 1 ? 1 : 0) + " 折"}</option>`).join("")}</select></label></div>
+    <div id="ptForm"></div>
+    ${R.H.length ? `<div class="pt-2"><div><h3 class="mm-h3">📦 目前持股</h3><div class="gx-tw" style="max-height:none"><table class="gx-tb pt-tb"><thead><tr><th>股票</th><th>股數</th><th>平均成本</th><th>現價</th><th>市值</th><th>未實現損益</th><th>已實現</th><th>股利</th></tr></thead><tbody>
+      ${R.H.map(h => `<tr data-c="${h.c}"><td><b>${h.c} ${ptName(h.c)}</b>${riskTag(h.c)}</td><td class="num">${fmt(h.sh, 0)}</td><td class="num">${fmt(h.avg, 2)}</td><td class="num">${h.px ? fmt(h.px, 2) : "—"}</td><td class="num">${M(h.v)}</td><td class="num ${cls(h.un)}">${h.un >= 0 ? "+" : ""}${M(h.un)}<small>（${sgn(h.unp, 1)}%）</small></td><td class="num ${cls(h.real)}">${h.real ? M(h.real) : "—"}</td><td class="num">${h.div ? M(h.div) : "—"}</td></tr>`).join("")}</tbody></table></div></div>
+      <div><h3 class="mm-h3">🥧 資產配置 <small>依個股</small></h3>${ptDonut(R.H.map(h => [h.c + " " + ptName(h.c), h.v]))}<h3 class="mm-h3">🏭 依產業</h3>${ptDonut(Object.entries(byInd).sort((a, b) => b[1] - a[1]))}
+        ${R.H.length && R.H[0].v / R.value > .4 ? `<p class="pt-warn">⚠️ ${R.H[0].c} 占了 ${fmt(R.H[0].v / R.value * 100, 0)}%，雞蛋放太集中，跌起來會很痛。</p>` : ""}</div></div>` : `<div class="empty" style="padding:24px;text-align:center;color:var(--sub)">還沒有交易紀錄。按「＋ 新增交易」開始記帳。</div>`}
+    ${R.T.length ? `<details class="pt-log"><summary>📒 交易紀錄（${R.T.length} 筆）</summary><div class="gx-tw" style="max-height:420px"><table class="gx-tb"><thead><tr><th>日期</th><th>股票</th><th>類型</th><th>股數</th><th>價格／金額</th><th>手續費</th><th>證交稅</th><th>備註</th><th></th></tr></thead><tbody>
+      ${[...R.T].reverse().map(t => `<tr><td>${t.d}</td><td>${t.c} ${ptName(t.c)}</td><td>${{buy: "🟥 買進", sell: "🟩 賣出", div: "💰 股利"}[t.t]}</td><td class="num">${t.t == "div" ? "—" : fmt(t.sh, 0)}</td><td class="num">${t.t == "div" ? M(t.amt) : fmt(t.px, 2)}</td><td class="num">${t.fee ? fmt(t.fee, 0) : "—"}</td><td class="num">${t.tax ? fmt(t.tax, 0) : "—"}</td><td>${esc(t.note || "")}</td><td><button class="wl-del" data-del="${t.id}">✕</button></td></tr>`).join("")}</tbody></table></div></details>` : ""}
+    <p class="mknote">👶 白話：未實現＝東西還在手上、漲跌只是帳面；已實現＝賣掉真的入袋；年化報酬率＝把不同時間投入的錢換算成「平均一年賺幾 %」。手續費依成交金額 0.1425% × 折扣（整股最低 ${PTFEE.min} 元），證交稅股票 0.3%、ETF 0.1%（只有賣出收）。平均成本法與券商 App 相同。</p></div>`;
+  const b = (id, f) => { const e = $("#" + id); if (e) e.onclick = f; };
+  b("ptAdd", () => ptForm()); b("ptImp", () => { const td = new Date().toISOString().slice(0, 10);
+    hold.forEach(c => PTX.push({id: Date.now().toString(36) + c, d: td, c, t: "buy", sh: Math.round(+HOLD[c].lots * 1000), px: +HOLD[c].cost, fee: 0, tax: 0, note: "由自選股持股匯入（買進日以今天代替，可修改）"})); ptSave(); renderPt(); toast(`已匯入 ${hold.length} 檔`, 1400); });
+  b("ptCsv", ptExport);
+  $("#ptFile").onchange = e => { const f = e.target.files[0]; if (f) f.text().then(ptImport); };
+  $("#ptDisc").onchange = e => { PTFEE.disc = +e.target.value; ptSave(); };
+  host.querySelectorAll("[data-del]").forEach(x => x.onclick = () => { if (!confirm("刪除這筆交易？")) return; PTX = PTX.filter(t => t.id != x.dataset.del); ptSave(); renderPt(); });
+  host.querySelectorAll(".pt-tb tr[data-c]").forEach(tr => tr.onclick = () => openStock(tr.dataset.c));
+}
+function ptForm(){
+  const f = $("#ptForm"), td = new Date().toISOString().slice(0, 10);
+  f.innerHTML = `<div class="pt-f"><label>日期<input type="date" id="pfD" value="${td}"></label><label>股票代號<input id="pfC" placeholder="2330 或 台積電"></label>
+    <label>類型<select id="pfT"><option value="buy">買進</option><option value="sell">賣出</option><option value="div">領到股利</option></select></label>
+    <label class="pf-sh">股數<input type="number" id="pfS" placeholder="1 張＝1000 股" step="1"></label><label class="pf-px">成交價<input type="number" id="pfP" step="0.01"></label>
+    <label class="pf-amt" hidden>股利金額（元）<input type="number" id="pfA" step="1"></label>
+    <label>手續費<input type="number" id="pfF" placeholder="自動"></label><label class="pf-tax">證交稅<input type="number" id="pfX" placeholder="自動"></label><label>備註<input id="pfN"></label>
+    <div class="pt-act"><button id="pfOk" class="ok">儲存</button><button id="pfNo">取消</button></div><p class="mknote" id="pfHint"></p></div>`;
+  const T = () => $("#pfT").value, upd = async () => { const t = T(); f.querySelector(".pf-sh").hidden = f.querySelector(".pf-px").hidden = t == "div"; f.querySelector(".pf-amt").hidden = t != "div"; f.querySelector(".pf-tax").hidden = t != "sell";
+    const sh = +$("#pfS").value, px = +$("#pfP").value, c = await ptCode($("#pfC").value); if (t != "div" && sh && px) { const amt = sh * px; $("#pfF").placeholder = "自動 " + ptFee(amt, sh); $("#pfX").placeholder = c ? "自動 " + ptTax(amt, c) : "自動"; $("#pfHint").textContent = `成交金額 ${fmt(amt, 0)} 元`; } };
+  ["pfT", "pfS", "pfP", "pfC"].forEach(id => $("#" + id).oninput = upd); $("#pfT").onchange = upd; upd();
+  $("#pfNo").onclick = () => f.innerHTML = "";
+  $("#pfOk").onclick = async () => { const c = await ptCode($("#pfC").value), t = T(); if (!c) { toast("找不到這檔股票", 1400); return; }
+    const sh = +$("#pfS").value, px = +$("#pfP").value, amt = sh * px;
+    if (t != "div" && (!sh || !px)) { toast("請填股數和成交價", 1400); return; } if (t == "div" && !+$("#pfA").value) { toast("請填股利金額", 1400); return; }
+    const fee = $("#pfF").value === "" ? (t == "div" ? 0 : ptFee(amt, sh)) : +$("#pfF").value, tax = t != "sell" ? 0 : $("#pfX").value === "" ? ptTax(amt, c) : +$("#pfX").value;
+    PTX.push({id: Date.now().toString(36), d: $("#pfD").value || new Date().toISOString().slice(0, 10), c, t, sh: t == "div" ? 0 : sh, px: t == "div" ? 0 : px, amt: t == "div" ? +$("#pfA").value : 0, fee, tax, note: $("#pfN").value.trim()});
+    ptSave(); renderPt(); toast("已記錄", 1200); };
+}
+async function ptCode(v){ v = (v || "").trim().toLowerCase(); if (!v) return null; await loadNames(); const x = NAMES.find(n => n[0].toLowerCase() == v) || NAMES.find(n => n[1].toLowerCase().includes(v)); return x ? x[0] : null; }
+function ptExport(){
+  const rows = [["日期", "代號", "類型", "股數", "價格", "股利金額", "手續費", "證交稅", "備註"]].concat(PTX.map(t => [t.d, t.c, t.t, t.sh, t.px, t.amt || 0, t.fee || 0, t.tax || 0, (t.note || "").replace(/[,\n]/g, " ")]));
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob(["﻿" + rows.map(r => r.join(",")).join("\n")], {type: "text/csv"})); a.download = `巴菲遠交易紀錄_${new Date().toISOString().slice(0, 10)}.csv`; a.click();
+}
+function ptImport(txt){
+  const L = txt.replace(/^﻿/, "").split(/\r?\n/).filter(Boolean).slice(1).map(r => r.split(",")); let n = 0;
+  L.forEach(r => { if (r.length < 5 || !/^\d{4}-\d\d-\d\d$/.test(r[0]) || !["buy", "sell", "div"].includes(r[2])) return; PTX.push({id: Date.now().toString(36) + n, d: r[0], c: r[1].trim(), t: r[2], sh: +r[3] || 0, px: +r[4] || 0, amt: +r[5] || 0, fee: +r[6] || 0, tax: +r[7] || 0, note: r[8] || ""}); n++; });
+  ptSave(); renderPt(); toast(`匯入 ${n} 筆交易`, 1600);
+}
 </script>
 </body>
 </html>
