@@ -1411,6 +1411,9 @@ body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-r
 button{-webkit-tap-highlight-color:transparent}
 .bd-t,.fr-card,.rd-card{will-change:transform}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* 雲端推播 */
+.rd-ctl button.cp{background:#0F766E;color:#fff;border:0}.rd-ctl button.cp.on{background:#0F766E;box-shadow:inset 0 0 0 2px #5EEAD4}
+.cp-st{margin:10px 0 0;padding:10px 12px;border-radius:12px;background:var(--bg);border:1px dashed var(--line);font-size:13px;line-height:1.65;color:var(--sub)}.cp-st.on{border:1px solid #5EEAD4;background:color-mix(in srgb,#14B8A6 9%,var(--panel));color:var(--ink)}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="巴菲遠">
@@ -5424,7 +5427,7 @@ function bpBox(d){
 
 /* ================= ⚡ 盤中雷達:當沖參考 + 即時警示(自己人評估用) ================= */
 const RDK = {list: "bfy_rd", cfg: "bfy_rd_cfg", on: "bfy_rd_on", log: "bfy_rd_log"};
-const rdLS = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }, rdSave = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+const rdLS = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }, rdSave = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} if (k == "bfy_rd" || k == "bfy_rd_cfg") setTimeout(() => typeof cpSync == "function" && cpSync(), 300); };
 const RD = {list: rdLS(RDK.list, null), cfg: Object.assign({drop: 2, win: 15, pct: -5, lim: -8, sell: 3, up: true, sound: true}, rdLS(RDK.cfg, {})), on: rdLS(RDK.on, false),
   q: {}, smp: {}, bars: {}, ref: {}, log: [], fired: {}, unread: 0, t: null, barT: 0, last: null, err: null, sw: null, wake: null};
 (() => { const L = rdLS(RDK.log, {d: "", log: [], fired: {}}), td = new Date().toLocaleDateString("sv", {timeZone: "Asia/Taipei"}); if (L.d == td) { RD.log = L.log; RD.fired = L.fired; } })();
@@ -5444,6 +5447,7 @@ async function rdNotify(title, body, tag, bad = true){
   rdBeep(bad); try { navigator.vibrate && navigator.vibrate(bad ? [300, 120, 300, 120, 300] : [150]); } catch (e) {}
   rdPop(title, body, bad);
   if (!window.Notification || Notification.permission != "granted") return;
+  if (CP.on && !/^rd-(test|ok)/.test(tag || "")) return;
   const opt = {body, tag: tag || "rd" + Date.now(), renotify: true, requireInteraction: bad, icon: "icon-192.png", badge: "favicon-32.png", vibrate: bad ? [300, 120, 300] : [150], data: {url: location.href.split("#")[0] + "#vp"}};
   try { const reg = await rdSW(); if (reg && reg.showNotification) { await reg.showNotification(title, opt); return; } } catch (e) {}
   try { new Notification(title, opt); } catch (e) {}
@@ -5538,7 +5542,7 @@ async function rdTick(force){
 function rdLoop(){ clearInterval(RD.t); RD.t = setInterval(() => rdTick(false), 30e3); rdTick(!rdSession().open); }
 async function rdWake(on){ try { if (on && navigator.wakeLock) RD.wake = await navigator.wakeLock.request("screen"); else if (RD.wake) { await RD.wake.release(); RD.wake = null; } } catch (e) { toast("這個瀏覽器不支援螢幕常亮", 1600); } rdPaint(); }
 document.addEventListener("visibilitychange", () => { if (!document.hidden && RD.wake) rdWake(true); if (!document.hidden && RD.on) rdTick(false); });
-async function loadRd(){ if (!TECH) TECH = await getJ("tech"); await loadNames(); rdPaint(); rdTick(true); }
+async function loadRd(){ if (!TECH) TECH = await getJ("tech"); await loadNames(); rdPaint(); rdTick(true); if (CP.on) cpRecent(); }
 function rdPaint(){
   const host = $("#xpRd"); if (!host || host.style.display == "none") return;
   const codes = rdCodes(), ses = rdSession(), perm = window.Notification ? Notification.permission : "unsupported", cf = RD.cfg;
@@ -5550,7 +5554,7 @@ function rdPaint(){
       <p>${ses.open ? `<b class="rd-live">● 盤中監控${RD.on ? "中" : "（未開啟）"}</b>` : ses.pre ? `<b class="rd-off">● 盤前（09:00 開盤）</b>` : `<b class="rd-off">● 非交易時間</b>`}・${RD.last ? `最後更新 ${RD.last.toLocaleTimeString("zh-TW", {hour12: false})}` : "尚未更新"}・每 30 秒更新報價、每 5 分鐘更新均價線${RD.err ? `<br><span class="neg">${RD.err}</span>` : ""}</p></div>
       <div class="rd-ctl"><button id="rdOn" class="${RD.on ? "on" : ""}">${RD.on ? "⏸ 暫停" : "▶ 開始"}<span class="rd-lg">監控</span></button>
         ${perm == "granted" ? `<button id="rdTest">🔔 測試通知</button>` : perm == "unsupported" ? `<span class="mknote">此瀏覽器不支援系統通知（iPhone 請先加入主畫面）</span>` : `<button id="rdPerm" class="hl">🔔 開啟通知</button>`}
-        <button id="rdWake" class="${RD.wake ? "on" : ""}">${RD.wake ? "☀️ 常亮中" : "📱 螢幕常亮"}</button><button id="rdRef">↻ 更新</button></div></div>
+        <button id="cpBtn" class="${CP.on ? "on cp" : "cp"}">${CP.on ? "📲 關網站也通知 ✓" : "📲 關網站也通知"}</button>${CP.on ? `<button id="cpTest">☁️ 雲端測試</button>` : ""}<button id="rdWake" class="${RD.wake ? "on" : ""}">${RD.wake ? "☀️ 常亮中" : "📱 螢幕常亮"}</button><button id="rdRef">↻ 更新</button></div></div>
     <div class="rd-add"><input id="rdQ" placeholder="加入代號或名稱（如 2330、台積電）"><button id="rdGo">＋ 加入雷達</button><button id="rdSync" title="把自選股全部加入">⭐ 匯入自選股</button>
       <details class="rd-cfg"><summary>⚙️ 警示條件</summary><div>
         <label>急跌：<input type="number" step=".5" data-cf="win" value="${cf.win}"> 分鐘內跌 <input type="number" step=".5" data-cf="drop" value="${cf.drop}"> %</label>
@@ -5575,6 +5579,8 @@ function rdPaint(){
         <div class="rc-lv">${lv("S2", r.S2)}${lv("S1", r.S1)}${lv("P", r.P)}${lv("R1", r.R1)}${lv("R2", r.R2)}</div>
         <div class="rc-lv sm">${lv("均價線", b.vwap)}${b.orL ? `<span><small>開盤區間</small>${F(b.orL)}～${F(b.orH)}</span>` : ""}${v.q.h ? `<span><small>高/低</small>${F(v.q.h)}/${F(v.q.l)}</span>` : `<span><small>漲停</small>${F(v.q.upL)}</span><span><small>跌停</small>${F(v.q.dn)}</span>`}</div>
         ${v.tips.length ? `<p class="rc-tip">${v.tips.join("・")}</p>` : ""}</div>`; }).join("")}</div>` : ""}
+    <div class="cp-st ${CP.on ? "on" : ""}">${CP.on ? `☁️ <b>雲端監控已開啟</b>：盤中每分鐘檢查雷達內 ${rdCodes().length} 檔，網站關閉、手機鎖定也會跳出通知（名單與條件已自動同步）${CP.err ? `<br><span class="neg">${esc(CP.err)}</span>` : ""}` : `☁️ 目前只有<b>網站開著</b>才會警示。按「📲 關網站也通知」開啟雲端監控，關掉網站也收得到。${CP.err ? `<br><span class="neg">${esc(CP.err)}</span>` : ""}`}</div>
+    ${CP.on && CP.recent.length ? `<div class="rd-log"><h3 class="mm-h3">☁️ 雲端推播紀錄 <small>最近 ${CP.recent.length} 則</small></h3>${CP.recent.slice(0, 15).map(x => `<div class="${x.bad ? "bad" : "good"}"><time>${new Date(x.ts).toLocaleString("zh-TW", {hour12: false, month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit"})}</time><b>${esc(x.title)}</b><span>${esc(x.body)}</span></div>`).join("")}</div>` : ""}
     <div class="rd-log"><h3 class="mm-h3">🔔 今日警示紀錄 <small>${RD.log.length} 則</small></h3>${RD.log.length ? RD.log.slice(0, 40).map(x => `<div class="${x.bad ? "bad" : "good"}"><time>${x.t}</time><b>${esc(x.title)}</b><span>${esc(x.body)}</span></div>`).join("") : `<p class="mknote">今天還沒有警示。</p>`}</div>
     <details class="rd-help"><summary>📖 欄位怎麼看（當沖參考）</summary><ul>
       <li><b>均價線（VWAP）</b>：今天所有成交的平均成本。價格在均價線上＝買方較強，在下＝賣方較強。</li>
@@ -5589,6 +5595,8 @@ function rdPaint(){
   bind("rdPerm", async () => { await rdSW(); const r = await Notification.requestPermission(); if (r == "granted") rdNotify("✅ 通知已開啟", "之後盤中出現警示會直接跳出通知", "rd-ok", false); rdPaint(); });
   bind("rdTest", () => rdNotify("🔔 測試通知：2330 台積電 急跌", "這是測試。實際警示會長這樣：15 分鐘內跌 2.1%，委賣是委買 3.4 倍", "rd-test", true));
   bind("rdWake", () => rdWake(!RD.wake)); bind("rdRef", () => rdTick(true));
+  bind("cpBtn", async () => { if (CP.on) { if (confirm("關閉後，網站關著時就不會收到盤中警示。確定關閉？")) await cpOff(); } else await cpOn(); rdPaint(); });
+  bind("cpTest", async () => { const r = await cpTest(); toast(r ? "已送出雲端測試推播，幾秒內會跳出通知" : "雲端測試失敗，請稍後再試", 2600); });
   const add = async () => { await loadNames(); const v = $("#rdQ").value.trim().toLowerCase(); const x = NAMES.find(n => n[0].toLowerCase() == v) || NAMES.find(n => n[1].toLowerCase().includes(v));
     if (!v || !x) { toast("找不到這檔股票", 1400); return; } RD.list = [...new Set([...rdCodes(), x[0]])]; rdSave(RDK.list, RD.list); rdPaint(); rdTick(true); };
   bind("rdGo", add); const qi = $("#rdQ"); if (qi) qi.onkeydown = e => { if (e.key == "Enter") add(); };
@@ -5598,6 +5606,35 @@ function rdPaint(){
   host.querySelectorAll("[data-cf]").forEach(i => i.onchange = () => { const k = i.dataset.cf; RD.cfg[k] = i.type == "checkbox" ? i.checked : +i.value; rdSave(RDK.cfg, RD.cfg); });
 }
 rdSW(); if (RD.on) setTimeout(rdLoop, 3000);
+
+/* ================= ☁️ 雲端推播:網站關閉也收得到盤中警示 ================= */
+const CPAPI = "https://etf-alert.yuan780903.workers.dev", CPKEY = "BBHDQ5nJ47ju8R7qaXR2s3umhhuDiaC3XjywFim3XLESAL-V7dopeit9QLqICDQKMiFfrhr8koiKtSLeNh2RUSE";
+const CP = {on: (() => { try { return localStorage.getItem("bfy_cp") == "1"; } catch (e) { return false; } })(), err: "", recent: [], t: 0};
+const cpKey = s => { const p = "=".repeat((4 - s.length % 4) % 4), b = atob((s + p).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from(b, c => c.charCodeAt(0)); };
+async function cpSubObj(create){
+  const reg = await rdSW(); if (!reg || !reg.pushManager) throw new Error("這個瀏覽器不支援背景推播（iPhone 請先「加入主畫面」，再從主畫面圖示開啟）");
+  let sub = await reg.pushManager.getSubscription();
+  if (!sub && create) sub = await reg.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: cpKey(CPKEY)});
+  return sub;
+}
+function cpRefs(){ const o = {}; rdCodes().forEach(c => { const t = TECH && TECH.s[c]; if (t) o[c] = {ma20: t[7], sup: t[9], res: t[10]}; }); return o; }
+async function cpPost(path, body){ const r = await fetch(CPAPI + path, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)}); const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.error || "雲端回應 " + r.status); return j; }
+async function cpOn(){
+  CP.err = "";
+  try {
+    if (!window.Notification) throw new Error("這個瀏覽器不支援通知");
+    if (Notification.permission != "granted" && await Notification.requestPermission() != "granted") throw new Error("需要允許通知才能開啟（瀏覽器網址列左邊的設定 → 通知 → 允許）");
+    if (!TECH) TECH = await getJ("tech");
+    const sub = await cpSubObj(true), j = await cpPost("/sub", {endpoint: sub.endpoint, codes: rdCodes(), cfg: RD.cfg, refs: cpRefs()});
+    CP.on = true; try { localStorage.setItem("bfy_cp", "1"); } catch (e) {}
+    toast(`☁️ 雲端監控已開啟（${j.n} 檔），關掉網站也會通知`, 2600); cpRecent();
+  } catch (e) { CP.err = e.message; toast(e.message, 3200); }
+}
+async function cpOff(){ try { const sub = await cpSubObj(false); if (sub) { await cpPost("/unsub", {endpoint: sub.endpoint}).catch(() => {}); await sub.unsubscribe(); } } catch (e) {} CP.on = false; try { localStorage.removeItem("bfy_cp"); } catch (e) {} }
+async function cpSync(){ if (!CP.on) return; clearTimeout(CP.t); CP.t = setTimeout(async () => { try { const sub = await cpSubObj(true); if (!TECH) TECH = await getJ("tech"); await cpPost("/sub", {endpoint: sub.endpoint, codes: rdCodes(), cfg: RD.cfg, refs: cpRefs()}); CP.err = ""; } catch (e) { CP.err = "雲端同步失敗：" + e.message; } }, 800); }
+async function cpTest(){ try { const sub = await cpSubObj(false); if (!sub) return false; const j = await cpPost("/test", {endpoint: sub.endpoint}); setTimeout(cpRecent, 4000); return j.ok; } catch (e) { CP.err = e.message; return false; } }
+async function cpRecent(){ try { const sub = await cpSubObj(false); if (!sub) return; const j = await fetch(CPAPI + "/recent?ep=" + encodeURIComponent(sub.endpoint)).then(r => r.json()); CP.recent = (j.items || []).filter(x => x.code != "TEST" || Date.now() - x.ts < 864e5); if (j.sub === false && CP.on) { CP.err = "雲端找不到這台裝置的訂閱，請重新開啟一次"; } rdPaint(); } catch (e) {} }
+if (CP.on) setTimeout(cpSync, 4000);     // 每次開網站同步一次最新名單與日線參考價
 </script>
 </body>
 </html>

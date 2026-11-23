@@ -1,0 +1,16 @@
+name = "etf-alert"
+main = "index.js"
+compatibility_date = "2024-11-01"
+workers_dev = true
+
+# 台北 08:00～13:59(UTC 00:00～05:59)週一到週五,每分鐘一次;程式內再判斷 09:00～13:32
+[triggers]
+crons = ["* 0-5 * * 1-5"]
+
+[vars]
+VAPID_PUBLIC = "BBHDQ5nJ47ju8R7qaXR2s3umhhuDiaC3XjywFim3XLESAL-V7dopeit9QLqICDQKMiFfrhr8koiKtSLeNh2RUSE"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "etf-alert"
+database_id = "fa9ae0c0-16c2-4b55-847d-ee343ca20ad8"

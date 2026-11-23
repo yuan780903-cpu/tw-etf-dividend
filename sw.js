@@ -9,7 +9,17 @@ self.addEventListener("notificationclick", e => {
     return self.clients.openWindow(url);
   }));
 });
-self.addEventListener("push", e => {   // 預留:之後接伺服器推播(網站關閉也能收到)
-  let d = {}; try { d = e.data ? e.data.json() : {}; } catch (x) { d = {title: "巴菲遠", body: e.data && e.data.text()}; }
-  e.waitUntil(self.registration.showNotification(d.title || "巴菲遠警示", {body: d.body || "", icon: "icon-192.png", badge: "favicon-32.png", tag: d.tag, renotify: true, requireInteraction: true, data: {url: d.url || self.registration.scope + "#vp"}}));
+const API = "https://etf-alert.yuan780903.workers.dev";
+self.addEventListener("push", e => {      // 雲端推播(不帶內容):收到後向雲端拿警示文字再跳出通知
+  e.waitUntil((async () => {
+    let items = [];
+    try {
+      const sub = await self.registration.pushManager.getSubscription();
+      if (sub) items = (await (await fetch(API + "/pending?ep=" + encodeURIComponent(sub.endpoint), {cache: "no-store"})).json()).items || [];
+    } catch (x) {}
+    const url = self.registration.scope + "#vp";
+    if (!items.length) return self.registration.showNotification("巴菲遠：盤中警示", {body: "雷達有新的警示，點開查看", icon: "icon-192.png", badge: "favicon-32.png", tag: "rd-cloud", renotify: true, data: {url}});
+    const show = items.length > 3 ? [{title: `🔔 ${items.length} 則盤中警示`, body: items.slice(0, 4).map(x => x.title.replace(/^\S+\s/, "")).join("\n"), bad: 1, id: "sum"}] : items;
+    for (const x of show) await self.registration.showNotification(x.title, {body: x.body, icon: "icon-192.png", badge: "favicon-32.png", tag: "rd-" + (x.id || Date.now()), renotify: true, requireInteraction: !!x.bad, vibrate: x.bad ? [300, 120, 300, 120, 300] : [150], data: {url}});
+  })());
 });
