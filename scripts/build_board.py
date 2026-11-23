@@ -41,21 +41,24 @@ def main():
         B["breadth"] = dict(adv=x["adv"], dec=x["dec"], lu=x["lu"], ld=x["ld"], d=x["d"])
         a2 = [r["a200"] for r in rows]
         B["a200"] = dict(v=x["a200"], pct=pct(a2, x["a200"]), spark=a2[-60:], years=round(len(rows) / 250))
-    # 大盤本益比(上市櫃全部公司:總市值 ÷ 近四季稅後淨利),與自己歷年比較
-    F = L("fund/fundamentals.json")["companies"]; ys = sorted({y for f in F.values() for y in f.get("y", {})}, key=int); FIX = shares.par_fix(F)
-    cap = sum((f["px"] or 0) * (FIX.get(c) or f["ttm"]["cap"] * 100) for c, f in F.items() if f.get("px") and f.get("ttm") and f["ttm"].get("cap") and f["ttm"].get("niP") is not None)
-    def capY(c, f, y):   # 歷年市值:非 10 元面額用 年底股價 ÷ 當年 EPS × 淨利(股數隨面額變動,不能用股本換算)
-        d = f["y"][y]
-        if c in FIX and d.get("eps"): return f["pxY"][y] / d["eps"] * d["niP"] * 1000
-        return f["pxY"][y] * d["cap"] * 100
-    ni = sum(f["ttm"]["niP"] * 1000 for f in F.values() if f.get("px") and f.get("ttm") and f["ttm"].get("cap") and f["ttm"].get("niP") is not None)
-    hist = []
-    for y in ys:
-        c = sum(capY(k, f, y) for k, f in F.items() if f.get("pxY", {}).get(y) and f["y"].get(y, {}).get("cap") and f["y"][y].get("niP") is not None)
-        n = sum(f["y"][y]["niP"] * 1000 for f in F.values() if f.get("pxY", {}).get(y) and f["y"].get(y, {}).get("cap") and f["y"][y].get("niP") is not None)
-        if n > 0: hist.append(round(c / n, 1))
-    pe = round(cap / ni, 1) if ni > 0 else None
-    B["pe"] = dict(v=pe, pct=pct(hist, pe), hist=hist, years=f"{ys[0]}～{ys[-1]}", lo=min(hist) if hist else None, hi=max(hist) if hist else None)
+    try:
+        # 大盤本益比(上市櫃全部公司:總市值 ÷ 近四季稅後淨利),與自己歷年比較
+        F = L("fund/fundamentals.json")["companies"]; ys = sorted({y for f in F.values() for y in f.get("y", {})}, key=int); FIX = shares.par_fix(F)
+        cap = sum((f["px"] or 0) * (FIX.get(c) or f["ttm"]["cap"] * 100) for c, f in F.items() if f.get("px") and f.get("ttm") and f["ttm"].get("cap") and f["ttm"].get("niP") is not None)
+        def capY(c, f, y):   # 歷年市值:非 10 元面額用 年底股價 ÷ 當年 EPS × 淨利(股數隨面額變動,不能用股本換算)
+            d = f["y"][y]
+            if c in FIX and d.get("eps"): return f["pxY"][y] / d["eps"] * d["niP"] * 1000
+            return f["pxY"][y] * d["cap"] * 100
+        ni = sum(f["ttm"]["niP"] * 1000 for f in F.values() if f.get("px") and f.get("ttm") and f["ttm"].get("cap") and f["ttm"].get("niP") is not None)
+        hist = []
+        for y in ys:
+            c = sum(capY(k, f, y) for k, f in F.items() if f.get("pxY", {}).get(y) and f["y"].get(y, {}).get("cap") and f["y"][y].get("niP") is not None)
+            n = sum(f["y"][y]["niP"] * 1000 for f in F.values() if f.get("pxY", {}).get(y) and f["y"].get(y, {}).get("cap") and f["y"][y].get("niP") is not None)
+            if n > 0: hist.append(round(c / n, 1))
+        pe = round(cap / ni, 1) if ni > 0 else None
+        B["pe"] = dict(v=pe, pct=pct(hist, pe), hist=hist, years=f"{ys[0]}～{ys[-1]}", lo=min(hist) if hist else None, hi=max(hist) if hist else None)
+    except Exception as e:                            # 財報檔不存在(快速模式、雲端快取尚未建立)→ 沿用上一版本益比
+        print("  本益比沿用上一版:", e); B["pe"] = (L("board.json") or {}).get("pe")
     # 外資、融資(上市)
     B["foreign"] = dict(v=last["fi"], d5=round(sum(r["fi"] for r in R[-5:] if r["fi"] is not None), 1), spark=[r["fi"] for r in R[-20:]])
     I = (L("inst.json") or {}).get("twse")          # 三大法人統一來源:inst.json(比 market.json 早更新,收盤後就有)

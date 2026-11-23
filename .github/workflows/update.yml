@@ -22,6 +22,8 @@ jobs:
     timeout-minutes: 150
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main                      # 排隊等前一次跑完時,也要拿最新的程式與資料
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -31,6 +33,12 @@ jobs:
           path: data/breadth/raw
           key: breadth-${{ github.run_id }}
           restore-keys: breadth-
+      - name: 還原財報快取(fundamentals.json 太大不進 git;快速模式的籌碼/本益比要用)
+        uses: actions/cache@v4
+        with:
+          path: data/fund/fundamentals.json
+          key: fund-${{ github.run_id }}
+          restore-keys: fund-
       - name: 抓資料
         env:
           FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}

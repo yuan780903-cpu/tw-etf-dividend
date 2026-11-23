@@ -35,19 +35,19 @@ def twse_day(d):
     j = get(f"https://www.twse.com.tw/rwd/zh/marginTrading/TWT93U?date={d}&response=json")
     if j and j.get("stat") == "OK":
         for r in j["data"]:
-            if STOCK(r[0]) and N(r[12]) is not None: out["sbl"][r[0]] = N(r[12])
+            if len(r) > 12 and STOCK(r[0]) and N(r[12]) is not None: out["sbl"][r[0]] = N(r[12])
     time.sleep(1.2)
     j = get(f"https://www.twse.com.tw/rwd/zh/fund/MI_QFIIS?date={d}&response=json&selectType=ALLBUT0999")
     if j and j.get("stat") == "OK":
         for r in j["data"]:
-            if STOCK(r[0]) and N(r[7]) is not None: out["qf"][r[0]] = N(r[7])
+            if len(r) > 7 and STOCK(r[0]) and N(r[7]) is not None: out["qf"][r[0]] = N(r[7])
     time.sleep(1.2)
     j = get(f"https://www.twse.com.tw/exchangeReport/TWTB4U?response=json&date={d}&selectType=All")
     if j and j.get("stat") == "OK":
         for t in j.get("tables", []):
             if t.get("fields") and t["fields"][0] == "證券代號":
                 for r in t.get("data", []):
-                    if STOCK(r[0]) and N(r[3]) is not None: out["dt"][r[0]] = N(r[3])
+                    if len(r) > 3 and STOCK(r[0]) and N(r[3]) is not None: out["dt"][r[0]] = N(r[3])
     time.sleep(1.2)
     return out
 

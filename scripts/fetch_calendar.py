@@ -24,12 +24,12 @@ FRED = {
   "Industrial Production and Capacity Utilization": ("🇺🇸 工業生產", "中", "工廠實際生產多少", None, ""),
 }
 
-def get(u, t=90):
+def get(u, t=90, tries=3):
     import time
-    for k in range(3):                       # FRED 偶爾很慢:重試
+    for k in range(tries):                       # FRED 偶爾很慢:重試
         try: return urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"}), timeout=t).read().decode("utf-8-sig", "ignore")
         except Exception as e:
-            if k == 2: raise
+            if k == tries - 1: raise
             time.sleep(5 + k * 10)
 
 def prev_of(macro, sid):
@@ -46,8 +46,8 @@ def fred(macro, start, end):
     out = []
     months = sorted({(start.year, start.month), (end.year, end.month), ((start + dt.timedelta(days=31)).year, (start + dt.timedelta(days=31)).month)})
     for y, m in months:
-        try: h = get(f"https://fred.stlouisfed.org/releases/calendar?y={y}&m={m}&vs={y}-{m:02d}-01&ve={y}-{m:02d}-{calendar.monthrange(y, m)[1]:02d}&ob=rd&od=asc")
-        except Exception as e: print("  FRED 行事曆失敗", y, m, e); continue
+        try: h = get(f"https://fred.stlouisfed.org/releases/calendar?y={y}&m={m}&vs={y}-{m:02d}-01&ve={y}-{m:02d}-{calendar.monthrange(y, m)[1]:02d}&ob=rd&od=asc", t=25, tries=1)
+        except Exception as e: print("  FRED 行事曆失敗,本次略過", y, m, e); break   # FRED 常擋/逾時:失敗就不再等其他月份
         body = h[h.find("<tbody"):h.find("</tbody>")]
         day = None; tm = None
         for row in re.findall(r"<tr[^>]*>([\s\S]*?)</tr>", body):

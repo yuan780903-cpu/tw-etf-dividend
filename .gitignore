@@ -7,3 +7,4 @@ data/breadth/raw/
 member/.wrangler/
 alert/.wrangler/
 proxy/.wrangler/
+worker/.wrangler/

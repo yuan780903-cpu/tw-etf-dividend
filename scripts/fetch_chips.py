@@ -90,7 +90,9 @@ def quotes():
     return q
 
 def main():
-    F = json.load(open(os.path.join(DATA, "fund", "fundamentals.json")))["companies"]
+    fp = os.path.join(DATA, "fund", "fundamentals.json")
+    if not os.path.exists(fp): print("沒有財報檔(雲端快取尚未建立),籌碼沿用上一版"); return
+    F = json.load(open(fp))["companies"]
     days, d = [], TODAY
     while len(days) < 20 and (TODAY - d).days < 40:
         if d.weekday() < 5:
