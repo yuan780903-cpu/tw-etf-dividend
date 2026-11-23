@@ -55,12 +55,16 @@ def main():
     M = json.load(open(os.path.join(DATA, "market.json")))
     days = [r[0].replace("-", "") for r in M["rows"][-30:]]
     have = {f[:8] for f in os.listdir(RAW) if f.endswith(".json")}
-    # 回補上市歷史(第一次會補約 25 天,之後每天只抓新的)
+    tw_ok = lambda o: bool(o.get("tw") or "2330" in o.get("qf", {}) or "2330" in o.get("sbl", {}))   # 這天的上市資料抓到了沒
+    # 回補上市歷史(第一次會補約 25 天,之後只抓新的;上市資料晚上才公布,當天先只有上櫃的,之後會再補)
     for d in days[-25:]:
-        if d in have: continue
+        p = os.path.join(RAW, d + ".json"); old = json.load(open(p)) if d in have else None
+        if old and tw_ok(old): continue
         o = twse_day(d)
         if o["sbl"] or o["qf"]:
-            fh.save(os.path.join(RAW, d + ".json"), o); have.add(d); print("  風險資料", d, len(o["sbl"]), len(o["qf"]), len(o["dt"]))
+            if old:
+                for k in ("sbl", "qf", "dt"): o[k] = {**old.get(k, {}), **o[k]}
+            o["tw"] = 1; fh.save(p, o); have.add(d); print("  風險資料", d, len(o["sbl"]), len(o["qf"]), len(o["dt"]))
     last = days[-1]
     # 上櫃只有當日:併入最新一天
     cur = json.load(open(os.path.join(RAW, last + ".json"))) if last in have else {"sbl": {}, "qf": {}, "dt": {}}
@@ -79,6 +83,8 @@ def main():
     for f in files[:-30]: os.remove(os.path.join(RAW, f))
     files = files[-30:]
     H = [json.load(open(os.path.join(RAW, f))) for f in files]
+    while len(H) > 1 and not tw_ok(H[-1]): H.pop(); files.pop()    # 上市還沒公布的那天先不算(避免只剩上櫃、檔數少一半)
+    last = files[-1][:8]
     # 處置/注意
     disp, att = {}, {}
     for r in get("https://openapi.twse.com.tw/v1/announcement/punish") or []:

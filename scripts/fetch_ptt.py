@@ -44,6 +44,8 @@ def main(pages=20):
             a = agg.setdefault(c, [0, 0, 0, 0]); a[0] += 1; a[1] += int(bull); a[2] += int(bear); a[3] += max(x["p"], 0)
     top = sorted(agg.items(), key=lambda kv: (-kv[1][0], -kv[1][3]))[:40]
     tgt = [x for x in posts if x["t"].startswith("[標的]")][:20]
+    if not posts:                                   # PTT 擋雲端主機(403)時:保留上一版,不用空資料蓋掉
+        print("ptt.json:這次抓不到 PTT,保留上一版"); return
     fh.save(os.path.join(DATA, "ptt.json"), dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), n=len(posts),
             top=[[c, nm.get(c, c)] + v for c, v in top], tgt=tgt, hot=sorted(posts, key=lambda x: -x["p"])[:10],
             cols=["代號", "名稱", "被提到篇數", "標的看多", "標的看空", "推文熱度"],
