@@ -100,75 +100,82 @@ def divs():
     p = os.path.join(DATA, "stock_div.json")
     return json.load(open(p))["stocks"] if os.path.exists(p) else {}
 
+def evaluate(c, d, t, px, dpct, DV, FIX, Y=Y):
+    """計算一家公司的大師指標 m 與每位大師各條件是否通過 test。
+    Y=要用到的財報年度(今天選股用全部;回測用「當時已公布」的年度)、t=最新一期(近四季或該年度)、px=當時股價"""
+    def ser(d, k): return [(d["y"].get(y) or {}).get(k) for y in Y]
+    eps, rev, pt, gp, op = ser(d, "eps"), ser(d, "rev"), ser(d, "pt"), ser(d, "gp"), ser(d, "op")
+    cap = t.get("cap"); sh = FIX.get(c) or (cap * 100 if cap else None)   # 股本(仟元)→股數;非 10 元面額用實際發行股數
+    if c in FIX:   # 面額變更前的每股數字會失真:EPS 改用 淨利 ÷ 目前股數
+        t = dict(t, eps=t["niP"] * 1000 / sh if t.get("niP") is not None else None)
+        eps = [((d["y"].get(y) or {}).get("niP") or 0) * 1000 / sh if (d["y"].get(y) or {}).get("niP") is not None else None for y in Y]
+    bvps = t["eqP"] * 1000 / sh if sh and t.get("eqP") else None
+    pe = px / t["eps"] if t.get("eps") and t["eps"] > 0 else None
+    pb = px / bvps if bvps and bvps > 0 else None
+    roe = ratio(t.get("niP"), t.get("eqP"))
+    last = d["y"].get(Y[-1]) or {}; roe0 = ratio(last.get("niP"), last.get("eqP"))
+    roeUp = g(roe, roe0) if roe0 and roe0 > 0 else None
+    debt = ratio(t.get("tl"), t.get("ta")); cur = ratio(t.get("ca"), t.get("cl"))
+    rps = t["rev"] * 1000 / sh if sh and t.get("rev") else None
+    gmY = [ratio(gp[i], rev[i]) for i in range(len(Y))]; omY = [ratio(op[i], rev[i]) for i in range(len(Y))]
+    gmT, omT = ratio(t.get("gp"), t.get("rev")), ratio(t.get("op"), t.get("rev"))
+    rv2, rv3, rv5 = rates(rev, 2), rates(rev, 3), rates(rev, 5)
+    pt5, eps5 = rates(pt, 5), rates(eps, 5)
+    dir_ = dpct[c] / sh * 100 if sh and c in dpct else None
+    # 新生代大師用:現金流、ROE 歷年、股利
+    niP, eqP, cfo, cfi = ser(d, "niP"), ser(d, "eqP"), ser(d, "cfo"), ser(d, "cfi")
+    roeY = [ratio(niP[i], eqP[i]) if eqP[i] and eqP[i] > 0 else None for i in range(len(Y))]
+    fcfY = [cfo[i] + cfi[i] if cfo[i] is not None and cfi[i] is not None else None for i in range(len(Y))]
+    fcfT = t["cfo"] + t["cfi"] if t.get("cfo") is not None and t.get("cfi") is not None else None
+    mcap = px * sh if sh else None
+    fcfYld = fcfT * 1000 / mcap * 100 if fcfT is not None and mcap else None
+    r5, f5, c5, n5 = roeY[-5:], fcfY[-5:], cfo[-5:], niP[-5:]
+    cfoNi5 = sum(c5) / sum(n5) * 100 if all(x is not None for x in c5 + n5) and sum(n5) > 0 else None
+    dy = (DV.get(c) or {}).get("y", {}); cash5 = [(dy.get(y) or {}).get("cash") for y in Y[-5:]]; pay5 = [(dy.get(y) or {}).get("pay") for y in Y[-5:]]
+    le = dy.get(Y[-1]) or {}; lastCash = le["tot"] / sh if c in FIX and le.get("tot") and sh else le.get("cash")
+    yld = lastCash / px * 100 if lastCash and px else None
+    payAvg = avg([x for x in pay5 if x is not None]) if any(x is not None for x in pay5) else None
+    revTg = g(t.get("rev"), last.get("rev")) if last.get("rev") else None
+    m = dict(pe=R(pe, 1), pb=R(pb, 2), roe=R(roe, 1), roeUp=R(roeUp, 1), debt=R(debt, 1), cur=R(cur, 0), rps=R(rps, 2), rev12=R(t.get("rev") / 1e5 if t.get("rev") else None, 1),
+             revG2=R(avg(rv2), 1), revG3=R(avg(rv3), 1), revG5=R(avg(rv5), 1), revMin5=R(min(rv5), 1) if rv5 else None,
+             ptG5=R(avg(pt5), 1), ptMin5=R(min(pt5), 1) if pt5 else None, epsG5=R(avg(eps5), 1),
+             epsMin5=R(min(x for x in eps[-5:]), 2) if all(x is not None for x in eps[-5:]) else None,
+             gmMin5=R(min(gmY[-5:]), 1) if all(x is not None for x in gmY[-5:]) else None, gm=R(gmT, 1),
+             omMin3=R(min(omY[-3:]), 1) if all(x is not None for x in omY[-3:]) else None, om=R(omT, 1), dir=R(dir_, 1),
+             roeMin5=R(min(r5), 1) if all(x is not None for x in r5) else None, roe5=R(avg(r5), 1) if all(x is not None for x in r5) else None,
+             fcfYld=R(fcfYld, 1), fcf=R(fcfT / 1e5, 1) if fcfT is not None else None,
+             fcfMin5=R(min(f5) / 1e5, 1) if all(x is not None for x in f5) else None, fcfSum5=R(sum(f5) / 1e5, 1) if all(x is not None for x in f5) else None,
+             cfoMin5=R(min(c5) / 1e5, 1) if all(x is not None for x in c5) else None, cfoNi5=R(cfoNi5, 0),
+             divN5=sum(1 for x in cash5 if x and x > 0), yld=R(yld, 2), payAvg=R(payAvg, 0), revTg=R(revTg, 1))
+    ok = lambda v, f: v is not None and f(v)
+    test = {
+      "lynch": [ok(m["pe"], lambda v: v < 20), ok(m["revG2"], lambda v: v > 25), ok(m["ptG5"], lambda v: v > 7), ok(m["debt"], lambda v: v < 30)],
+      "graham": [ok(m["epsMin5"], lambda v: v > 0), ok(m["pe"], lambda v: v < 15), ok(m["rev12"], lambda v: v > 3), ok(m["pb"], lambda v: v < 1.5), ok(m["cur"], lambda v: v > 200), ok(m["ptG5"], lambda v: v > 3)],
+      "buffett": [ok(m["epsMin5"], lambda v: v > 1), ok(m["rps"], lambda v: v > 1.5), ok(m["pb"], lambda v: v < 1.5), ok(m["roe"], lambda v: v > 5), ok(m["gmMin5"], lambda v: v > 10)],
+      "osh": [ok(m["epsG5"], lambda v: v > 15), ok(m["pe"], lambda v: v < 18), ok(m["roe"], lambda v: v > 18), ok(m["roeUp"], lambda v: v > 15)],
+      "murphy": [ok(m["revG3"], lambda v: v > 15), ok(m["roe"], lambda v: v > 7), ok(m["om"], lambda v: v > 1), ok(m["omMin3"], lambda v: v > 3)],
+      "kfisher": [ok(m["revG5"], lambda v: v > 15), ok(m["ptG5"], lambda v: v > 5), ok(m["debt"], lambda v: v < 30)],
+      "yusko": [ok(m["ptMin5"], lambda v: v > 5), ok(m["ptG5"], lambda v: v > 10), ok(m["gm"], lambda v: v > 4)],
+      "sivy": [ok(m["pe"], lambda v: v < 20), ok(m["revMin5"], lambda v: v > 10), ok(m["roe"], lambda v: v > 15), ok(m["debt"], lambda v: v < 20)],
+      "price": [ok(m["pb"], lambda v: v < 1), ok(m["dir"], lambda v: v > 40), ok(m["debt"], lambda v: v < 20)],
+      "pabrai": [ok(m["pe"], lambda v: v < 12), ok(m["roe"], lambda v: v > 15), ok(m["debt"], lambda v: v < 40), ok(m["fcf"], lambda v: v > 0)],
+      "burry": [ok(m["pb"], lambda v: v < 1.2), ok(m["fcfYld"], lambda v: v > 8), ok(m["cur"], lambda v: v > 150), ok(t.get("eps"), lambda v: v > 0)],
+      "dorsey": [ok(m["roeMin5"], lambda v: v > 15), ok(m["gm"], lambda v: v > 30), ok(m["fcfMin5"], lambda v: v > 0), ok(m["pe"], lambda v: v < 25)],
+      "wood": [ok(m["revG3"], lambda v: v > 25), ok(m["revTg"], lambda v: v > 20), ok(m["gm"], lambda v: v > 35)],
+      "raohs": [ok(m["roeMin5"], lambda v: v > 15), ok(m["cfoMin5"], lambda v: v > 0), ok(m["fcfSum5"], lambda v: v > 0), ok(m["debt"], lambda v: v < 50), ok(m["pe"], lambda v: v < 20)],
+      "mj": [ok(m["cfoNi5"], lambda v: v > 100), ok(m["om"], lambda v: v > 10), ok(m["roe"], lambda v: v > 15), ok(m["debt"], lambda v: v < 50)],
+      "chenzm": [m["divN5"] >= 5, ok(m["yld"], lambda v: v > 5), ok(m["epsMin5"], lambda v: v > 0), ok(m["payAvg"], lambda v: v < 90)],
+      "warrentw": [ok(m["roe5"], lambda v: v > 15), ok(m["roe"], lambda v: v > 15), m["divN5"] >= 5, ok(m["pe"], lambda v: v < 15)],
+    }
+    return m, test
+
 def main():
     dpct = director_pct(); DV = divs(); FIX = shares.par_fix(F["companies"])
     stocks, passn = {}, {e["id"]: 0 for e in EXPERTS}
     for c, d in F["companies"].items():
         t = d.get("ttm") or {}; px = d.get("px"); vol = d.get("vol5")
         if not px or not t: continue
-        eps, rev, pt, gp, op = ser(d, "eps"), ser(d, "rev"), ser(d, "pt"), ser(d, "gp"), ser(d, "op")
-        cap = t.get("cap"); sh = FIX.get(c) or (cap * 100 if cap else None)   # 股本(仟元)→股數;非 10 元面額用實際發行股數
-        if c in FIX:   # 面額變更前的每股數字會失真:EPS 改用 淨利 ÷ 目前股數
-            t = dict(t, eps=t["niP"] * 1000 / sh if t.get("niP") is not None else None)
-            eps = [((d["y"].get(y) or {}).get("niP") or 0) * 1000 / sh if (d["y"].get(y) or {}).get("niP") is not None else None for y in Y]
-        bvps = t["eqP"] * 1000 / sh if sh and t.get("eqP") else None
-        pe = px / t["eps"] if t.get("eps") and t["eps"] > 0 else None
-        pb = px / bvps if bvps and bvps > 0 else None
-        roe = ratio(t.get("niP"), t.get("eqP"))
-        last = d["y"].get(Y[-1]) or {}; roe0 = ratio(last.get("niP"), last.get("eqP"))
-        roeUp = g(roe, roe0) if roe0 and roe0 > 0 else None
-        debt = ratio(t.get("tl"), t.get("ta")); cur = ratio(t.get("ca"), t.get("cl"))
-        rps = t["rev"] * 1000 / sh if sh and t.get("rev") else None
-        gmY = [ratio(gp[i], rev[i]) for i in range(len(Y))]; omY = [ratio(op[i], rev[i]) for i in range(len(Y))]
-        gmT, omT = ratio(t.get("gp"), t.get("rev")), ratio(t.get("op"), t.get("rev"))
-        rv2, rv3, rv5 = rates(rev, 2), rates(rev, 3), rates(rev, 5)
-        pt5, eps5 = rates(pt, 5), rates(eps, 5)
-        dir_ = dpct[c] / sh * 100 if sh and c in dpct else None
-        # 新生代大師用:現金流、ROE 歷年、股利
-        niP, eqP, cfo, cfi = ser(d, "niP"), ser(d, "eqP"), ser(d, "cfo"), ser(d, "cfi")
-        roeY = [ratio(niP[i], eqP[i]) if eqP[i] and eqP[i] > 0 else None for i in range(len(Y))]
-        fcfY = [cfo[i] + cfi[i] if cfo[i] is not None and cfi[i] is not None else None for i in range(len(Y))]
-        fcfT = t["cfo"] + t["cfi"] if t.get("cfo") is not None and t.get("cfi") is not None else None
-        mcap = px * sh if sh else None
-        fcfYld = fcfT * 1000 / mcap * 100 if fcfT is not None and mcap else None
-        r5, f5, c5, n5 = roeY[-5:], fcfY[-5:], cfo[-5:], niP[-5:]
-        cfoNi5 = sum(c5) / sum(n5) * 100 if all(x is not None for x in c5 + n5) and sum(n5) > 0 else None
-        dy = (DV.get(c) or {}).get("y", {}); cash5 = [(dy.get(y) or {}).get("cash") for y in Y[-5:]]; pay5 = [(dy.get(y) or {}).get("pay") for y in Y[-5:]]
-        le = dy.get(Y[-1]) or {}; lastCash = le["tot"] / sh if c in FIX and le.get("tot") and sh else le.get("cash")
-        yld = lastCash / px * 100 if lastCash and px else None
-        payAvg = avg([x for x in pay5 if x is not None]) if any(x is not None for x in pay5) else None
-        revTg = g(t.get("rev"), last.get("rev")) if last.get("rev") else None
-        m = dict(pe=R(pe, 1), pb=R(pb, 2), roe=R(roe, 1), roeUp=R(roeUp, 1), debt=R(debt, 1), cur=R(cur, 0), rps=R(rps, 2), rev12=R(t.get("rev") / 1e5 if t.get("rev") else None, 1),
-                 revG2=R(avg(rv2), 1), revG3=R(avg(rv3), 1), revG5=R(avg(rv5), 1), revMin5=R(min(rv5), 1) if rv5 else None,
-                 ptG5=R(avg(pt5), 1), ptMin5=R(min(pt5), 1) if pt5 else None, epsG5=R(avg(eps5), 1),
-                 epsMin5=R(min(x for x in eps[-5:]), 2) if all(x is not None for x in eps[-5:]) else None,
-                 gmMin5=R(min(gmY[-5:]), 1) if all(x is not None for x in gmY[-5:]) else None, gm=R(gmT, 1),
-                 omMin3=R(min(omY[-3:]), 1) if all(x is not None for x in omY[-3:]) else None, om=R(omT, 1), dir=R(dir_, 1),
-                 roeMin5=R(min(r5), 1) if all(x is not None for x in r5) else None, roe5=R(avg(r5), 1) if all(x is not None for x in r5) else None,
-                 fcfYld=R(fcfYld, 1), fcf=R(fcfT / 1e5, 1) if fcfT is not None else None,
-                 fcfMin5=R(min(f5) / 1e5, 1) if all(x is not None for x in f5) else None, fcfSum5=R(sum(f5) / 1e5, 1) if all(x is not None for x in f5) else None,
-                 cfoMin5=R(min(c5) / 1e5, 1) if all(x is not None for x in c5) else None, cfoNi5=R(cfoNi5, 0),
-                 divN5=sum(1 for x in cash5 if x and x > 0), yld=R(yld, 2), payAvg=R(payAvg, 0), revTg=R(revTg, 1))
-        ok = lambda v, f: v is not None and f(v)
-        test = {
-          "lynch": [ok(m["pe"], lambda v: v < 20), ok(m["revG2"], lambda v: v > 25), ok(m["ptG5"], lambda v: v > 7), ok(m["debt"], lambda v: v < 30)],
-          "graham": [ok(m["epsMin5"], lambda v: v > 0), ok(m["pe"], lambda v: v < 15), ok(m["rev12"], lambda v: v > 3), ok(m["pb"], lambda v: v < 1.5), ok(m["cur"], lambda v: v > 200), ok(m["ptG5"], lambda v: v > 3)],
-          "buffett": [ok(m["epsMin5"], lambda v: v > 1), ok(m["rps"], lambda v: v > 1.5), ok(m["pb"], lambda v: v < 1.5), ok(m["roe"], lambda v: v > 5), ok(m["gmMin5"], lambda v: v > 10)],
-          "osh": [ok(m["epsG5"], lambda v: v > 15), ok(m["pe"], lambda v: v < 18), ok(m["roe"], lambda v: v > 18), ok(m["roeUp"], lambda v: v > 15)],
-          "murphy": [ok(m["revG3"], lambda v: v > 15), ok(m["roe"], lambda v: v > 7), ok(m["om"], lambda v: v > 1), ok(m["omMin3"], lambda v: v > 3)],
-          "kfisher": [ok(m["revG5"], lambda v: v > 15), ok(m["ptG5"], lambda v: v > 5), ok(m["debt"], lambda v: v < 30)],
-          "yusko": [ok(m["ptMin5"], lambda v: v > 5), ok(m["ptG5"], lambda v: v > 10), ok(m["gm"], lambda v: v > 4)],
-          "sivy": [ok(m["pe"], lambda v: v < 20), ok(m["revMin5"], lambda v: v > 10), ok(m["roe"], lambda v: v > 15), ok(m["debt"], lambda v: v < 20)],
-          "price": [ok(m["pb"], lambda v: v < 1), ok(m["dir"], lambda v: v > 40), ok(m["debt"], lambda v: v < 20)],
-          "pabrai": [ok(m["pe"], lambda v: v < 12), ok(m["roe"], lambda v: v > 15), ok(m["debt"], lambda v: v < 40), ok(m["fcf"], lambda v: v > 0)],
-          "burry": [ok(m["pb"], lambda v: v < 1.2), ok(m["fcfYld"], lambda v: v > 8), ok(m["cur"], lambda v: v > 150), ok(t.get("eps"), lambda v: v > 0)],
-          "dorsey": [ok(m["roeMin5"], lambda v: v > 15), ok(m["gm"], lambda v: v > 30), ok(m["fcfMin5"], lambda v: v > 0), ok(m["pe"], lambda v: v < 25)],
-          "wood": [ok(m["revG3"], lambda v: v > 25), ok(m["revTg"], lambda v: v > 20), ok(m["gm"], lambda v: v > 35)],
-          "raohs": [ok(m["roeMin5"], lambda v: v > 15), ok(m["cfoMin5"], lambda v: v > 0), ok(m["fcfSum5"], lambda v: v > 0), ok(m["debt"], lambda v: v < 50), ok(m["pe"], lambda v: v < 20)],
-          "mj": [ok(m["cfoNi5"], lambda v: v > 100), ok(m["om"], lambda v: v > 10), ok(m["roe"], lambda v: v > 15), ok(m["debt"], lambda v: v < 50)],
-          "chenzm": [m["divN5"] >= 5, ok(m["yld"], lambda v: v > 5), ok(m["epsMin5"], lambda v: v > 0), ok(m["payAvg"], lambda v: v < 90)],
-          "warrentw": [ok(m["roe5"], lambda v: v > 15), ok(m["roe"], lambda v: v > 15), m["divN5"] >= 5, ok(m["pe"], lambda v: v < 15)],
-        }
+        m, test = evaluate(c, d, t, px, dpct, DV, FIX)
         liquid = px >= 5 and (vol or 0) >= 500
         hit = [e["id"] for e in EXPERTS if liquid and all(test[e["id"]])]
         for h in hit: passn[h] += 1

@@ -137,6 +137,7 @@ def main():
     subprocess.run([sys.executable, os.path.join(HERE, "fetch_breadth.py"), "--keep", "300", "--max", "300"])   # 市場廣度(恐慌度用)
     subprocess.run([sys.executable, os.path.join(HERE, "scan_patterns.py")])   # 線型選股(全市場掃描)
     subprocess.run([sys.executable, os.path.join(HERE, "build_tech.py")])      # 日線技術面買點訊號(大師選股/定存股搭配用)
+    subprocess.run([sys.executable, os.path.join(HERE, "build_fill.py")])      # 個股填息分析(用近 300 日收盤)
     subprocess.run([sys.executable, os.path.join(HERE, "build_market_analysis.py")])
     subprocess.run([sys.executable, os.path.join(HERE, "fetch_news.py")])        # 盤勢快訊(標題)
     subprocess.run([sys.executable, os.path.join(HERE, "fetch_macro.py")])       # 美國總經(FRED)
@@ -155,6 +156,11 @@ def main():
     subprocess.run([sys.executable, os.path.join(HERE, "build_board.py")])              # 大盤總表(含台指期夜盤)
     subprocess.run([sys.executable, os.path.join(HERE, "fetch_risk.py")])              # 風險雷達:處置/注意股、借券、外資持股、當沖比
     subprocess.run([sys.executable, os.path.join(HERE, "fetch_options.py")])           # 期權籌碼:P/C、最大未平倉、外資選擇權、ADR 溢價
+    subprocess.run([sys.executable, os.path.join(HERE, "build_concepts.py")])          # 族群／概念股輪動
+    subprocess.run([sys.executable, os.path.join(HERE, "build_smart.py")])             # 綜合評分 1～10、大戶吸籌
+    subprocess.run([sys.executable, os.path.join(HERE, "build_backtest.py")])          # 大師選股歷年回測
+    subprocess.run([sys.executable, os.path.join(HERE, "fetch_calendar.py")])          # 經濟行事曆(美國 FRED/Fed、台灣慣例日期、除息、法說會)
+    subprocess.run([sys.executable, os.path.join(HERE, "fetch_ptt.py")])               # PTT 股版熱度(只抓標題)
     print(f"完成。FinMind 用了 {used}/{BUDGET} 次")
 
 if __name__ == "__main__":

@@ -96,6 +96,20 @@ export default {
         return J(req, {ok: true, paid: !!r.until && now < r.until, plan: r.plan, until: r.until});
       }
 
+      if ((p == "/sync/get" || p == "/sync/put") && req.method == "POST") {   // 多裝置同步:自選股、持股、雷達、交易紀錄(只有已登入的裝置能讀寫自己的資料)
+        let code = normU(body.code), dev = String(body.dev || "").slice(0, 64);
+        let r = await env.DB.prepare("SELECT kind, revoked FROM codes WHERE code=?").bind(code).first();
+        if (!r) { code = norm(body.code); r = await env.DB.prepare("SELECT kind, revoked FROM codes WHERE code=?").bind(code).first(); }
+        if (!r || !["pass", "acct"].includes(r.kind) || r.revoked || !dev) return J(req, {ok: false, reason: "未登入"}, 401);
+        const d = await env.DB.prepare("SELECT dev FROM devices WHERE code=? AND dev=?").bind(code, dev).first();
+        if (!d) return J(req, {ok: false, reason: "裝置未登記"}, 401);
+        if (p == "/sync/get") { const x = await env.DB.prepare("SELECT v, ts FROM userdata WHERE code=?").bind(code).first(); return J(req, {ok: true, v: x ? x.v : null, ts: x ? x.ts : 0}); }
+        const v = String(body.v || ""); if (v.length > 900000) return J(req, {ok: false, reason: "資料太大"}, 413);
+        const ts = +body.ts || now;
+        await env.DB.prepare("INSERT INTO userdata (code, v, ts) VALUES (?,?,?) ON CONFLICT(code) DO UPDATE SET v=excluded.v, ts=excluded.ts").bind(code, v, ts).run();
+        return J(req, {ok: true, ts});
+      }
+
       if (p == "/hit" && req.method == "POST") {               // 流量:每次開頁/切換分頁一筆
         const vid = String(body.vid || "").slice(0, 40), page = String(body.page || "").slice(0, 20);
         if (vid && page) await env.DB.prepare("INSERT INTO hits (ts, day, vid, page, member) VALUES (?,?,?,?,?)").bind(now, tpe(now), vid, page, body.m ? 1 : 0).run();
