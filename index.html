@@ -3584,11 +3584,36 @@ async function gqOne(sym){
   const px = m.regularMarketPrice; prev = prev || m.chartPreviousClose;
   return {px, prev, chg: prev ? (px / prev - 1) * 100 : null, t: m.regularMarketTime, sp: sp.length > 1 ? sp : null, live: Date.now() / 1000 - m.regularMarketTime < 1200};
 }
-async function gqLoad(){
-  if (document.hidden) return;
-  await Promise.all(GQ.map(([s]) => gqOne(s).then(d => GQD[s] = d).catch(() => {})));
+/* 省額度:15 個指數一次抓齊(Yahoo spark 批次),每次只用 1 次代理請求;批次失敗才逐檔補抓 */
+let gqLast = 0;
+async function gqBatch(){
+  const syms = GQ.map(x => x[0]), url = `https://query1.finance.yahoo.com/v7/finance/spark?symbols=${syms.map(encodeURIComponent).join(",")}&range=5d&interval=15m`;
+  const j = await fetch(PXY + encodeURIComponent(url)).then(r => r.ok ? r.json() : null).catch(() => null), got = new Set();
+  for (const r of (j && j.spark && j.spark.result) || []) {
+    try {
+      const x = r.response[0], m = x.meta, off = m.gmtoffset || 0, day = t => Math.floor((t + off) / 86400), md = day(m.regularMarketTime);
+      const ts = x.timestamp || [], cl = (x.indicators && x.indicators.quote && x.indicators.quote[0].close) || [], sp = [];
+      ts.forEach((t, i) => { if (cl[i] != null && day(t) == md) sp.push(cl[i]); });
+      const px = m.regularMarketPrice, prev = m.previousClose ?? m.chartPreviousClose;
+      if (px == null) continue;
+      GQD[r.symbol] = {px, prev, chg: prev ? (px / prev - 1) * 100 : null, t: m.regularMarketTime, sp: sp.length > 1 ? sp : null, live: Date.now() / 1000 - m.regularMarketTime < 1200}; got.add(r.symbol);
+    } catch (e) {}
+  }
+  return syms.filter(s => !got.has(s));
+}
+async function gqLoad(force){
+  if (document.hidden || (!force && Date.now() - gqLast < 25e3)) return;
+  gqLast = Date.now();
+  const miss = await gqBatch();
+  if (miss.length) await Promise.all(miss.map(s => gqOne(s).then(d => GQD[s] = d).catch(() => {})));   // 備援:逐檔
   gqPaint();
 }
+/* 台股或美股盤中每 1 分鐘更新,兩邊都休市改 5 分鐘 */
+function gqActive(){
+  const now = new Date(), tz = z => new Date(now.toLocaleString("en-US", {timeZone: z})), tp = tz("Asia/Taipei"), ny = tz("America/New_York"), m = d => d.getHours() * 60 + d.getMinutes();
+  return (tp.getDay() % 6 && m(tp) >= 525 && m(tp) <= 815) || (ny.getDay() % 6 && m(ny) >= 565 && m(ny) <= 965);
+}
+function gqSched(){ clearTimeout(gqT); gqT = setTimeout(async () => { await gqLoad(true); gqSched(); }, gqActive() ? 60e3 : 300e3); }
 function gqFmt(s, v){ return v == null ? "—" : fmt(v, s == "TWD=X" || s == "^TNX" ? 3 : v >= 1000 ? 0 : 2); }
 function gqSpark(sp, up){
   if (!sp) return "";
@@ -3629,8 +3654,8 @@ function nwUI(){
   gqPaint(); nwPaint(); nwLoad();
   clearInterval(nwT); nwT = setInterval(nwLoad, 5 * 60e3);
 }
-gqLoad(); gqT = setInterval(gqLoad, 60e3);
-document.addEventListener("visibilitychange", () => { if (!document.hidden) { gqLoad(); if ($("#nwL")) nwLoad(); } });
+gqLoad(true); gqSched();
+document.addEventListener("visibilitychange", () => { if (!document.hidden) { gqLoad(); if ($("#nwL") && Date.now() - (window.nwLast || 0) > 120e3) { window.nwLast = Date.now(); nwLoad(); } } });
 
 
 /* ---------- 頂部即時時鐘(台北時間)+ 台股/美股開收盤狀態 ---------- */
