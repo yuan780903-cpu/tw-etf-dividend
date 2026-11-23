@@ -1518,6 +1518,24 @@ button{-webkit-tap-highlight-color:transparent}
 #cwChip{position:fixed;right:14px;bottom:14px;z-index:9800;max-width:min(360px,calc(100vw - 28px));background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:9px 13px;font-size:13px;font-weight:700;line-height:1.5;box-shadow:0 12px 30px -14px rgba(20,33,61,.5)}
 #cwChip small{display:block;font-weight:500;color:var(--sub);font-size:11.5px}#cwChip.ok{border-color:#9AD9B5}#cwChip.warn{border-color:#F5C26B}
 .cw-spin{display:inline-block;width:11px;height:11px;border:2px solid #2F5BEA;border-right-color:transparent;border-radius:50%;margin-right:6px;vertical-align:-1px;animation:cwsp 1s linear infinite}@keyframes cwsp{to{transform:rotate(360deg)}}
+/* ===== 外資期貨空單 ===== */
+.fu-d{color:#2F5BEA;font-weight:800;margin:4px 0 8px}
+.fu-tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.fu-t{background:var(--bg);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:3px;border:1px solid transparent}.fu-t.key{border-color:#2F5BEA;background:color-mix(in srgb,#2F5BEA 6%,var(--bg))}
+.fu-t small{font-weight:800;color:var(--sub)}.fu-t>b{font-size:22px;font-weight:900}.fu-t>b i{font-size:12px;font-style:normal;margin-left:3px;color:var(--sub)}.fu-t span{font-size:11.5px;color:var(--sub)}.fu-t em{font-size:11.5px;font-style:normal;color:var(--sub)}
+.fu-z{margin:10px 0 14px}.fu-zh{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:13.5px;margin-bottom:6px}
+.fu-lv{display:inline-block;background:var(--c);color:#fff;border-radius:6px;padding:0 7px;font-weight:800;font-size:11.5px;margin-left:4px}
+.fu-bar{position:relative;height:16px;border-radius:8px;background:linear-gradient(90deg,#DCFCE7,#F1F5F9 40%,#F1F5F9 60%,#FEE2E2)}:root[data-theme="dark"] .fu-bar{background:linear-gradient(90deg,#14532d,#1e293b 40%,#1e293b 60%,#7f1d1d)}
+.fu-bar i{position:absolute;top:0;bottom:0}.fu-ok{background:rgba(26,143,87,.35);border-radius:6px}.fu-tk{width:2px;background:#94A3B8}.fu-now{width:4px;margin-left:-2px;background:#2F5BEA;top:-4px!important;bottom:-4px!important;border-radius:2px}
+.fu-zl{display:flex;justify-content:space-between;gap:6px;font-size:11.5px;color:var(--sub);margin-top:4px;flex-wrap:wrap}
+.fu-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px}
+.fu-ladder{display:flex;flex-direction:column;gap:6px;margin:8px 0}.fu-ld{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:start;background:var(--bg);border-radius:12px;padding:8px 12px}.fu-ld>b{font-size:18px;font-weight:900}
+.fu-ld span{font-weight:700;font-size:13.5px}.fu-ld small{color:var(--sub);font-weight:500}.fu-ld em{display:block;font-style:normal;font-weight:500;font-size:12px;color:var(--sub)}.fu-ld.now{border:2px solid #2F5BEA}
+.fu-hd{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:8px 0}.fu-hd>div{background:var(--bg);border-radius:12px;padding:8px 10px;display:flex;flex-direction:column}.fu-hd small{color:var(--sub);font-weight:700}.fu-hd b{font-size:19px;font-weight:900}.fu-hd i{font-style:normal;font-size:11px;color:var(--sub)}
+.fu-pr{height:10px;border-radius:5px;background:var(--bg);overflow:hidden}.fu-pr i{display:block;height:100%;background:#2F5BEA;border-radius:5px}
+.gx-tb tr.on td{background:color-mix(in srgb,#2F5BEA 8%,transparent)}
+@media(max-width:900px){.fu-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.fu-t.key{grid-column:1/-1}.fu-2{grid-template-columns:1fr}}
+@media(max-width:480px){.fu-hd{grid-template-columns:1fr}.fu-ld{grid-template-columns:80px 1fr}}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="巴菲遠">
@@ -2580,7 +2598,7 @@ function renderMkt(){
   const {a} = MK, t = a.tech, f = a.forecast;
   const stCol = a.score >= 12 ? "#16a34a" : a.score > -12 ? "#64748b" : "#dc2626";
   $("#mkt").innerHTML = `<div class="mk">
-  <nav class="mk-nav" id="mkNav">${[["mk-board", "📋 總表"], ["mk-sum", "🧭 總結"], ["mk-news", "📰 快訊"], ["mk-heat", "🗺️ 熱力圖"], ["mk-key", "🔑 關鍵數字"], ["mk-mg", "🏦 法人・資券"], ["mk-cpt", "🔥 族群"], ["mk-ptt", "💬 PTT"], ["mk-opt", "🧮 期權・ADR"], ["mk-fear", "😱 恐慌度"], ["mk-la", "📐 線型"], ["mk-fc", "🎯 區間"], ["mk-cards", "🚦 燈號"], ["mk-chart", "📈 疊圖"], ["mk-glob", "🌏 全球"], ["mk-gx", "🔎 各國區間"], ["mk-det", "📋 明細"], ["mk-ev", "🔬 回測"]].map(([id, n]) => `<button data-to="${id}">${n}</button>`).join("")}</nav>
+  <nav class="mk-nav" id="mkNav">${[["mk-board", "📋 總表"], ["mk-sum", "🧭 總結"], ["mk-news", "📰 快訊"], ["mk-heat", "🗺️ 熱力圖"], ["mk-key", "🔑 關鍵數字"], ["mk-mg", "🏦 法人・資券"], ["mk-fut", "🐻 外資空單"], ["mk-cpt", "🔥 族群"], ["mk-ptt", "💬 PTT"], ["mk-opt", "🧮 期權・ADR"], ["mk-fear", "😱 恐慌度"], ["mk-la", "📐 線型"], ["mk-fc", "🎯 區間"], ["mk-cards", "🚦 燈號"], ["mk-chart", "📈 疊圖"], ["mk-glob", "🌏 全球"], ["mk-gx", "🔎 各國區間"], ["mk-det", "📋 明細"], ["mk-ev", "🔬 回測"]].map(([id, n]) => `<button data-to="${id}">${n}</button>`).join("")}</nav>
   <div class="bd-wrap" id="mk-board"><div class="bd-hd"><h2>📋 今日盤勢總表</h2><span id="bdUpd"></span></div><div class="bd" id="bdTiles"><div class="sk" style="height:150px;grid-column:1/-1"></div></div>
     <details class="bd-say"><summary><b>白話</b>每張卡片怎麼看？</summary><p>「百分位」＝跟自己歷史比，例如第 90 百分位代表比過去 90% 的日子都高（偏熱／偏貴），第 10 百分位代表接近低檔。站上 200 日線比例＝股價在長期均線之上的股票占比，越低代表越多股票跌破長期趨勢、市場越悲觀。台指期夜盤＝下午 3 點到隔天清晨 5 點的期貨交易，可以提前反映美股與國際消息；正價差代表期貨比現貨高（偏樂觀），逆價差相反。點卡片可跳到下方詳細分析。</p></details></div>
 
@@ -2618,6 +2636,9 @@ function renderMkt(){
     <div class="kid-mini">👶 <b>白話</b>：股票常常「一群一起動」，像同一條街的店家，商圈熱鬧大家都好賺。這裡比較每個族群今天、5 天、20 天的漲跌和法人資金，看出錢正在往哪條街跑（輪動）。</div><div id="cptBody"><div class="sk" style="height:220px"></div></div></div>
   <div class="box" id="mk-ptt"><h2 class="sec">💬 PTT 股版熱度 <small>網友最近最常討論哪些股票（只統計標題）</small></h2>
     <div class="kid-mini">👶 <b>白話</b>：像聽菜市場的人在聊什麼。大家都在聊的股票不一定會漲，<b>常常是太熱的訊號</b>（散戶都知道了，大戶可能準備賣）。拿來當「溫度計」，不是「明牌」。</div><div id="pttBody"><div class="sk" style="height:160px"></div></div></div>
+  <div class="box" id="mk-fut"><h2 class="sec">🐻 外資期貨空單（台指期未平倉） <small>外資、投信、自營商在台指期押多還是押空；每天收盤後約 15:00 公布</small></h2>
+    <div class="kid-mini">👶 <b>白話</b>：<b>期貨空單</b>就像先跟別人約好「一個月後用今天的價錢把東西賣給你」，到時候價錢跌了就賺錢。外資手上有一大倉庫的台股（幾十兆元），怕股價跌，就先約好賣出一小部分當保險——這叫<b>避險</b>，不一定是看壞。<br>另外，投信的「正 2」槓桿 ETF 要做到兩倍漲跌，會買很多期貨多單，外資常常就是賣給它們的那一方，所以外資空單看起來特別多。<b>扣掉這部分（外資＋投信）才是真正的淨空</b>。</div>
+    <div id="futCard"><div class="sk" style="height:300px"></div></div></div>
   <div class="box" id="mk-opt"><h2 class="sec">🧮 期權籌碼・台積電 ADR <small>大戶在選擇權市場怎麼押注、美國人願意多付多少錢買台積電；每天收盤後更新</small></h2>
     <div class="kid-mini">👶 <b>白話</b>：選擇權像「保險」和「彩券」。很多人買下跌保險（賣權）的價位，常是大戶守著的地板（支撐）；很多人押上漲彩券（買權）的價位，常是天花板（壓力）。ADR 是台積電在美國的分身，美國人願意多付錢買，代表外資看好。</div>
     <div id="optBody"><div class="sk" style="height:220px"></div></div></div>
@@ -2681,7 +2702,7 @@ function renderMkt(){
 
   <p class="mknote">資料來源：臺灣證券交易所（臺股儀表板、信用交易統計）、臺灣期貨交易所（台指 VIX）、FinMind（三大法人、期貨未平倉）、Yahoo Finance（全球指數、美股 VIX）。融資相關為上市資料。所有區間、分數與機率皆為歷史統計推估，不構成任何投資建議。</p>
   </div>`;
-  mkChartUI(); gChartUI(); detailUI(); if (MK.a.fear) fearUI(); else $("#mk-fear").remove(); if (MK.a.drivers) keyUI(); else $("#mk-key").remove(); laUI(); mgUI(); nwUI(); gxUI(); heatUI(); boardUI(); optUI(); cptUI(); pttUI(); instUI();
+  mkChartUI(); gChartUI(); detailUI(); if (MK.a.fear) fearUI(); else $("#mk-fear").remove(); if (MK.a.drivers) keyUI(); else $("#mk-key").remove(); laUI(); mgUI(); nwUI(); gxUI(); heatUI(); boardUI(); optUI(); cptUI(); pttUI(); instUI(); futUI();
   gate("#mk-la", "線型分析：任一檔個股自動畫趨勢線、頸線，判斷 W 底／M 頭，並列出全市場符合線型的股票"); gate("#mk-gx", "各國大盤區間查詢：自訂期間的走勢、統計分析、每日明細與 CSV 下載、各國排名"); gate("#mk-det", "大盤 5 年每日明細與 CSV 下載"); gate("#mk-ev", "歷史回測：過去發生同樣情況後，大盤 1 週／1 個月／1 季的實際走勢");
   $("#mkNav").onclick = e => { const b = e.target.closest("[data-to]"); if (!b) return; const el = document.getElementById(b.dataset.to);
     if (el) window.scrollTo({top: el.getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 70), behavior: "smooth"}); };
@@ -2748,7 +2769,7 @@ const OVER = {
   below: {n: "追繳戶數", u: "戶", c: "#dc2626", bar: 1, marks: [{v: 700, t: "700 戶異常線", c: "#dc2626"}], note: "官方資料 2026/8/3 起；平時 100～300 戶，超過 700 戶屬異常。"},
   mKeep: {n: "估算融資維持率", u: "%", c: "#0ea5e9", note: "5 年都有；看相對高低：越低代表融資戶越接近賠錢、越容易出現斷頭潮。"},
   fi:    {n: "外資買賣超", u: "億", c: "#7c3aed", bar: 1, color2: 1, note: "紅柱＝外資賣超、綠柱＝買超（依台股紅漲綠跌習慣，此處紅色代表資金流出）。"},
-  ffi:   {n: "外資台指期淨未平倉", u: "口", c: "#0f766e", marks: [{v: -50000, t: "淨空 5 萬口（極度偏空）", c: "#dc2626"}], note: "越往下＝外資淨空單越多、避險越重；極端空單回補時常引發急漲。"},
+  ffi:   {n: "外資台指期淨未平倉", u: "口", c: "#0f766e", note: "越往下＝外資淨空單越多。2024 年起投信槓桿 ETF 大量買期貨、外資常在對面避險，空單因此結構性變多；判斷多空請看「🐻 外資空單」的外資＋投信真實淨空。"},
   vixTw: {n: "台指 VIX", u: "", c: "#e11d48", marks: [{v: 30, t: "30 恐慌", c: "#e11d48"}], note: "官方只留近幾個月，之後每天累積。"},
   vixUs: {n: "美股 VIX", u: "", c: "#be185d", marks: [{v: 30, t: "30 恐慌", c: "#be185d"}], note: "全球恐慌溫度計，5 年都有。"},
   rv:    {n: "台股 20 日波動率", u: "%", c: "#9333ea", note: "實際震盪幅度（年化），5 年都有，可當恐慌指數的替代。"},
@@ -2803,7 +2824,7 @@ function cellCls(k, v){
   if (k == "pn") return v > 0 ? "pos" : v < 0 ? "neg" : "";
   if (k == "keep") return v < 160 ? "red" : v < 170 ? "amb" : "";
   if (k == "below") return v >= 700 ? "red" : v >= 300 ? "amb" : "";
-  if (k == "ffi") return v <= -50000 ? "red" : v <= -30000 ? "amb" : "";
+  if (k == "ffi") { const z = window.FUTZ; return !z ? "" : v <= z.p10 ? "red" : v <= z.p25 ? "amb" : ""; }   /* 依近一年百分位(外資空單結構性變多,不用固定門檻) */
   if (k == "vix") return v >= 30 ? "red" : v >= 20 ? "amb" : "";
   return "";
 }
@@ -5894,7 +5915,12 @@ const GL2 = {
 "夜盤": ["大盤", "台指期下午 3 點到隔天清晨 5 點的交易。", "台股下課了，但期貨晚上還在開補習班，先反應美股消息。", "夜盤大跌，隔天台股開盤容易開低。"],
 "正價差": ["大盤", "期貨比現貨（加權指數）高。", "大家願意多付一點預訂未來的貨，代表看好。", "逆價差（期貨比現貨低）代表悲觀或避險。"],
 "逆價差": ["大盤", "期貨比現貨低。", "大家覺得未來比較便宜，不急著買。", "逆價差擴大常是市場恐慌的訊號之一。"],
-"未平倉": ["大盤", "還沒結束、還有效的合約數量。", "還沒開獎的彩券有幾張。", "外資期貨淨空單很多，代表他們在避險或看壞。"],
+"未平倉": ["大盤", "還沒結束、還有效的合約數量。", "還沒開獎的彩券有幾張。", "外資期貨淨空單很多，代表他們在避險或看壞；要扣掉投信槓桿 ETF 的對作再看。"],
+"外資空單": ["大盤", "外資在台指期「賣出」還沒結清的合約；淨未平倉＝多單減空單，負的就是淨空。", "怕倉庫裡的蘋果跌價，先跟水果行約好下個月用今天的價錢賣一箱，跌了就不怕。", "看「外資＋投信」的真實淨空和近一年合理區間；空單成本價是重要關卡，指數漲過它外資空單開始賠錢、容易回補。"],
+"避險": ["大盤", "為了怕手上的東西跌價，先做一個相反方向的交易當保險。", "買了機車再保竊盜險：機車被偷，保險會賠。", "外資空單只占外資持股市值 1～2% 時，多半是避險，不代表全面看壞。"],
+"軋空": ["大盤", "放空的人因為股價上漲賠錢，被迫買回，反而讓股價漲得更快。", "有人先借傘來賣、打算等天晴便宜買回還人；結果突然下大雨，大家搶著買傘，他只好用高價買回，傘就被搶得更貴。", "空單很多、指數又漲過空單成本時，最容易出現軋空急漲。"],
+"槓桿ETF": ["ETF", "用期貨等工具讓漲跌幅放大成指數的 2 倍（正 2）或反向（反 1）的 ETF。", "腳踏車加裝電動馬達，踩一下跑兩倍遠，但煞車也要兩倍力。", "正 2 會買大量台指期多單，外資常在對面賣出，所以外資空單會跟著變多。"],
+"契約價值": ["大盤", "一口期貨代表多少錢的股票：大台指期＝指數 × 200 元。", "一張團購單寫「一箱 30 顆」，單價乘上顆數才是總金額。", "外資空單口數 × 指數 × 200 元，就是空單對應的股票金額。"],
 "選擇權": ["大盤", "付一點權利金，買到「未來可以用某價格買或賣」的權利。", "付 100 元訂金先卡位，一個月後決定要不要用約定價買這台車。", "常用來看大戶預期的壓力和支撐。"],
 "買權": ["大盤", "未來用約定價「買」的權利，看漲的人買。", "先付訂金卡一台車，車價漲了就賺到。", "買權最大未平倉的履約價常被視為壓力。"],
 "賣權": ["大盤", "未來用約定價「賣」的權利，看跌或避險的人買。", "幫房子買保險，房價跌了可以用原價賣。", "賣權最大未平倉的履約價常被視為支撐。"],
@@ -6482,6 +6508,52 @@ async function healthUI(){
   window.hpOpen = hpOpen;
 }
 setTimeout(healthUI, 2000);
+
+/* ================= 🐻 外資期貨空單(台指期三大法人淨未平倉)================= */
+async function futUI(){
+  const host = $("#futCard"); if (!host) return; const F = await getJ("futures");
+  if (!F || !F.now) { host.innerHTML = `<p class="mknote">期貨空單資料尚未產生</p>`; return; }
+  window.FUTZ = F.zones.fi;
+  const n0 = v => v == null ? "—" : fmt(v, 0), sg = v => v == null ? "—" : (v > 0 ? "+" : "") + fmt(v, 0);
+  const c = v => v == null ? "" : v > 0 ? "pos" : v < 0 ? "neg" : "";
+  const lvl = p => p == null ? "" : p <= 10 ? "非常偏空" : p <= 25 ? "偏空" : p < 75 ? "正常" : p < 90 ? "偏多" : "非常偏多";
+  const lc = p => p <= 10 ? "#1A8F57" : p <= 25 ? "#65A30D" : p < 75 ? "#64748B" : p < 90 ? "#EA580C" : "#CF3A3A";
+  const T = [["fi", "🌐 外資", "單看會被 ETF 對作放大"], ["it", "🏛️ 投信", "多半是正 2 槓桿 ETF 的多單"], ["dl", "💼 自營商", "短線與避險為主"], ["tot", "🧮 三大法人合計", "三家加起來"], ["fiit", "🎯 外資＋投信", "真實淨空（重點看這個）"]];
+  const tiles = T.map(([k, nm, sub]) => { const v = F.now[k], h = F.chg[k];
+    return `<div class="fu-t ${k == "fiit" ? "key" : ""}"><small>${nm}</small><b class="num ${c(v)}">${sg(v)}<i>口</i></b><span>今日 <b class="${c(h[0])}">${sg(h[0])}</b>・5 日 <b class="${c(h[1])}">${sg(h[1])}</b>・20 日 <b class="${c(h[2])}">${sg(h[2])}</b></span><em>${sub}</em></div>`; }).join("");
+  const bar = (k, nm) => { const z = F.zones[k], v = F.now[k], lo = Math.min(z.min, v), hi = Math.max(z.max, v), x = t => ((t - lo) / (hi - lo || 1) * 100).toFixed(1);
+    return `<div class="fu-z"><div class="fu-zh"><b>${nm}</b><span>目前 <b class="num">${sg(v)}</b> 口・近一年第 <b>${z.pct}</b> 百分位 <span class="fu-lv" style="--c:${lc(z.pct)}">${lvl(z.pct)}</span></span></div>
+      <div class="fu-bar"><i class="fu-ok" style="left:${x(z.p25)}%;width:${(x(z.p75) - x(z.p25)).toFixed(1)}%"></i><i class="fu-tk" style="left:${x(z.p10)}%"></i><i class="fu-tk" style="left:${x(z.p90)}%"></i><i class="fu-now" style="left:${x(v)}%"></i></div>
+      <div class="fu-zl"><span>最空 ${n0(z.min)}</span><span>合理區間（近一年中間一半）<b>${n0(z.p25)} ～ ${n0(z.p75)}</b> 口・中位數 ${n0(z.p50)}</span><span>最多 ${n0(z.max)}</span></div></div>`; };
+  const C = F.cost, px = F.px, above = C.pos120 && px > C.pos120;
+  const lad = C.pos120 ? [[C.pos120, "外資 120 日空單估算成本", "指數漲過這裡，外資空單整體開始賠錢 → 回補（軋空）壓力大增"], [C.add20, "近 20 日新增空單均價", "最近加的空單在這附近建立；漲過它，新空單先賠"], [px, "目前加權指數", ""]].filter(r => r[0]).sort((a, b) => b[0] - a[0]) : [];
+  const ladder = lad.map(([v, nm, why]) => `<div class="fu-ld ${v == px ? "now" : ""}"><b class="num">${fmt(v, 0)}</b><span>${nm}${v != px ? `<small>（距離現在 ${sgn((v / px - 1) * 100, 1)}%）</small>` : ""}${why ? `<em>${why}</em>` : ""}</span></div>`).join("");
+  const bt = F.bt.map(b => `<tr class="${b.now ? "on" : ""}"><td><b>${b.name}</b>${b.now ? ` <span class="fu-lv" style="--c:#2F5BEA">目前符合</span>` : ""}<small style="display:block;color:var(--sub)">${b.desc}</small></td><td class="num">${b.n}</td><td class="num ${c(b.r5)}">${b.r5 == null ? "—" : sgn(b.r5, 2) + "%"}<small> / ${b.w5 ?? "—"}%</small></td><td class="num ${c(b.r20)}">${b.r20 == null ? "—" : sgn(b.r20, 2) + "%"}<small> / ${b.w20 ?? "—"}%</small></td><td>${b.last || ""}</td></tr>`).join("");
+  const H = F.H.slice(-20).reverse(), prev = d => { const i = F.H.findIndex(r => r[0] == d); return i > 0 ? F.H[i - 1] : null; };
+  const rows = H.map(r => { const p = prev(r[0]), t = r[2] + r[3] + r[4]; return `<tr><td>${r[0].slice(5).replace("-", "/")}</td><td class="num">${fmt(r[1], 0)}</td><td class="num ${c(r[2])}">${sg(r[2])}</td><td class="num ${c(p ? r[2] - p[2] : null)}">${p ? sg(r[2] - p[2]) : "—"}</td><td class="num ${c(r[3])}">${sg(r[3])}</td><td class="num ${c(r[4])}">${sg(r[4])}</td><td class="num ${c(t)}">${sg(t)}</td><td class="num ${c(r[2] + r[3])}">${sg(r[2] + r[3])}</td></tr>`; }).join("");
+  host.innerHTML = `<div class="fu-d">📅 ${F.d.slice(5).replace("-", "/")} 收盤・加權指數 ${fmt(px, 2)}</div>
+    <div class="fu-tiles">${tiles}</div>
+    <p class="in-say"><b>白話判讀：</b>${F.say.map(esc).join("<br>")}</p>
+    <h3 class="mm-h3">📏 合理值是多少？（近一年的正常範圍）</h3>
+    <p class="kid-mini">👶 把近一年每天的數字排隊，中間那一半（第 25～75 名）就是「平常的樣子」＝合理區間；跑到最左邊（最空的 10%）才算異常偏空。綠色區塊是合理區間，藍色直線是今天。</p>
+    ${bar("fi", "🌐 外資單看")}${bar("fiit", "🎯 外資＋投信（真實淨空）")}${bar("tot", "🧮 三大法人合計")}
+    <div class="fu-2"><div><h3 class="mm-h3">🎯 對應的指數關卡（空單成本）</h3>
+      <p class="kid-mini">👶 空單的「成本價」就像放空時的約定價：指數比它低，外資空單賺錢、不急著買回；指數漲過它，空單開始賠錢，外資就可能趕快買回（回補），推升指數（軋空）。</p>
+      <div class="fu-ladder">${ladder}</div>
+      <p class="mknote">空單帳上${C.pnl > 0 ? "獲利" : "虧損"}約 <b>${fmt(Math.abs(C.pnl || 0), 0)} 億元</b>（${n0(C.pos)} 口 × 與成本的點數差 × 200 元）。成本以加權指數收盤近似台指期價格估算；${above ? "目前指數已在成本之上，留意回補行情。" : "目前指數在成本之下，空單仍有獲利空間，回補壓力較小。"}</p></div>
+      <div><h3 class="mm-h3">🛡️ 是看壞，還是只是買保險？</h3>
+      <p class="kid-mini">👶 拿空單的金額跟外資手上的台股比，比例很小＝只是替一大倉庫的股票買一點保險；比例很大才是真的看壞。</p>
+      <div class="fu-hd"><div><small>外資空單契約價值</small><b class="num">${fmt(F.notional, 0)} 億</b><i>${n0(-F.now.fi)} 口 × ${fmt(px, 0)} 點 × 200 元</i></div>
+        <div><small>外資持有上市股票市值</small><b class="num">${F.hold ? fmt(F.hold / 1e4, 1) + " 兆" : "—"}</b><i>${F.holdD || ""} 證交所外資持股 × 收盤價</i></div>
+        <div><small>避險比例</small><b class="num">${F.ratio ?? "—"}%</b><i>扣掉 ETF 對作只剩 ${F.ratio2 ?? "—"}%</i></div></div>
+      <div class="fu-pr"><i style="width:${Math.min(100, (F.ratio || 0) * 10)}%"></i></div><p class="mknote">進度條滿格＝10%。外資空單價值不到持股的 2%，屬於正常避險；真正看壞時通常會同時大賣現股（看「🏦 法人・資券」的外資買賣超）。</p></div></div>
+    <h3 class="mm-h3">🔬 歷史上同樣情況，之後大盤怎麼走？</h3>
+    <div class="gx-tw"><table class="gx-tb"><thead><tr><th>情況</th><th>次數</th><th>之後 5 日<small> 平均 / 上漲機率</small></th><th>之後 20 日<small> 平均 / 上漲機率</small></th><th>最近一次</th></tr></thead><tbody>${bt}</tbody></table></div>
+    <p class="mknote">近 5 年資料、同一情況 10 天內重複只算一次；跟第一列「所有交易日」比，差很多才有參考價值。歷史統計不代表未來。</p>
+    <h3 class="mm-h3">📋 近 20 日明細（未平倉口數）</h3>
+    <div class="gx-tw"><table class="gx-tb fu-tb"><thead><tr><th>日期</th><th>加權指數</th><th>外資</th><th>外資增減</th><th>投信</th><th>自營商</th><th>合計</th><th>外資＋投信</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <p class="mknote">${esc(F.note)}。外資增減≈當天外資的期貨交易口數（負＝加空、正＝回補）。資料：期交所（經 FinMind），更新 ${F.updated}</p>`;
+}
 </script>
 </body>
 </html>

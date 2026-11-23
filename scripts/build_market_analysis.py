@@ -38,6 +38,7 @@ def chg(vals, i, n):
 def fwd(i, n): return (TX[i + n] / TX[i] - 1) * 100 if i + n < N else None
 
 # ---------- 衍生序列 ----------
+fiit = [a + (b or 0) if a is not None else None for a, b in zip(col("ffi"), col("fit"))]   # 外資＋投信台指期淨未平倉:扣掉投信槓桿 ETF 與外資的對作,才是真實淨空
 mAmt, fi, ffi, vixUs, vixTw, keep, below, mKeep = col("mAmt"), col("fi"), col("ffi"), col("vixUs"), col("vixTw"), col("keep"), col("below"), col("mKeep")
 ret1 = [None] + [(TX[i] / TX[i - 1] - 1) * 100 for i in range(1, N)]
 def rvol(i, n=20):
@@ -137,9 +138,9 @@ cards = [
          lambda v, p: f"近 5 日合計 {V(v)} 億，外資已連續{'買' if streak[-1] > 0 else '賣'}超 {abs(streak[-1])} 天。", 0),
     card("ffi", "外資台指期淨未平倉", "口", ffi,
          "外資在台指期「多單 − 空單」，代表外資的避險與看空程度。",
-         "淨空 2 萬口內中性；3 萬口以上偏空；5 萬口以上極度偏空。",
+         "2024 年起投信槓桿 ETF（正 2）大量買期貨多單、外資常在對面避險，外資空單因此結構性變多，單看口數會高估看空程度；請搭配「外資＋投信」（真實淨空）與 🐻 外資空單分析判斷。",
          "外資偏多，期貨不會壓抑現貨。", "外資看空或積極避險；空單堆到極端時一旦回補，常引發急漲（軋空）。", False,
-         lambda v, p: f"目前淨{'多' if v > 0 else '空'} {V(abs(v))} 口，在 5 年第 {p:.0f} 百分位（越低越偏空）。", 0),
+         lambda v, p: f"目前淨{'多' if v > 0 else '空'} {V(abs(v))} 口，在 5 年第 {p:.0f} 百分位；扣掉投信對作後真實淨空 {V(abs(fiit[-1] or 0))} 口，在近一年第 {pct_rank(fiit[-250:], fiit[-1]):.0f} 百分位（越低越偏空）。", 0),
     card("vixTw", "台指 VIX 恐慌指數", "", vixTw,
          "選擇權市場預期未來 30 天的波動幅度。",
          "20 以下平靜；20～30 緊張；30～40 恐慌；40 以上極度恐慌。",
@@ -168,7 +169,7 @@ tech_view = dict(price=TX[i], date=D[i], chg=r2(ret1[i]), ma20=r2(MA20[i]), ma60
                  macdUp=tech.get("macdUp"), hi52=tech.get("hi52"), lo52=tech.get("lo52"), pos=tech.get("pos"), score=tech.get("score"))
 
 # ---------- 3. 條件回測 ----------
-pRV90 = quantile(RV, .9); pMK10 = quantile(mKeep, .1); pFI5_10 = quantile(fi5, .1); pFFI10 = quantile(ffi, .1)
+pRV90 = quantile(RV, .9); pMK10 = quantile(mKeep, .1); pFI5_10 = quantile(fi5, .1); pFFI10 = quantile(fiit, .1)
 CONDS = [
     ("rsi30", "大盤 RSI 低於 30（超賣）", lambda i: RSI[i] is not None and RSI[i] < 30),
     ("dd10", "比近 3 個月高點跌超過 10%", lambda i: DD60[i] <= -10),
@@ -179,7 +180,7 @@ CONDS = [
     ("mDrop20", "融資 1 個月內減少超過 10%（散戶大幅降槓桿）", lambda i: mChg20[i] is not None and mChg20[i] <= -10),
     ("fiStreak5", "外資連續賣超 5 天以上", lambda i: streak[i] <= -5),
     ("fi5low", "外資 1 週賣超金額創 5 年來前 10% 大", lambda i: fi5[i] <= pFI5_10),
-    ("ffi10", "外資期貨空單創 5 年來前 10% 多", lambda i: ffi[i] is not None and ffi[i] <= pFFI10),
+    ("ffi10", "外資＋投信期貨真實淨空創 5 年來前 10% 多", lambda i: fiit[i] is not None and fiit[i] <= pFFI10),
     ("vixUs30", "美股 VIX 高於 30", lambda i: vixUs[i] is not None and vixUs[i] >= 30),
     ("rv90", "台股震盪程度創 5 年來前 10% 高", lambda i: RV[i] is not None and RV[i] >= pRV90),
     ("sox3", "前一晚費城半導體跌超過 3%", lambda i: SOX_PREV[i] is not None and SOX_PREV[i] <= -3),
@@ -294,8 +295,8 @@ def add(name, v, why): comp.append(dict(name=name, v=round(max(-100, min(100, v)
 tscore = tech.get("score") or 50
 add("技術面", (tscore - 50) * 2, f"均線、RSI、KD 等綜合分數 {tscore}（50 為中性）")
 add("外資買賣股票", max(-100, min(100, fi5[-1] / max(1, abs(quantile(fi5, .05) or 1)) * 100)), f"近 5 日 {V(fi5[-1])} 億")
-pf = pct_rank(ffi, last(ffi)[0]) or 50
-add("外資期貨部位", (pf - 50) * 2, f"空單多寡在 5 年第 {100 - pf:.0f} 百分位（越高越偏空）")
+pf = pct_rank(fiit[-250:], last(fiit)[0]) or 50
+add("外資期貨部位", (pf - 50) * 2, f"外資＋投信真實淨空 {V(abs(last(fiit)[0] or 0))} 口，空單多寡在近一年第 {100 - pf:.0f} 百分位（越高越偏空）")
 mk = pct_rank(mKeep, last(mKeep)[0]) or 50
 add("散戶融資", (50 - mk) * 1.2 if mk < 30 else (50 - mk) * 0.6, "融資戶虧損嚴重、賣壓接近出清，反而偏多" if mk < 30 else f"估算融資維持率在 5 年第 {mk:.0f} 百分位，槓桿不算過高也不算出清")
 fear = pct_rank(RV, last(RV)[0]) or 50
@@ -392,7 +393,7 @@ tw_comps = [
     dict(name="加權指數離近一年高點", unit="%", desc="收盤比近一年最高點低多少；跌越深越恐慌。", v=dd_tw, p=exp_pct([-x for x in dd_tw])),
     dict(name="估算融資維持率", unit="%", desc="融資戶抵押股票市值 ÷ 借款（證交所資料自算）；越低越接近追繳、越恐慌。", v=mKeep, p=[None if x is None else 100 - x for x in exp_pct(mKeep)]),
     dict(name="外資近 5 日買賣超", unit="億", nd=0, desc="外資最近 5 天現股買賣超合計；賣得越多越恐慌。", v=fi5, p=[None if x is None else 100 - x for x in exp_pct(fi5)]),
-    dict(name="外資台指期淨未平倉", unit="口", nd=0, desc="外資期貨多單減空單；空單越多代表避險越重、越恐慌。", v=ffi, p=[None if x is None else 100 - x for x in exp_pct(ffi)]),
+    dict(name="外資＋投信台指期淨未平倉", unit="口", nd=0, desc="外資加投信的期貨多單減空單（扣掉槓桿 ETF 對作後的真實淨空）；空單越多代表避險越重、越恐慌。", v=fiit, p=[None if x is None else 100 - x for x in exp_pct(fiit)]),
     dict(name="美股 VIX（前一晚）", unit="", desc="全球資金的恐慌溫度計；越高越恐慌。", v=vixUs, p=exp_pct(vixUs)),
 ]
 BP = os.path.join(DATA, "breadth.json")             # 市場廣度(全部上市櫃普通股)
@@ -439,7 +440,7 @@ i, v = lastn(ffi); _, v0 = lastn(ffi, 1)
 if v is not None:
     ch = v - v0 if v0 is not None else None
     D_("期貨籌碼", "外資台指期淨未平倉", f"{v:+,.0f} 口", f"{ch:+,.0f} 口" if ch is not None else "", 1 if (ch or 0) > 3000 else -1 if (ch or 0) < -3000 else 0,
-       f"外資期貨{'淨空' if v < 0 else '淨多'} {abs(v):,.0f} 口，比前一天{'空單增加' if (ch or 0) < 0 else '空單減少'} {abs(ch or 0):,.0f} 口。空單變多＝外資更看空或加強避險；空單大量回補常帶動急漲。", D[i])
+       f"外資期貨{'淨空' if v < 0 else '淨多'} {abs(v):,.0f} 口（扣掉投信槓桿 ETF 對作後真實淨空 {abs(fiit[i] or 0):,.0f} 口），比前一天{'空單增加' if (ch or 0) < 0 else '空單減少'} {abs(ch or 0):,.0f} 口。空單變多＝外資更看空或加強避險；空單大量回補常帶動急漲。", D[i])
 i, v = lastn(col("fit")); _, v0 = lastn(col("fit"), 1)
 if v is not None:
     D_("期貨籌碼", "投信台指期淨未平倉", f"{v:+,.0f} 口", f"{v - v0:+,.0f} 口" if v0 is not None else "", 0,
