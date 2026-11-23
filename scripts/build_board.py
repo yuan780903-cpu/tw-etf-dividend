@@ -58,6 +58,9 @@ def main():
     B["pe"] = dict(v=pe, pct=pct(hist, pe), hist=hist, years=f"{ys[0]}～{ys[-1]}", lo=min(hist) if hist else None, hi=max(hist) if hist else None)
     # 外資、融資(上市)
     B["foreign"] = dict(v=last["fi"], d5=round(sum(r["fi"] for r in R[-5:] if r["fi"] is not None), 1), spark=[r["fi"] for r in R[-20:]])
+    I = (L("inst.json") or {}).get("twse")          # 三大法人統一來源:inst.json(比 market.json 早更新,收盤後就有)
+    if I and I.get("d") and I["d"] >= last["d"].replace("-", ""):
+        B["foreign"] = dict(v=I["fi"], d5=I["fi5"], spark=I.get("fiH") or B["foreign"]["spark"], d=I["d"])
     B["margin"] = dict(v=last["mAmt"], chg=round(last["mAmt"] - prev["mAmt"], 1) if prev["mAmt"] else None, d=last["d"], spark=[r["mAmt"] for r in R[-60:]])
     # 台指期:一般盤＋夜盤(近月)
     f = get("https://openapi.taifex.com.tw/v1/DailyMarketReportFut")

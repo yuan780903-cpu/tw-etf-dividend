@@ -14,7 +14,25 @@ async function latest(env) {
   return run ? { id: run.id, status: run.status, conclusion: run.conclusion, created: run.created_at, url: run.html_url } : null;
 }
 
+/* 自動補跑(看門狗):每個交易日 18:30、23:30、隔天 07:30(台北)檢查網站資料;
+   今天的更新沒成功(健康報告不是今天的)或有嚴重錯誤,且 3 小時內沒跑過 → 自動觸發一次更新 */
+async function watchdog(env) {
+  const tpe = new Date(Date.now() + 8 * 3600e3), day = tpe.toISOString().slice(0, 10), h = tpe.getUTCHours();
+  const want = h < 12 ? new Date(tpe.getTime() - 864e5).toISOString().slice(0, 10) : day;     // 早上檢查的是「昨天」的更新
+  const wd = new Date(want + "T00:00:00Z").getUTCDay(); if (wd == 0 || wd == 6) return { skip: "週末" };
+  let hl = null;
+  try { hl = await (await fetch(`https://raw.githubusercontent.com/${REPO}/main/data/health.json?t=${Date.now()}`, { headers: { "User-Agent": "etf-watchdog" } })).json(); } catch (e) {}
+  const stale = !hl || String(hl.updated || "").slice(0, 10) < want, bad = hl && hl.overall == "error";
+  if (!stale && !bad) return { ok: true, health: hl.overall };
+  const run = await latest(env);
+  if (run && run.status != "completed") return { skip: "更新進行中" };
+  if (run && Date.now() - Date.parse(run.created) < 3 * 3600e3) return { skip: "3 小時內已跑過" };
+  const r = await gh(env, `/actions/workflows/${WF}/dispatches`, { method: "POST", body: JSON.stringify({ ref: "main" }) });
+  return { dispatched: r.status == 204, why: stale ? "資料過期" : "健康檢查有錯誤" };
+}
+
 export default {
+  async scheduled(ev, env, ctx) { if (env.GH_TOKEN) ctx.waitUntil(watchdog(env)); },
   async fetch(req, env) {
     const o = req.headers.get("Origin") || "", H = cors(o), url = new URL(req.url);
     if (req.method == "OPTIONS") return new Response(null, { headers: H });
@@ -22,6 +40,7 @@ export default {
     if (!env.GH_TOKEN) return J({ status: "no-token", msg: "Worker 尚未設定 GH_TOKEN" }, 503);
     try {
       if (url.pathname == "/status") return J({ status: "ok", run: await latest(env) });
+      if (url.pathname == "/watchdog") return J(await watchdog(env));
       if (url.pathname == "/dispatch" && req.method == "POST") {
         if (o && !ALLOW.includes(o)) return J({ status: "forbidden" }, 403);
         const run = await latest(env);

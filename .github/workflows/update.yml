@@ -31,7 +31,9 @@ jobs:
           TZ: Asia/Taipei
         run: python -u scripts/update.py
       - name: 存回 repo
+        if: always()                     # 前面抓資料就算失敗或逾時,已抓到的也要存(先驗證:抓壞的檔案會自動還原上一版)
         run: |
+          python -u scripts/validate.py || true
           git config user.name "etf-bot"
           git config user.email "etf-bot@users.noreply.github.com"
           git add data

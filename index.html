@@ -1497,6 +1497,23 @@ button{-webkit-tap-highlight-color:transparent}
 @media(max-width:800px){.cpt summary{grid-template-columns:24px minmax(0,1fr) 110px;}.cpt-bar{display:none}.cpt summary .cpt-v:last-child{grid-column:2/-1}.ptt-2{grid-template-columns:1fr}.cal-e{grid-template-columns:46px 40px 1fr}}
 @media print{body.print-sk>*:not(#ov){display:none!important}body.print-sk #ov{position:static!important;background:none!important;display:block!important;padding:0!important}body.print-sk #dlg{position:static!important;max-height:none!important;overflow:visible!important;box-shadow:none!important;width:100%!important;transform:none!important}
   body.print-sk .sk-act,body.print-sk .x,body.print-sk .grab,body.print-sk .sk-tabs,body.print-sk #glFab,body.print-sk .bp-px{display:none!important}body.print-sk .box{break-inside:avoid}}
+/* ===== 三大法人卡片 ===== */
+.in-card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:16px 18px;margin:8px 0 14px;box-shadow:0 10px 26px -18px rgba(20,33,61,.4)}
+.in-hd{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.in-hd>span{color:#2F5BEA;font-weight:800}.in-hd .cal-f{margin:0}
+.in-t{font-size:24px;margin:6px 0 10px}.in-body{display:flex;flex-direction:column;gap:10px}
+.in-r{display:grid;grid-template-columns:110px 56px minmax(120px,170px) 1fr auto;align-items:center;gap:10px;background:var(--bg);border-radius:16px;padding:14px 18px}
+.in-r.tot{border-left:6px solid var(--c);background:color-mix(in srgb,var(--c) 6%,var(--bg))}.in-n{font-weight:800;font-size:16px}.in-l{font-weight:800;color:var(--c)}.in-r>b{font-size:24px;font-weight:900;color:var(--c);text-align:right}
+.in-x{font-size:12.5px;color:var(--sub)}.in-sp{display:flex;align-items:flex-end;gap:1px;height:24px}.in-sp i{width:4px;border-radius:1px;display:block}
+.in-say{font-size:14px;line-height:1.7;margin:12px 0 4px;background:#FFF8E6;border-radius:12px;padding:9px 12px}:root[data-theme="dark"] .in-say{background:#2A2414}
+@media(max-width:700px){.in-r{grid-template-columns:1fr auto;padding:12px 14px;gap:4px 10px}.in-n{grid-column:1}.in-l{display:none}.in-r>b{grid-column:2;grid-row:1;font-size:20px}.in-x{grid-column:1/-1}.in-sp{grid-column:1/-1}.in-t{font-size:20px}}
+/* 行事曆動向 */
+.cal-eff{margin:4px 0 0!important;font-size:12.5px;line-height:1.6;color:var(--ink)!important;background:var(--panel);border-radius:9px;padding:6px 9px}.cal-dir{display:inline-block;background:var(--c);color:#fff;border-radius:6px;padding:0 7px;font-weight:800;font-size:11.5px;margin-right:6px}
+.cal-e.hol b{color:#B45309}
+/* 資料健康 */
+.hp-btn{display:block;margin:0 auto 12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font-weight:800;cursor:pointer;font-size:13px}.hp-btn.warn{border-color:#F5C26B}.hp-btn.error{border-color:#F5B3B3;color:#CF3A3A}
+.hp-ban{margin:10px 0 0;background:#FDECEC;border:1px solid #F5B3B3;color:#9B1C1C;border-radius:12px;padding:8px 12px;font-size:13px;font-weight:700}.hp-ban button{margin-left:8px;border:0;background:#CF3A3A;color:#fff;border-radius:8px;padding:3px 10px;font-weight:800;cursor:pointer}
+#hpDlg{position:fixed;inset:0;z-index:9850;background:rgba(10,15,30,.5);display:none;align-items:flex-start;justify-content:center;padding:4vh 12px}#hpDlg.on{display:flex}
+.hp-x{background:var(--bg);border-radius:12px;padding:6px 12px;font-size:13.5px}.hp-x p{margin:4px 0}.hp-ok{color:#1A8F57;font-weight:700}.hp-r{color:#B45309;font-weight:700}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="巴菲遠">
@@ -1516,7 +1533,7 @@ button{-webkit-tap-highlight-color:transparent}
       <button class="btn-up" id="btnUp" title="一鍵更新">🔄 <span class="t">一鍵更新</span></button>
     </div>
   </div>
-  <div class="gtk" id="gtk"></div>
+  <div class="gtk" id="gtk"></div><div id="hlBanner"></div>
   <div class="gsr"><input id="gsQ" type="search" placeholder="🔍 查個股：代號或名稱（如 2330、台積電）" autocomplete="off"><div id="gsL" class="gs-list"></div></div>
 </header>
 
@@ -1636,7 +1653,7 @@ button{-webkit-tap-highlight-color:transparent}
   </div>
 </div>
 
-<footer>
+<footer><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button>
   <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
@@ -2533,14 +2550,12 @@ function renderMkt(){
   const {a} = MK, t = a.tech, f = a.forecast;
   const stCol = a.score >= 12 ? "#16a34a" : a.score > -12 ? "#64748b" : "#dc2626";
   $("#mkt").innerHTML = `<div class="mk">
-  <nav class="mk-nav" id="mkNav">${[["mk-board", "📋 總表"], ["mk-sum", "🧭 總結"], ["mk-news", "📰 快訊"], ["mk-heat", "🗺️ 熱力圖"], ["mk-key", "🔑 關鍵數字"], ["mk-mg", "📊 資券"], ["mk-cpt", "🔥 族群"], ["mk-ptt", "💬 PTT"], ["mk-opt", "🧮 期權・ADR"], ["mk-fear", "😱 恐慌度"], ["mk-la", "📐 線型"], ["mk-fc", "🎯 區間"], ["mk-cards", "🚦 燈號"], ["mk-chart", "📈 疊圖"], ["mk-glob", "🌏 全球"], ["mk-gx", "🔎 各國區間"], ["mk-det", "📋 明細"], ["mk-ev", "🔬 回測"]].map(([id, n]) => `<button data-to="${id}">${n}</button>`).join("")}</nav>
+  <nav class="mk-nav" id="mkNav">${[["mk-board", "📋 總表"], ["mk-sum", "🧭 總結"], ["mk-news", "📰 快訊"], ["mk-heat", "🗺️ 熱力圖"], ["mk-key", "🔑 關鍵數字"], ["mk-mg", "🏦 法人・資券"], ["mk-cpt", "🔥 族群"], ["mk-ptt", "💬 PTT"], ["mk-opt", "🧮 期權・ADR"], ["mk-fear", "😱 恐慌度"], ["mk-la", "📐 線型"], ["mk-fc", "🎯 區間"], ["mk-cards", "🚦 燈號"], ["mk-chart", "📈 疊圖"], ["mk-glob", "🌏 全球"], ["mk-gx", "🔎 各國區間"], ["mk-det", "📋 明細"], ["mk-ev", "🔬 回測"]].map(([id, n]) => `<button data-to="${id}">${n}</button>`).join("")}</nav>
   <div class="bd-wrap" id="mk-board"><div class="bd-hd"><h2>📋 今日盤勢總表</h2><span id="bdUpd"></span></div><div class="bd" id="bdTiles"><div class="sk" style="height:150px;grid-column:1/-1"></div></div>
     <details class="bd-say"><summary><b>白話</b>每張卡片怎麼看？</summary><p>「百分位」＝跟自己歷史比，例如第 90 百分位代表比過去 90% 的日子都高（偏熱／偏貴），第 10 百分位代表接近低檔。站上 200 日線比例＝股價在長期均線之上的股票占比，越低代表越多股票跌破長期趨勢、市場越悲觀。台指期夜盤＝下午 3 點到隔天清晨 5 點的期貨交易，可以提前反映美股與國際消息；正價差代表期貨比現貨高（偏樂觀），逆價差相反。點卡片可跳到下方詳細分析。</p></details></div>
 
   <div class="mk-hero" id="mk-sum">
-    <div class="mk-px"><small>加權指數 ・ ${t.date} 收盤</small>
-      <div class="v num">${fmt(t.price, 2)}</div>
-      <div class="c num">${t.chg >= 0 ? "▲" : "▼"} ${sgn(t.chg)}%　｜　比近 3 個月高點 ${fmt(t.dd60, 1)}%</div>
+    <div class="mk-px"><small>🧭 綜合多空判斷 ・ ${t.date} 收盤（指數與漲跌見上方「今日盤勢總表」）</small>
       <div class="mk-stance"><span class="pill" style="color:${stCol}">${a.stance}</span>
         <div><b class="num" style="font-size:20px">${a.score > 0 ? "+" : ""}${a.score}</b> <small>綜合多空分數（-100 最空 ～ +100 最多）</small><br><small>資料更新 ${a.updated}</small></div></div>
       <div class="mk-mini">
@@ -2563,7 +2578,9 @@ function renderMkt(){
   <div class="box" id="mk-key"><h2 class="sec">🔑 影響漲跌的關鍵數字 <small>今天的數字 vs 前一天，對短線漲跌是利多還是利空，一句話說明</small></h2>
     <div id="keyBody"></div></div>
 
-  <div class="box" id="mk-mg"><h2 class="sec">📊 資券與法人 <small>上市融資、融券、三大法人每日變化（證交所每晚約 21:30 公布）</small></h2>
+  <div class="box" id="mk-mg"><h2 class="sec">🏦 三大法人動向・資券 <small>外資、投信、自營商買賣超（收盤後約 15:00 公布）＋融資融券（約 21:30 公布）</small></h2>
+    <div class="kid-mini">👶 <b>白話</b>：三大法人是市場上最有錢的三種大戶。<b>買超</b>＝他們今天買的比賣的多（把錢帶進來），<b>賣超</b>＝賣的比買的多（把錢帶走）。連續好幾天同一個方向，比單看一天更有意義。</div>
+    <div id="instCard"><div class="sk" style="height:200px"></div></div>
     <div class="ctool"><div class="chips" id="mgTab"></div><div class="chips" id="mgRg"></div></div>
     <div id="mgSay" class="mg-say"></div><div class="chart" id="mgChart"></div><div class="scrollx" id="mgTbl" style="max-height:420px"></div></div>
 
@@ -2634,7 +2651,7 @@ function renderMkt(){
 
   <p class="mknote">資料來源：臺灣證券交易所（臺股儀表板、信用交易統計）、臺灣期貨交易所（台指 VIX）、FinMind（三大法人、期貨未平倉）、Yahoo Finance（全球指數、美股 VIX）。融資相關為上市資料。所有區間、分數與機率皆為歷史統計推估，不構成任何投資建議。</p>
   </div>`;
-  mkChartUI(); gChartUI(); detailUI(); if (MK.a.fear) fearUI(); else $("#mk-fear").remove(); if (MK.a.drivers) keyUI(); else $("#mk-key").remove(); laUI(); mgUI(); nwUI(); gxUI(); heatUI(); boardUI(); optUI(); cptUI(); pttUI();
+  mkChartUI(); gChartUI(); detailUI(); if (MK.a.fear) fearUI(); else $("#mk-fear").remove(); if (MK.a.drivers) keyUI(); else $("#mk-key").remove(); laUI(); mgUI(); nwUI(); gxUI(); heatUI(); boardUI(); optUI(); cptUI(); pttUI(); instUI();
   gate("#mk-la", "線型分析：任一檔個股自動畫趨勢線、頸線，判斷 W 底／M 頭，並列出全市場符合線型的股票"); gate("#mk-gx", "各國大盤區間查詢：自訂期間的走勢、統計分析、每日明細與 CSV 下載、各國排名"); gate("#mk-det", "大盤 5 年每日明細與 CSV 下載"); gate("#mk-ev", "歷史回測：過去發生同樣情況後，大盤 1 週／1 個月／1 季的實際走勢");
   $("#mkNav").onclick = e => { const b = e.target.closest("[data-to]"); if (!b) return; const el = document.getElementById(b.dataset.to);
     if (el) window.scrollTo({top: el.getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 70), behavior: "smooth"}); };
@@ -5282,7 +5299,8 @@ async function impRender(){
   const q = s => (typeof GQD != "undefined" && GQD[s]) ? GQD[s] : null;
   const F = (v, u = "", d = 2) => v == null ? "—" : fmt(v, d) + u, P = (v, d = 1) => v == null ? "—" : sgn(v, d) + "%";
   const ym = r => r ? r[0].slice(0, 7) : "", dd = r => r ? r[0].slice(0, 10) : "";
-  const R = mk ? Object.fromEntries(mk.cols.map((c, i) => [c, mk.rows[mk.rows.length - 1][i]])) : {}, R5 = mk ? mk.rows.slice(-5).reduce((s, r) => s + (r[mk.cols.indexOf("fi")] || 0), 0) : null;
+  const R = mk ? Object.fromEntries(mk.cols.map((c, i) => [c, mk.rows[mk.rows.length - 1][i]])) : {}; let R5 = mk ? mk.rows.slice(-5).reduce((s, r) => s + (r[mk.cols.indexOf("fi")] || 0), 0) : null;
+  { const IN = await getJ("inst"); const t = IN && IN.twse; if (t && t.d && (!R.d || t.d > R.d.replace(/-/g, ""))) { R.fi = t.fi; R5 = t.fi5; R.d = `${t.d.slice(0, 4)}-${t.d.slice(4, 6)}-${t.d.slice(6)}`; } }   /* 三大法人統一用 inst.json */
   const up = last("DFEDTARU"), lo = last("DFEDTARL"), dec = MC.fed[MC.fed.length - 1];
   const US = [
     ["聯準會利率決策（FOMC、點陣圖）", "極高", up ? `${fmt(lo[1], 2)}～${fmt(up[1], 2)}%` : "—", dec ? `上次 ${dec.d} ${dec.bp > 0 ? "升" : "降"} ${Math.abs(dec.bp) / 25} 碼` : "", "決定資金成本與股票評價", "mc-fed"],
@@ -6288,7 +6306,7 @@ async function calUI(){
     L.forEach(e => (g[e.d] = g[e.d] || []).push(e));
     host.querySelector(".cal-l").innerHTML = Object.entries(g).map(([d, es]) => { const dd = new Date(d + "T00:00:00"), dn = (dd - new Date(td + "T00:00:00")) / 864e5;
       return `<div class="cal-d ${d == td ? "today" : d < td ? "past" : ""}"><div class="cal-h"><b>${+d.slice(5, 7)}/${+d.slice(8)}（${W[dd.getDay()]}）</b>${d == td ? "<em>今天</em>" : dn == 1 ? "<em>明天</em>" : dn > 1 && dn <= 7 ? `<i>${dn} 天後</i>` : ""}</div>
-        ${es.map(e => `<div class="cal-e"><span class="cal-t">${e.t || "—"}</span><span class="cal-i" style="--c:${IC[e.imp] || "#64748B"}">${e.imp}</span><div><b>${esc(e.n)}</b>${e.approx ? `<small class="cal-ap">約</small>` : ""}${e.prev ? `<small class="cal-p">${esc(e.prev)}</small>` : ""}<p>${esc(e.why || "")}</p></div></div>`).join("")}</div>`; }).join("") || `<p class="mknote">這個篩選沒有事件</p>`;
+        ${es.map(e => `<div class="cal-e ${/HOL|HALF|TWCLOSE|TWOPEN/.test(e.key || "") ? "hol" : ""}"><span class="cal-t">${e.t || "—"}</span><span class="cal-i" style="--c:${IC[e.imp] || "#64748B"}">${e.imp}</span><div><b>${esc(e.n)}</b>${e.approx ? `<small class="cal-ap">約</small>` : ""}${e.prev ? `<small class="cal-p">${esc(e.prev)}</small>` : ""}<p>${esc(e.why || "")}</p>${e.dir ? `<p class="cal-eff"><span class="cal-dir" style="--c:${({偏多: "#CF3A3A", 偏空: "#1A8F57", 偏空風險: "#1A8F57", 波動大: "#B45309", 量縮: "#64748B", 看數據: "#2F5BEA", 中性: "#64748B"})[e.dir] || "#64748B"}">🔮 ${e.dir}</span>${esc(e.eff || "")}</p>` : ""}</div></div>`).join("")}</div>`; }).join("") || `<p class="mknote">這個篩選沒有事件</p>`;
   };
   host.innerHTML = `<div class="cal-f">${[["all", "全部"], ["imp", "⭐ 只看重要"], ["US", "🇺🇸 美國"], ["TW", "🇹🇼 台灣"], ["past", "⏪ 過去 7 天"]].map(([k, n]) => `<button data-f="${k}" class="${CALF == k ? "on" : ""}">${n}</button>`).join("")}</div><div class="cal-l"></div><p class="mknote">${esc(C.note || "")} 更新 ${C.updated}</p>`;
   host.querySelector(".cal-f").onclick = e => { const b = e.target.closest("button"); if (!b) return; CALF = b.dataset.f; host.querySelectorAll(".cal-f button").forEach(x => x.classList.toggle("on", x == b)); paint(); };
@@ -6383,6 +6401,57 @@ function dpBox(d){
 }
 /* ---- 📄 匯出 PDF(列印目前的個股頁)---- */
 function skPrint(){ document.body.classList.add("print-sk"); const done = () => { document.body.classList.remove("print-sk"); window.removeEventListener("afterprint", done); }; window.addEventListener("afterprint", done); setTimeout(() => window.print(), 80); setTimeout(done, 60000); }
+
+/* ================= 🏦 三大法人買賣超卡片(上市／上櫃／合計)================= */
+let INSTM = "twse";
+async function instUI(){
+  const host = $("#instCard"); if (!host) return; const I = await getJ("inst");
+  if (!I || !I.twse) { host.innerHTML = `<p class="mknote">三大法人資料尚未產生</p>`; return; }
+  const pick = m => { if (m != "all") return I[m]; const a = I.twse, b = I.tpex || {}; const o = {d: a.d}; ["fi", "it", "dl", "tot"].forEach(f => { o[f] = +(a[f] + (b[f] || 0)).toFixed(2); o[f + "5"] = +(a[f + "5"] + (b[f + "5"] || 0)).toFixed(2); o[f + "20"] = +(a[f + "20"] + (b[f + "20"] || 0)).toFixed(2); o[f + "S"] = null; o[f + "H"] = null; }); return o; };
+  const paint = () => {
+    const x = pick(INSTM); if (!x) { host.querySelector(".in-body").innerHTML = `<p class="mknote">這個市場暫無資料</p>`; return; }
+    const R = [["fi", "🌐", "外資"], ["it", "🏛️", "投信"], ["dl", "💼", "自營商"], ["tot", "", "合計"]];
+    const sp = h => { if (!h || h.length < 3) return ""; const mx = Math.max(...h.map(Math.abs), 1); return `<span class="in-sp">${h.map(v => `<i style="height:${Math.max(2, Math.abs(v) / mx * 22)}px;background:${v >= 0 ? "#CF3A3A" : "#1A8F57"}"></i>`).join("")}</span>`; };
+    const st = v => v == null ? "" : v > 0 ? `連買 ${v} 天` : v < 0 ? `連賣 ${-v} 天` : "";
+    host.querySelector(".in-body").innerHTML = R.map(([k, ic, n]) => { const v = x[k], up = v >= 0;
+      return `<div class="in-r ${k == "tot" ? "tot" : ""}" style="--c:${up ? "#CF3A3A" : "#1A8F57"}"><span class="in-n">${ic} ${n}</span><span class="in-l">${up ? "買超" : "賣超"}</span><b class="num">${sgn(v, 2)} 億</b>
+        <span class="in-x">5 日 <b class="${pc(x[k + "5"])}">${sgn(x[k + "5"], 0)}</b>・20 日 <b class="${pc(x[k + "20"])}">${sgn(x[k + "20"], 0)}</b>${st(x[k + "S"]) ? `・${st(x[k + "S"])}` : ""}</span>${sp(x[k + "H"])}</div>`; }).join("");
+    const f = x.fi, t = x.it, fs = x.fiS, ts = x.itS;
+    const say = [`外資${f >= 0 ? "買超" : "賣超"} ${fmt(Math.abs(f), 1)} 億${fs ? `（${st(fs)}）` : ""}${Math.abs(x.fi5) > 500 ? `，近 5 日${x.fi5 > 0 ? "大買" : "大賣"} ${fmt(Math.abs(x.fi5), 0)} 億，${x.fi5 > 0 ? "外資正在把錢帶進來" : "外資正在撤出"}` : ""}`,
+      `投信${t >= 0 ? "買超" : "賣超"} ${fmt(Math.abs(t), 1)} 億${x.it20 > 0 && x.fi20 < 0 ? "；近 20 日投信在買、外資在賣，國內基金在撐盤" : ""}`,
+      `自營商${x.dl >= 0 ? "買超" : "賣超"} ${fmt(Math.abs(x.dl), 1)} 億（多為短線與避險，參考性較低）`];
+    host.querySelector(".in-say").innerHTML = `<b>白話判讀：</b>${say.join("；")}。`;
+    host.querySelector(".in-d").textContent = `${x.d.slice(4, 6)}/${x.d.slice(6)}`;
+  };
+  host.innerHTML = `<div class="in-card"><div class="in-hd"><span>📅 <b class="in-d"></b></span><div class="cal-f">${[["twse", "上市"], ["tpex", "上櫃"], ["all", "上市＋上櫃"]].map(([k, n]) => `<button data-m="${k}" class="${INSTM == k ? "on" : ""}">${n}</button>`).join("")}</div></div>
+    <h3 class="in-t">三大法人買賣超</h3><div class="in-body"></div><p class="in-say"></p>
+    <p class="mknote">單位：億元。外資含外資自營商；自營商含自行買賣與避險。小長條＝近 20 天每天的買賣超（紅買綠賣）。資料：證交所、櫃買中心，更新 ${I.updated}</p></div>`;
+  host.querySelector(".cal-f").onclick = e => { const b = e.target.closest("button"); if (!b) return; INSTM = b.dataset.m; host.querySelectorAll(".cal-f button").forEach(z => z.classList.toggle("on", z == b)); paint(); };
+  paint();
+}
+
+/* ================= 🩺 資料健康:每份資料的日期、筆數、問題 ================= */
+async function healthUI(){
+  const H = await getJ("health"); if (!H) return;
+  const ic = {ok: "✅", warn: "⚠️", error: "⛔"}, nm = {ok: "全部正常", warn: "有項目需要注意", error: "部分資料異常"};
+  const b = $("#hpBtn"); if (b) { b.hidden = false; b.className = "hp-btn " + H.overall; b.innerHTML = `🩺 資料健康：${ic[H.overall]} ${nm[H.overall]}`; b.onclick = hpOpen; }
+  const errs = (H.items || []).filter(i => i.status == "error");
+  if (errs.length && $("#hlBanner")) $("#hlBanner").innerHTML = `<div class="hp-ban">⛔ 部分資料更新延遲：${errs.map(i => i.name).join("、")}。系統會自動重新抓取，其他資料不受影響。<button onclick="hpOpen()">查看</button></div>`;
+  function hpOpen(){
+    let d = $("#hpDlg"); if (!d) { d = document.createElement("div"); d.id = "hpDlg"; document.body.append(d); }
+    const R = (H.items || []).slice().sort((a, b) => ({error: 0, warn: 1, ok: 2})[a.status] - ({error: 0, warn: 1, ok: 2})[b.status]);
+    d.innerHTML = `<div class="gd-box"><div class="gd-hd"><h2>🩺 資料健康 <small>檢查時間 ${H.updated}・最近交易日 ${H.expected}${H.run && H.run.at ? `・這次更新 ${H.run.n} 個步驟、${H.run.fail} 個沒完成、共 ${Math.round((H.run.sec || 0) / 60)} 分鐘` : ""}</small></h2><button class="gd-x">✕</button></div>
+      <p class="kid-mini">👶 <b>白話</b>：像每天幫網站做健康檢查。每份資料都檢查「有沒有抓到、筆數夠不夠、日期新不新、數字合不合理」，還會互相比對。如果新抓的資料少了一半以上，系統會判定抓壞了、自動換回上一版，所以網站不會出現抓到一半的資料。</p>
+      ${(H.cross || []).length ? `<div class="hp-x">${H.cross.map(c => `<p>${ic[c.status]} ${esc(c.msg)}</p>`).join("")}</div>` : `<p class="hp-ok">✅ 交叉比對一致（總表、三大法人、大盤歷史的數字互相吻合）</p>`}
+      ${(H.restored || []).length ? `<p class="hp-r">♻️ 這次自動還原：${H.restored.join("、")}</p>` : ""}
+      <div class="gx-tw" style="max-height:60vh"><table class="gx-tb"><thead><tr><th>資料</th><th>狀態</th><th>資料日期</th><th>筆數</th><th>說明</th></tr></thead><tbody>
+      ${R.map(i => `<tr><td><b>${i.name}</b><small style="display:block;color:var(--sub)">${i.k}</small></td><td>${ic[i.status]}</td><td>${i.d || "—"}</td><td class="num">${i.n == null ? "—" : fmt(i.n, 0)}</td><td>${esc(i.msg || "正常")}</td></tr>`).join("")}</tbody></table></div>
+      <p class="mknote">${esc(H.note || "")}</p></div>`;
+    d.classList.add("on"); d.querySelector(".gd-x").onclick = () => d.classList.remove("on"); d.onclick = e => { if (e.target == d) d.classList.remove("on"); };
+  }
+  window.hpOpen = hpOpen;
+}
+setTimeout(healthUI, 2000);
 </script>
 </body>
 </html>

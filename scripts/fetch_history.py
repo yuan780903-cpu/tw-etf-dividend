@@ -39,8 +39,9 @@ def fresh(path):
     return os.path.exists(path) and dt.date.fromtimestamp(os.path.getmtime(path)) == TODAY
 
 def save(path, obj):
-    tmp = path + ".tmp"
-    json.dump(obj, open(tmp, "w"), ensure_ascii=False, separators=(",", ":"))
+    tmp = path + ".tmp"                      # 先寫暫存檔再整個替換:中途當掉也不會留下寫一半的檔案
+    with open(tmp, "w") as f:
+        json.dump(obj, f, ensure_ascii=False, separators=(",", ":")); f.flush(); os.fsync(f.fileno())
     os.replace(tmp, path)
 
 SPLITS = {}   # sid -> [(日期, 比例)]  分割/反分割還原用

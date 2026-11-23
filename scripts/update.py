@@ -7,7 +7,7 @@
 6. 重建 summary.json
 FinMind 免token每小時300次;設環境變數 FINMIND_TOKEN 可提高到600次。
 """
-import json, os, sys, subprocess, datetime as dt, urllib.request
+import time, json, os, sys, subprocess, datetime as dt, urllib.request
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 os.environ.setdefault("FINMIND_NO_WAIT", "1")      # 雲端不要睡等額度,用完就收工,下次再補
 import fetch_history as fh
@@ -64,103 +64,125 @@ def bulk_quotes():
     print("當日行情", len(q), "檔")
     return q
 
+STEPS = []                     # 每一步的結果,寫進 data/run_log.json 給資料健康面板看
+LONG = {"fetch_breadth.py": 2700, "fetch_fundamentals.py": 2700, "fetch_holdings.py": 1800, "fetch_market.py": 1500, "fetch_chips.py": 1500, "fetch_risk.py": 1200, "fetch_divs.py": 1200}
+def step(script, *args, quiet=False):
+    """執行一個腳本:有時間上限、失敗或逾時都不中斷後面的步驟(避免整次更新只做一半)"""
+    t0 = time.time(); rc = -1; note = ""
+    try:
+        rc = subprocess.run([sys.executable, os.path.join(HERE, script), *args], timeout=LONG.get(script, 900),
+                            stdout=subprocess.DEVNULL if quiet else None).returncode
+        if rc: note = f"結束代碼 {rc}"
+    except subprocess.TimeoutExpired: note = f"超過 {LONG.get(script, 900) // 60} 分鐘，已中止"; print("  逾時:", script)
+    except Exception as e: note = str(e)[:120]
+    STEPS.append(dict(s=script, ok=rc == 0, sec=round(time.time() - t0), note=note))
+    try: fh.save(os.path.join(DATA, "run_log.json"), dict(at=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), steps=STEPS))
+    except Exception: pass
+    return rc
+
 def main():
     global used
-    # 1. ETF 清單(新上市)
-    old_ids = {e["id"] for e in load(os.path.join(DATA, "etf_master.json"), [])}
-    r = subprocess.run([sys.executable, os.path.join(HERE, "build_master.py")], stdout=subprocess.DEVNULL); spend()
-    if r.returncode: print("ETF清單更新失敗,沿用舊清單")
-    master = load(os.path.join(DATA, "etf_master.json"))
-    new_ids = [e["id"] for e in master if e["id"] not in old_ids]
-    print("新上市ETF:", new_ids or "無")
+    new_ids = []
+    try:                       # ETF 價格/配息階段:任何意外都不能讓後面的大盤、選股、驗證步驟停擺
+        # 1. ETF 清單(新上市)
+        old_ids = {e["id"] for e in load(os.path.join(DATA, "etf_master.json"), [])}
+        rc = step("build_master.py", quiet=True); spend()
+        if rc: print("ETF清單更新失敗,沿用舊清單")
+        master = load(os.path.join(DATA, "etf_master.json"))
+        new_ids = [e["id"] for e in master if e["id"] not in old_ids]
+        print("新上市ETF:", new_ids or "無")
 
-    # 2. 分割 + 大盤
-    old_splits = load(os.path.join(DATA, "splits.json"), {})
-    try: fh.load_splits(); spend()
-    except Exception as ex: print("分割資料失敗:", ex); fh.SPLITS.update({k: [tuple(x) for x in v] for k, v in old_splits.items()})
-    new_split = [k for k in fh.SPLITS if fh.SPLITS[k] != [tuple(x) for x in old_splits.get(k, [])] and k in {e["id"] for e in master}]
-    try: fh.save(os.path.join(DATA, "taiex.json"), fh.fetch_prices("TAIEX")); spend()
-    except Exception as ex: print("大盤更新失敗:", ex)
-    tx_dates = [r[0] for r in load(os.path.join(DATA, "taiex.json"))]
-    last_trade = tx_dates[-1]; prev_trade = tx_dates[-2]
+        # 2. 分割 + 大盤
+        old_splits = load(os.path.join(DATA, "splits.json"), {})
+        try: fh.load_splits(); spend()
+        except Exception as ex: print("分割資料失敗:", ex); fh.SPLITS.update({k: [tuple(x) for x in v] for k, v in old_splits.items()})
+        new_split = [k for k in fh.SPLITS if fh.SPLITS[k] != [tuple(x) for x in old_splits.get(k, [])] and k in {e["id"] for e in master}]
+        try: fh.save(os.path.join(DATA, "taiex.json"), fh.fetch_prices("TAIEX")); spend()
+        except Exception as ex: print("大盤更新失敗:", ex)
+        tx_dates = [r[0] for r in load(os.path.join(DATA, "taiex.json"))]
+        last_trade = tx_dates[-1]; prev_trade = tx_dates[-2]
 
-    # 3. 股價:當日行情直接接上;有缺漏/新上市/新分割 -> FinMind 重抓
-    q = bulk_quotes()
-    need_full = set(new_ids) | set(new_split)
-    appended = 0
-    for e in master:
-        sid = e["id"]; pp = os.path.join(DATA, "prices", sid + ".json")
-        rows = load(pp)
-        if rows is None: need_full.add(sid); continue
-        if sid in need_full: continue
-        last = rows[-1][0] if rows else ""
-        bar = q.get(sid)
-        if bar and bar[0] > last:
-            if last and last < prev_trade and bar[0] == last_trade:
-                need_full.add(sid); continue        # 中間漏了交易日 -> 用FinMind整段重抓比較保險
-            rows.append(bar); fh.save(pp, rows); appended += 1
-    print(f"當日股價接上 {appended} 檔;需重抓 {len(need_full)} 檔")
-    for sid in sorted(need_full):
-        if not spend(2): print("FinMind 本次預算用完,其餘下次再補"); break
-        try:
-            fh.save(os.path.join(DATA, "prices", sid + ".json"), fh.fetch_prices(sid))
-            fh.save(os.path.join(DATA, "dividends", sid + ".json"), fh.fetch_divs(sid)); stamp(sid)
-        except fh.QuotaError: print("FinMind 額度用完,其餘下次再補"); used = BUDGET; break
+        # 3. 股價:當日行情直接接上;有缺漏/新上市/新分割 -> FinMind 重抓
+        q = bulk_quotes()
+        need_full = set(new_ids) | set(new_split)
+        appended = 0
+        for e in master:
+            sid = e["id"]; pp = os.path.join(DATA, "prices", sid + ".json")
+            rows = load(pp)
+            if rows is None: need_full.add(sid); continue
+            if sid in need_full: continue
+            last = rows[-1][0] if rows else ""
+            bar = q.get(sid)
+            if bar and bar[0] > last:
+                if last and last < prev_trade and bar[0] == last_trade:
+                    need_full.add(sid); continue        # 中間漏了交易日 -> 用FinMind整段重抓比較保險
+                rows.append(bar); fh.save(pp, rows); appended += 1
+        print(f"當日股價接上 {appended} 檔;需重抓 {len(need_full)} 檔")
+        for sid in sorted(need_full):
+            if not spend(2): print("FinMind 本次預算用完,其餘下次再補"); break
+            try:
+                fh.save(os.path.join(DATA, "prices", sid + ".json"), fh.fetch_prices(sid))
+                fh.save(os.path.join(DATA, "dividends", sid + ".json"), fh.fetch_divs(sid)); stamp(sid)
+            except fh.QuotaError: print("FinMind 額度用完,其餘下次再補"); used = BUDGET; break
 
-    # 4. 配息:依急迫程度排序後,用剩下的額度更新
-    summ = {e["id"]: e for e in (load(os.path.join(DATA, "summary.json"), {}) or {}).get("etfs", [])}
-    upcoming = {u["id"] for u in load(os.path.join(DATA, "upcoming.json"), []) or []}
-    def urgency(e):
-        sid = e["id"]; s = summ.get(sid, {}); dp = os.path.join(DATA, "dividends", sid + ".json")
-        age = (TODAY - dt.date.fromisoformat(STAMPS[sid])).days if sid in STAMPS and os.path.exists(dp) else 999
-        last_ex = (s.get("lastDiv") or {}).get("ex", "")
-        recent = last_ex and (TODAY - dt.date.fromisoformat(last_ex)).days < 45          # 剛除息:等發放日/金額確認
-        soon = TODAY.month in (s.get("exMonths") or []) or (TODAY.month % 12 + 1) in (s.get("exMonths") or [])
-        return (0 if sid in upcoming else 1 if recent else 2 if soon else 3, -age)
-    queue = sorted([e for e in master if e["id"] not in need_full and summ.get(e["id"], {}).get("perYear", 1)], key=urgency)
-    n = 0
-    for e in queue:
-        if urgency(e)[1] == 0: continue        # 今天已更新
-        if not spend(): break
-        try: fh.save(os.path.join(DATA, "dividends", e["id"] + ".json"), fh.fetch_divs(e["id"])); stamp(e["id"]); n += 1
-        except fh.QuotaError: print("FinMind 額度用完"); break
-    print("配息更新", n, "檔")
+        # 4. 配息:依急迫程度排序後,用剩下的額度更新
+        summ = {e["id"]: e for e in (load(os.path.join(DATA, "summary.json"), {}) or {}).get("etfs", [])}
+        upcoming = {u["id"] for u in load(os.path.join(DATA, "upcoming.json"), []) or []}
+        def urgency(e):
+            sid = e["id"]; s = summ.get(sid, {}); dp = os.path.join(DATA, "dividends", sid + ".json")
+            age = (TODAY - dt.date.fromisoformat(STAMPS[sid])).days if sid in STAMPS and os.path.exists(dp) else 999
+            last_ex = (s.get("lastDiv") or {}).get("ex", "")
+            recent = last_ex and (TODAY - dt.date.fromisoformat(last_ex)).days < 45          # 剛除息:等發放日/金額確認
+            soon = TODAY.month in (s.get("exMonths") or []) or (TODAY.month % 12 + 1) in (s.get("exMonths") or [])
+            return (0 if sid in upcoming else 1 if recent else 2 if soon else 3, -age)
+        queue = sorted([e for e in master if e["id"] not in need_full and summ.get(e["id"], {}).get("perYear", 1)], key=urgency)
+        n = 0
+        for e in queue:
+            if urgency(e)[1] == 0: continue        # 今天已更新
+            if not spend(): break
+            try: fh.save(os.path.join(DATA, "dividends", e["id"] + ".json"), fh.fetch_divs(e["id"])); stamp(e["id"]); n += 1
+            except fh.QuotaError: print("FinMind 額度用完"); break
+        print("配息更新", n, "檔")
+    except Exception as ex:
+        import traceback; traceback.print_exc(); STEPS.append(dict(s="ETF 價格/配息", ok=False, sec=0, note=str(ex)[:120]))
 
     # 5. 持股/規模輪流更新
-    subprocess.run([sys.executable, os.path.join(HERE, "fetch_holdings.py"), "--oldest", os.environ.get("HOLDINGS_PER_RUN", "70")] + (["--ids", ",".join(new_ids)] if new_ids else []))
+    step("fetch_holdings.py", "--oldest", os.environ.get("HOLDINGS_PER_RUN", "70"), *(["--ids", ",".join(new_ids)] if new_ids else []))
 
     # 6. 總表
-    subprocess.run([sys.executable, os.path.join(HERE, "build_summary.py")], check=True)
+    step("build_summary.py")
 
     # 7. 大盤儀表板(融資/維持率/追繳/法人/期貨/VIX/全球指數),失敗不影響 ETF 資料
-    subprocess.run([sys.executable, os.path.join(HERE, "fetch_market.py")])
-    subprocess.run([sys.executable, os.path.join(HERE, "fetch_breadth.py"), "--keep", "300", "--max", "300"])   # 市場廣度(恐慌度用)
-    subprocess.run([sys.executable, os.path.join(HERE, "scan_patterns.py")])   # 線型選股(全市場掃描)
-    subprocess.run([sys.executable, os.path.join(HERE, "build_tech.py")])      # 日線技術面買點訊號(大師選股/定存股搭配用)
-    subprocess.run([sys.executable, os.path.join(HERE, "build_fill.py")])      # 個股填息分析(用近 300 日收盤)
-    subprocess.run([sys.executable, os.path.join(HERE, "build_market_analysis.py")])
-    subprocess.run([sys.executable, os.path.join(HERE, "fetch_news.py")])        # 盤勢快訊(標題)
-    subprocess.run([sys.executable, os.path.join(HERE, "fetch_macro.py")])       # 美國總經(FRED)
-    subprocess.run([sys.executable, os.path.join(HERE, "fetch_profiles.py"), "--max", "150"])   # 公司檔案輪替更新
+    step("fetch_market.py")
+    step("fetch_breadth.py", "--keep", "300", "--max", "300")   # 市場廣度(恐慌度用)
+    step("scan_patterns.py")   # 線型選股(全市場掃描)
+    step("build_tech.py")      # 日線技術面買點訊號(大師選股/定存股搭配用)
+    step("build_fill.py")      # 個股填息分析(用近 300 日收盤)
+    step("build_market_analysis.py")
+    step("fetch_news.py")        # 盤勢快訊(標題)
+    step("fetch_macro.py")       # 美國總經(FRED)
+    step("fetch_profiles.py", "--max", "150")   # 公司檔案輪替更新
 
     # 8. 巴菲特選股(財報一季更新一次、已抓過的期別會跳過;股價/月營收每天更新)
     ff = [sys.executable, os.path.join(HERE, "fetch_fundamentals.py")] + (["--refresh-latest"] if TODAY.weekday() == 0 else [])   # 最新一季每週一重抓(補晚交財報的公司)
-    if subprocess.run(ff).returncode == 0:
-        subprocess.run([sys.executable, os.path.join(HERE, "build_value_picks.py")])
-        subprocess.run([sys.executable, os.path.join(HERE, "build_experts.py")])      # 專家選股(9 位大師條件)
-    subprocess.run([sys.executable, os.path.join(HERE, "fetch_divs.py")])               # 個股股利排行+除權息行事曆
-    subprocess.run([sys.executable, os.path.join(HERE, "fetch_ratings.py")])            # 券商評等/法人共識目標價
-    subprocess.run([sys.executable, os.path.join(HERE, "fetch_chips.py")])              # 三大法人個股、集保大戶、熱力圖
-    subprocess.run([sys.executable, os.path.join(HERE, "fetch_events.py")])             # 法說會、內部人持股轉讓
-    subprocess.run([sys.executable, os.path.join(HERE, "build_stock_pages.py")])        # 量化評分、個股分析頁、月營收排行、搜尋名單
-    subprocess.run([sys.executable, os.path.join(HERE, "build_board.py")])              # 大盤總表(含台指期夜盤)
-    subprocess.run([sys.executable, os.path.join(HERE, "fetch_risk.py")])              # 風險雷達:處置/注意股、借券、外資持股、當沖比
-    subprocess.run([sys.executable, os.path.join(HERE, "fetch_options.py")])           # 期權籌碼:P/C、最大未平倉、外資選擇權、ADR 溢價
-    subprocess.run([sys.executable, os.path.join(HERE, "build_concepts.py")])          # 族群／概念股輪動
-    subprocess.run([sys.executable, os.path.join(HERE, "build_smart.py")])             # 綜合評分 1～10、大戶吸籌
-    subprocess.run([sys.executable, os.path.join(HERE, "build_backtest.py")])          # 大師選股歷年回測
-    subprocess.run([sys.executable, os.path.join(HERE, "fetch_calendar.py")])          # 經濟行事曆(美國 FRED/Fed、台灣慣例日期、除息、法說會)
-    subprocess.run([sys.executable, os.path.join(HERE, "fetch_ptt.py")])               # PTT 股版熱度(只抓標題)
+    if step("fetch_fundamentals.py", *ff[2:]) == 0:
+        step("build_value_picks.py")
+        step("build_experts.py")      # 專家選股(9 位大師條件)
+    step("fetch_divs.py")               # 個股股利排行+除權息行事曆
+    step("fetch_ratings.py")            # 券商評等/法人共識目標價
+    step("fetch_chips.py")              # 三大法人個股、集保大戶、熱力圖
+    step("fetch_events.py")             # 法說會、內部人持股轉讓
+    step("build_stock_pages.py")        # 量化評分、個股分析頁、月營收排行、搜尋名單
+    step("fetch_inst.py")              # 三大法人買賣超(上市＋上櫃),總表/總經/行事曆共用
+    step("build_board.py")              # 大盤總表(含台指期夜盤)
+    step("fetch_risk.py")              # 風險雷達:處置/注意股、借券、外資持股、當沖比
+    step("fetch_options.py")           # 期權籌碼:P/C、最大未平倉、外資選擇權、ADR 溢價
+    step("build_concepts.py")          # 族群／概念股輪動
+    step("build_smart.py")             # 綜合評分 1～10、大戶吸籌
+    step("build_backtest.py")          # 大師選股歷年回測
+    step("fetch_calendar.py")          # 經濟行事曆(美國 FRED/Fed、台灣慣例日期、除息、法說會)
+    step("fetch_ptt.py")               # PTT 股版熱度(只抓標題)
+    step("validate.py")               # 資料健康檢查:筆數、範圍、交叉比對;抓壞自動還原上一版 → health.json
     print(f"完成。FinMind 用了 {used}/{BUDGET} 次")
 
 if __name__ == "__main__":
