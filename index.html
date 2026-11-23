@@ -1568,6 +1568,8 @@ button{-webkit-tap-highlight-color:transparent}
 .ex-t em.ex-w{display:flex;flex-direction:column;font-style:normal;font-weight:800;font-size:13px;color:#B45309;margin-top:2px;line-height:1.3}.ex-t em.ex-w i{font-style:normal;font-weight:500;font-size:11px;color:var(--sub)}.ex-t em.ex-w.na{color:var(--sub);font-weight:700}
 .ex-grid .ex-c{padding-bottom:30px!important;align-items:flex-start}.ex-grid .ex-c .xav{margin-top:4px}
 .ex-wb{background:var(--bg);border-radius:14px;padding:12px 14px;margin-bottom:8px}.ex-wb>b{font-size:24px;font-weight:900;color:#B45309;margin-right:8px}.ex-wb>span{color:var(--sub);font-weight:700}.ex-wb p{margin:6px 0 0;font-size:14px;line-height:1.7}
+/* 大師年紀 */
+.ex-t em.ex-age{font-style:normal;font-size:12px;font-weight:700;color:#2F5BEA;margin:1px 0}.ex-t em.ex-age.rip{color:#64748B}.ex-t em.ex-age.na{color:var(--sub);font-weight:500;font-size:11.5px}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="巴菲遠">
@@ -4676,7 +4678,7 @@ function renderEx(){
       <small>財報：${EXD.years} 年＋${EXD.ttm} 近四季・${EXD.filter}・資料更新 ${EXD.updated}・${EXD.source}</small></div></div>
     <div class="ex-grid">${E.map((e, i) => `${i == 0 ? `<div class="ex-gh">🏛️ 經典大師</div>` : e.gen == "new" && E[i - 1].gen != "new" ? `<div class="ex-gh">🌱 新生代大師 <small>依本人公開著作、訪談、股東信歸納的簡化條件，非本人推薦</small></div>` : ""}<div class="ex-c ${EX.sel.includes(e.id) ? "on" : ""} ${e.gen == "new" ? "nw" : ""}" data-id="${e.id}">${e.gen == "new" ? `<i class="ex-rg">${e.region == "台灣" ? "🇹🇼 台灣" : "🌏 國外"}</i>` : ""}
         <label class="ex-ck"><input type="checkbox" ${EX.sel.includes(e.id) ? "checked" : ""}><span></span></label>
-        ${exAvatar(e.id, 72)}<div class="ex-t"><b>${e.name}</b><small>${e.en}・${e.tag}</small><em>符合 <b class="num">${e.n}</b> 家</em>${exWealthLine(e.id)}</div>
+        ${exAvatar(e.id, 72)}<div class="ex-t"><b>${e.name}</b><small>${e.en}・${e.tag}</small>${exAgeLine(e.id)}<em>符合 <b class="num">${e.n}</b> 家</em>${exWealthLine(e.id)}</div>
         <button class="ex-more" data-m="${e.id}">選股邏輯 ›</button></div>`).join("")}</div>
     <p class="mknote">※ 大師頭像為原創插畫示意，非本人照片。💰 財富為公開報導或媒體估算，標示來源與可信度，沒有公開數字的不猜測；美元換算台幣用最新匯率。</p>
     <div class="ex-bar"><div class="ex-mode"><b>多位大師時：</b><button data-mode="and" class="${EX.mode == "and" ? "on" : ""}">同時符合（交集）</button><button data-mode="or" class="${EX.mode == "or" ? "on" : ""}">符合任一（聯集）</button></div>
@@ -4696,7 +4698,7 @@ function renderEx(){
 function exInfo(id){
   const e = EXD.experts.find(x => x.id == id);
   $("#dlg").innerHTML = `<div class="dhd" style="background:linear-gradient(135deg,${AVC[id].bg[0]},${AVC[id].bg[1]})"><i class="grab"></i><button class="x" onclick="closeDetail()" aria-label="關閉">✕</button>
-    <div style="display:flex;gap:16px;align-items:center">${exAvatar(id, 88)}<div><div style="opacity:.85;font-weight:600">${e.en}・${e.tag}</div><h2>${e.name}的選股法</h2><div class="tags"><span>全台符合 ${e.n} 家</span></div></div></div></div>
+    <div style="display:flex;gap:16px;align-items:center">${exAvatar(id, 88)}<div><div style="opacity:.85;font-weight:600">${e.en}・${e.tag}</div><h2>${e.name}的選股法</h2><div class="tags"><span>全台符合 ${e.n} 家</span><span>${exAgeTxt(id, 1)}</span></div></div></div></div>
     <div class="dbd" style="display:block"><div class="box"><h3 class="mm-h3">💬 白話說明</h3><p style="line-height:1.85;font-size:15px">${e.say}</p>${exWealthBox(id)}
       <h3 class="mm-h3">📏 選股條件（全部都要符合）</h3><ol class="ex-rules">${e.rules.map((r, i) => `<li><b>${r}</b><small>${exWhy(id, i)}</small></li>`).join("")}</ol>
       <p class="mknote">共同過濾：排除股價 5 元以下、五日均量 500 張以下的冷門股。條件參考 MoneyDJ 大師選股；流動比率依格拉罕原意採 200%。</p>
@@ -6660,6 +6662,28 @@ function exWealthBox(id){
     <p>${w.note}</p></div>
     <p class="kid-mini">👶 <b>白話</b>：這是「大家估他身家有多少」。很多大師的錢主要來自幫別人管錢收的管理費、自己公司的股權、寫書或上課，不全是自己炒股賺的；所以財富多寡不等於選股法好不好、適不適合你。可信度：Forbes＞媒體報導＞本人自述＞媒體估算＞粗估。</p>`;
 }
+
+/* ================= 🎂 大師年紀(出生～過世年份;推算的標「約」,查不到的不猜)================= */
+const LIFE = {
+  lynch: {b: "1944-01-19"}, graham: {b: "1894-05-09", d: "1976-09-21"}, buffett: {b: "1930-08-30"}, osh: {b: "1960-05-24"},
+  murphy: {none: "出生年未公開（1960 年代中期就出社會當程式設計師）"}, kfisher: {b: "1950-11-29"}, yusko: {b: "1963-05-09"},
+  sivy: {none: "出生年未公開"}, price: {b: "1951-07-03", d: "2022-03-14"}, pabrai: {b: "1964-06-12"}, burry: {b: "1971-06-19"},
+  dorsey: {none: "出生年未公開"}, wood: {b: "1955-11-26"}, raohs: {y: 1980, src: "鏡週刊人物小檔案"},
+  mj: {none: "出生年未公開"}, chenzm: {y: 1967, approx: 1, src: "依 2017 年報導「50 歲財富自由」推算"}, warrentw: {y: 1971, approx: 1, src: "依 2019 年報導「48 歲」推算"},
+};
+function exAge(id){
+  const L = LIFE[id]; if (!L || L.none) return null;
+  const now = new Date(Date.now() + 8 * 3600e3).toISOString().slice(0, 10);
+  if (L.b) { const end = L.d || now, by = +L.b.slice(0, 4), a = +end.slice(0, 4) - by - (end.slice(5) < L.b.slice(5) ? 1 : 0); return {by, dy: L.d ? +L.d.slice(0, 4) : null, a, exact: 1}; }
+  return {by: L.y, dy: null, a: +now.slice(0, 4) - L.y, approx: L.approx, src: L.src};
+}
+function exAgeTxt(id, full){
+  const L = LIFE[id], x = exAge(id); if (!x) return `🎂 ${full ? (L && L.none) || "出生年未公開" : "年紀未公開"}`;
+  const ap = x.approx ? "約 " : "", aa = x.exact ? "" : "約 ";            // 只知道出生年:年紀可能差 1 歲
+  if (x.dy) return `🕯️ ${x.by}～${x.dy}・享年 ${x.a} 歲${full && L.b ? `（${L.b.replace(/-/g, "/")}～${L.d.replace(/-/g, "/")}）` : ""}`;
+  return `🎂 ${ap}${x.by} 年～今・${aa}${x.a} 歲${full ? (L.b ? `（${L.b.replace(/-/g, "/")} 生）` : x.src ? `（${x.src}）` : "") : ""}`;
+}
+function exAgeLine(id){ const x = exAge(id); return `<em class="ex-age ${!x ? "na" : x.dy ? "rip" : ""}">${exAgeTxt(id)}</em>`; }
 </script>
 </body>
 </html>
