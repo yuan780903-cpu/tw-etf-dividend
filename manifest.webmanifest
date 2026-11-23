@@ -1,0 +1,14 @@
+{
+  "name": "巴菲遠不負責任財富系統",
+  "short_name": "巴菲遠",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F5F7FB",
+  "theme_color": "#2F5BEA",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "apple-touch-icon.png", "sizes": "180x180", "type": "image/png"}
+  ]
+}

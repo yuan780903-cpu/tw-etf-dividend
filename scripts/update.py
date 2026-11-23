@@ -136,6 +136,7 @@ def main():
     subprocess.run([sys.executable, os.path.join(HERE, "fetch_market.py")])
     subprocess.run([sys.executable, os.path.join(HERE, "fetch_breadth.py"), "--keep", "300", "--max", "300"])   # 市場廣度(恐慌度用)
     subprocess.run([sys.executable, os.path.join(HERE, "scan_patterns.py")])   # 線型選股(全市場掃描)
+    subprocess.run([sys.executable, os.path.join(HERE, "build_tech.py")])      # 日線技術面買點訊號(大師選股/定存股搭配用)
     subprocess.run([sys.executable, os.path.join(HERE, "build_market_analysis.py")])
     subprocess.run([sys.executable, os.path.join(HERE, "fetch_news.py")])        # 盤勢快訊(標題)
     subprocess.run([sys.executable, os.path.join(HERE, "fetch_macro.py")])       # 美國總經(FRED)
