@@ -1542,6 +1542,28 @@ button{-webkit-tap-highlight-color:transparent}
 .mm-tb td small{display:block;color:var(--sub);font-size:11px;font-weight:500;line-height:1.35}.mm-tb tr.mm-g td{background:var(--bg);font-weight:900;color:#2F5BEA}
 .mm-st{display:inline-block;background:var(--c);color:#fff;border-radius:6px;padding:0 7px;font-weight:800;font-size:11.5px}.mm-same{color:var(--sub);text-align:center;font-size:12px}
 @media(max-width:900px){.mm-sum{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* ===== 開收盤:正方形大卡片;按鈕:會員→一鍵更新→日暗(小) ===== */
+.clk .cs{display:grid!important;grid-template-columns:repeat(2,132px);gap:10px;flex-wrap:nowrap!important}
+.clk .mkc{aspect-ratio:1/1;min-width:0;min-height:0;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:1px;padding:6px;border-radius:18px;border:1px solid rgba(198,161,91,.4);background:rgba(255,255,255,.06);color:rgba(255,255,255,.92);white-space:normal;line-height:1.2}
+.clk .mkc-h{display:flex;align-items:center;gap:6px;font-weight:900;font-size:15px}
+.clk .mkc-h i{width:9px;height:9px;border-radius:50%;background:#94A3B8;flex:none}.clk .mkc.on .mkc-h i{background:#22c55e;box-shadow:0 0 8px #22c55e}
+.clk .mkc-s{font-weight:800;font-size:12px;padding:1px 10px;border-radius:999px;background:rgba(148,163,184,.25)}.clk .mkc.on .mkc-s{background:#22c55e;color:#fff}
+.clk .mkc-k{font-size:11px;opacity:.75;margin-top:2px}.clk .mkc-d{font-weight:800;font-size:13px}
+.clk .mkc-t{font:800 22px/1 Inter,sans-serif;font-variant-numeric:tabular-nums;letter-spacing:.02em}.clk .mkc-c{font-size:10.5px;opacity:.75}
+.clk .mkc.on{border-color:#22c55e;box-shadow:0 0 0 1px #22c55e inset}
+:root:not([data-theme="dark"]) .clk .mkc{background:#fff;border-color:#E3E8F2;color:#14213D;box-shadow:0 8px 20px -14px rgba(20,33,61,.35)}
+:root:not([data-theme="dark"]) .clk .mkc.on{border-color:#22c55e}
+.hacts .btn-th{width:40px!important;height:40px!important;align-self:center;padding:0;font-size:16px;border-radius:12px}
+@media(max-width:1399px){.clk .cs{grid-template-columns:repeat(2,140px)}}
+@media(max-width:700px){
+  .clk .cs{flex:0 0 100%;width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .clk .mkc{border-radius:20px;gap:4px;padding:10px}
+  .clk .mkc-h{font-size:19px}.clk .mkc-h i{width:11px;height:11px}.clk .mkc-s{font-size:13.5px;padding:2px 12px}
+  .clk .mkc-k{font-size:12.5px}.clk .mkc-d{font-size:16px}.clk .mkc-t{font-size:35px}.clk .mkc-c{font-size:12.5px;white-space:nowrap}
+  .hacts:not(:has(.btn-bell:not([hidden]))){grid-template-columns:minmax(0,3fr) minmax(0,2.4fr) 40px!important}
+  .hacts:has(.btn-bell:not([hidden])){grid-template-columns:minmax(0,3fr) minmax(0,2.2fr) 44px 40px!important}
+  .hacts .btn-th{height:40px!important;width:40px!important}
+}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="巴菲遠">
@@ -1556,9 +1578,9 @@ button{-webkit-tap-highlight-color:transparent}
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
       <button class="btn-mem" id="btnMem" onclick="memOpen()">🔓 <span class="t">升級付費會員</span></button>
+      <button class="btn-up" id="btnUp" title="一鍵更新">🔄 <span class="t">一鍵更新</span></button>
       <button class="btn-bell" id="btnBell" title="自選股體質變化" aria-label="自選股體質變化通知" hidden>🔔<b id="bellN">0</b></button>
       <button class="btn-th" id="btnTh" title="切換深色/淺色" aria-label="切換深色或淺色模式">🌓</button>
-      <button class="btn-up" id="btnUp" title="一鍵更新">🔄 <span class="t">一鍵更新</span></button>
     </div>
   </div>
   <div class="gtk" id="gtk"></div><div id="hlBanner"></div>
@@ -3839,9 +3861,11 @@ function clkTick(){
     const d = new Date(loc.getFullYear(), loc.getMonth(), loc.getDate(), 0, o); if (!(wd && cur < o)) do d.setDate(d.getDate() + 1); while (!(d.getDay() % 6)); return {k: "開盤", d}; };
   const fd = (d, base) => `${d.getMonth() + 1}/${d.getDate()}（${W[d.getDay()]}）${p2(d.getHours())}:${p2(d.getMinutes())}`;
   const twN = nxt(tp, 540, 810), usN0 = nxt(ny, 570, 960), usN = {k: usN0.k, d: new Date(usN0.d.getTime() + off)};
+  const left = d => { const t = Math.max(0, Math.round((d - tp) / 60000)), h = Math.floor(t / 60), mm = t % 60; return h >= 24 ? `還有 ${Math.floor(h / 24)} 天 ${h % 24} 小時` : `還有 ${h ? h + " 小時 " : ""}${mm} 分`; };
+  const card = (nm, on, st, n, tip) => `<div class="mkc ${on ? "on" : ""}" title="${tip}"><div class="mkc-h"><i></i>${nm}</div><div class="mkc-s">${st}</div><div class="mkc-k">下次${n.k}・台北時間</div><div class="mkc-d">${n.d.getMonth() + 1}/${n.d.getDate()}（${W[n.d.getDay()]}）</div><div class="mkc-t">${p2(n.d.getHours())}:${p2(n.d.getMinutes())}</div><div class="mkc-c">${left(n.d)}</div></div>`;
   el.innerHTML = `<div class="cd">${tp.getFullYear()} 年 ${tp.getMonth() + 1} 月 ${tp.getDate()} 日　星期${wk}</div>
     <div class="ct">${p2(tp.getHours())}:${p2(tp.getMinutes())}:${p2(tp.getSeconds())}<small>台北</small></div>
-    <div class="cs"><span title="台股交易時間 09:00～13:30（不含國定假日）"><i class="${twOpen ? "on" : ""}"></i>${twTxt}・下次${twN.k} <b>${fd(twN.d, tp)}</b></span><span title="美股交易時間紐約 09:30～16:00，已換算台北時間（不含美國假日）"><i class="${usOpen ? "on" : ""}"></i>美股 ${usOpen ? "盤中" : "休市"}・下次${usN.k} <b>${fd(usN.d, tp)}</b>（台北）</span></div>`;
+    <div class="cs">${card("🇹🇼 台股", twOpen, twTxt.replace("台股 ", ""), twN, "台股交易時間 09:00～13:30（不含國定假日）")}${card("🇺🇸 美股", usOpen, usOpen ? "盤中" : "休市", usN, "美股交易時間紐約 09:30～16:00，已換算台北時間（不含美國假日）")}</div>`;
 }
 clkTick(); setInterval(clkTick, 1000);
 /* ---------- 各國大盤:區間明細查詢 + 統計分析 ---------- */
