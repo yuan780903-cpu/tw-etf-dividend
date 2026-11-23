@@ -1514,6 +1514,10 @@ button{-webkit-tap-highlight-color:transparent}
 .hp-ban{margin:10px 0 0;background:#FDECEC;border:1px solid #F5B3B3;color:#9B1C1C;border-radius:12px;padding:8px 12px;font-size:13px;font-weight:700}.hp-ban button{margin-left:8px;border:0;background:#CF3A3A;color:#fff;border-radius:8px;padding:3px 10px;font-weight:800;cursor:pointer}
 #hpDlg{position:fixed;inset:0;z-index:9850;background:rgba(10,15,30,.5);display:none;align-items:flex-start;justify-content:center;padding:4vh 12px}#hpDlg.on{display:flex}
 .hp-x{background:var(--bg);border-radius:12px;padding:6px 12px;font-size:13.5px}.hp-x p{margin:4px 0}.hp-ok{color:#1A8F57;font-weight:700}.hp-r{color:#B45309;font-weight:700}
+/* 雲端更新進度 */
+#cwChip{position:fixed;right:14px;bottom:14px;z-index:9800;max-width:min(360px,calc(100vw - 28px));background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:9px 13px;font-size:13px;font-weight:700;line-height:1.5;box-shadow:0 12px 30px -14px rgba(20,33,61,.5)}
+#cwChip small{display:block;font-weight:500;color:var(--sub);font-size:11.5px}#cwChip.ok{border-color:#9AD9B5}#cwChip.warn{border-color:#F5C26B}
+.cw-spin{display:inline-block;width:11px;height:11px;border:2px solid #2F5BEA;border-right-color:transparent;border-radius:50%;margin-right:6px;vertical-align:-1px;animation:cwsp 1s linear infinite}@keyframes cwsp{to{transform:rotate(360deg)}}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="巴菲遠">
@@ -2489,23 +2493,49 @@ async function liveQuotes(){
 async function triggerCloud(){
   if (CFG.dispatch) {
     try {
-      const r = await fetch(CFG.dispatch, {method: "POST"}), d = await r.json();
+      const r = await fetch(CFG.dispatch, {method: "POST", body: JSON.stringify({mode: "quick"})}), d = await r.json();
       if (["started", "running", "recent"].includes(d.status)) return d.status;
     } catch (e) {}
   }
   window.open(`https://github.com/${CFG.repo}/actions/workflows/${CFG.workflow}`, "_blank");
   return "manual";
 }
-function watchCloud(oldStamp){
-  let k = 0;
-  const iv = setInterval(async () => {
-    if (++k > 30) { clearInterval(iv); return; }          // 最多等 30 分鐘
-    try {
-      const d = await fetch("data/summary.json?" + Date.now()).then(r => r.json());
-      if (d.updated != oldStamp) { clearInterval(iv); toast(`☁️ 雲端資料更新完成（${d.updated}），重新載入中…`); setTimeout(() => location.reload(), 1500); }
-    } catch(e) {}
-  }, 60000);
+/* 雲端更新進度:看 GitHub 執行狀態＋最後一步「資料健康檢查」(health.json)有沒有換新,最多等 90 分鐘;重新整理頁面也會接著顯示 */
+async function watchCloud(){
+  let W = null; try { W = JSON.parse(localStorage.getItem("cloudWatch") || "null"); } catch (e) {}
+  if (!W || Date.now() - W.t0 > 90 * 60e3) {
+    let h0 = ""; try { h0 = (await fetch("data/health.json?" + Date.now()).then(r => r.json())).updated || ""; } catch (e) {}
+    W = {t0: Date.now(), h0}; try { localStorage.setItem("cloudWatch", JSON.stringify(W)); } catch (e) {}
+  }
+  cwLoop(W);
 }
+function cwChip(html, cls = ""){
+  let c = $("#cwChip"); if (!c) { c = document.createElement("div"); c.id = "cwChip"; document.body.append(c); }
+  c.className = cls; c.innerHTML = html; c.hidden = !html;
+}
+function cwLoop(W){
+  clearInterval(window._cwIv); let doneAt = 0;
+  const stop = (msg, cls) => { clearInterval(window._cwIv); try { localStorage.removeItem("cloudWatch"); } catch (e) {} cwChip(msg, cls); if (msg) setTimeout(() => cwChip(""), 15000); };
+  const tick = async () => {
+    const min = Math.round((Date.now() - W.t0) / 60e3);
+    if (min > 90) return stop("☁️ 雲端更新超過 90 分鐘還沒完成，系統的看門狗會自動補跑；稍後再回來看即可。", "warn");
+    let run = null; try { run = (await fetch(CFG.dispatch.replace("/dispatch", "/status") + "?t=" + Date.now()).then(r => r.json())).run; } catch (e) {}
+    let H = null; try { H = await fetch("data/health.json?" + Date.now()).then(r => r.json()); } catch (e) {}
+    if (H && H.updated && H.updated != W.h0) {
+      stop(`✅ 雲端資料更新完成（${H.updated}），重新載入中…`, "ok"); setTimeout(() => location.reload(), 1800); return;
+    }
+    if (run && run.status == "completed") {
+      doneAt = doneAt || Date.now();
+      if (run.conclusion != "success" && run.conclusion != "cancelled") { /* 失敗也會先存已抓到的資料,等網頁同步 */ }
+      if (Date.now() - doneAt > 6 * 60e3) { stop("☁️ 雲端已跑完，但網頁資料還沒換新（可能這次沒有新資料）。可以按 F5 重新整理看看。", "warn"); return; }
+      cwChip(`☁️ 雲端已跑完，正在把新資料放上網站（約 1～3 分鐘）…<small>已 ${min} 分鐘</small>`);
+    } else {
+      cwChip(`<span class="cw-spin"></span>☁️ 雲端更新中（快速模式約 10～15 分鐘）<small>已 ${min} 分鐘・完成會自動重新載入</small>`);
+    }
+  };
+  tick(); window._cwIv = setInterval(tick, 45000);
+}
+try { const W = JSON.parse(localStorage.getItem("cloudWatch") || "null"); if (W && Date.now() - W.t0 < 90 * 60e3) setTimeout(() => cwLoop(W), 3000); } catch (e) {}
 function toast(msg, ms = 4000){
   let el = $("#toast"); if (!el) { el = document.createElement("div"); el.id = "toast"; document.body.appendChild(el); }
   el.innerHTML = msg; el.className = "show"; clearTimeout(el._t); el._t = setTimeout(() => el.className = "", ms);
@@ -2517,8 +2547,8 @@ $("#btnUp").onclick = async () => {
   buildCats(); render(); renderPF(); renderPlan();
   if (n) ETFUPD = `即時報價 ${t}`;
   const how = await triggerCloud();
-  toast(`✅ 即時更新完成${t ? "（" + t + "）" : ""}：ETF ${n} 檔${tx ? `、加權指數 ${fmt(tx.px, 2)}` : ""}${nv ? `、選股 ${nv} 檔（價位與安全邊際已重算）` : ""}<br>${{started: "☁️ 已通知雲端重抓全部資料（財報、融資、法人、配息等），約 10～20 分鐘，完成會自動重新載入", running: "☁️ 雲端已經在更新中，完成會自動重新載入", recent: "☁️ 雲端 10 分鐘內剛更新過，資料已是最新；若還在跑，完成會自動重新載入", manual: "☁️ 已開啟 GitHub 頁面，按綠色「Run workflow」就會重抓全部資料，完成後這頁會自動重新載入"}[how]}`, 9000);
-  watchCloud(STAMP);
+  toast(`✅ 即時更新完成${t ? "（" + t + "）" : ""}：ETF ${n} 檔${tx ? `、加權指數 ${fmt(tx.px, 2)}` : ""}${nv ? `、選股 ${nv} 檔（價位與安全邊際已重算）` : ""}<br>${{started: "☁️ 已通知雲端快速更新（大盤、三大法人、籌碼、風險股、期權、行事曆），約 10～15 分鐘，右下角會顯示進度、完成自動重新載入。財報與配息每天排程會完整更新", running: "☁️ 雲端已經在更新中，右下角會顯示進度，完成會自動重新載入", recent: "☁️ 雲端 10 分鐘內剛更新過，資料已是最新；若還在跑，完成會自動重新載入", manual: "☁️ 已開啟 GitHub 頁面，按綠色「Run workflow」就會重抓全部資料，完成後這頁會自動重新載入"}[how]}`, 9000);
+  if (how != "manual") watchCloud();
   b.disabled = false; b.innerHTML = "🔄 <span class=\"t\">一鍵更新</span>";
 };
 

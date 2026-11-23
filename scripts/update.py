@@ -15,6 +15,7 @@ import fetch_history as fh
 DATA = fh.DATA
 TODAY = dt.date.today()
 BUDGET = int(os.environ.get("FINMIND_BUDGET", "500" if fh.TOKEN else "250"))   # 本次最多打幾次 FinMind
+if os.environ.get("MODE", "full") == "quick": BUDGET = 0      # 一鍵快速更新:不打 FinMind(ETF 補缺/配息留給排程完整更新)
 used = 0
 UA = {"User-Agent": "Mozilla/5.0"}
 
@@ -64,6 +65,28 @@ def bulk_quotes():
     print("當日行情", len(q), "檔")
     return q
 
+def fill_taiex():
+    """加權指數:FinMind 晚上才有當天資料 → 用證交所官方每日指數(MI_5MINS_HIST 開高低收＋FMTQIK 成交股數)補上缺的交易日"""
+    import net  # noqa: F401  證交所 cookie/307
+    p = os.path.join(DATA, "taiex.json"); rows = load(p, []) or []; last = rows[-1][0] if rows else "0"
+    n = lambda x: float(str(x).replace(",", ""))
+    add = {}
+    m0 = TODAY.replace(day=1)
+    for m in sorted({m0, (m0 - dt.timedelta(days=1)).replace(day=1)}):
+        try:
+            o = json.loads(urllib.request.urlopen(urllib.request.Request(f"https://www.twse.com.tw/rwd/zh/TAIEX/MI_5MINS_HIST?date={m:%Y%m}01&response=json", headers={"User-Agent": "Mozilla/5.0"}), timeout=60).read())
+            v = json.loads(urllib.request.urlopen(urllib.request.Request(f"https://www.twse.com.tw/rwd/zh/afterTrading/FMTQIK?date={m:%Y%m}01&response=json", headers={"User-Agent": "Mozilla/5.0"}), timeout=60).read())
+            vol = {r[0]: round(n(r[1]) / 1000) for r in v.get("data", [])}
+            for r in o.get("data", []):
+                y, mm, dd = r[0].split("/"); d = f"{int(y) + 1911}-{mm}-{dd}"
+                if d > last: add[d] = [d, n(r[1]), n(r[2]), n(r[3]), n(r[4]), vol.get(r[0])]
+        except Exception as e: print("  證交所指數補資料失敗:", e)
+        time.sleep(1)
+    if add:
+        rows += [add[d] for d in sorted(add)]; fh.save(p, rows); print("  加權指數用證交所補上:", ", ".join(sorted(add)))
+
+QUICK = os.environ.get("MODE", "full") == "quick"   # 一鍵更新:只重算當天會變的大盤/法人/籌碼(約 10～15 分鐘)
+
 STEPS = []                     # 每一步的結果,寫進 data/run_log.json 給資料健康面板看
 LONG = {"fetch_breadth.py": 2700, "fetch_fundamentals.py": 2700, "fetch_holdings.py": 1800, "fetch_market.py": 1500, "fetch_chips.py": 1500, "fetch_risk.py": 1200, "fetch_divs.py": 1200}
 def step(script, *args, quiet=False):
@@ -86,7 +109,7 @@ def main():
     try:                       # ETF 價格/配息階段:任何意外都不能讓後面的大盤、選股、驗證步驟停擺
         # 1. ETF 清單(新上市)
         old_ids = {e["id"] for e in load(os.path.join(DATA, "etf_master.json"), [])}
-        rc = step("build_master.py", quiet=True); spend()
+        rc = step("build_master.py", quiet=True) if not QUICK else 0; spend()
         if rc: print("ETF清單更新失敗,沿用舊清單")
         master = load(os.path.join(DATA, "etf_master.json"))
         new_ids = [e["id"] for e in master if e["id"] not in old_ids]
@@ -94,11 +117,15 @@ def main():
 
         # 2. 分割 + 大盤
         old_splits = load(os.path.join(DATA, "splits.json"), {})
-        try: fh.load_splits(); spend()
-        except Exception as ex: print("分割資料失敗:", ex); fh.SPLITS.update({k: [tuple(x) for x in v] for k, v in old_splits.items()})
+        try:
+            if QUICK: raise RuntimeError("快速模式沿用分割資料")
+            fh.load_splits(); spend()
+        except Exception as ex: print("分割資料:", ex); fh.SPLITS.update({k: [tuple(x) for x in v] for k, v in old_splits.items()})
         new_split = [k for k in fh.SPLITS if fh.SPLITS[k] != [tuple(x) for x in old_splits.get(k, [])] and k in {e["id"] for e in master}]
-        try: fh.save(os.path.join(DATA, "taiex.json"), fh.fetch_prices("TAIEX")); spend()
-        except Exception as ex: print("大盤更新失敗:", ex)
+        if not QUICK:
+            try: fh.save(os.path.join(DATA, "taiex.json"), fh.fetch_prices("TAIEX")); spend()
+            except Exception as ex: print("大盤更新失敗:", ex)
+        fill_taiex()
         tx_dates = [r[0] for r in load(os.path.join(DATA, "taiex.json"))]
         last_trade = tx_dates[-1]; prev_trade = tx_dates[-2]
 
@@ -146,6 +173,13 @@ def main():
     except Exception as ex:
         import traceback; traceback.print_exc(); STEPS.append(dict(s="ETF 價格/配息", ok=False, sec=0, note=str(ex)[:120]))
 
+    if QUICK:                          # 一鍵快速更新(約 10～15 分鐘):只重算當天會變的大盤、法人、籌碼、風險、期權
+        print("== 快速模式 ==")
+        for x in (("build_summary.py",), ("fetch_inst.py",), ("fetch_market.py",), ("fetch_breadth.py", "--keep", "300", "--max", "300"), ("build_tech.py",),
+                  ("build_market_analysis.py",), ("fetch_news.py",), ("fetch_chips.py",), ("build_board.py",), ("fetch_risk.py",), ("fetch_options.py",),
+                  ("build_concepts.py",), ("build_smart.py",), ("fetch_calendar.py",), ("fetch_ptt.py",)):
+            step(*x)
+        step("validate.py"); print("快速模式完成"); return
     # 5. 持股/規模輪流更新
     step("fetch_holdings.py", "--oldest", os.environ.get("HOLDINGS_PER_RUN", "70"), *(["--ids", ",".join(new_ids)] if new_ids else []))
 
@@ -153,6 +187,7 @@ def main():
     step("build_summary.py")
 
     # 7. 大盤儀表板(融資/維持率/追繳/法人/期貨/VIX/全球指數),失敗不影響 ETF 資料
+    step("fetch_inst.py")              # 三大法人買賣超(上市＋上櫃),大盤歷史/總表/總經/行事曆共用(先抓,當天就有)
     step("fetch_market.py")
     step("fetch_breadth.py", "--keep", "300", "--max", "300")   # 市場廣度(恐慌度用)
     step("scan_patterns.py")   # 線型選股(全市場掃描)
@@ -173,7 +208,6 @@ def main():
     step("fetch_chips.py")              # 三大法人個股、集保大戶、熱力圖
     step("fetch_events.py")             # 法說會、內部人持股轉讓
     step("build_stock_pages.py")        # 量化評分、個股分析頁、月營收排行、搜尋名單
-    step("fetch_inst.py")              # 三大法人買賣超(上市＋上櫃),總表/總經/行事曆共用
     step("build_board.py")              # 大盤總表(含台指期夜盤)
     step("fetch_risk.py")              # 風險雷達:處置/注意股、借券、外資持股、當沖比
     step("fetch_options.py")           # 期權籌碼:P/C、最大未平倉、外資選擇權、ADR 溢價

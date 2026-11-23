@@ -352,7 +352,10 @@ def fear_block(name, idx_name, dates, px, comps, refs=()):
     n = len(dates); P = [c["p"] for c in comps]
     score = []
     for i in range(n):
-        xs = [p[i] for p in P if p[i] is not None]
+        xs = []
+        for p in P:                                  # 當天還沒公布的項目(例:融資 21:30 才有)沿用最近 3 天內的最新值
+            v = next((p[k] for k in range(i, max(-1, i - 4), -1) if p[k] is not None), None)
+            if v is not None: xs.append(v)
         score.append(round(st.mean(xs)) if len(xs) >= max(3, len(comps) - 2) else None)
     def ago(k): return score[-1 - k] if len(score) > k and score[-1 - k] is not None else None
     def fw(i, h): return (px[i + h] / px[i] - 1) * 100 if i + h < n else None
@@ -488,7 +491,7 @@ for vals, nm in ((vixTw, "台指 VIX"), (vixUs, "美股 VIX")):
     D_("市場情緒", nm, f"{v:.2f}", f"{v - v0:+.2f}" if v0 else "", -1 if v >= 30 else 1 if v < 18 else 0,
        f"{'極度恐慌' if v >= 40 else '恐慌' if v >= 30 else '緊張' if v >= 20 else '平靜'}。VIX 越高代表市場預期震盪越大；短線不利，但極端高點常接近底部。", D[i])
 ft = fear.get("tw")
-if ft: D_("市場情緒", "台股恐慌度", f"{ft['score']}（{ft['level']}）", f"{ft['score'] - ft['prev']:+d}" if ft.get("prev") is not None else "", -1 if (ft["score"] or 0) >= 75 else 1 if (ft["score"] or 0) < 25 else 0,
+if ft and ft.get("score") is not None: D_("市場情緒", "台股恐慌度", f"{ft['score']}（{ft['level']}）", f"{ft['score'] - ft['prev']:+d}" if ft.get("prev") is not None else "", -1 if (ft["score"] or 0) >= 75 else 1 if (ft["score"] or 0) < 25 else 0,
           "綜合多項指標的 0～100 分；分數高代表大家很怕，短線賣壓重，但歷史上極度恐慌後半年的表現常比平常好。", ft["date"])
 # 國際
 def gchg(sym, src=None):

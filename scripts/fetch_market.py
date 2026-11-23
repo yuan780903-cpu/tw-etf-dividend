@@ -77,6 +77,12 @@ def fetch_inst():
     have = {} if FULL else load("inst", {})
     for r in fh.finmind("TaiwanStockTotalInstitutionalInvestors", "", fm_since(have)):
         have.setdefault(r["date"], {})[r["name"]] = round((r["buy"] - r["sell"]) / 1e8, 2)   # 億元
+    try:                                                # FinMind 晚上才有當天資料:用證交所 BFI82U(fetch_inst.py 抓的 inst_raw.json)先補
+        raw = json.load(open(os.path.join(DATA, "inst_raw.json"))).get("twse", {})
+        for d8, v in raw.items():
+            d = f"{d8[:4]}-{d8[4:6]}-{d8[6:]}"
+            if d not in have: have[d] = {"Foreign_Investor": v["fi"], "Investment_Trust": v["it"], "Dealer_self": v["dl"], "total": v["tot"]}
+    except Exception as e: print("  三大法人補當天失敗:", e)
     save("inst", have); print(f"三大法人 共 {len(have)} 天"); return have
 
 def fetch_fut():
@@ -143,7 +149,8 @@ def build(margin, keep, inst, fut, vtw, vus):
                      k.get("keepRate"), k.get("belowAccNum"), k.get("callAccNum"),
                      round(k["callAmt"] / 1e8, 2) if k.get("callAmt") is not None else None,
                      k.get("exeAccNum"), round(k["exeAmt"] / 1e8, 2) if k.get("exeAmt") is not None else None, k.get("marginAccNum"),
-                     i.get("Foreign_Investor"), i.get("Investment_Trust"), dealer, i.get("total"),
+                     round(i["Foreign_Investor"] + (i.get("Foreign_Dealer_Self") or 0), 2) if i.get("Foreign_Investor") is not None else None,   # 外資含外資自營商(與證交所、inst.json 同口徑)
+                     i.get("Investment_Trust"), dealer, i.get("total"),
                      f.get("外資"), f.get("投信"), f.get("自營商"),
                      vtw.get(d), last_us])
     out = dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), cols=COLS, rows=rows,
