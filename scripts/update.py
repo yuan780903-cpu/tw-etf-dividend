@@ -177,7 +177,7 @@ def main():
 
     if QUICK:                          # 一鍵快速更新(約 10～15 分鐘):只重算當天會變的大盤、法人、籌碼、風險、期權
         print("== 快速模式 ==")
-        for x in (("build_summary.py",), ("fetch_inst.py",), ("fetch_market.py",), ("build_futures.py",), ("fetch_breadth.py", "--keep", "300", "--max", "300"), ("build_tech.py",),
+        for x in (("build_summary.py",), ("fetch_inst.py",), ("fetch_market.py",), ("build_futures.py",), ("build_macro_map.py",), ("fetch_breadth.py", "--keep", "300", "--max", "300"), ("build_tech.py",),
                   ("build_market_analysis.py",), ("fetch_news.py",), ("fetch_chips.py",), ("build_board.py",), ("fetch_risk.py",), ("fetch_options.py",),
                   ("build_concepts.py",), ("build_smart.py",), ("fetch_calendar.py",), ("fetch_ptt.py",)):
             step(*x)
@@ -199,6 +199,7 @@ def main():
     step("build_market_analysis.py")
     step("fetch_news.py")        # 盤勢快訊(標題)
     step("fetch_macro.py")       # 美國總經(FRED)
+    step("build_macro_map.py")   # 總經現況 vs 基準 → 對應的大盤指數
     step("fetch_profiles.py", "--max", "150")   # 公司檔案輪替更新
 
     # 8. 巴菲特選股(財報一季更新一次、已抓過的期別會跳過;股價/月營收每天更新)

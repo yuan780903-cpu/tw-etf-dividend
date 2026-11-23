@@ -54,6 +54,7 @@ SPEC = [
   ("日線技術", "tech.json", lambda j: len(j["s"]), lambda j: j["d"], 1, None),
   ("風險股", "risk.json", lambda j: len(j["s"]), lambda j: j["d"], 1, lambda j: ["風險旗標過多，可能資料異常"] if len(j["flags"]) > 600 else []),
   ("外資期貨空單", "futures.json", lambda j: len(j["H"]), lambda j: j["d"], 1, lambda j: [f"外資淨未平倉 {j['now']['fi']} 口異常"] if abs(j["now"]["fi"]) > 300000 else []),
+  ("總經對應指數", "macro_map.json", lambda j: len(j["rows"]), lambda j: j["updated"], 3, None),
   ("期權籌碼", "options.json", lambda j: len(j["pcr"]), lambda j: j["pcr"][-1][0], 1, None),
   ("熱力圖", "heatmap.json", lambda j: len(j["items"]), lambda j: j["date"], 1, None),
   ("籌碼", "chips.json", lambda j: len(j["stocks"]), lambda j: j["days"][-1], 2, None),
@@ -72,7 +73,7 @@ SPEC = [
 ]
 MIN = {"market.json": 1000, "summary.json": 300, "scores.json": 1500, "experts.json": 1500, "dingcun.json": 300, "tech.json": 1500, "risk.json": 1500,
        "options.json": 5, "heatmap.json": 1500, "chips.json": 1500, "rev_rank.json": 1500, "macro.json": 15, "concepts.json": 10, "smart.json": 1500,
-       "calendar.json": 10, "ptt.json": 50, "news.json": 20, "backtest.json": 3, "fill.json": 300, "stock_div.json": 1500, "events.json": 50, "inst.json": 10, "futures.json": 100}
+       "calendar.json": 10, "ptt.json": 50, "news.json": 20, "backtest.json": 3, "fill.json": 300, "stock_div.json": 1500, "events.json": 50, "inst.json": 10, "futures.json": 100, "macro_map.json": 15}
 
 def main():
     items, restored = [], []

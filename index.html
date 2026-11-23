@@ -1536,6 +1536,12 @@ button{-webkit-tap-highlight-color:transparent}
 .gx-tb tr.on td{background:color-mix(in srgb,#2F5BEA 8%,transparent)}
 @media(max-width:900px){.fu-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.fu-t.key{grid-column:1/-1}.fu-2{grid-template-columns:1fr}}
 @media(max-width:480px){.fu-hd{grid-template-columns:1fr}.fu-ld{grid-template-columns:80px 1fr}}
+/* ===== 總經 vs 基準 → 對應指數 ===== */
+.mm-sum{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:8px 0}.mm-sum>div{background:var(--bg);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.mm-sum>div.key{border:2px solid #2F5BEA}.mm-sum small{color:var(--sub);font-weight:700;font-size:12px}.mm-sum b{font-size:22px;font-weight:900}.mm-sum i{font-style:normal;font-size:12px;color:var(--sub)}.mm-sum i b{font-size:14px;color:var(--ink)}
+.mm-tb td small{display:block;color:var(--sub);font-size:11px;font-weight:500;line-height:1.35}.mm-tb tr.mm-g td{background:var(--bg);font-weight:900;color:#2F5BEA}
+.mm-st{display:inline-block;background:var(--c);color:#fff;border-radius:6px;padding:0 7px;font-weight:800;font-size:11.5px}.mm-same{color:var(--sub);text-align:center;font-size:12px}
+@media(max-width:900px){.mm-sum{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="巴菲遠">
@@ -4180,8 +4186,11 @@ function renderMacro(){
   </div>
   <div class="box" id="mc-cal"><h2 class="sec">📅 經濟行事曆 <small>未來一個多月會公布哪些重要數據（時間已換成台北時間）</small></h2>
     <div class="kid-mini">👶 <b>白話</b>：就像學校的考試行事曆。美國公布物價（CPI）、就業、聯準會開會的那幾天，股市常會大漲大跌；提前知道哪天「要考試」，就不會被嚇到。</div><div id="calBody"><div class="sk" style="height:200px"></div></div></div>
-  <div class="box" id="mc-imp"><h2 class="sec">📊 哪些總經數據最影響股市？ <small>影響程度沒有固定值，會隨市場當下最關心的主題改變（通膨高時看 CPI、怕衰退時看就業）；以下為一般情況的排序</small></h2><div id="impBody"><div class="sk" style="height:300px"></div></div></div>
-  <nav class="mk-nav mc-nav">${[["mc-cal", "📅 行事曆"], ["mc-imp", "📊 影響程度"], ["mc-fed", "🏦 聯準會"], ["mc-inf", "🔥 通膨"], ["mc-oil", "🛢️ 石油與原物料"], ["mc-job", "👷 就業（非農）"], ["mc-eco", "🛒 景氣"], ["mc-fin", "💹 利率與金融溫度"], ["mc-cal", "📅 公布時間"]].map(([i, t]) => `<button data-to="${i}">${t}</button>`).join("")}</nav>
+  <div class="box" id="mc-imp"><h2 class="sec">📊 哪些總經數據最影響股市？ <small>影響程度沒有固定值，會隨市場當下最關心的主題改變（通膨高時看 CPI、怕衰退時看就業）；以下為一般情況的排序</small></h2><div id="impBody"><div class="sk" style="height:300px"></div></div>
+    <h3 class="mm-h3" id="mc-map">📐 總經現況 vs 基準值 → 對應的大盤指數</h3>
+    <div class="kid-mini">👶 <b>白話</b>：每個總經指標都有一個「正常值」（基準），像體溫 36.5 度。我們回頭看 2010 年以來的每個月：當這個指標跟現在一樣「偏高」或「偏低」時，台股接下來 6 個月平均漲跌多少，再用今天的加權指數換算成點位。<br>例如：CPI 現在偏高，歷史上 CPI 偏高的月份之後 6 個月平均漲 5%，就換算成「今天指數 × 1.05」。這是<b>過去的平均</b>，不是預測；「可信度」低代表樣本太少或只集中在某幾年。</div>
+    <div id="mmapBody"><div class="sk" style="height:240px"></div></div></div>
+  <nav class="mk-nav mc-nav">${[["mc-cal", "📅 行事曆"], ["mc-imp", "📊 影響程度"], ["mc-map", "📐 對應指數"], ["mc-fed", "🏦 聯準會"], ["mc-inf", "🔥 通膨"], ["mc-oil", "🛢️ 石油與原物料"], ["mc-job", "👷 就業（非農）"], ["mc-eco", "🛒 景氣"], ["mc-fin", "💹 利率與金融溫度"], ["mc-cal", "📅 公布時間"]].map(([i, t]) => `<button data-to="${i}">${t}</button>`).join("")}</nav>
 
   <div class="box" id="mc-fed"><h2 class="sec">🏦 聯準會升息／降息 <small>目標利率區間歷史、每次決策紀錄，以及期貨市場預期的未來利率</small></h2>
     <div class="mc-say2"><p>目前利率 <b>${fmt(lo[1], 2)}%～${fmt(up[1], 2)}%</b>。這一輪是從 ${cycle.from} 開始的<b>${cycle.dir > 0 ? "升息" : "降息"}循環</b>，已${cycle.dir > 0 ? "升" : "降"} ${cycle.cnt} 次、共 ${Math.abs(cycle.bp)} 個基點（${Math.abs(cycle.bp) / 25} 碼）；近一年升息 ${hikes} 次、降息 ${cuts} 次。<small>（1 碼 = 0.25 個百分點 = 25 個基點）</small></p></div>
@@ -4229,7 +4238,7 @@ function renderMacro(){
   mcChart($("#mcInfCh"), [["CPIAUCSL", "CPI", "#E5484D"], ["CPILFESL", "核心 CPI", "#F59E0B"], ["PCEPILFE", "核心 PCE", "#2F5BEA"], ["PPIFIS", "PPI", "#94A3B8"]].map(([id, n, c]) => ({name: n, color: c, rows: mcS(id).rows.filter(since("2015")), w: id == "PPIFIS" ? 1.4 : 2.2, fmt: v => fmt(v, 2) + "%"})), {ref: 2, refName: "聯準會目標 2%", h: 280});
   mcChart($("#mcJobCh"), [{name: "非農新增（千人）", color: "#2F5BEA", rows: mcS("PAYEMS").rows.slice(-48), fmt: v => fmt(v / 10, 1) + " 萬人"}], {bars: true, band: [100, 250], bandName: "健康區間", zero: true, h: 240});
   mcChart($("#mcCurveCh"), [{name: "10 年 − 2 年", color: "#2F5BEA", rows: mcS("T10Y2Y").rows.filter(since("2010")), fmt: v => sgn(v) + "%"}], {zero: true, h: 220});
-  impRender(); calUI(); mcBindCards($("#macro")); gate("#mcZQ", "聯邦基金期貨：市場預期未來幾個月的利率與升降息碼數");
+  impRender(); mmapUI(); calUI(); mcBindCards($("#macro")); gate("#mcZQ", "聯邦基金期貨：市場預期未來幾個月的利率與升降息碼數");
   // 期貨預期
   mcZQ().then(Z => {
     const ef = mcLast("EFFR")[1];
@@ -6553,6 +6562,34 @@ async function futUI(){
     <h3 class="mm-h3">📋 近 20 日明細（未平倉口數）</h3>
     <div class="gx-tw"><table class="gx-tb fu-tb"><thead><tr><th>日期</th><th>加權指數</th><th>外資</th><th>外資增減</th><th>投信</th><th>自營商</th><th>合計</th><th>外資＋投信</th></tr></thead><tbody>${rows}</tbody></table></div>
     <p class="mknote">${esc(F.note)}。外資增減≈當天外資的期貨交易口數（負＝加空、正＝回補）。資料：期交所（經 FinMind），更新 ${F.updated}</p>`;
+}
+
+/* ================= 📐 總經現況 vs 基準 → 對應指數 ================= */
+async function mmapUI(){
+  const host = $("#mmapBody"); if (!host) return; const M = await getJ("macro_map");
+  if (!M || !M.rows) { host.innerHTML = `<p class="mknote">對照資料尚未產生</p>`; return; }
+  const u = x => x.unit == "%" || x.unit == "分" ? x.unit : x.unit ? " " + x.unit : "";
+  const f = (v, x) => v == null ? "—" : fmt(v, Math.abs(v) >= 100 ? 0 : 2).replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "") + u(x);
+  const SC = {高於: "#EA580C", 接近: "#64748B", 低於: "#2F7FE0"}, RC = {高: "#1A8F57", 中: "#B45309", 低: "#CF3A3A"};
+  const c = M.ctrl, sm = M.sum, I = M.idx;
+  const cell = (g, idx) => g.r == null ? `<td class="num">—</td><td class="num">—</td>` :
+    `<td class="num"><b class="${g.r >= 0 ? "pos" : "neg"}">${sgn(g.r, 1)}%</b><small>上漲 ${g.w}%・${g.n} 個月</small></td><td class="num"><b>${fmt(idx, 0)}</b><small>${sgn((idx / I - 1) * 100, 1)}%</small></td>`;
+  const grp = [["US", "🇺🇸 美國"], ["CN", "🇨🇳 中國"], ["TW", "🇹🇼 台灣"]];
+  const rows = grp.map(([g, gn]) => { const rs = M.rows.filter(x => x.g == g); if (!rs.length) return "";
+    return `<tr class="mm-g"><td colspan="9">${gn}</td></tr>` + rs.map(x => `<tr title="${esc(x.say)}">
+      <td><b>${x.name.replace(/^\S+\s/, "")}</b><small>${esc(x.plain)}</small></td>
+      <td class="num"><b>${f(x.cur, x)}</b><small>${x.curM}</small></td>
+      <td class="num"><b>${f(x.base, x)}</b><small>±${f(x.band, x)}・${esc(x.why)}</small></td>
+      <td><span class="mm-st" style="--c:${SC[x.state]}">${x.state}基準</span><small>差 ${x.gap > 0 ? "+" : ""}${f(x.gap, x)}</small></td>
+      ${cell(x.gc, x.idxCur)}${x.state == "接近" ? `<td colspan="2" class="mm-same">目前就在基準區</td>` : cell(x.gb, x.idxBase)}
+      <td><span class="mm-st" style="--c:${RC[x.gc.rel || "低"]}">${x.gc.rel || "低"}</span><small>${x.gc.yrs || 0} 個年份</small></td></tr>`).join(""); }).join("");
+  host.innerHTML = `<div class="mm-sum"><div><small>今天加權指數（${M.idxD}）</small><b class="num">${fmt(I, 0)}</b></div>
+      <div><small>平常（2010 年起所有月份）之後 6 個月</small><b class="num ${c.r >= 0 ? "pos" : "neg"}">${sgn(c.r, 1)}%</b><i>上漲機率 ${c.w}% → 約 ${fmt(I * (1 + c.r / 100), 0)} 點</i></div>
+      <div class="key"><small>依目前總經狀態（${sm.n} 項中位數）</small><b class="num ${sm.med >= 0 ? "pos" : "neg"}">${sgn(sm.med, 1)}%</b><i>對應約 <b>${fmt(sm.idxMed, 0)}</b> 點</i></div>
+      <div><small>比平常好／差的指標</small><b class="num">${sm.better} ／ ${sm.worse}</b><i>差距超過 1 個百分點才算</i></div></div>
+    <p class="in-say"><b>白話判讀：</b>目前 ${sm.n} 個可信度中以上的指標，依「現在的狀態」回看歷史，台股之後 6 個月的中位數是 ${sgn(sm.med, 1)}%，${sm.med > c.r + 1 ? "比平常好" : sm.med < c.r - 1 ? "比平常差" : "跟平常差不多"}（平常 ${sgn(c.r, 1)}%）。其中 ${sm.better} 項指向比平常好、${sm.worse} 項比平常差。指標「高於／低於基準」不一定是壞事，要看歷史上那一區之後台股怎麼走；把滑鼠停在每一列可看完整說明。</p>
+    <div class="gx-tw" style="max-height:none"><table class="gx-tb mm-tb"><thead><tr><th>指標</th><th>目前</th><th>基準（合理值）</th><th>狀態</th><th>目前這一區<small>之後 6 個月</small></th><th>對應指數</th><th>回到基準區<small>之後 6 個月</small></th><th>基準對應指數</th><th>可信度</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <p class="mknote">${esc(M.note)}。更新 ${M.updated}</p>`;
 }
 </script>
 </body>
