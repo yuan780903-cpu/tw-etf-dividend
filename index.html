@@ -1414,6 +1414,45 @@ button{-webkit-tap-highlight-color:transparent}
 /* 雲端推播 */
 .rd-ctl button.cp{background:#0F766E;color:#fff;border:0}.rd-ctl button.cp.on{background:#0F766E;box-shadow:inset 0 0 0 2px #5EEAD4}
 .cp-st{margin:10px 0 0;padding:10px 12px;border-radius:12px;background:var(--bg);border:1px dashed var(--line);font-size:13px;line-height:1.65;color:var(--sub)}.cp-st.on{border:1px solid #5EEAD4;background:color-mix(in srgb,#14B8A6 9%,var(--panel));color:var(--ink)}
+/* ===== 白話術語・頁面說明 ===== */
+.tm{border-bottom:1.5px dotted currentColor;cursor:help;text-decoration:none}.tm:hover{color:#2F5BEA}
+#glPop{position:fixed;z-index:9900;width:min(360px,calc(100vw - 20px));background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:14px 16px 12px;box-shadow:0 24px 50px -18px rgba(0,0,0,.5);font-size:13.5px;line-height:1.65}
+#glPop.sheet{left:10px!important;right:10px;bottom:calc(84px + env(safe-area-inset-bottom));top:auto!important;width:auto}
+#glPop p,.gd-c p{margin:6px 0}#glPop p span,.gd-c p span{display:inline-block;font-weight:800;font-size:12px;background:var(--bg);border-radius:6px;padding:1px 7px;margin-right:6px;color:#2F5BEA}
+.gl-h{display:flex;align-items:center;gap:8px}.gl-h b{font-size:17px}.gl-h i{font-style:normal;font-size:11.5px;background:#EEF2FF;color:#2F5BEA;border-radius:999px;padding:1px 8px;font-weight:700}
+#glPop .gl-all{margin-top:6px;border:0;background:none;color:#2F5BEA;font-weight:800;cursor:pointer;padding:0}#glPop .gl-x{position:absolute;top:8px;right:10px;border:0;background:none;font-size:16px;cursor:pointer;color:var(--sub)}
+#glDlg{position:fixed;inset:0;z-index:9850;background:rgba(10,15,30,.5);display:none;align-items:flex-start;justify-content:center;padding:4vh 12px}#glDlg.on{display:flex}
+.gd-box{background:var(--panel);border-radius:20px;width:min(860px,100%);max-height:92vh;display:flex;flex-direction:column;padding:16px 18px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}
+.gd-hd{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.gd-hd h2{font-size:20px}.gd-hd small{display:block;font-size:12.5px;color:var(--sub);font-weight:600;margin-top:2px}.gd-x{border:0;background:var(--bg);border-radius:10px;width:38px;height:38px;font-size:17px;cursor:pointer;color:var(--ink)}
+.gd-cat{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}.gd-cat button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:5px 12px;font-weight:700;cursor:pointer;font-size:13px}.gd-cat button.on{background:#2F5BEA;color:#fff;border-color:#2F5BEA}
+.gd-l{overflow:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-bottom:6px}.gd-c{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:13.5px;line-height:1.65}.gd-c.hit{outline:3px solid #F59E0B}
+.gd-c p span{background:var(--panel)}
+#glFab{position:fixed;right:16px;bottom:84px;z-index:900;border:0;border-radius:999px;background:linear-gradient(120deg,#2F5BEA,#5B86F7);color:#fff;font-weight:800;font-size:15px;padding:10px 14px;box-shadow:0 12px 26px -10px rgba(47,91,234,.8);cursor:pointer;display:flex;align-items:center;gap:4px}
+.kid{background:linear-gradient(120deg,#FFF8E6,#F0F6FF);border:1px solid #F3DFAE;border-radius:16px;padding:0;margin:0 0 14px;overflow:hidden}
+:root[data-theme="dark"] .kid{background:linear-gradient(120deg,#2A2414,#162036);border-color:#4A3F20}
+.kid summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px}.kid summary::-webkit-details-marker{display:none}
+.kid summary span{font-weight:900;color:#B7791F;white-space:nowrap}.kid summary b{flex:1;min-width:200px;font-size:14.5px;color:var(--ink)}.kid summary em{font-style:normal;font-size:12px;color:#2F5BEA;font-weight:700;white-space:nowrap}
+.kid[open] summary em{display:none}.kid-b{padding:0 16px 12px;font-size:14px;line-height:1.75}.kid-b p{margin:6px 0}.kid-b p span{font-weight:800;color:#2F5BEA;margin-right:6px}.kid-b ol{margin:4px 0 6px;padding-left:22px}
+.kid-mini{background:var(--bg);border-left:4px solid #F59E0B;border-radius:10px;padding:9px 12px;font-size:13.5px;line-height:1.7;margin:6px 0 12px}
+@media(max-width:700px){.gd-l{grid-template-columns:1fr}#glFab{right:auto;left:10px;bottom:calc(92px + env(safe-area-inset-bottom));padding:9px 12px;font-size:14px}#glFab span{display:none}.kid summary b{min-width:0;font-size:13.5px}}
+/* ===== 期權・ADR ===== */
+.opt-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.opt-c{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.opt-c h4{margin:0 0 8px;font-size:15.5px}.opt-c h4 small{font-size:12px;color:var(--sub);font-weight:600;margin-left:4px}.opt-c p{font-size:13.5px;line-height:1.65;margin:6px 0}
+.opt-big{display:flex;align-items:baseline;gap:10px}.opt-big b{font-size:34px;font-weight:900;color:var(--c)}.opt-big span{background:var(--c);color:#fff;font-weight:800;border-radius:8px;padding:2px 10px;font-size:13.5px}
+.opt-k{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:8px 0}.opt-k>div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:9px 11px}.opt-k small{display:block;font-size:12px;color:var(--sub);font-weight:700}.opt-k b{display:block;font-size:20px;margin:2px 0}.opt-k i{display:block;font-style:normal;font-size:11.5px;color:var(--sub)}
+.opt-k .up{border-top:3px solid #CF3A3A}.opt-k .dn{border-top:3px solid #1A8F57}
+@media(max-width:900px){.opt-g{grid-template-columns:1fr}}
+/* ===== 風險股 ===== */
+.rk-t{display:inline-block;margin-left:5px;font-size:11px;font-weight:800;background:#FFF4E5;color:#B7791F;border:1px solid #F5C26B;border-radius:6px;padding:0 5px;vertical-align:1px}.rk-t.hard{background:#FDECEC;color:#CF3A3A;border-color:#F5B3B3}
+.rk-b{display:inline-block;margin:2px 4px 2px 0;font-size:12px;font-weight:800;background:#FFF4E5;color:#B7791F;border-radius:7px;padding:2px 8px;white-space:nowrap}.rk-b.hard{background:#FDECEC;color:#CF3A3A}
+.rk-f{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0 10px}.rk-f button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:13px}.rk-f button.on{background:#2F5BEA;color:#fff;border-color:#2F5BEA}.rk-f button i{font-style:normal;opacity:.7;margin-left:3px}.rk-f label{font-size:13px;margin-left:6px}
+.rk-mine{background:#FDECEC;border:1px solid #F5B3B3;border-radius:12px;padding:9px 12px;font-size:13.5px;margin:6px 0}.rk-mine.ok{background:#E8F7EE;border-color:#A7E3C2}.rk-mine b[data-c]{cursor:pointer;text-decoration:underline}
+.rk-tb td.rk-w{white-space:normal;min-width:170px;font-size:12.5px}.rk-box.bad{border-left:5px solid #CF3A3A}.rk-ok{color:#1A8F57;font-weight:800}.rk-dp{font-size:13.5px;font-weight:700;color:#CF3A3A}.rk-tags{margin:4px 0}
+/* ===== ETF 折溢價 ===== */
+.nav-b{display:block;min-height:0;margin:2px 0}.nav-b.row{display:block}.nav-b em{font-style:normal;font-size:12px;font-weight:800;border-radius:7px;padding:1px 7px;white-space:nowrap}
+.nav-b em.ok{background:#EEF2FF;color:#2F5BEA}.nav-b em.hi{background:#FDECEC;color:#CF3A3A}.nav-b em.lo{background:#E8F7EE;color:#1A8F57}
+.nav-l{display:block;font-size:12px;margin-bottom:2px;opacity:.95}
+@media(min-width:1301px){.bd{grid-template-columns:repeat(7,minmax(0,1fr))}}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="巴菲遠">
@@ -1449,7 +1488,7 @@ button{-webkit-tap-highlight-color:transparent}
     <span class="mini" id="tabMini" data-tab="calc"></span>
   </nav>
 
-  <div class="page" id="pg-vp"><div class="bd-wrap" id="xpBoard"><div class="bd-hd"><h2>📋 選股總表</h2><span>點卡片直接看名單</span></div><div class="bd" id="xpTiles"><div class="sk" style="height:120px;grid-column:1/-1"></div></div></div><div id="xpNav"></div><div id="xpEx"></div><div id="xpDc"></div><div id="xpQs"></div><div id="vp"></div><div id="xpCk"></div><div id="xpRv"></div><div id="xpRt"></div><div id="xpDv"></div><div id="xpEv"></div><div id="xpWl"></div><div id="xpRd"></div></div>
+  <div class="page" id="pg-vp"><div class="bd-wrap" id="xpBoard"><div class="bd-hd"><h2>📋 選股總表</h2><span>點卡片直接看名單</span></div><div class="bd" id="xpTiles"><div class="sk" style="height:120px;grid-column:1/-1"></div></div></div><div id="xpNav"></div><div id="xpKid"></div><div id="xpEx"></div><div id="xpDc"></div><div id="xpQs"></div><div id="vp"></div><div id="xpCk"></div><div id="xpRv"></div><div id="xpRt"></div><div id="xpDv"></div><div id="xpEv"></div><div id="xpWl"></div><div id="xpRd"></div><div id="xpRk"></div></div>
   <div class="page" id="pg-mkt"><div id="mkt"></div></div>
   <div class="page" id="pg-macro"><div id="macro"></div></div>
 
@@ -1676,7 +1715,7 @@ function cardHTML(e){
         <span class="freq" style="color:${c}">${e.freq}</span>
       </div>
       <div class="bd">
-        <div class="pr"><b class="num">${fmt(e.price,2)}</b><span class="num" style="color:${up?"var(--up)":"var(--down)"}">${up?"▲":"▼"} ${fmt(Math.abs(e.chg),2)} (${fmt(e.chgPct,2)}%)</span></div>
+        <div class="pr"><b class="num">${fmt(e.price,2)}</b><span class="num" style="color:${up?"var(--up)":"var(--down)"}">${up?"▲":"▼"} ${fmt(Math.abs(e.chg),2)} (${fmt(e.chgPct,2)}%)</span></div>${navBadge(e)}
         ${spark(e.monthly, c)}
         ${taBadge(e)}
         <div class="kpis">
@@ -1697,7 +1736,7 @@ function rowHTML(e){
       <span class="cb" style="background:${grad(e.category)}"></span>
       <div class="nm"><b>${e.id} ${e.name}</b><small>${exBadge(e, 1)}${(e.exMonths||[]).length && e.perYear ? `除息 ${e.exMonths.join("・")} 月・` : ""}${e.freq}・規模 ${yi(e.aum)}</small></div>
       <div class="sp">${spark(e.monthly, c)}</div>
-      <div class="v"><b class="num">${fmt(e.price,2)}</b><small class="num" style="color:${up?"var(--up)":"var(--down)"}">${up?"▲":"▼"}${fmt(Math.abs(e.chgPct),2)}%</small></div>
+      <div class="v"><b class="num">${fmt(e.price,2)}</b><small class="num" style="color:${up?"var(--up)":"var(--down)"}">${up?"▲":"▼"}${fmt(Math.abs(e.chgPct),2)}%</small>${navBadge(e, 1)}</div>
       <div class="v"><b class="num" style="color:${e.annYield > 15 ? "#b25e00" : "inherit"}">${e.ttmYield ? e.ttmYield + "%" : "—"}</b><small>殖利率</small></div>
       <div class="v r1"><b class="num" style="color:${e.ret1y>=0?"var(--up)":"var(--down)"}">${fmt(e.ret1y,1)}%</b><small>近一年</small></div>
       <div class="ta" style="background:${tc}1f;color:${tc}">${sc == null ? "—" : sc + " 分"}</div>
@@ -2005,7 +2044,7 @@ async function openDetail(id){
     <button class="x" onclick="closeDetail()" aria-label="關閉">✕</button>
     <div><div style="opacity:.85;font-weight:700">${e.id} · ${e.market}</div><h2>${e.name}</h2>
       <div class="tags"><span>${CAT[e.category].ic} ${e.category}</span><span>${e.region}</span><span>${e.freq}</span>${h.style?`<span>${h.style}</span>`:""}${h.issuer?`<span>${h.issuer}</span>`:""}</div></div>
-    <div class="px"><small>${e.date} 收盤</small><b class="num">${fmt(e.price,2)}</b><span class="num" style="font-weight:700">${up?"▲":"▼"} ${fmt(Math.abs(e.chg),2)} (${fmt(e.chgPct,2)}%)</span>
+    <div class="px">${navLine(e.id)}<small>${e.date} 收盤</small><b class="num">${fmt(e.price,2)}</b><span class="num" style="font-weight:700">${up?"▲":"▼"} ${fmt(Math.abs(e.chg),2)} (${fmt(e.chgPct,2)}%)</span>
       <button class="dadd" onclick="addPF('${e.id}')">＋ 加入我的試算</button></div>
   </div>
   <div class="dtabs" id="dtabs">
@@ -2168,6 +2207,7 @@ function go(tab, scroll = true){
   document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.tab == tab));
   try{ localStorage.setItem("etf_tab", tab) }catch(e){}
   if (location.hash != "#" + tab) history.replaceState(null, "", "#" + tab);
+  setTimeout(() => { try { kidEnsure(tab); } catch (e) {} }, 60); setTimeout(() => { try { kidEnsure(tab); } catch (e) {} }, 1600);
   placeCalc();
   document.body.classList.toggle("on-calc", tab == "calc");
   document.body.classList.toggle("on-mkt", tab == "mkt");
@@ -2449,7 +2489,7 @@ function renderMkt(){
   const {a} = MK, t = a.tech, f = a.forecast;
   const stCol = a.score >= 12 ? "#16a34a" : a.score > -12 ? "#64748b" : "#dc2626";
   $("#mkt").innerHTML = `<div class="mk">
-  <nav class="mk-nav" id="mkNav">${[["mk-board", "📋 總表"], ["mk-sum", "🧭 總結"], ["mk-news", "📰 快訊"], ["mk-heat", "🗺️ 熱力圖"], ["mk-key", "🔑 關鍵數字"], ["mk-mg", "📊 資券"], ["mk-fear", "😱 恐慌度"], ["mk-la", "📐 線型"], ["mk-fc", "🎯 區間"], ["mk-cards", "🚦 燈號"], ["mk-chart", "📈 疊圖"], ["mk-glob", "🌏 全球"], ["mk-gx", "🔎 各國區間"], ["mk-det", "📋 明細"], ["mk-ev", "🔬 回測"]].map(([id, n]) => `<button data-to="${id}">${n}</button>`).join("")}</nav>
+  <nav class="mk-nav" id="mkNav">${[["mk-board", "📋 總表"], ["mk-sum", "🧭 總結"], ["mk-news", "📰 快訊"], ["mk-heat", "🗺️ 熱力圖"], ["mk-key", "🔑 關鍵數字"], ["mk-mg", "📊 資券"], ["mk-opt", "🧮 期權・ADR"], ["mk-fear", "😱 恐慌度"], ["mk-la", "📐 線型"], ["mk-fc", "🎯 區間"], ["mk-cards", "🚦 燈號"], ["mk-chart", "📈 疊圖"], ["mk-glob", "🌏 全球"], ["mk-gx", "🔎 各國區間"], ["mk-det", "📋 明細"], ["mk-ev", "🔬 回測"]].map(([id, n]) => `<button data-to="${id}">${n}</button>`).join("")}</nav>
   <div class="bd-wrap" id="mk-board"><div class="bd-hd"><h2>📋 今日盤勢總表</h2><span id="bdUpd"></span></div><div class="bd" id="bdTiles"><div class="sk" style="height:150px;grid-column:1/-1"></div></div>
     <details class="bd-say"><summary><b>白話</b>每張卡片怎麼看？</summary><p>「百分位」＝跟自己歷史比，例如第 90 百分位代表比過去 90% 的日子都高（偏熱／偏貴），第 10 百分位代表接近低檔。站上 200 日線比例＝股價在長期均線之上的股票占比，越低代表越多股票跌破長期趨勢、市場越悲觀。台指期夜盤＝下午 3 點到隔天清晨 5 點的期貨交易，可以提前反映美股與國際消息；正價差代表期貨比現貨高（偏樂觀），逆價差相反。點卡片可跳到下方詳細分析。</p></details></div>
 
@@ -2482,6 +2522,10 @@ function renderMkt(){
   <div class="box" id="mk-mg"><h2 class="sec">📊 資券與法人 <small>上市融資、融券、三大法人每日變化（證交所每晚約 21:30 公布）</small></h2>
     <div class="ctool"><div class="chips" id="mgTab"></div><div class="chips" id="mgRg"></div></div>
     <div id="mgSay" class="mg-say"></div><div class="chart" id="mgChart"></div><div class="scrollx" id="mgTbl" style="max-height:420px"></div></div>
+
+  <div class="box" id="mk-opt"><h2 class="sec">🧮 期權籌碼・台積電 ADR <small>大戶在選擇權市場怎麼押注、美國人願意多付多少錢買台積電；每天收盤後更新</small></h2>
+    <div class="kid-mini">👶 <b>白話</b>：選擇權像「保險」和「彩券」。很多人買下跌保險（賣權）的價位，常是大戶守著的地板（支撐）；很多人押上漲彩券（買權）的價位，常是天花板（壓力）。ADR 是台積電在美國的分身，美國人願意多付錢買，代表外資看好。</div>
+    <div id="optBody"><div class="sk" style="height:220px"></div></div></div>
 
   <div class="box" id="mk-fear"><h2 class="sec">😱 市場恐慌度 <small>0＝近 5 年最平靜、100＝最恐慌；每天收盤後自動更新</small></h2>
     <div class="fr-cards" id="fearTabs"></div><div id="fearBody"></div></div>
@@ -2542,7 +2586,7 @@ function renderMkt(){
 
   <p class="mknote">資料來源：臺灣證券交易所（臺股儀表板、信用交易統計）、臺灣期貨交易所（台指 VIX）、FinMind（三大法人、期貨未平倉）、Yahoo Finance（全球指數、美股 VIX）。融資相關為上市資料。所有區間、分數與機率皆為歷史統計推估，不構成任何投資建議。</p>
   </div>`;
-  mkChartUI(); gChartUI(); detailUI(); if (MK.a.fear) fearUI(); else $("#mk-fear").remove(); if (MK.a.drivers) keyUI(); else $("#mk-key").remove(); laUI(); mgUI(); nwUI(); gxUI(); heatUI(); boardUI();
+  mkChartUI(); gChartUI(); detailUI(); if (MK.a.fear) fearUI(); else $("#mk-fear").remove(); if (MK.a.drivers) keyUI(); else $("#mk-key").remove(); laUI(); mgUI(); nwUI(); gxUI(); heatUI(); boardUI(); optUI();
   gate("#mk-la", "線型分析：任一檔個股自動畫趨勢線、頸線，判斷 W 底／M 頭，並列出全市場符合線型的股票"); gate("#mk-gx", "各國大盤區間查詢：自訂期間的走勢、統計分析、每日明細與 CSV 下載、各國排名"); gate("#mk-det", "大盤 5 年每日明細與 CSV 下載"); gate("#mk-ev", "歷史回測：過去發生同樣情況後，大盤 1 週／1 個月／1 季的實際走勢");
   $("#mkNav").onclick = e => { const b = e.target.closest("[data-to]"); if (!b) return; const el = document.getElementById(b.dataset.to);
     if (el) window.scrollTo({top: el.getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 70), behavior: "smooth"}); };
@@ -3128,7 +3172,7 @@ function drawLearn(){
   const main = $("#lnMain"), c = CH.find(x => x.id == lChap);
   if (c) { const ls = c.lessons.filter(l => lLevel == "全部" || l.lv == lLevel); main.innerHTML = `<h3 class="ln-h">${c.ic} ${c.name}<small>${c.sub}</small></h3>` + (ls.map(lessonHTML).join("") || `<div class="box empty">這個章節沒有「${lLevel}」課程</div>`); }
   else if (lChap == "case") main.innerHTML = `<h3 class="ln-h">🧪 實戰案例<small>全部用本站今天的資料自動產生，每天都會更新</small></h3>${caseBuffett()}${caseTech()}${caseFear()}`;
-  else main.innerHTML = `<h3 class="ln-h">📖 術語小辭典<small>點分類篩選；搜尋任何名詞</small></h3><input class="gq" id="gq" placeholder="🔍 搜尋術語，例如 殖利率、ROE、斷頭">
+  else main.innerHTML = `<h3 class="ln-h">📖 術語小辭典<small>點分類篩選；搜尋任何名詞</small></h3><button class="lgo" onclick="glOpen()" style="margin:0 0 10px">👶 開啟白話版術語（每個詞都有小故事）</button><input class="gq" id="gq" placeholder="🔍 搜尋術語，例如 殖利率、ROE、斷頭">
       <div class="gloss" id="gl">${GLOSS.filter(g => lLevel == "全部" || g[1] == lLevel).map(([n, lv, d]) => `<div data-q="${n}${d}"><b>${n}</b><span class="lv ${lv == "進階" ? "adv" : ""}">${lv}</span><p>${d}</p></div>`).join("")}</div>`;
   const q = $("#gq"); if (q) q.oninput = () => document.querySelectorAll("#gl>div").forEach(d => d.style.display = d.dataset.q.includes(q.value.trim()) ? "" : "none");
   main.querySelectorAll("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
@@ -4377,7 +4421,7 @@ async function admCfg(){
 memBadge(); if (!isPaid()) lgShow(); memCheck(); setInterval(memCheck, 10 * 60e3);
 /* ================= 🧠 專家選股:大師選股 / 巴菲遠綜合 / 券商評等 / 股利排行 ================= */
 let XP = {sub: (() => { try { return localStorage.getItem("bfy_xp") || "ex"; } catch (e) { return "ex"; } })()}, EXD = null, RTD = null, DVD = null;
-const XSUB = [["rd", "⚡ 盤中雷達"], ["ex", "🧠 大師選股"], ["dc", "💎 定存股"], ["qs", "❄️ 量化評分"], ["vp", "🏆 綜合 Top150"], ["ck", "🏦 籌碼排行"], ["rv", "📈 月營收"], ["rt", "📣 券商評等"], ["dv", "💰 股利"], ["ev", "📅 法說會・內部人"], ["wl", "⭐ 自選股"]];
+const XSUB = [["rd", "⚡ 盤中雷達"], ["rk", "⚠️ 風險股"], ["ex", "🧠 大師選股"], ["dc", "💎 定存股"], ["qs", "❄️ 量化評分"], ["vp", "🏆 綜合 Top150"], ["ck", "🏦 籌碼排行"], ["rv", "📈 月營收"], ["rt", "📣 券商評等"], ["dv", "💰 股利"], ["ev", "📅 法說會・內部人"], ["wl", "⭐ 自選股"]];
 function loadXP(){
   if (!$("#xpNav").innerHTML) $("#xpNav").innerHTML = `<div class="xp-nav">${XSUB.map(([k, n]) => `<button data-k="${k}">${n}</button>`).join("")}</div>`;
   $("#xpNav").onclick = e => { const b = e.target.closest("button[data-k]"); if (b) { XP.sub = b.dataset.k; try { localStorage.setItem("bfy_xp", XP.sub); } catch (er) {} xpShow(); } };
@@ -4386,9 +4430,9 @@ function loadXP(){
 function xpShow(){
   $("#xpNav").querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.k == XP.sub));
   if (!XSUB.some(x => x[0] == XP.sub)) XP.sub = "ex";
-  [["ex", "#xpEx"], ["dc", "#xpDc"], ["qs", "#xpQs"], ["vp", "#vp"], ["ck", "#xpCk"], ["rv", "#xpRv"], ["rt", "#xpRt"], ["dv", "#xpDv"], ["ev", "#xpEv"], ["wl", "#xpWl"], ["rd", "#xpRd"]].forEach(([k, s]) => $(s).style.display = k == XP.sub ? "" : "none");
+  [["ex", "#xpEx"], ["dc", "#xpDc"], ["qs", "#xpQs"], ["vp", "#vp"], ["ck", "#xpCk"], ["rv", "#xpRv"], ["rt", "#xpRt"], ["dv", "#xpDv"], ["ev", "#xpEv"], ["wl", "#xpWl"], ["rd", "#xpRd"], ["rk", "#xpRk"]].forEach(([k, s]) => $(s).style.display = k == XP.sub ? "" : "none"); kidSub();
   const nb = $("#xpNav").querySelector("button.on"); if (nb && nb.scrollIntoView && innerWidth < 900) nb.scrollIntoView({inline: "center", block: "nearest"});
-  ({ex: loadEx, dc: loadDc, qs: loadQs, vp: loadVP, ck: loadCk, rv: loadRv, rt: loadRt, dv: loadDv, ev: loadEv, wl: loadWl, rd: loadRd})[XP.sub]();
+  ({ex: loadEx, dc: loadDc, qs: loadQs, vp: loadVP, ck: loadCk, rv: loadRv, rt: loadRt, dv: loadDv, ev: loadEv, wl: loadWl, rd: loadRd, rk: loadRk})[XP.sub]();
 }
 
 /* ---------- 大師插畫肖像(原創插畫,非本人照片) ---------- */
@@ -4523,7 +4567,7 @@ function exRes(){
   const shown = L.slice(0, EX.page);
   $("#exRes").innerHTML = `<div class="box"><h2 class="sec">📋 ${names} <small>共 ${L.length} 家${EX.near ? "（含只差一個條件）" : ""}；點公司看產品與商業模式</small></h2>
     ${L.length ? `<div class="gx-tw" style="max-height:none"><table class="gx-tb ex-tb xl2"><thead><tr><th>公司</th><th>產業</th><th>股價</th><th>買點（價值＋線型）</th><th>被選中</th>${cols.map(c => `<th>${c[1]}</th>`).join("")}</tr></thead><tbody>
-      ${shown.map(x => `<tr data-c="${x.c}"><td><b>${x.c} ${x.n}</b>${x.pn < (EX.mode == "and" ? sel.length : 1) ? `<em class="ex-near">差 1 條</em>` : ""}</td><td>${x.ind || ""}</td><td class="num">${fmt(x.px, 2)}</td><td>${bpBadge(x.c)}</td>
+      ${shown.map(x => `<tr data-c="${x.c}"><td><b>${x.c} ${x.n}</b>${riskTag(x.c)}${x.pn < (EX.mode == "and" ? sel.length : 1) ? `<em class="ex-near">差 1 條</em>` : ""}</td><td>${x.ind || ""}</td><td class="num">${fmt(x.px, 2)}</td><td>${bpBadge(x.c)}</td>
         <td><span class="ex-hits">${x.hit.map(h => `<i title="${EXD.experts.find(e => e.id == h).name}">${exAvatar(h, 22)}</i>`).join("")}</span></td>
         ${cols.map((cc, i) => { const v = x[cc[0]], ok = one ? x.t[one][i] == "1" : null; return `<td class="num ${ok === true ? "ok" : ok === false ? "ng" : ""}">${v == null ? "—" : fmt(v, Math.abs(v) >= 100 ? 0 : 1) + (cc[2] == "億" ? " 億" : cc[2] == "元" ? "" : cc[2])}${ok === true ? " ✓" : ok === false ? " ✗" : ""}</td>`; }).join("")}</tr>`).join("")}</tbody></table></div>
       ${L.length > EX.page ? `<button class="gx-more" id="exMore">顯示更多（還有 ${L.length - EX.page} 家）</button>` : ""}` : `<p class="mknote">目前沒有公司同時符合這些條件。可以改用「符合任一」，或勾選「只差一個條件也列出」。</p>`}
@@ -4713,6 +4757,7 @@ function skOv(){
       ${r ? `<div class="box sk-mini"><h3 class="mm-h3">📣 最新法人目標價</h3><p><b class="num" style="font-size:22px">${fmt(r[3], 1)}</b> 元・${r[1]}・${r[2]}（${r[0]}）<br><span class="mknote">距現價 ${d.px ? sgn((r[3] / d.px - 1) * 100, 0) + "%" : "—"}</span></p></div>` : ""}
     </div></div>
     ${bpBox(d)}
+    ${rkBox(d)}
     <div class="box"><h3 class="mm-h3">📈 近一年股價</h3><div id="skPx"><div class="sk" style="height:220px"></div></div></div>`;
   const st0 = new Date(Date.now() - 370 * 864e5).toISOString().slice(0, 10);
   fetch(`https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockPrice&data_id=${d.c}&start_date=${st0}`).then(r => r.json()).then(j => {
@@ -4833,7 +4878,7 @@ function renderWl(){
       ${WATCH.map(c => { const s = S2[c] || [], h = hm[c], k = C2[c], px = h ? h[5] : s[2], hd = HOLD[c] || {}, ft = s.length ? fitScore(s.slice(3, 9), s[12], s[13], s[14]) : null;
         const pl = hd.lots && hd.cost && px ? (px - hd.cost) * hd.lots * 1000 : null;
         const al = (HLA[c] || []).filter(x => x.lv == "bad").length;
-        return `<tr data-c="${c}"><td><b>${c} ${s[0] || (h ? h[1] : "")}</b></td><td>${al ? `<span class="hl-b bad">⚠️ ${al} 項轉弱</span>` : `<span class="hl-b ok">✅ 正常</span>`}</td><td>${bpBadge(c, s[14])}</td><td class="num">${px ? fmt(px, 2) : "—"}</td><td class="num ${h ? pc(h[4]) : ""}">${h ? sgn(h[4], 2) + "%" : "—"}</td>
+        return `<tr data-c="${c}"><td><b>${c} ${s[0] || (h ? h[1] : "")}</b>${riskTag(c)}</td><td>${al ? `<span class="hl-b bad">⚠️ ${al} 項轉弱</span>` : `<span class="hl-b ok">✅ 正常</span>`}</td><td>${bpBadge(c, s[14])}</td><td class="num">${px ? fmt(px, 2) : "—"}</td><td class="num ${h ? pc(h[4]) : ""}">${h ? sgn(h[4], 2) + "%" : "—"}</td>
         <td class="num">${ft == null ? "—" : `<b style="color:${fitCol(ft)}">${ft}%</b>`}</td><td>${s[14] ? `<span class="zp" style="background:${ZONEC[s[14]]}">${s[14]}</span>` : "—"}</td><td>${s.length ? gchip(s[8]) : "—"}</td><td class="num">${s[9] ? fmt(s[9], 2) + "%" : "—"}</td>
         <td class="num">${s[12] != null ? `<span class="${s[12] >= 60 ? "pos" : s[12] < 40 ? "neg" : ""}">${s[12]}</span>` : "—"}</td>
         <td><input class="wl-in" data-h="${c}" data-k="lots" type="number" min="0" step="0.001" value="${hd.lots ?? ""}" placeholder="0"></td><td><input class="wl-in" data-h="${c}" data-k="cost" type="number" min="0" step="0.01" value="${hd.cost ?? ""}" placeholder="均價"></td>
@@ -5090,7 +5135,7 @@ function dcRes(){
   const bar = x => { const [c, f, r] = [x[4], x[5], x[6]], px = x[3], lo = Math.min(c * .75, px * .95), hi = Math.max(r * 1.2, px * 1.05), X = v => ((v - lo) / (hi - lo) * 100).toFixed(1) + "%";
     return `<span class="dc-bar"><i style="left:0;width:${X(c)};background:#BBF7D0"></i><i style="left:${X(c)};width:calc(${X(f)} - ${X(c)});background:#BFDBFE"></i><i style="left:${X(f)};width:calc(${X(r)} - ${X(f)});background:#FDE68A"></i><i style="left:${X(r)};right:0;background:#FECACA"></i><b style="left:${X(px)}"></b></span>`; };
   $("#dcRes").innerHTML = `<p class="mknote">共 ${L.length} 檔</p><div class="gx-tw" style="max-height:none"><table class="gx-tb xl2 dc-tb"><thead><tr><th>公司</th><th>產業</th><th>股價</th><th>目前位置</th><th>買點（價值＋線型）</th><th>價位</th><th>便宜價</th><th>合理價</th><th>昂貴價</th><th>殖利率</th><th>連續配息</th><th>體質</th><th></th></tr></thead><tbody>
-    ${L.slice(0, DCS.page).map(x => `<tr data-c="${x[0]}"><td><b>${x[0]} ${x[1]}</b></td><td>${x[2] || ""}</td><td class="num">${fmt(x[3], 2)}</td><td><span class="zp" style="background:${ZONEC[x[7]]}">${x[7]}</span></td><td>${bpBadge(x[0], x[7])}</td><td>${bar(x)}</td><td class="num">${fmt(x[4], 2)}</td><td class="num">${fmt(x[5], 2)}</td><td class="num">${fmt(x[6], 2)}</td><td class="num"><b>${fmt(x[8], 2)}%</b></td><td class="num">${x[9]} 年</td><td>${x[10] ? `<span class="neg">${x[10]} 項警示</span>` : `<span class="pos">全部正常</span>`}</td><td><button class="qs-star ${WATCH.includes(x[0]) ? "on" : ""}" data-w="${x[0]}">${WATCH.includes(x[0]) ? "★" : "☆"}</button></td></tr>`).join("")}</tbody></table></div>
+    ${L.slice(0, DCS.page).map(x => `<tr data-c="${x[0]}"><td><b>${x[0]} ${x[1]}</b>${riskTag(x[0])}</td><td>${x[2] || ""}</td><td class="num">${fmt(x[3], 2)}</td><td><span class="zp" style="background:${ZONEC[x[7]]}">${x[7]}</span></td><td>${bpBadge(x[0], x[7])}</td><td>${bar(x)}</td><td class="num">${fmt(x[4], 2)}</td><td class="num">${fmt(x[5], 2)}</td><td class="num">${fmt(x[6], 2)}</td><td class="num"><b>${fmt(x[8], 2)}%</b></td><td class="num">${x[9]} 年</td><td>${x[10] ? `<span class="neg">${x[10]} 項警示</span>` : `<span class="pos">全部正常</span>`}</td><td><button class="qs-star ${WATCH.includes(x[0]) ? "on" : ""}" data-w="${x[0]}">${WATCH.includes(x[0]) ? "★" : "☆"}</button></td></tr>`).join("")}</tbody></table></div>
     ${L.length > DCS.page ? `<button class="gx-more" id="dcMore">顯示更多（還有 ${L.length - DCS.page} 檔）</button>` : ""}`;
   $("#dcRes").querySelectorAll("tr[data-c]").forEach(tr => tr.onclick = e => { const w = e.target.closest("[data-w]"); if (w) { e.stopPropagation(); skStar(w.dataset.w); dcRes(); return; } openStock(tr.dataset.c); });
   if ($("#dcMore")) $("#dcMore").onclick = () => { DCS.page += 200; dcRes(); };
@@ -5292,7 +5337,7 @@ function bindTiles(host){ host.querySelectorAll("[data-go]").forEach(t => t.oncl
   if (g.startsWith("stk:")) { openStock(g.slice(4)); return; }
   const el = $("#" + g); if (el) window.scrollTo({top: el.getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 70), behavior: "smooth"}); }); }
 async function boardUI(){
-  const B = await getJ("board"); if (!B || !$("#bdTiles")) return;
+  const [B, OP] = await Promise.all([getJ("board"), getJ("options")]); if (!B || !$("#bdTiles")) return;
   const t = B.taiex, o = B.otc, tv = B.turn, br = B.breadth, a2 = B.a200, pe = B.pe, fo = B.foreign, mg = B.margin, tx = B.tx;
   const sg = (v, d = 2) => v == null ? "—" : (v > 0 ? "+" : "") + fmt(v, d), md = s => s ? `${+s.slice(4, 6)}/${+s.slice(6, 8)}` : "";
   const T = [
@@ -5306,6 +5351,8 @@ async function boardUI(){
     pe ? {t: "大盤本益比（上市櫃）", v: fmt(pe.v, 1) + " 倍", bar: pe.pct, sub: `${pe.years} 第 <b>${pe.pct}</b> 百分位・區間 ${pe.lo}～${pe.hi} 倍`} : null,
     fo ? {t: "外資買賣超（上市）", v: sg(fo.v, 1) + " 億", col: UPC(fo.v), sub: `近 5 日 <b style="color:${UPC(fo.d5)}">${sg(fo.d5, 1)} 億</b>`, spark: fo.spark, sc: UPC(fo.d5), go: "mk-mg"} : null,
     mg ? {t: "融資餘額（上市）", v: fmt(mg.v, 0) + " 億", sub: `較前一日 <b style="color:${UPC(mg.chg)}">${sg(mg.chg, 1)} 億</b>・${mg.d.slice(5)}`, spark: mg.spark, sc: "#F59E0B", go: "mk-mg"} : null,
+    OP && OP.pcr && OP.pcr.length ? (x => ({t: "🧮 選擇權 P/C 比", v: fmt(x[1], 1), col: x[1] >= 100 ? "#CF3A3A" : x[1] < 80 ? "#1A8F57" : "var(--ink)", sub: `${x[1] >= 100 ? "偏多：大戶賣保險撐盤" : x[1] < 80 ? "偏保守：下方保護少" : "中性"}・${x[0].slice(4, 6)}/${x[0].slice(6)}`, spark: OP.pcr.map(r => r[1]), sc: "#2F5BEA", go: "mk-opt"}))(OP.pcr[OP.pcr.length - 1]) : null,
+    OP && OP.adr && OP.adr.length ? (x => ({t: "🇺🇸 台積電 ADR 溢價", v: sgn(x[1], 1) + "%", col: x[1] >= 0 ? "#CF3A3A" : "#1A8F57", sub: `TSM ${fmt(x[2], 2)} 美元・${x[1] >= 15 ? "外資很看好" : x[1] >= 5 ? "正常偏多" : x[1] >= 0 ? "偏弱" : "折價：外資悲觀"}`, spark: OP.adr.map(r => r[1]), sc: "#C9A24E", go: "mk-opt"}))(OP.adr[OP.adr.length - 1]) : null,
     B.fear && B.fear.tw ? {t: "😱 台股恐慌度", v: `${B.fear.tw.v} 分`, col: fzc(B.fear.tw.v), bar: B.fear.tw.v, sub: `${B.fear.tw.lv}・前一日 ${B.fear.tw.prev ?? "—"}${B.fear.us ? `・美股 ${B.fear.us.v}` : ""}`, go: "mk-fear"} : null,
     {t: "📚 收錄標的", v: `<span class="bd-n">ETF ${typeof S != "undefined" && S ? S.length : "—"} 檔<br>個股 ${B.nStk ? fmt(B.nStk, 0) : "—"} 家</span>`, sub: ETFUPD ? `ETF ${ETFUPD.startsWith("即時") ? ETFUPD : "更新 " + ETFUPD}` : "", go: "mk-board"}].filter(Boolean);
   $("#bdTiles").innerHTML = T.map(tile).join(""); $("#bdUpd").textContent = `資料更新 ${B.updated}`; bindTiles($("#bdTiles")); bdLiveTx();
@@ -5324,7 +5371,7 @@ async function etfBoard(){
     {t: "本月除息", v: tm.length + " 檔", sub: nx ? `下一檔 ${nx.ex.slice(5)} ${nx.id} ${nx.name}${nx.cash ? `・${nx.cash} 元` : ""}` : "目前無公告"},
     big ? {t: "規模最大", v: big.id, sub: `${big.name}・${fmt(big.aum / 1e8, 0)} 億`} : null,
     best ? {t: "近一年報酬最佳", v: `<span style="color:#CF3A3A">+${fmt(best.ret1y, 1)}%</span>`, sub: `${best.id} ${best.name}`} : null,
-    hiY ? {t: "近一年殖利率最高", v: fmt(hiY.ttmYield, 2) + "%", sub: `${hiY.id} ${hiY.name}（規模 10 億以上）`} : null].filter(Boolean);
+    hiY ? {t: "近一年殖利率最高", v: fmt(hiY.ttmYield, 2) + "%", sub: `${hiY.id} ${hiY.name}（規模 10 億以上）`} : null, navTile()].filter(Boolean);
   $("#etfTiles").innerHTML = T.map(tile).join(""); $("#etfBdUpd").textContent = S[0] && S[0].date ? `報價日 ${S[0].date}` : "";
 }
 let XPB = false;
@@ -5352,6 +5399,7 @@ function bdLiveTx(){ const tx = LIVETX, b = $("#bdTx"); if (!tx || !b) return; c
 let BASE = (() => { try { return JSON.parse(localStorage.getItem("bfy_base") || "{}"); } catch (e) { return {}; } })(), HLA = {}, HLD = null;
 const saveBase = () => { try { localStorage.setItem("bfy_base", JSON.stringify(BASE)); } catch (e) {} };
 async function hlData(){
+  if (!RISK) RISK = await getJ("risk");
   if (HLD) return HLD;
   const [sc, dc, eh, rv, th] = await Promise.all([getJ("scores"), getJ("dingcun"), getJ("expert_hits"), getJ("rev_rank"), getJ("tech")]); if (th && !TECH) TECH = th;
   if (!sc) return null;
@@ -5361,7 +5409,7 @@ async function hlData(){
 function hlNow(c){
   const D = HLD, s = D.sc[c]; if (!s) return null;
   const tg = TECH && TECH.s[c] ? TECH.s[c][1] : null;
-  return {d: new Date().toISOString().slice(0, 10), n: s[0], tot: s[8], warn: s[13], zone: s[14], hit: D.eh[c] || [], dc: D.dc[c] || null, ry: D.rv[c] ? D.rv[c][4] : null, px: s[2], tg};
+  return {d: new Date().toISOString().slice(0, 10), n: s[0], tot: s[8], warn: s[13], zone: s[14], hit: D.eh[c] || [], dc: D.dc[c] || null, ry: D.rv[c] ? D.rv[c][4] : null, px: s[2], tg, rk: RISK && RISK.flags[c] ? RISK.flags[c].map(x => x.split(" ")[0]) : []};
 }
 async function hlSnap(c, force){ if (!await hlData()) return; if (!force && BASE[c]) return; const k = hlNow(c); if (k) { BASE[c] = k; saveBase(); } }
 function hlDiff(b, k){
@@ -5370,6 +5418,7 @@ function hlDiff(b, k){
   if (b.dc && !k.dc) out.push({lv: "bad", t: "已從💎定存股名單剔除（獲利或配息穩定度不再符合）"});
   if (b.tot != null && k.tot != null && b.tot - k.tot >= 15) out.push({lv: "bad", t: `量化總評從 ${gradeOf(b.tot)} 降到 ${gradeOf(k.tot)}`});
   if (k.warn > (b.warn || 0)) out.push({lv: "bad", t: `體質警示由 ${b.warn || 0} 項增加到 ${k.warn} 項（看個股頁的體質健診）`});
+  (k.rk || []).filter(x => !(b.rk || []).includes(x)).forEach(x => out.push({lv: "bad", t: `出現新的風險訊號：${x}（見「⚠️ 風險股」）`}));
   if (k.tg == "down" && b.tg && b.tg != "down") out.push({lv: "bad", t: "日線轉為📉下跌中（跌破月線、月線下彎），留意停損"});
   if (k.tg == "turn" && b.tg && b.tg != "turn") out.push({lv: "good", t: "日線轉強（站回月線或 MACD 黃金交叉）"});
   if (k.ry != null && k.ry <= -20 && !(b.ry != null && b.ry <= -20)) out.push({lv: "bad", t: `最新月營收年減 ${fmt(-k.ry, 1)}%`});
@@ -5512,6 +5561,7 @@ function rdView(c){
   if (b.orH && px > b.orH) { sc += 2; tips.push("突破開盤區間高點"); } else if (b.orL && px < b.orL) { sc -= 2; tips.push("跌破開盤區間低點"); }
   if (r.P) { if (px >= (r.R1 || 1e9)) { sc++; tips.push("站上壓力 R1"); } else if (px <= (r.S1 || -1)) { sc--; tips.push("跌破支撐 S1"); } }
   if (ratio != null) { if (ratio < 1 / RD.cfg.sell) { sc -= 2; tips.push(`委賣是委買 ${fmt(1 / ratio, 1)} 倍`); } else if (ratio > RD.cfg.sell) { sc += 2; tips.push(`委買是委賣 ${fmt(ratio, 1)} 倍`); } }
+  const nv = typeof INAV != "undefined" && INAV[c]; if (nv && nv.prem != null && Math.abs(nv.prem) >= .5) tips.push(`ETF ${nv.prem > 0 ? "溢價" : "折價"} ${fmt(Math.abs(nv.prem), 2)}%`);
   if (mom <= -1) { sc--; tips.push(`${RD.cfg.win} 分鐘 ${sgn(mom, 1)}%`); } else if (mom >= 1) { sc++; tips.push(`${RD.cfg.win} 分鐘 ${sgn(mom, 1)}%`); }
   const bias = sc >= 3 ? ["強勢偏多", "#CF3A3A"] : sc >= 1 ? ["偏多", "#E5484D"] : sc <= -3 ? ["弱勢偏空", "#1A8F57"] : sc <= -1 ? ["偏空", "#22A06B"] : ["中性", "#64748B"];
   return {q, r, b, px, pct, hiW, loW, mom, ratio, sc, tips, bias};
@@ -5524,6 +5574,7 @@ function rdFire(c, key, title, body, bad, cool){
   rdNotify(title, body, id, bad);
 }
 function rdRules(c, nm, v, prev){
+  const nv = typeof INAV != "undefined" && INAV[c]; if (nv && nv.prem >= 1) rdFire(c, "prem", `💸 ${c} ${nm} 溢價過高`, `市價比即時淨值貴 ${fmt(nv.prem, 2)}%，現在買等於多付錢，可等溢價回落`, true);
   const {px, pct, r, b, hiW, ratio, mom} = v, cf = RD.cfg, ses = rdSession(), N = `${c} ${nm}`, P2 = x => fmt(x, 2);
   const crossDn = (lv) => lv && prev != null && prev >= lv && px < lv, crossUp = (lv) => lv && prev != null && prev <= lv && px > lv;
   if (hiW && (px / hiW - 1) * 100 <= -cf.drop) rdFire(c, "drop", `⚠️ ${N} 急跌`, `${cf.win} 分鐘內從 ${P2(hiW)} 跌到 ${P2(px)}（${sgn((px / hiW - 1) * 100, 1)}%），今日 ${sgn(pct, 2)}%`, true, 20);
@@ -5590,7 +5641,7 @@ function rdPaint(){
     ${codes.length ? `<div class="gx-tw" style="max-height:none"><table class="gx-tb rd-tb"><thead><tr><th>股票</th><th>即時價</th><th>漲跌</th><th>當沖偏向</th><th>買點（日線）</th><th>均價線</th><th>開盤區間</th><th>S2</th><th>S1</th><th>樞紐 P</th><th>R1</th><th>R2</th><th>委買/委賣</th><th>今日高/低</th><th>提示</th><th></th></tr></thead><tbody>
       ${codes.map(c => { const v = rdView(c), r = RD.ref[c] || {}, b = RD.bars[c] || {};
         if (!v) return `<tr data-c="${c}"><td><b>${c} ${nm(c)}</b></td><td colspan="14" class="mknote">${RD.on || !ses.open ? "載入中…" : "按「開始監控」或「立即更新」取得報價"}</td><td><button class="wl-del" data-x="${c}">✕</button></td></tr>`;
-        return `<tr data-c="${c}" class="${v.sc <= -3 ? "rd-bad" : v.sc >= 3 ? "rd-good" : ""}"><td><b>${c} ${nm(c)}</b><small class="rd-t">${v.q.live ? v.q.t || "" : "尚未成交・顯示昨收"}</small></td><td class="num"><b class="${pc(v.pct)}">${P2(v.px)}</b></td><td class="num ${pc(v.pct)}">${sgn(v.pct, 2)}%</td>
+        return `<tr data-c="${c}" class="${v.sc <= -3 ? "rd-bad" : v.sc >= 3 ? "rd-good" : ""}"><td><b>${c} ${nm(c)}</b>${riskTag(c)}<small class="rd-t">${v.q.live ? v.q.t || "" : "尚未成交・顯示昨收"}</small></td><td class="num"><b class="${pc(v.pct)}">${P2(v.px)}</b></td><td class="num ${pc(v.pct)}">${sgn(v.pct, 2)}%</td>
           <td><span class="rd-bias" style="--c:${v.bias[1]}">${v.bias[0]}</span></td><td>${bpBadge(c)}</td>${lvl(v.px, b.vwap)}<td class="num">${b.orL ? `${P2(b.orL)}～${P2(b.orH)}` : "09:15 後"}</td>
           ${lvl(v.px, r.S2)}${lvl(v.px, r.S1)}${lvl(v.px, r.P)}${lvl(v.px, r.R1)}${lvl(v.px, r.R2)}<td class="num ${v.ratio == null ? "" : v.ratio < 1 ? "neg" : "pos"}">${v.ratio == null ? "—" : fmt(v.ratio, 2)}</td>
           <td class="num">${v.q.h ? `${P2(v.q.h)} / ${P2(v.q.l)}` : `漲停 ${P2(v.q.upL)}<br>跌停 ${P2(v.q.dn)}`}</td><td class="rd-tip">${v.tips.join("・") || "—"}</td><td><button class="wl-del" data-x="${c}">✕</button></td></tr>`; }).join("")}</tbody></table></div>`
@@ -5599,7 +5650,7 @@ function rdPaint(){
       if (!v) return `<div class="rd-card" data-c="${c}"><div class="rc-h"><b>${c} ${nm(c)}</b><button class="wl-del" data-x="${c}">✕</button></div><p class="mknote">載入中…</p></div>`;
       const F = x => x == null ? "—" : fmt(x, x >= 1000 ? 0 : x >= 100 ? 1 : 2), lv = (n, x) => x == null ? "" : `<span class="${v.px >= x ? "pos" : "neg"}"><small>${n}</small>${F(x)}</span>`;
       return `<div class="rd-card ${v.sc <= -3 ? "rd-bad" : v.sc >= 3 ? "rd-good" : ""}" data-c="${c}">
-        <div class="rc-h"><div><b>${c} ${nm(c)}</b><small>${v.q.live ? v.q.t || "" : "尚未成交・顯示昨收"}</small></div><div class="rc-px"><b class="num ${pc(v.pct)}">${P2(v.px)}</b><i class="${pc(v.pct)}">${sgn(v.pct, 2)}%</i></div><button class="wl-del" data-x="${c}">✕</button></div>
+        <div class="rc-h"><div><b>${c} ${nm(c)}</b>${riskTag(c)}<small>${v.q.live ? v.q.t || "" : "尚未成交・顯示昨收"}</small></div><div class="rc-px"><b class="num ${pc(v.pct)}">${P2(v.px)}</b><i class="${pc(v.pct)}">${sgn(v.pct, 2)}%</i></div><button class="wl-del" data-x="${c}">✕</button></div>
         <div class="rc-tags"><span class="rd-bias" style="--c:${v.bias[1]}">當沖 ${v.bias[0]}</span>${bpBadge(c)}${v.ratio != null ? `<span class="rc-r ${v.ratio < 1 ? "neg" : "pos"}">委買/賣 ${fmt(v.ratio, 2)}</span>` : ""}</div>
         <div class="rc-lv">${lv("S2", r.S2)}${lv("S1", r.S1)}${lv("P", r.P)}${lv("R1", r.R1)}${lv("R2", r.R2)}</div>
         <div class="rc-lv sm">${lv("均價線", b.vwap)}${b.orL ? `<span><small>開盤區間</small>${F(b.orL)}～${F(b.orH)}</span>` : ""}${v.q.h ? `<span><small>高/低</small>${F(v.q.h)}/${F(v.q.l)}</span>` : `<span><small>漲停</small>${F(v.q.upL)}</span><span><small>跌停</small>${F(v.q.dn)}</span>`}</div>
@@ -5660,6 +5711,314 @@ async function cpSync(){ if (!CP.on) return; clearTimeout(CP.t); CP.t = setTimeo
 async function cpTest(){ try { const sub = await cpSubObj(false); if (!sub) return false; const j = await cpPost("/test", {endpoint: sub.endpoint}); setTimeout(cpRecent, 4000); return j.ok; } catch (e) { CP.err = e.message; return false; } }
 async function cpRecent(){ try { const sub = await cpSubObj(false); if (!sub) return; const j = await fetch(CPAPI + "/recent?ep=" + encodeURIComponent(sub.endpoint)).then(r => r.json()); CP.recent = (j.items || []).filter(x => x.code != "TEST" || Date.now() - x.ts < 864e5); if (j.sub === false && CP.on) { CP.err = "雲端找不到這台裝置的訂閱，請重新開啟一次"; } rdPaint(); } catch (e) {} }
 if (CP.on) setTimeout(cpSync, 4000);     // 每次開網站同步一次最新名單與日線參考價
+/* ================= 📖 全站白話術語(5 歲小孩也看得懂):[分類, 白話, 小故事, 怎麼看] ================= */
+const GL2 = {
+"股票": ["基礎", "一家公司切成很多小塊，買一塊就是小小老闆。", "巷口雞排店要開分店，把店分成 100 份賣給鄰居，你買 1 份，店賺錢你就分到一點。", "公司越會賺錢，這一小塊通常越值錢。"],
+"ETF": ["基礎", "一個籃子裝很多支股票，買一籃就等於全部都買一點。", "你不知道哪顆水果最甜，就買一整盒綜合水果，有幾顆酸的也沒關係。", "看籃子裡裝什麼（持股）、收多少管理費、規模大不大。"],
+"一張": ["基礎", "台股 1 張 = 1,000 股。", "像雞蛋 1 盒 10 顆，股票 1 張 1,000 股；只買幾股叫零股。", "股價 50 元，1 張就是 5 萬元。"],
+"漲跌停": ["基礎", "台股一天最多漲或跌 10%，到頂就不能再動。", "像溜滑梯有護欄，一天最多只能滑 10 公尺，避免一下摔太深。", "跌停打不開代表大家搶著賣、買的人很少。"],
+"除權息": ["基礎", "公司發股利那天，股價會先扣掉發出去的錢。", "撲滿裡有 100 元，倒出 5 元給你當零用錢，撲滿就剩 95 元。", "除息日前一天要持有股票才領得到股利。"],
+"填息": ["基礎", "發完股利後，股價漲回原本的價錢。", "撲滿倒出 5 元後，過幾天又存回 100 元，等於零用錢是白賺的。", "填息天數越短越好；一直沒填息等於左手換右手。"],
+"殖利率": ["基礎", "一年領到的股利 ÷ 股價，就像存款利率。", "花 100 元買一隻母雞，一年下的蛋賣 5 元，殖利率就是 5%。", "台股常見 3～6%；太高（例如 15%）要小心是不是一次性或配到本金。"],
+"現金殖利率": ["基礎", "只算現金股利的殖利率。", "母雞下的蛋直接換成現金給你。", "同「殖利率」，數字越高每年領越多，但要確認能持續。"],
+"配息率": ["基礎", "公司賺的錢拿多少比例出來發股利。", "雞排店賺 100 元，拿 60 元分給老闆們，配息率 60%，剩下 40 元留著開分店。", "長期超過 100% 代表發的比賺的多，不能持久。"],
+"市值": ["基礎", "股價 × 總股數 = 整家公司在市場上值多少錢。", "整間雞排店 100 份、一份 1 萬元，整家店市值 100 萬。", "市值大＝大公司，通常比較穩。"],
+"EPS": ["基礎", "每一股幫你賺了多少錢（每股盈餘）。", "雞排店一年賺 100 萬，分成 10 萬股，每股賺 10 元。", "每年 EPS 穩定成長最好；變成負數代表虧錢。"],
+"本益比": ["基礎", "股價是每年賺的錢的幾倍，幾年可以回本。", "花 100 元買雞，每年下蛋賺 10 元，本益比 10 倍＝10 年回本。", "越低越便宜；台股大盤常見 12～22 倍，要和自己歷史比。"],
+"股價淨值比": ["基礎", "股價是公司「淨資產」的幾倍（PB）。", "雞排店把設備、現金扣掉欠款值 50 萬，你用 100 萬買下，PB 就是 2 倍。", "小於 1 等於打折買公司資產；但也可能是公司不賺錢。"],
+"ROE": ["基礎", "老闆的錢一年能變多少錢（股東權益報酬率）。", "你拿 100 元給雞排店，一年幫你賺 15 元，ROE 15%。", "長期 15% 以上是好公司；巴菲特很愛看這個。"],
+"營收": ["基礎", "公司一段時間賣東西收到的錢（還沒扣成本）。", "雞排店一個月賣了 3,000 塊雞排收到 21 萬，這就是月營收。", "台股每月 10 號前公布，常用來看生意好不好。"],
+"月營收年增": ["基礎", "這個月營收比去年同月多（少）了幾 %。", "今年 11 月賣 21 萬，去年 11 月賣 15 萬，年增 40%。", "連續幾個月正成長代表生意變好。"],
+"毛利率": ["基礎", "賣一樣東西扣掉材料成本後，賺幾成。", "雞排賣 70 元，雞肉和油 30 元，毛利 40 元，毛利率 57%。", "越高代表產品越有競爭力、不容易被砍價。"],
+"營業利益率": ["基礎", "扣掉材料、房租、薪水後，本業真正賺幾成。", "雞排店扣掉所有開店費用，每 100 元營收真正賺 15 元。", "穩定且越高越好。"],
+"營業現金流": ["基礎", "做生意實際收進口袋的現金。", "帳上說賺 10 萬，但客人賒帳還沒付，真正收到的現金才是營業現金流。", "長期要大於 0，最好大於帳上獲利。"],
+"自由現金流": ["基礎", "賺到的現金扣掉買機器、蓋工廠後，真正能自由運用的錢。", "雞排店收到 20 萬，花 5 萬換新炸鍋，剩 15 萬可以發給老闆或存起來。", "長期為正代表公司是真賺錢，不是一直燒錢。"],
+"負債比": ["基礎", "公司的資產裡有幾成是借來的。", "你買 100 萬的店，其中 60 萬是借的，負債比 60%。", "一般產業最好低於 50～60%；銀行本來就高。"],
+"流動比率": ["基礎", "短期內能變現的錢 ÷ 短期要還的債。", "下個月要還 10 萬，手上能動用的錢有 20 萬，流動比率 200%。", "大於 150% 比較安全，不會被短期債務壓垮。"],
+"便宜價": ["估價", "這個價錢以下買，算是撿便宜。", "平常一顆蘋果 30 元，今天特價 20 元以下就是便宜價。", "用股利、本益比、淨值比三種方法估出來的平均。"],
+"合理價": ["估價", "公司正常該值的價錢。", "蘋果平常就是 30 元左右。", "股價在便宜價和合理價之間可以慢慢買。"],
+"昂貴價": ["估價", "超過這個價錢就算買貴了。", "蘋果賣到 50 元，除非很急，不然先別買。", "股價高於昂貴價時，有持股可以考慮分批賣。"],
+"安全邊際": ["估價", "買價比真正價值便宜多少，留給自己的保護空間。", "你估一台腳踏車值 1 萬，8 千元才買，多出的 2 千元就是安全邊際，就算估錯也不怕。", "越大越安全，價值投資的核心。"],
+"內在價值": ["估價", "公司未來能賺的錢，換算成今天值多少。", "一棵果樹未來 10 年每年結 1 千元的果，今天這棵樹值多少錢。", "股價低於內在價值才算便宜。"],
+"定存股": ["估價", "每年穩穩賺錢、穩穩發股利，可以長期放著領息的股票。", "像一隻每天都會下蛋的母雞，不求跑得快，只求天天有蛋。", "看連續配息年數、殖利率、體質警示。"],
+"護城河": ["估價", "別人很難搶走的競爭優勢。", "城堡外面挖一條護城河，敵人很難攻進來；像台積電的技術，別人追不上。", "表現在長期高 ROE、高毛利。"],
+"三大法人": ["籌碼", "外資、投信、自營商三種大戶機構。", "菜市場裡的三個大批發商，他們一出手，價格就會動。", "連續買超通常代表看好。"],
+"外資": ["籌碼", "外國的投資機構。", "從國外來的大買家，帶著一大筆錢來台灣買股票。", "台股最大的買家之一，買賣方向常影響大盤。"],
+"投信": ["籌碼", "國內的基金公司。", "幫很多人集合錢一起投資的管家。", "常在中小型股當主力，季底會作帳。"],
+"自營商": ["籌碼", "證券公司用自己的錢買賣。", "券商自己下場當玩家，短線進出多。", "參考性比外資、投信低。"],
+"買賣超": ["籌碼", "買的比賣的多叫買超，反過來叫賣超。", "今天外資買了 100 張、賣了 30 張，就是買超 70 張。", "看「連續幾天」比看單一天更準。"],
+"集保大戶": ["籌碼", "持有很多張（例如 400 張、1000 張以上）的大股東比例。", "全班的糖果有幾成在少數幾個大胃王手上。", "大戶比例上升代表籌碼集中、有人在收貨。"],
+"融資": ["籌碼", "跟券商借錢買股票。", "你只有 4 萬，跟券商借 6 萬湊 10 萬買股票，賺賠都放大。", "融資大增常代表散戶過熱；大減可能是斷頭殺出。"],
+"融券": ["籌碼", "跟券商借股票先賣，之後再買回來還。", "借同學的漫畫先賣 100 元，等漫畫跌到 80 元再買回來還，賺 20 元。", "融券多可能代表看空，也可能引發軋空。"],
+"維持率": ["籌碼", "融資的人帳上股票價值 ÷ 借來的錢。", "你借錢買股，股價跌太多，券商會怕你還不出來。", "低於 130% 會被追繳，再不補錢就會被強制賣出（斷頭）。"],
+"斷頭": ["籌碼", "融資的人沒補錢，被券商強制賣掉股票。", "借錢買的股票跌太深，券商直接幫你賣掉還債。", "大量斷頭常出現在暴跌的尾聲。"],
+"借券賣出": ["籌碼", "大戶向別人借股票來賣，通常是看壞或避險。", "像有人借了很多把雨傘去賣，猜等下雨傘會變便宜。", "借券賣出餘額短時間暴增，代表有大戶在空這檔股票。"],
+"處置股": ["籌碼", "漲跌太異常，被交易所「關禁閉」的股票。", "同學在操場跑太快撞到人，老師叫他先在旁邊慢走 5 天。", "處置期間要分盤撮合（例如 5～20 分鐘才成交一次），流動性變差，風險高。"],
+"注意股": ["籌碼", "交易所發出警告：這檔最近漲跌或成交量不正常。", "老師先口頭提醒「你跑太快了喔」，再犯就要關禁閉。", "常是處置股的前一步。"],
+"當沖": ["籌碼", "同一天買進又賣出，不留過夜。", "早上買了一箱橘子，下午就轉手賣掉，賺個價差。", "當沖比例太高代表很多人短線炒作，股價容易暴漲暴跌。"],
+"當沖比": ["籌碼", "今天的成交量中，有幾成是當沖。", "今天賣出 100 箱橘子，其中 60 箱是早買午賣的，當沖比 60%。", "超過 50% 代表短線客很多，要小心。"],
+"外資持股比": ["籌碼", "這家公司的股票有幾成在外資手上。", "全班的糖果有 70% 在外國轉學生手上。", "持股比連續下降代表外資在撤退。"],
+"主力": ["籌碼", "有能力影響股價的大資金。", "菜市場裡一次買走半車菜的大客戶。", "看法人、大戶、融資的綜合變化判斷。"],
+"K線": ["技術", "用一根小蠟燭畫出一天的開盤、收盤、最高、最低價。", "像一天的心情紀錄：早上幾分、晚上幾分、最開心和最難過各幾分。", "紅K＝收盤比開盤高，綠K＝收盤比開盤低（台灣習慣）。"],
+"均線": ["技術", "最近幾天收盤價的平均，畫成一條線。", "把全班最近 20 次考試平均起來，看成績是越來越好還是越來越差。", "股價在均線上面代表最近買的人大多賺錢。"],
+"月線": ["技術", "20 日均線，大約一個月的平均成本。", "最近一個月大家買進的平均價。", "跌破月線常代表短中期轉弱。"],
+"季線": ["技術", "60 日均線，大約三個月的平均成本。", "最近一季大家的平均成本。", "常被當成多空分水嶺。"],
+"半年線": ["技術", "120 日均線，約半年的平均成本。", "半年來大家的平均成本。", "長線支撐的參考。"],
+"多頭排列": ["技術", "短天期均線在上、長天期在下，一路往上。", "像樓梯一階比一階高，股價一路往上走。", "趨勢向上，順勢做多。"],
+"空頭排列": ["技術", "短天期均線在下、長天期在上，一路往下。", "樓梯一階比一階低，一直往下走。", "趨勢向下，先別急著接。"],
+"黃金交叉": ["技術", "短線指標由下往上穿過長線指標，常是轉強訊號。", "落後的跑者追上並超過前面的人。", "搭配成交量放大更可靠。"],
+"死亡交叉": ["技術", "短線指標由上往下穿過長線指標，常是轉弱訊號。", "領先的跑者被後面的人超過，開始掉隊。", "持股要留意停損或減碼。"],
+"RSI": ["技術", "最近漲的力道和跌的力道比一比，0～100 分。", "最近 14 天，有幾天開心、幾天難過，算出心情分數。", "高於 70 過熱、低於 30 超賣（可能快反彈但不保證）。"],
+"MACD": ["技術", "看股價動能是在加速還是減速。", "像看車子是在踩油門還是踩煞車。", "柱狀體由負轉正（黃金交叉）＝轉強；由正轉負＝轉弱。"],
+"乖離率": ["技術", "股價離均線有多遠。", "小狗跑離主人太遠，最後還是會被拉回來。", "離月線太遠（例如 +10%）容易拉回。"],
+"支撐": ["技術", "股價跌到這附近，常有人願意買，比較跌不下去。", "像地板，球掉下來會在這裡彈一下。", "跌破支撐，地板就變成天花板。"],
+"壓力": ["技術", "股價漲到這附近，常有人想賣，比較漲不上去。", "像天花板，球往上丟會碰到。", "突破壓力，天花板就變地板。"],
+"打底": ["技術", "股價跌了一段後在低檔盤整、不再破底。", "球掉到地上滾一滾，慢慢停下來。", "打底完成（站回月線）才比較安全進場。"],
+"轉強": ["技術", "股價由弱變強，例如站回月線或 MACD 黃金交叉。", "生病的人退燒、開始有精神了。", "便宜又轉強＝最佳買點。"],
+"樞紐點": ["當沖", "用昨天的最高、最低、收盤算出今天的中心價 P。", "像昨天大家吵架的平均位置，今天的戰場中心。", "股價在 P 上面偏強、下面偏弱。"],
+"S1": ["當沖", "今天的第一道支撐（地板）。", "第一層防護網。", "跌破 S1 往下看 S2。"],
+"R1": ["當沖", "今天的第一道壓力（天花板）。", "第一層天花板。", "站上 R1 往上看 R2。"],
+"均價線": ["當沖", "今天所有成交的平均成本（VWAP）。", "今天所有買家平均花多少錢買到。", "股價在均價線上，今天買的人多半賺錢，偏多。"],
+"VWAP": ["當沖", "成交量加權平均價，就是均價線。", "見「均價線」。", "法人常用來衡量今天買得好不好。"],
+"開盤區間": ["當沖", "開盤後前 15 分鐘的最高和最低價。", "比賽剛開始大家先試探的範圍。", "突破高點偏多、跌破低點偏空。"],
+"委買委賣": ["當沖", "還在排隊等著買和等著賣的張數。", "麵包店門口排隊要買的人 vs 想把麵包賣掉的人。", "委賣遠多於委買＝賣壓重，股價可能往下。"],
+"當沖偏向": ["當沖", "綜合今天盤中各種訊號，看買方強還是賣方強。", "比賽中場看哪一隊比較有氣勢。", "僅供參考，盤中變化很快。"],
+"加權指數": ["大盤", "台灣所有上市股票的整體分數，大公司占比重。", "全班平均分數，但功課好的同學分數算比較重。", "就是新聞說的「台股今天漲多少點」。"],
+"櫃買指數": ["大盤", "上櫃中小型股的整體分數。", "另一個班（中小型公司班）的平均分數。", "代表中小型股的氣氛。"],
+"台指期": ["大盤", "賭加權指數未來漲跌的合約（期貨）。", "跟朋友約定：一個月後指數高於某數字我付你錢，低於你付我。", "常比現貨先反應消息。"],
+"夜盤": ["大盤", "台指期下午 3 點到隔天清晨 5 點的交易。", "台股下課了，但期貨晚上還在開補習班，先反應美股消息。", "夜盤大跌，隔天台股開盤容易開低。"],
+"正價差": ["大盤", "期貨比現貨（加權指數）高。", "大家願意多付一點預訂未來的貨，代表看好。", "逆價差（期貨比現貨低）代表悲觀或避險。"],
+"逆價差": ["大盤", "期貨比現貨低。", "大家覺得未來比較便宜，不急著買。", "逆價差擴大常是市場恐慌的訊號之一。"],
+"未平倉": ["大盤", "還沒結束、還有效的合約數量。", "還沒開獎的彩券有幾張。", "外資期貨淨空單很多，代表他們在避險或看壞。"],
+"選擇權": ["大盤", "付一點權利金，買到「未來可以用某價格買或賣」的權利。", "付 100 元訂金先卡位，一個月後決定要不要用約定價買這台車。", "常用來看大戶預期的壓力和支撐。"],
+"買權": ["大盤", "未來用約定價「買」的權利，看漲的人買。", "先付訂金卡一台車，車價漲了就賺到。", "買權最大未平倉的履約價常被視為壓力。"],
+"賣權": ["大盤", "未來用約定價「賣」的權利，看跌或避險的人買。", "幫房子買保險，房價跌了可以用原價賣。", "賣權最大未平倉的履約價常被視為支撐。"],
+"P/C ratio": ["大盤", "賣權未平倉 ÷ 買權未平倉 × 100。", "大家買了多少「下雨保險」和多少「出太陽彩券」的比例。", "台指選擇權常見：高於 100 偏多（大戶賣賣權撐盤）、低於 80 偏保守。要搭配趨勢看。"],
+"最大未平倉履約價": ["大盤", "選擇權中未平倉最多的價位，常被當成大戶劃的線。", "很多人在同一條線上下注，大家都會守著這條線。", "買權最大＝壓力，賣權最大＝支撐。"],
+"ADR": ["大盤", "台灣公司在美國上市的股票（台積電叫 TSM）。", "台積電在美國開的分店，美國人買的版本。", "1 張 TSM ＝ 5 股台積電。"],
+"ADR 溢價": ["大盤", "美國的台積電比台灣的台積電貴多少。", "同一個名牌包，美國賣得比台灣貴 10%，代表美國人更搶。", "溢價高＝外資看好；溢價急縮或轉折價，外資可能賣台股。"],
+"恐慌度": ["大盤", "市場有多害怕，0 最平靜、100 最恐慌。", "全班考試前的緊張程度溫度計。", "90 以上極度恐慌：短線可能還會跌，但長線常是分批買點。"],
+"VIX": ["大盤", "美股的恐慌指數。", "華爾街的害怕溫度計。", "20 以下平靜、30 以上恐慌、40 以上極度恐慌。"],
+"站上200日線比例": ["大盤", "所有股票中，有幾成股價在長期平均線之上。", "全班有幾成同學成績比自己一年平均還好。", "低於 20% 很悲觀，常接近底部；高於 80% 過熱。"],
+"百分位": ["大盤", "跟自己過去比，現在排第幾名（0～100）。", "這次考試在自己過去 100 次裡排第 90 名＝很高。", "90 以上偏高（貴／熱），10 以下偏低（便宜／冷）。"],
+"景氣燈號": ["總經", "國發會用紅黃綠藍燈表示台灣景氣冷熱。", "像紅綠燈：紅燈太熱、綠燈剛好、藍燈太冷。", "藍燈常是長線布局的好時機，紅燈要小心過熱。"],
+"聯準會": ["總經", "美國的中央銀行，決定美國利率。", "全世界的「錢的水龍頭」管理員。", "降息＝水龍頭開大，股市通常喜歡；升息相反。"],
+"升息": ["總經", "提高利率，借錢變貴。", "銀行說借錢的利息變高了，大家就少借錢、少花錢。", "通常對股市不利，尤其是成長股。"],
+"降息": ["總經", "降低利率，借錢變便宜。", "借錢利息變低，大家比較敢花錢投資。", "通常對股市有利。"],
+"CPI": ["總經", "消費者物價指數，看東西有沒有變貴（通膨）。", "去年一碗麵 100 元、今年 103 元，通膨 3%。", "太高會讓央行升息，股市不喜歡。"],
+"通膨": ["總經", "東西變貴、錢變薄。", "以前 100 元買得到 2 碗麵，現在只買得到 1 碗半。", "投資報酬要打敗通膨才是真的賺。"],
+"非農就業": ["總經", "美國每月新增多少工作（不含農業）。", "這個月全美國多了幾個人找到工作。", "太強怕升息、太弱怕衰退，剛好最好。"],
+"美債殖利率": ["總經", "借錢給美國政府 10 年拿到的年利率。", "全世界最安全的存款利率。", "上升時，股票（尤其科技股）比較沒吸引力。"],
+"匯率": ["總經", "1 美元可以換多少台幣。", "出國換錢時的價格。", "台幣升值（數字變小）常代表外資匯入買台股。"],
+"淨值": ["ETF", "ETF 裡面所有股票真正值多少錢（每單位）。", "一盒綜合水果裡面的水果，照市價算真正值多少。", "ETF 股價應該貼近淨值。"],
+"即時淨值": ["ETF", "盤中隨時估算的淨值（iNAV）。", "邊逛市場邊算這盒水果現在值多少。", "和市價比，算出折溢價。"],
+"折溢價": ["ETF", "ETF 市價比淨值貴（溢價）或便宜（折價）多少。", "一盒值 100 元的水果，大家搶著買賣到 105 元，就是溢價 5%。", "溢價超過 1% 代表買貴了，等回落再買；折價代表撿便宜但要確認原因。"],
+"規模": ["ETF", "ETF 總共管理多少錢。", "這間水果行的總進貨量。", "規模太小（例如低於 2 億）可能被下市。"],
+"配本金": ["ETF", "配出來的錢不是賺來的，而是從本金拿出來還你。", "撲滿沒有生錢，卻每個月從撲滿掏錢給你，撲滿越來越空。", "年化配息率異常高（例如 >15%）要小心。"],
+"平均成本": ["組合", "買了好幾次，平均每股花多少錢。", "第一次 100 元買 1 顆、第二次 80 元買 1 顆，平均 90 元。", "現價高於平均成本就是賺錢。"],
+"未實現損益": ["組合", "還沒賣掉，帳面上賺或賠多少。", "手上的蘋果漲價了，但還沒賣，賺的是「紙上富貴」。", "賣掉才算真的入袋。"],
+"已實現損益": ["組合", "已經賣掉，真正賺到或賠掉的錢。", "蘋果賣掉了，錢已經進口袋。", "報稅、算績效用。"],
+"年化報酬率": ["組合", "平均每一年賺幾 %，考慮了每筆錢放了多久（XIRR）。", "兩個人都賺 10%，一個花 1 年、一個花 5 年，前者厲害多了。", "長期 7～10% 已經很好；拿來和大盤比。"],
+"XIRR": ["組合", "考慮每次買賣時間點的年化報酬率。", "見「年化報酬率」。", "比單純總報酬 % 更公平。"],
+"手續費": ["組合", "每次買賣付給券商的費用。", "買東西的運費，台股是成交金額 0.1425%（常有折扣）。", "頻繁進出手續費會吃掉獲利。"],
+"證交稅": ["組合", "賣股票時要繳的稅。", "賣東西給國家抽的一點稅：股票 0.3%、ETF 0.1%。", "只有賣出才收。"],
+"資產配置": ["組合", "錢分散放在不同的地方。", "雞蛋不要放在同一個籃子，摔了一個籃子還有別的。", "看單一股票或產業占比是否太高。"],
+"複利": ["組合", "利息再生利息，像滾雪球。", "雪球從山上滾下來，越滾越大。", "時間越長效果越驚人，越早開始越好。"],
+"72法則": ["組合", "72 ÷ 年報酬率 ≒ 錢翻倍要幾年。", "年報酬 6%，72÷6＝12 年錢翻一倍。", "快速心算用。"],
+"實質購買力": ["組合", "扣掉通膨後，錢真正能買多少東西。", "20 年後的 100 萬，可能只買得到今天 67 萬的東西。", "退休規劃一定要看實質。"],
+"買點": ["估價", "價格便宜加上線型轉強，最適合買進的時機。", "特價的蘋果要挑剛好熟了、不會再爛下去的時候買。", "便宜但還在跌＝等；便宜又轉強＝好買點。"],
+"技術分數": ["技術", "把均線、MACD、RSI 等線型指標綜合成 0～100 分。", "身體檢查的總分。", "越高趨勢越健康。"],
+"綜合評分": ["估價", "把價值、成長、獲利、健康、股利、籌碼、線型、法人看法綜合成 1～10 分。", "學生的綜合成績單，不只看一科。", "8 分以上表現優秀，3 分以下要小心。"],
+"風險雷達": ["籌碼", "把處置股、注意股、借券暴增、外資撤出、當沖過熱等警訊集中顯示。", "學校的警示名單：誰被罰站、誰被提醒、誰被很多人盯上。", "出現在名單上不代表一定會跌，但要提高警覺。"],
+};
+const GL_ALIAS = {"本益比 PE": "本益比", "PE": "本益比", "PB": "股價淨值比", "殖利率%": "殖利率", "均價線 VWAP": "均價線", "P/C 比": "P/C ratio", "PC ratio": "P/C ratio", "Put/Call": "P/C ratio", "iNAV": "即時淨值", "MA20": "月線", "MA60": "季線", "20日支撐": "支撐", "20日壓力": "壓力", "支撐 S1": "S1", "壓力 R1": "R1", "樞紐 P": "樞紐點", "委買/委賣": "委買委賣", "委買/賣": "委買委賣", "大盤本益比": "本益比", "站上 200 日線": "站上200日線比例", "外資買賣超": "買賣超", "融資餘額": "融資", "借券賣出餘額": "借券賣出", "外資持股": "外資持股比", "年化": "年化報酬率", "股東權益報酬率": "ROE", "每股盈餘": "EPS", "黃金交叉": "黃金交叉", "死亡交叉": "死亡交叉", "現金股利": "殖利率"};
+
+/* ---------- 術語點一下跳出白話解釋 ---------- */
+const GLK = Object.keys(GL2).concat(Object.keys(GL_ALIAS)).sort((a, b) => b.length - a.length);
+const GLRE = new RegExp("(" + GLK.map(k => k.replace(/[.*+?^${}()|[\]\\\/]/g, "\\$&")).join("|") + ")");
+const glGet = t => { const k = GL2[t] ? t : GL_ALIAS[t]; return k && GL2[k] ? [k, GL2[k]] : null; };
+const tm = (t, label) => `<span class="tm" data-tm="${t}">${label || t}</span>`;
+function glClose(){ const p = $("#glPop"); if (p) p.remove(); }
+function glCard(k, g){ return `<div class="gl-h"><b>${k}</b><i>${g[0]}</i></div><p><span>👶 白話</span>${g[1]}</p><p><span>📖 小故事</span>${g[2]}</p><p><span>📏 怎麼看</span>${g[3]}</p>`; }
+function glPop(term, el){
+  const r = glGet(term); if (!r) return; glClose();
+  const p = document.createElement("div"); p.id = "glPop"; p.innerHTML = glCard(r[0], r[1]) + `<button class="gl-all">📖 看全部白話術語</button><button class="gl-x" aria-label="關閉">✕</button>`;
+  document.body.append(p);
+  if (innerWidth > 700 && el) { const b = el.getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight;
+    p.style.left = Math.max(10, Math.min(innerWidth - w - 10, b.left + b.width / 2 - w / 2)) + "px"; p.style.top = (b.bottom + h + 12 < innerHeight ? b.bottom + 8 : Math.max(10, b.top - h - 8)) + "px"; }
+  else p.classList.add("sheet");
+  p.querySelector(".gl-x").onclick = glClose; p.querySelector(".gl-all").onclick = () => { glClose(); glOpen(r[0]); };
+}
+document.addEventListener("click", e => {
+  const t = e.target.closest && e.target.closest(".tm");
+  if (t) { e.preventDefault(); e.stopPropagation(); glPop(t.dataset.tm, t); return; }
+  if (!(e.target.closest && e.target.closest("#glPop"))) glClose();
+}, true);
+/* 自動幫表格標題、卡片標籤上的專有名詞加上可點的說明 */
+const GLSEL = "th, .bd-t>small, .kpi small, .bp-row span, .bp-lv small, .ci-k small, .tick small, .rc-lv small, .sk-dims span, .fr-card>small, .mk-mini small, .imp-tb td:first-child b, .jd-sum b, .bd-hd h2, .mm-h3, h2.sec, .opt-k small, .rk-box small, .hl-hd b, .px small, .kid-t";
+function glScan(){
+  document.querySelectorAll(GLSEL).forEach(el => {
+    if (el.dataset.gl || el.closest(".tm,#glPop,#glDlg,button,a,select,.gt-i,.kid summary")) return;
+    el.dataset.gl = 1;
+    for (const n of [...el.childNodes]) {
+      if (n.nodeType != 3) continue; const m = n.textContent.match(GLRE); if (!m) continue;
+      const i = m.index, a = n.textContent.slice(0, i), b = n.textContent.slice(i + m[0].length), sp = document.createElement("span");
+      sp.className = "tm"; sp.dataset.tm = m[0]; sp.textContent = m[0];
+      n.replaceWith(document.createTextNode(a), sp, document.createTextNode(b)); break;
+    }
+  });
+}
+let glT = 0;
+new MutationObserver(ms => { if (ms.every(m => m.target.closest && m.target.closest("#clk,#gtk,#glPop"))) return; clearTimeout(glT); glT = setTimeout(glScan, 300); }).observe(document.body, {childList: true, subtree: true});
+setTimeout(glScan, 1500);
+/* 全部術語(可搜尋)*/
+function glOpen(focus){
+  let d = $("#glDlg"); if (!d) { d = document.createElement("div"); d.id = "glDlg"; document.body.append(d); }
+  const cats = [...new Set(Object.values(GL2).map(g => g[0]))]; let cat = "全部", q = "";
+  const paint = () => { const L = Object.entries(GL2).filter(([k, g]) => (cat == "全部" || g[0] == cat) && (!q || (k + g.join("")).toLowerCase().includes(q)));
+    d.querySelector(".gd-l").innerHTML = L.map(([k, g]) => `<div class="gd-c" id="gd-${encodeURIComponent(k)}">${glCard(k, g)}</div>`).join("") || `<p class="mknote">找不到這個詞，換個說法試試</p>`; };
+  d.innerHTML = `<div class="gd-box"><div class="gd-hd"><h2>📖 白話術語小辭典 <small>${Object.keys(GL2).length} 個詞・每個都有白話、小故事、怎麼看</small></h2><button class="gd-x" aria-label="關閉">✕</button></div>
+    <input class="gq" id="gdQ" placeholder="🔍 搜尋，例如 本益比、處置股、均價線"><div class="gd-cat">${["全部", ...cats].map(c => `<button data-c="${c}" class="${c == cat ? "on" : ""}">${c}</button>`).join("")}</div><div class="gd-l"></div></div>`;
+  d.classList.add("on"); document.body.style.overflow = "hidden";
+  d.querySelector(".gd-x").onclick = () => { d.classList.remove("on"); document.body.style.overflow = ""; };
+  d.onclick = e => { if (e.target == d) d.querySelector(".gd-x").click(); };
+  d.querySelector("#gdQ").oninput = e => { q = e.target.value.trim().toLowerCase(); paint(); };
+  d.querySelector(".gd-cat").onclick = e => { const b = e.target.closest("button"); if (!b) return; cat = b.dataset.c; d.querySelectorAll(".gd-cat button").forEach(x => x.classList.toggle("on", x == b)); paint(); };
+  paint();
+  if (focus) setTimeout(() => { const el = document.getElementById("gd-" + encodeURIComponent(focus)); if (el) { el.scrollIntoView({block: "center"}); el.classList.add("hit"); } }, 60);
+}
+(() => { const b = document.createElement("button"); b.id = "glFab"; b.innerHTML = "📖<span>術語</span>"; b.title = "白話術語小辭典"; b.onclick = () => glOpen(); document.body.append(b); })();
+
+/* ---------- 每一頁「這頁在做什麼？」白話故事 ---------- */
+const PAGEHELP = {
+  mkt: ["大盤儀表板", "一眼看懂台股今天的「天氣」：是晴天、陰天還是暴風雨。", "就像出門前看氣象：溫度（指數漲跌）、風有多大（成交量）、會不會下雨（恐慌度）、大家帶不帶傘（外資買賣）。看完就知道今天適不適合出門（進場）。", ["先看最上面「今日盤勢總表」12 格，紅字漲、綠字跌", "再看「總結」白話一句話", "想深入就點卡片跳到下面的詳細圖表"]],
+  macro: ["總經指標", "看美國和台灣的「大環境」好不好，大環境好，大部分公司都比較好賺。", "像種田要看天氣和季節：利率是水、通膨是溫度、就業是陽光。天氣好，大部分的田都長得好；天氣差，再會種的農夫也辛苦。", ["先看「影響程度」表的好壞判定（紅＝利多、綠＝利空）", "綜合判定告訴你整體偏多還是偏空", "指標以外的 7 個因素也會影響股市"]],
+  etf: ["ETF 總覽", "ETF 就是「一籃子股票」，這頁幫你比較每一籃的配息、價格、會不會買貴。", "像逛水果禮盒區：看每盒裝什麼、多少錢、每個月會不會送水果到家（配息）、現在賣價是不是比裡面水果還貴（溢價）。", ["用上方分類篩選高股息、市值型、債券", "看「近一年殖利率」和「溢價」：溢價太高先別買", "點卡片看持股、配息歷史"]],
+  calc: ["我的配息試算", "把你想買的 ETF 放進來，算出每個月大概可以領多少錢。", "像規劃「每個月都有零用錢」：這個月 A 撲滿給錢、下個月 B 撲滿給錢，排好就月月有錢領。", ["在 ETF 卡片按「＋ 加入我的試算」", "填入張數", "看每月入帳月曆"]],
+  plan: ["退休・複利", "算算看現在存多少、存多久，退休時夠不夠用。", "像滾雪球：雪球（本金）越早開始滾、山坡（時間）越長，最後越大。複利計算器讓你看到時間的魔法。", ["上方複利計算器：改金額、年數立即看結果", "下方退休規劃：填年齡和每月想領多少", "看「怎麼補缺口」建議"]],
+  learn: ["投資教學", "從零開始學投資的 15 堂動畫課，每課都有生活例子。", "像學騎腳踏車：先認識車子（基本名詞）、再學平衡（看懂數字）、最後上路（實戰案例）。", ["依序點課程", "看動畫和「現在的實際數字」", "不懂的詞按右下角 📖 術語"]],
+  "vp:rd": ["⚡ 盤中雷達", "開盤時幫你盯著股票，快跌、被大量賣出、跌破重要價位時馬上通知你。", "像請一位保全幫你看守倉庫：有人搬東西（大量賣壓）、門被撞開（跌破支撐），保全立刻打電話給你。", ["加入要盯的股票（或匯入自選股）", "按「開始監控」和「關網站也通知」", "當沖偏向＝今天買方還是賣方比較強"]],
+  "vp:rk": ["⚠️ 風險股", "把最近被交易所警告、被大戶放空、外資在撤退的股票列出來，提醒你小心。", "像學校的警示名單：誰被罰站（處置股）、誰被口頭警告（注意股）、誰被很多人說壞話（借券賣出）。名單上的不一定是壞學生，但要多注意。", ["先看自己的自選股有沒有在名單上（勾「只看我的自選股」）", "處置股買賣比較難成交", "借券暴增代表有大戶在空"]],
+  "vp:ex": ["🧠 大師選股", "把 17 位投資大師挑股票的方法，套用到全台灣的公司，看哪些公司被大師看上。", "像請 17 位不同口味的美食評審試吃全台灣的餐廳：有人愛便宜大碗、有人愛食材高級、有人愛新口味。被越多評審推薦的餐廳越值得去。", ["點大師看他的挑選標準", "可以複選多位大師找共同推薦", "一定要看「買點」欄：便宜但還在跌就先等"]],
+  "vp:dc": ["💎 定存股", "每年穩定賺錢、穩定發股利的股票，適合長期放著領息。", "像挑一隻會天天下蛋的母雞：不用跑得快，只要健康、天天有蛋。再挑雞價便宜的時候買。", ["「目前位置」看價格便宜還是貴", "看「買點」：便宜又轉強才是好時機", "連續配息年數越多越穩"]],
+  "vp:qs": ["❄️ 量化評分", "用電腦把每家公司的價值、成長、獲利、健康、股利各打一個分數。", "像學生的五科成績單：國文（價值）、數學（成長）、英文（獲利）、體育（健康）、美術（股利），一眼看出強項和弱項。", ["A 以上是全市場前 20%", "可依自己的投資風格看「速配度」", "點公司看雪花圖"]],
+  "vp:vp": ["🏆 綜合 Top150", "用巴菲特和近代選股方法綜合打分，排出最值得研究的 150 家公司。", "像學校的模範生排行榜，綜合品德、成績、體育、才藝。", ["看排名和「正常股價區間」", "安全邊際越大越便宜", "再搭配買點判斷進場時機"]],
+  "vp:ck": ["🏦 籌碼排行", "看大戶（外資、投信、千張大戶）最近在買什麼、賣什麼。", "像看菜市場的大批發商最近都在搬哪種菜，他們搬的菜通常會漲價。", ["連買天數越多代表越看好", "大戶比例上升代表籌碼集中", "融資大增要小心散戶過熱"]],
+  "vp:rv": ["📈 月營收", "看每家公司這個月的生意比去年好多少。", "像雞排店老闆每個月看帳本：這個月比去年同月多賣多少塊。", ["年增率越高生意越好", "「創近 2 年新高」代表生意正旺", "連續成長月數越多越穩"]],
+  "vp:rt": ["📣 券商評等", "專業分析師對公司的看法和目標價。", "像美食評論家對餐廳打分數，並預測這家店未來值多少錢。", ["目標價比現價高很多代表分析師看好", "多家一起調升更有參考性", "分析師也會看錯，當參考就好"]],
+  "vp:dv": ["💰 股利", "看每家公司發多少股利、什麼時候發。", "像查哪些母雞下的蛋最多、哪天會下蛋。", ["殖利率高但要看能不能持續", "除權息行事曆提醒你哪天要持有才領得到", "配息率超過 100% 要小心"]],
+  "vp:ev": ["📅 法說會・內部人", "公司開說明會的日期，和董監事、大股東有沒有在賣股票。", "法說會像餐廳老闆開記者會說明明年新菜色；內部人轉讓像廚師自己偷偷把股份賣掉，要想想為什麼。", ["法說會前後股價常波動", "內部人大量轉讓要提高警覺"]],
+  "vp:wl": ["⭐ 自選股", "把你關心或已經買的股票放在這裡，系統每天幫你做健康檢查。", "像幫家裡每個人建立健康手冊：每天量體溫，一發燒（體質轉弱）就提醒你。", ["填入張數和成本算損益", "🔔 體質追蹤：轉弱會通知", "下方是投資組合與報酬日曆"]],
+};
+function kidHTML(key){
+  const h = PAGEHELP[key]; if (!h) return "";
+  return `<details class="kid"><summary><span>👶 這頁在做什麼？</span><b>${h[1]}</b><em>點開看小故事</em></summary>
+    <div class="kid-b"><p><span>📖 小故事</span>${h[2]}</p><p><span>👣 怎麼用</span></p><ol>${h[3].map(x => `<li>${x}</li>`).join("")}</ol>
+    <p class="mknote">看到有虛線底線的專有名詞，點一下就有白話解釋；右下角「📖 術語」可以查全部。</p></div></details>`;
+}
+function kidEnsure(tab){
+  const pg = document.getElementById("pg-" + tab); if (!pg || !PAGEHELP[tab] || pg.querySelector(":scope > .kid")) return;
+  pg.insertAdjacentHTML("afterbegin", kidHTML(tab));
+}
+function kidSub(){ const k = $("#xpKid"); if (k) k.innerHTML = kidHTML("vp:" + XP.sub); }
+
+/* ================= 🧮 期權籌碼・ADR ================= */
+async function optUI(){
+  const host = $("#optBody"); if (!host) return;
+  const [O, B] = await Promise.all([getJ("options"), getJ("board")]);
+  if (!O) { host.innerHTML = `<p class="mknote">期權資料尚未產生（每天收盤後自動更新）。</p>`; return; }
+  const spot = B && B.taiex ? B.taiex.v : null, P = O.pcr || [], last = P[P.length - 1], pcv = last ? last[1] : null;
+  const pj = pcv == null ? ["—", "#64748B", ""] : pcv >= 100 ? ["偏多", "#CF3A3A", "賣權（下跌保險）未平倉比買權多。台股常把這解讀成大戶在「賣保險」、願意撐住下方，偏多。"] : pcv >= 80 ? ["中性", "#64748B", "買權和賣權差不多，多空拉鋸。"] : ["偏保守", "#1A8F57", "買權（看漲彩券）遠多於賣權，大戶沒有積極在下方撐盤，下跌時保護比較少。"];
+  const dist = x => spot ? `距現價 ${sgn((x / spot - 1) * 100, 1)}%` : "";
+  const side = (o, k) => { if (!o || !o[k] || !o[k].length) return "—"; const v = o[k][0][0];
+    const note = k == "call" ? (spot && v < spot ? "（已被突破，壓力變支撐）" : "") : (spot && v > spot ? "（已跌破，支撐變壓力）" : "");
+    return `<b class="num">${fmt(v, 0)}</b><small>${fmt(o[k][0][1], 0)} 口・${dist(v)}${note}</small><i>其次：${o[k].slice(1).map(x => fmt(x[0], 0)).join("、")}</i>`; };
+  const oiBox = (o, n) => !o ? "" : `<div class="opt-c"><h4>${n} <small>${o.exp}・${o.due.slice(5).replace("-", "/")} 到期</small></h4>
+    <div class="opt-k"><div class="up"><small>🧱 壓力（買權最大未平倉）</small>${side(o, "call")}</div><div class="dn"><small>🛟 支撐（賣權最大未平倉）</small>${side(o, "put")}</div></div>
+    <p class="mknote">這個到期的 P/C＝${o.pcr ?? "—"}（賣權 ${fmt(o.putOI, 0)} 口 ÷ 買權 ${fmt(o.callOI, 0)} 口）</p></div>`;
+  const I = O.inst || {}, ci = I.call ? I.call.oi : null, pi = I.put ? I.put.oi : null;
+  const ij = ci == null ? "—" : ci > 0 && (pi == null || pi <= 0) ? ["偏多", "#CF3A3A", "外資淨買進買權（押上漲）、沒有在買下跌保險"] : ci <= 0 && pi > 0 ? ["偏空", "#1A8F57", "外資淨買進賣權（買下跌保險）、沒有押上漲"] : ci > 0 && pi > 0 ? ["避險中", "#B7791F", "外資同時買進買權和賣權，等大行情、兩邊都防"] : ["偏空", "#1A8F57", "外資兩邊都是淨賣出"];
+  const A = O.adr || [], a0 = A[A.length - 1], a5 = A[A.length - 6];
+  const aj = !a0 ? "" : a0[1] >= 15 ? "美國人願意比台灣多付很多錢買台積電，外資很看好，台股有補漲機會。" : a0[1] >= 5 ? "正常的溢價範圍，外資態度中性偏多。" : a0[1] >= 0 ? "溢價偏低，外資熱度降溫。" : "美國的台積電比台灣還便宜（折價），外資悲觀，台股可能有賣壓。";
+  host.innerHTML = `<div class="opt-g">
+    <div class="opt-c"><h4>📊 臺指選擇權 P/C 比 <small>${last ? last[0].replace(/(\d{4})(\d\d)(\d\d)/, "$2/$3") : ""}</small></h4>
+      <div class="opt-big" style="--c:${pj[1]}"><b class="num">${pcv == null ? "—" : fmt(pcv, 1)}</b><span>${pj[0]}</span></div><p>${pj[2]}</p>
+      <div id="optPcCh"></div><p class="mknote">📏 怎麼看：高於 100 偏多、80～100 中性、低於 80 偏保守。要搭配趨勢一起看，單看容易誤判。</p></div>
+    ${oiBox(O.oi && O.oi.week, "📅 最近週選")}${oiBox(O.oi && O.oi.month, "🗓️ 近月月選")}
+    <div class="opt-c"><h4>🌏 外資選擇權部位 <small>${I.call ? I.call.d.replace(/(\d{4})(\d\d)(\d\d)/, "$2/$3") : ""}</small></h4>
+      ${ci == null ? `<p class="mknote">暫無資料</p>` : `<div class="opt-big" style="--c:${ij[1]}"><span>${ij[0]}</span></div><p>${ij[2]}。</p>
+      <div class="opt-k"><div><small>買權淨未平倉</small><b class="num ${pc(ci)}">${sgn(ci, 0)} 口</b><i>契約價值 ${fmt((I.call.val || 0) / 1e5, 1)} 億</i></div><div><small>賣權淨未平倉</small><b class="num ${pc(-pi)}">${sgn(pi, 0)} 口</b><i>契約價值 ${fmt((I.put.val || 0) / 1e5, 1)} 億</i></div></div>`}</div>
+    <div class="opt-c"><h4>🇺🇸 台積電 ADR 溢價 <small>${a0 ? a0[0].slice(5).replace("-", "/") : ""}</small></h4>
+      ${a0 ? `<div class="opt-big" style="--c:${a0[1] >= 0 ? "#CF3A3A" : "#1A8F57"}"><b class="num">${sgn(a0[1], 2)}%</b><span>${a5 ? `比一週前 ${sgn(a0[1] - a5[1], 1)}` : ""}</span></div><p>${aj}</p>
+      <div class="opt-k"><div><small>TSM（美股，1 股＝台積電 5 股）</small><b class="num">${fmt(a0[2], 2)} 美元</b></div><div><small>台積電（台股）</small><b class="num">${fmt(a0[3], 1)} 元</b></div></div><div id="optAdrCh"></div>` : `<p class="mknote">暫無資料</p>`}
+      <p class="mknote">📏 公式：TSM × 美元兌台幣 ÷ 5 ÷ 台積電股價 − 1。比較的是「前一晚美股收盤」和「當天台股收盤」。</p></div></div>
+    <p class="mknote">${esc(O.note || "")}</p>`;
+  const D8 = d => d.replace(/(\d{4})(\d\d)(\d\d)/, "$1-$2-$3");
+  if (P.length > 2) mcChart($("#optPcCh"), [{name: "P/C（未平倉）", color: "#2F5BEA", rows: P.map(r => [D8(r[0]), r[1]]), fmt: v => fmt(v, 1)}], {h: 170});
+  if (A.length > 2) mcChart($("#optAdrCh"), [{name: "ADR 溢價 %", color: "#C9A24E", rows: A.map(r => [r[0], r[1]]), fmt: v => fmt(v, 2) + "%"}], {h: 170});
+}
+
+/* ================= ⚠️ 風險股 ================= */
+let RISK = null; getJ("risk").then(j => { RISK = j; });
+let RK = {f: "all", mine: false};
+const RKF = [["all", "全部"], ["處置股", "⛔ 處置股"], ["注意股", "⚠️ 注意股"], ["借券", "🐻 借券暴增"], ["外資", "🏃 外資撤出"], ["當沖", "🎢 當沖過熱"]];
+function riskTag(c){
+  if (!RISK || !RISK.flags[c]) return "";
+  const f = RISK.flags[c], k = RISK.disp[c] ? "處置" : RISK.att[c] ? "注意" : "風險";
+  return `<span class="rk-t ${RISK.disp[c] ? "hard" : ""}" title="${f.join("、")}">${k}</span>`;
+}
+async function loadRk(){ if (!RISK) RISK = await getJ("risk"); await loadNames(); renderRk(); }
+function renderRk(){
+  const host = $("#xpRk"); if (!host) return;
+  if (!RISK) { host.innerHTML = `<div class="box empty">風險資料尚未產生（每天收盤後自動更新）</div>`; return; }
+  const nm = c => (NAMES || []).find(x => x[0] == c)?.[1] || RISK.disp[c]?.n || RISK.att[c]?.n || c, S = RISK.s;
+  const all = Object.entries(RISK.flags), cnt = k => k == "all" ? all.length : all.filter(([, f]) => f.some(x => x.startsWith(k))).length;
+  const L = all.filter(([c, f]) => (RK.f == "all" || f.some(x => x.startsWith(RK.f))) && (!RK.mine || WATCH.includes(c)))
+    .sort((a, b) => (RISK.disp[b[0]] ? 2 : RISK.att[b[0]] ? 1 : 0) - (RISK.disp[a[0]] ? 2 : RISK.att[a[0]] ? 1 : 0) || b[1].length - a[1].length);
+  const mineHit = WATCH.filter(c => RISK.flags[c]);
+  host.innerHTML = `<div class="box"><h2 class="sec">⚠️ 風險股名單 <small>${RISK.d.slice(4, 6)}/${RISK.d.slice(6)} 收盤・處置／注意股來自證交所與櫃買公告</small></h2>
+    ${mineHit.length ? `<div class="rk-mine">🔔 你的自選股有 <b>${mineHit.length}</b> 檔在名單上：${mineHit.map(c => `<b data-c="${c}">${c} ${nm(c)}</b>`).join("、")}</div>` : WATCH.length ? `<div class="rk-mine ok">✅ 你的自選股目前都不在風險名單上</div>` : ""}
+    <div class="rk-f">${RKF.map(([k, n]) => `<button data-f="${k}" class="${RK.f == k ? "on" : ""}">${n} <i>${cnt(k)}</i></button>`).join("")}<label><input type="checkbox" id="rkMine" ${RK.mine ? "checked" : ""}> 只看我的自選股</label></div>
+    <div class="gx-tw" style="max-height:none"><table class="gx-tb rk-tb"><thead><tr><th>股票</th><th>風險訊號</th><th>借券賣出餘額</th><th>借券 5 日</th><th>外資持股比</th><th>外資持股 20 日</th><th>當沖比</th><th>處置期間／原因</th></tr></thead><tbody>
+    ${L.slice(0, 300).map(([c, f]) => { const x = S[c] || [], dp = RISK.disp[c], at = RISK.att[c];
+      return `<tr data-c="${c}"><td><b>${c} ${nm(c)}</b></td><td>${f.map(t => `<span class="rk-b ${t.startsWith("處置") ? "hard" : ""}">${t}</span>`).join("")}</td>
+        <td class="num">${x[0] == null ? "—" : fmt(x[0], 0) + " 張"}</td><td class="num ${x[1] > 0 ? "neg" : ""}">${x[1] == null ? "—" : sgn(x[1], 1) + "%"}</td>
+        <td class="num">${x[3] == null ? "—" : fmt(x[3], 2) + "%"}</td><td class="num ${x[5] < 0 ? "neg" : x[5] > 0 ? "pos" : ""}">${x[5] == null ? "—" : sgn(x[5], 2)}</td>
+        <td class="num">${x[6] == null ? "—" : fmt(x[6], 1) + "%"}</td><td class="rk-w">${dp ? `⛔ ${esc(dp.per || "")}<br><small>${esc(dp.why || "")}</small>` : at ? `<small>${esc(at.why || "")}</small>` : "—"}</td></tr>`; }).join("") || `<tr><td colspan="8" class="mknote">沒有符合的股票</td></tr>`}</tbody></table></div>
+    <p class="mknote">📏 怎麼看：⛔處置股要分盤撮合、買賣不容易成交；⚠️注意股是處置的前一步；🐻借券賣出 5 日增 30% 以上代表有大戶在空；🏃外資持股 20 日減 2 個百分點以上代表外資在撤；🎢當沖比 50% 以上代表短線客很多。名單上不代表一定會跌，但要提高警覺。</p></div>`;
+  host.querySelectorAll("[data-f]").forEach(b => b.onclick = () => { RK.f = b.dataset.f; renderRk(); });
+  $("#rkMine").onchange = e => { RK.mine = e.target.checked; renderRk(); };
+  host.querySelectorAll("tr[data-c], .rk-mine b[data-c]").forEach(t => t.onclick = () => openStock(t.dataset.c));
+}
+function rkBox(d){
+  if (!RISK) return "";
+  const x = RISK.s[d.c], f = RISK.flags[d.c] || [], dp = RISK.disp[d.c], at = RISK.att[d.c]; if (!x && !f.length) return "";
+  const lv = (n, v, s2) => `<div><small>${n}</small><b class="num">${v}</b>${s2 ? `<i>${s2}</i>` : ""}</div>`;
+  return `<div class="box rk-box ${f.length ? "bad" : ""}"><h3 class="mm-h3">⚠️ 風險雷達 <small>${RISK.d.slice(4, 6)}/${RISK.d.slice(6)} 收盤</small></h3>
+    ${f.length ? `<div class="rk-tags">${f.map(t => `<span class="rk-b ${t.startsWith("處置") ? "hard" : ""}">${t}</span>`).join("")}</div>` : `<p class="rk-ok">✅ 沒有明顯的風險訊號</p>`}
+    ${dp ? `<p class="rk-dp">⛔ 處置中：${esc(dp.per || "")}（${esc(dp.why || "")}）。處置期間要分盤撮合，買賣比較不容易成交。</p>` : ""}${at ? `<p class="rk-dp">⚠️ 注意股：${esc(at.why || "")}</p>` : ""}
+    ${x ? `<div class="bp-lv">${lv("借券賣出餘額", x[0] == null ? "—" : fmt(x[0], 0) + " 張", x[1] != null ? `5 日 ${sgn(x[1], 1)}%・20 日 ${x[2] == null ? "—" : sgn(x[2], 1) + "%"}` : "")}${lv("外資持股比", x[3] == null ? "—" : fmt(x[3], 2) + "%", x[5] != null ? `20 日 ${sgn(x[5], 2)} 個百分點` : x[4] != null ? `5 日 ${sgn(x[4], 2)}` : "")}${lv("當沖比", x[6] == null ? "—" : fmt(x[6], 1) + "%", "僅上市")}</div>` : ""}
+    <p class="mknote">👶 白話：借券賣出像有人借了一堆雨傘來賣、猜等等會下雨（看壞這檔）；外資持股比下降代表外國大戶在把貨搬走；當沖比高代表很多人當天買當天賣，股價容易暴衝暴跌。</p></div>`;
+}
+
+/* ================= 💸 ETF 即時淨值・折溢價 ================= */
+let INAV = {}, INAVT = 0;
+async function navLoad(){
+  try {
+    const j = await fetch(CFG.proxy + encodeURIComponent("https://mis.twse.com.tw/stock/data/all_etf.txt")).then(r => r.json());
+    const o = {}; (j.a1 || []).forEach(g => (g.msgArray || []).forEach(x => { if (x.a && +x.f > 0) o[x.a] = {px: +x.e, nav: +x.f, prem: +x.g, prev: +x.h, t: x.j, d: x.i}; }));
+    if (Object.keys(o).length) { INAV = o; INAVT = Date.now(); navPaint(); }
+  } catch (e) {}
+}
+function navBadge(e, row){ return `<span class="nav-b ${row ? "row" : ""}" data-nav="${e.id}">${navTxt(e.id)}</span>`; }
+function navTxt(id){ const n = INAV[id]; if (!n || n.prem == null || isNaN(n.prem)) return "";
+  const c = n.prem >= 1 ? "hi" : n.prem <= -1 ? "lo" : "ok"; return `<em class="${c}" title="即時淨值 ${fmt(n.nav, 2)}（${n.t}）">${n.prem >= 0 ? "溢價" : "折價"} ${fmt(Math.abs(n.prem), 2)}%${n.prem >= 1 ? "・買貴了" : ""}</em>`; }
+function navLine(id){ const n = INAV[id]; return n ? `<small class="nav-l">即時淨值 <b>${fmt(n.nav, 2)}</b>・${n.prem >= 0 ? "溢價" : "折價"} <b>${fmt(Math.abs(n.prem), 2)}%</b>（${n.t}）</small>` : ""; }
+function navPaint(){ document.querySelectorAll("[data-nav]").forEach(el => el.innerHTML = navTxt(el.dataset.nav)); }
+function navTile(){ const L = Object.entries(INAV).filter(([, n]) => n.prem != null && !isNaN(n.prem)); if (!L.length) return null;
+  const hi = L.sort((a, b) => b[1].prem - a[1].prem)[0], n1 = L.filter(([, n]) => n.prem >= 1).length;
+  return {t: "💸 溢價最高的 ETF", v: `${hi[0]} ${sgn(hi[1].prem, 2)}%`, col: hi[1].prem >= 1 ? "#CF3A3A" : "var(--ink)", sub: `溢價超過 1% 的有 ${n1} 檔（買貴了要小心）`}; }
+navLoad(); setInterval(() => { if (!document.hidden && typeof rdSession == "function" && rdSession().open) navLoad(); }, 120e3);
 </script>
 </body>
 </html>

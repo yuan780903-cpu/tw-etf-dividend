@@ -153,6 +153,8 @@ def main():
     subprocess.run([sys.executable, os.path.join(HERE, "fetch_events.py")])             # 法說會、內部人持股轉讓
     subprocess.run([sys.executable, os.path.join(HERE, "build_stock_pages.py")])        # 量化評分、個股分析頁、月營收排行、搜尋名單
     subprocess.run([sys.executable, os.path.join(HERE, "build_board.py")])              # 大盤總表(含台指期夜盤)
+    subprocess.run([sys.executable, os.path.join(HERE, "fetch_risk.py")])              # 風險雷達:處置/注意股、借券、外資持股、當沖比
+    subprocess.run([sys.executable, os.path.join(HERE, "fetch_options.py")])           # 期權籌碼:P/C、最大未平倉、外資選擇權、ADR 溢價
     print(f"完成。FinMind 用了 {used}/{BUDGET} 次")
 
 if __name__ == "__main__":
