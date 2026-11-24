@@ -1600,6 +1600,33 @@ button{-webkit-tap-highlight-color:transparent}
 @media(min-width:901px){.opt-g{display:block;column-count:2;column-gap:12px}.opt-g>*{break-inside:avoid;margin:0 0 12px;display:inline-block;width:100%}}
 .fr-g .fr-zone{margin-top:14px;text-align:left}.fr-g .fr-zone>b{display:block;margin-bottom:4px}
 .fc2.one{grid-template-columns:minmax(0,1fr)!important}
+/* 三大法人區間交叉分析 */
+.ix .in-card{margin-top:0}.ix .pos{color:var(--up)}.ix .neg{color:var(--down)}
+.ix-ctl{display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;margin:10px 0}.ix-ctl .chips{margin:0}.ix-ctl label{font-size:13px;font-weight:700;color:var(--sub);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ix-ctl input[type=date]{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:5px 8px;font:inherit;font-size:13px}
+.ix-sum{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.ix-t{background:var(--bg);border-radius:14px;padding:10px 12px;border-left:4px solid var(--c);display:flex;flex-direction:column;gap:2px;min-width:0}
+.ix-t small{font-size:12.5px;font-weight:800;color:var(--sub)}.ix-t b{font-size:22px;font-weight:900}.ix-t i{font-style:normal;font-size:12px;color:var(--sub)}
+.ix-say{margin:10px 0;background:var(--bg);border-radius:12px;padding:9px 12px;font-size:14px;line-height:1.7}
+.ix-lg{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13px;font-weight:700}
+.ix-lg button{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:4px 11px;font-weight:700;cursor:pointer;font-size:13px}
+.ix-lg button.off{opacity:.4;text-decoration:line-through}.ix-lg i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.ix-lg span{display:inline-flex;align-items:center;gap:6px;color:var(--sub)}.ix-lg .ln{width:18px;height:3px;border-radius:2px;background:#7C3AED}
+.ix-ch{position:relative;margin:6px 0 12px}.ix-svg{display:block;max-width:100%;height:auto;cursor:pointer}
+.ix-svg line{stroke:var(--line);stroke-width:1}.ix-svg line.z{stroke:var(--sub);stroke-opacity:.6}.ix-svg text{fill:var(--sub);font-size:11px}.ix-svg text.ri{fill:#7C3AED}
+.ix-svg .il{fill:none;stroke:#7C3AED;stroke-width:2.2;stroke-linejoin:round}.ix-svg .hv{stroke:var(--ink);stroke-opacity:.35;stroke-dasharray:3 3}
+.ix-tip{display:none;position:absolute;top:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 10px;font-size:12.5px;box-shadow:0 10px 24px -14px rgba(20,33,61,.5);pointer-events:none;min-width:150px;z-index:2}
+.ix-tip b,.ix-tip span{display:block}.ix-tip em{font-style:normal;font-weight:800}.ix-tip small{color:var(--sub)}
+.ix-xh{display:flex;align-items:center;gap:6px 14px;flex-wrap:wrap;margin:4px 0 8px}.ix-xh>b{font-size:15px}.ix-xh span{font-size:13px;font-weight:700;display:flex;gap:6px;align-items:center}.ix-xh small{color:var(--sub);font-size:12px}
+.ix-xh select{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;padding:3px 6px;font:inherit;font-size:13px}
+.ix-x{width:100%;border-collapse:separate;border-spacing:8px;margin:-8px;min-width:520px}.ix-x th{font-size:13px;color:var(--sub);text-align:center;white-space:nowrap}.ix-x tr th:first-child{text-align:right;width:84px}
+.ix-cell{background:var(--bg);border:2px solid transparent;border-radius:14px;padding:10px 12px;cursor:pointer;vertical-align:top}.ix-cell:hover{border-color:#9DB2F5}.ix-cell.on{border-color:#2F5BEA;background:rgba(47,91,234,.08)}.ix-cell.nil{opacity:.55}
+.ix-cell b{display:block;font-size:20px;font-weight:900}.ix-cell span{display:block;font-size:13px}.ix-cell em{font-style:normal;font-weight:800}.ix-cell small{display:block;color:var(--sub);font-size:11.5px;margin-top:4px;line-height:1.45}
+.ix-th{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0 6px}.ix-th>b{font-size:15px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.ix-th small{color:var(--sub);font-weight:600;font-size:12px}
+.ix-f{font-size:13px;color:#2F5BEA;display:inline-flex;gap:6px;align-items:center}.ix-f button,.ix-csv{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:4px 11px;font-weight:700;cursor:pointer;font-size:12.5px}
+.ix-tb th[data-s]{cursor:pointer;white-space:nowrap}.ix-tb th.on{color:#2F5BEA}.ix-tb tr.pick td{background:rgba(47,91,234,.12)}
+@media(max-width:900px){.ix-sum{grid-template-columns:repeat(2,minmax(0,1fr))}.ix-t b{font-size:19px}}
+@media(max-width:700px){.ix .in-card{padding:14px 12px}.ix-ctl{gap:8px}.ix-ctl .chips{gap:5px;flex-wrap:nowrap;overflow-x:auto}.ix-ctl .chip{padding:5px 10px;font-size:12.5px;white-space:nowrap}.ix-ctl label{flex-wrap:nowrap;font-size:12px}.ix-ctl input[type=date]{padding:4px 5px;font-size:12px;width:128px}.ix-t{padding:9px 10px}.ix-t b{font-size:16.5px;white-space:nowrap}.ix-say{font-size:13.5px}}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="巴菲遠">
@@ -2697,6 +2724,7 @@ function renderMkt(){
   <div class="box" id="mk-mg"><h2 class="sec">🏦 三大法人動向・資券 <small>外資、投信、自營商買賣超（收盤後約 15:00 公布）＋融資融券（約 21:30 公布）</small></h2>
     <div class="kid-mini">👶 <b>白話</b>：三大法人是市場上最有錢的三種大戶。<b>買超</b>＝他們今天買的比賣的多（把錢帶進來），<b>賣超</b>＝賣的比買的多（把錢帶走）。連續好幾天同一個方向，比單看一天更有意義。</div>
     <div id="instCard"><div class="sk" style="height:200px"></div></div>
+    <div id="ixBox" class="ix"><div class="sk" style="height:320px"></div></div>
     <div class="ctool"><div class="chips" id="mgTab"></div><div class="chips" id="mgRg"></div></div>
     <div id="mgSay" class="mg-say"></div><div class="chart" id="mgChart"></div><div class="scrollx" id="mgTbl" style="max-height:420px"></div></div>
 
@@ -2770,7 +2798,7 @@ function renderMkt(){
 
   <p class="mknote">資料來源：臺灣證券交易所（臺股儀表板、信用交易統計）、臺灣期貨交易所（台指 VIX）、FinMind（三大法人、期貨未平倉）、Yahoo Finance（全球指數、美股 VIX）。融資相關為上市資料。所有區間、分數與機率皆為歷史統計推估，不構成任何投資建議。</p>
   </div>`;
-  mkChartUI(); gChartUI(); detailUI(); if (MK.a.fear) fearUI(); else $("#mk-fear").remove(); if (MK.a.drivers) keyUI(); else $("#mk-key").remove(); laUI(); mgUI(); nwUI(); gxUI(); heatUI(); boardUI(); optUI(); cptUI(); pttUI(); instUI(); futUI();
+  mkChartUI(); gChartUI(); detailUI(); if (MK.a.fear) fearUI(); else $("#mk-fear").remove(); if (MK.a.drivers) keyUI(); else $("#mk-key").remove(); laUI(); mgUI(); nwUI(); gxUI(); heatUI(); boardUI(); optUI(); cptUI(); pttUI(); instUI(); ixUI(); futUI();
   gate("#mk-la", "線型分析：任一檔個股自動畫趨勢線、頸線，判斷 W 底／M 頭，並列出全市場符合線型的股票"); gate("#mk-gx", "各國大盤區間查詢：自訂期間的走勢、統計分析、每日明細與 CSV 下載、各國排名"); gate("#mk-det", "大盤 5 年每日明細與 CSV 下載"); gate("#mk-ev", "歷史回測：過去發生同樣情況後，大盤 1 週／1 個月／1 季的實際走勢");
   $("#mkNav").onclick = e => { const b = e.target.closest("[data-to]"); if (!b) return; const el = document.getElementById(b.dataset.to);
     if (el) window.scrollTo({top: el.getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 70), behavior: "smooth"}); };
@@ -3707,7 +3735,7 @@ function mgUI(){
   const R = MK.R, f2 = (v, d = 2) => v == null ? "—" : (v > 0 ? "+" : "") + fmt(v, d);
   R.forEach((r, i) => { const p = R[i - 1]; r.mDiffP = p && r.mAmt != null && p.mAmt ? r.mAmt - p.mAmt : null; r.sDiff = p && r.sShr != null && p.sShr != null ? r.sShr - p.sShr : null;
     r.sm = r.sShr && r.mShr ? r.sShr / r.mShr * 100 : null; });
-  const T = {m: ["融資", "mDiffP", "億", "融資增減（億）"], s: ["融券", "sDiff", "張", "融券增減（張）"], b: ["餘額", "mAmt", "億", "融資餘額（億）"], i: ["法人", "tot", "億", "三大法人合計（億）"]};
+  const T = {m: ["融資", "mDiffP", "億", "融資增減（億）"], s: ["融券", "sDiff", "張", "融券增減（張）"], b: ["餘額", "mAmt", "億", "融資餘額（億）"]};
   $("#mgTab").innerHTML = Object.entries(T).map(([k, t]) => `<span class="chip ${mgT == k ? "on" : ""}" data-t="${k}">${t[0]}</span>`).join("");
   $("#mgRg").innerHTML = [[21, "1 月"], [63, "3 月"], [126, "半年"], [250, "1 年"]].map(([k, n]) => `<span class="chip ${mgN == k ? "on" : ""}" data-n="${k}">${n}</span>`).join("");
   $("#mgTab").onclick = e => { const c = e.target.closest("[data-t]"); if (c) { mgT = c.dataset.t; mgUI(); } };
@@ -3730,10 +3758,10 @@ function mgUI(){
     {name: "加權指數", vals: V.map(r => r.tx), axis: "R", color: "#0ea5e9", w: 2, fmt: v => fmt(v, 2)}];
   svgChart($("#mgChart"), V.map(r => r.d), series, {H: 260, fmtL: v => fmt(v, t[2] == "張" ? 0 : 0), fmtR: v => fmt(v / 1000, 0) + "K", zeroR: false});
   const rows = R.slice(-40).reverse();
-  $("#mgTbl").innerHTML = `<table class="ev dtab"><tr><th>日期</th><th class="r">加權指數</th><th class="r">漲跌%</th><th class="r">融資增減(億)</th><th class="r">融資餘額(億)</th><th class="r">融券增減(張)</th><th class="r">融券餘額(張)</th><th class="r">券資比%</th><th class="r">外資(億)</th><th class="r">投信(億)</th><th class="r">自營(億)</th><th class="r">維持率%</th><th class="r">追繳戶</th></tr>
+  $("#mgTbl").innerHTML = `<table class="ev dtab"><tr><th>日期</th><th class="r">加權指數</th><th class="r">漲跌%</th><th class="r">融資增減(億)</th><th class="r">融資餘額(億)</th><th class="r">融券增減(張)</th><th class="r">融券餘額(張)</th><th class="r">券資比%</th><th class="r">維持率%</th><th class="r">追繳戶</th></tr>
     ${rows.map(r => `<tr><td class="d">${r.d.slice(5).replace("-", "/")}</td><td class="r num">${fmt(r.tx, 2)}</td><td class="r num ${pc(r.chg)}">${f2(r.chg)}</td><td class="r num ${pc(r.mDiffP)}">${f2(r.mDiffP)}</td><td class="r num">${r.mAmt == null ? "—" : fmt(r.mAmt, 2)}</td>
       <td class="r num ${pc(r.sDiff)}">${r.sDiff == null ? "—" : f2(r.sDiff, 0)}</td><td class="r num">${r.sShr == null ? "—" : fmt(r.sShr)}</td><td class="r num">${r.sm == null ? "—" : fmt(r.sm, 2)}</td>
-      <td class="r num ${pc(r.fi)}">${f2(r.fi, 1)}</td><td class="r num ${pc(r.it)}">${f2(r.it, 1)}</td><td class="r num ${pc(r.dl)}">${f2(r.dl, 1)}</td><td class="r num ${cellCls("keep", r.keep)}">${r.keep == null ? "—" : fmt(r.keep, 2)}</td><td class="r num ${cellCls("below", r.below)}">${r.below == null ? "—" : fmt(r.below)}</td></tr>`).join("")}</table>`;
+      <td class="r num ${cellCls("keep", r.keep)}">${r.keep == null ? "—" : fmt(r.keep, 2)}</td><td class="r num ${cellCls("below", r.below)}">${r.below == null ? "—" : fmt(r.below)}</td></tr>`).join("")}</table>`;
 }
 
 /* ---------- ETF 持股結構 ---------- */
@@ -6743,6 +6771,121 @@ let balT = 0;
 function balAll(){ clearTimeout(balT); balT = setTimeout(() => document.querySelectorAll(BAL_SEL).forEach(g => { if (g.offsetParent) try { balGrid(g); } catch (e) {} }), 250); }
 new MutationObserver(ms => { if (ms.some(m => !(m.target.closest && m.target.closest("#clk,#gtk,.toast,#nwQ")) && [...m.addedNodes].some(n => n.nodeType == 1))) balAll(); }).observe(document.body, {childList: true, subtree: true});
 addEventListener("resize", balAll); document.addEventListener("click", balAll); balAll();
+
+/* ================= 🔎 三大法人區間交叉分析(選區間 → 摘要、長條＋指數圖、買賣組合交叉表、可排序明細,點交叉表格子可篩選明細)================= */
+let IXS = {m: "twse", n: 20, from: "", to: "", rk: "fi", ck: "it", cell: "", sort: ["d", -1], hide: {}, pick: ""};
+async function ixUI(){
+  const host = $("#ixBox"); if (!host) return; const J = await getJ("inst_hist");
+  if (!J || !J.twse) { host.innerHTML = `<p class="mknote">三大法人歷史資料尚未產生（下次雲端更新後就會出現）</p>`; return; }
+  const NM = {fi: "外資", it: "投信", dl: "自營商", tot: "合計"}, CO = {fi: "#2F5BEA", it: "#F59E0B", dl: "#94A3B8"}, KS = ["fi", "it", "dl"];
+  const IXN = {twse: "加權指數", tpex: "櫃買指數", all: "加權指數"};
+  const full = m => {
+    let R;
+    if (m == "all") { const b = new Map(J.tpex.rows.map(r => [r[0], r])); R = J.twse.rows.filter(r => b.has(r[0])).map(r => { const q = b.get(r[0]); return [r[0], ...[1, 2, 3, 4].map(i => +((r[i] || 0) + (q[i] || 0)).toFixed(2)), r[5]]; }); }
+    else R = J[m].rows;
+    const o = R.map(r => ({d: r[0], fi: r[1], it: r[2], dl: r[3], tot: r[4], ix: r[5]}));
+    o.forEach((r, i) => { const a = o[i - 1], b = o[i + 1]; r.chg = a && a.ix && r.ix ? (r.ix / a.ix - 1) * 100 : null; r.nx = b && b.ix && r.ix ? (b.ix / r.ix - 1) * 100 : null; });
+    return o;
+  };
+  const avg = xs => { xs = xs.filter(x => x != null); return xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null; };
+  const upP = xs => { xs = xs.filter(x => x != null); return xs.length ? Math.round(xs.filter(x => x > 0).length / xs.length * 100) : null; };
+  const f1 = v => v == null ? "—" : sgn(v, 1), fp = v => v == null ? "—" : sgn(v, 2) + "%";
+  const bs = v => v > 0 ? "買" : "賣";
+
+  function paint(){
+    const A = full(IXS.m); if (!A.length) { host.querySelector(".ix-body").innerHTML = `<p class="mknote">這個市場暫無資料</p>`; return; }
+    const d0 = A[0].d, d1 = A[A.length - 1].d;
+    let i0, i1;
+    if (IXS.from || IXS.to) { const f = IXS.from || d0, t = IXS.to || d1; i0 = A.findIndex(r => r.d >= f); i1 = A.length - 1 - [...A].reverse().findIndex(r => r.d <= t); if (i0 < 0 || i1 < i0) { i0 = Math.max(0, A.length - IXS.n); i1 = A.length - 1; } }
+    else { i1 = A.length - 1; i0 = Math.max(0, A.length - IXS.n); }
+    const V = A.slice(i0, i1 + 1), base = A[i0 - 1] && A[i0 - 1].ix ? A[i0 - 1].ix : V[0].ix, lastIx = [...V].reverse().find(r => r.ix);
+    const sum = k => V.reduce((s, r) => s + (r[k] || 0), 0), days = k => V.filter(r => r[k] > 0).length;
+    const ixc = base && lastIx ? (lastIx.ix / base - 1) * 100 : null;
+    // 摘要四格
+    const tile = k => { const v = sum(k); return `<div class="ix-t" style="--c:${CO[k]}"><small>${NM[k]}累計</small><b class="num ${pc(v)}">${f1(v)} 億</b><i>買超 ${days(k)} 天／賣超 ${V.filter(r => r[k] < 0).length} 天</i></div>`; };
+    const S = KS.map(tile).join("") + `<div class="ix-t" style="--c:#7C3AED"><small>${IXN[IXS.m]}</small><b class="num ${pc(ixc)}">${fp(ixc)}</b><i>${base ? fmt(base, 2) : "—"} → ${lastIx ? fmt(lastIx.ix, 2) : "—"}・合計 ${f1(sum("tot"))} 億</i></div>`;
+    // 交叉表
+    const rk = IXS.rk, ck = IXS.ck, cells = [["B", "B"], ["B", "S"], ["S", "B"], ["S", "S"]];
+    const inCell = (r, c) => (c[0] == "B" ? r[rk] > 0 : r[rk] < 0) && (c[1] == "B" ? r[ck] > 0 : r[ck] < 0);
+    const st = (R, c) => { const X = R.filter(r => inCell(r, c)); return {n: X.length, chg: avg(X.map(r => r.chg)), nx: avg(X.map(r => r.nx)), up: upP(X.map(r => r.nx))}; };
+    const cname = c => `${NM[rk]}${c[0] == "B" ? "買" : "賣"}＋${NM[ck]}${c[1] == "B" ? "買" : "賣"}`;
+    const ctd = c => { const a = st(V, c), h = st(A, c), k = c.join("");
+      return `<td class="ix-cell ${IXS.cell == k ? "on" : ""} ${a.n ? "" : "nil"}" data-c="${k}"><b class="num">${a.n} 天</b><span>當天 <em class="num ${pc(a.chg)}">${fp(a.chg)}</em></span><span>隔天 <em class="num ${pc(a.nx)}">${fp(a.nx)}</em>・漲 ${a.up == null ? "—" : a.up + "%"}</span><small>全部 ${A.length} 天裡：${h.n} 天，隔天 ${fp(h.nx)}・漲 ${h.up == null ? "—" : h.up + "%"}</small></td>`; };
+    const sel = (id, v) => `<select id="${id}">${KS.map(k => `<option value="${k}" ${k == v ? "selected" : ""}>${NM[k]}</option>`).join("")}</select>`;
+    const X = `<div class="ix-xh"><b>🔀 買賣組合交叉表</b><span>列 ${sel("ixRk", rk)} × 欄 ${sel("ixCk", ck)}</span><small>點格子＝下方明細只看那種日子；再點一次取消</small></div>
+      <div class="scrollx"><table class="ix-x"><tr><th></th><th>${NM[ck]}買超</th><th>${NM[ck]}賣超</th></tr>
+      <tr><th>${NM[rk]}買超</th>${ctd(cells[0])}${ctd(cells[1])}</tr><tr><th>${NM[rk]}賣超</th>${ctd(cells[2])}${ctd(cells[3])}</tr></table></div>`;
+    // 白話
+    const best = cells.map(c => ({c, ...st(V, c)})).sort((a, b) => b.n - a.n)[0];
+    const fiS = sum("fi"), itS = sum("it");
+    const say = `這 <b>${V.length}</b> 個交易日（${V[0].d.slice(5).replace("-", "/")}～${V[V.length - 1].d.slice(5).replace("-", "/")}），外資累計${fiS >= 0 ? "買超" : "賣超"} <b>${fmt(Math.abs(fiS), 0)} 億</b>、投信${itS >= 0 ? "買超" : "賣超"} <b>${fmt(Math.abs(itS), 0)} 億</b>，${IXN[IXS.m]}${ixc == null ? "" : `${ixc >= 0 ? "漲" : "跌"} <b>${fmt(Math.abs(ixc), 2)}%</b>`}。`
+      + (rk != ck && best && best.n ? `最常出現的是「${cname(best.c)}」（${best.n} 天），這種日子隔天${IXN[IXS.m]}平均 ${fp(best.nx)}。` : "")
+      + (fiS < 0 && itS > 0 ? "外資在賣、投信在買，國內資金在撐盤。" : fiS > 0 && itS > 0 ? "外資投信同步買超，土洋同向偏多。" : fiS < 0 && itS < 0 ? "外資投信同步賣超，土洋同向偏空。" : "");
+    // 明細(篩選＋排序)
+    let D = V.slice(); if (IXS.cell) D = D.filter(r => inCell(r, IXS.cell.split("")));
+    const [sk, sd] = IXS.sort; D.sort((a, b) => (a[sk] == null) - (b[sk] == null) || (a[sk] > b[sk] ? 1 : a[sk] < b[sk] ? -1 : 0) * sd);
+    const H = [["d", "日期"], ["fi", "外資"], ["it", "投信"], ["dl", "自營商"], ["tot", "合計"], ["ix", IXN[IXS.m]], ["chg", "當天漲跌"], ["nx", "隔天漲跌"]];
+    const T = `<div class="ix-th"><b>📋 每日明細 ${IXS.cell ? `<span class="ix-f">只看：${cname(IXS.cell.split(""))}（${D.length} 天）<button data-clr>✕ 取消篩選</button></span>` : `<small>${D.length} 天・點欄位標題排序</small>`}</b><button class="ix-csv">⬇ 匯出 CSV</button></div>
+      <div class="scrollx" style="max-height:380px"><table class="ev ix-tb"><tr>${H.map(([k, n]) => `<th data-s="${k}" class="${k == "d" ? "" : "r"} ${sk == k ? "on" : ""}">${n}${sk == k ? (sd > 0 ? " ▲" : " ▼") : ""}</th>`).join("")}</tr>
+      ${D.map(r => `<tr data-d="${r.d}" class="${IXS.pick == r.d ? "pick" : ""}"><td>${r.d}</td>${KS.concat("tot").map(k => `<td class="r num ${pc(r[k])}">${f1(r[k])}</td>`).join("")}<td class="r num">${r.ix ? fmt(r.ix, 2) : "—"}</td><td class="r num ${pc(r.chg)}">${fp(r.chg)}</td><td class="r num ${pc(r.nx)}">${fp(r.nx)}</td></tr>`).join("")}</table></div>`;
+    host.querySelector(".ix-body").innerHTML = `<div class="ix-sum">${S}</div><p class="ix-say">💡 ${say}</p>
+      <div class="ix-lg">${KS.map(k => `<button data-h="${k}" class="${IXS.hide[k] ? "off" : ""}"><i style="background:${CO[k]}"></i>${NM[k]}</button>`).join("")}<span><i class="ln"></i>${IXN[IXS.m]}（右軸）</span></div>
+      <div class="ix-ch" id="ixCh"></div>${X}${T}
+      <p class="mknote">單位：億元。上市＝證交所（近 2 年）、上櫃＝櫃買中心（近 1 年，資料逐日累積中）；「上市＋上櫃」只算兩邊都有資料的日子，指數用加權指數。隔天漲跌＝下一個交易日收盤比當天收盤。過去統計不代表未來。</p>`;
+    ixChart($("#ixCh"), V, KS.filter(k => !IXS.hide[k]), CO, NM, IXN[IXS.m]);
+    // 互動
+    const B = host.querySelector(".ix-body");
+    B.querySelectorAll("[data-h]").forEach(b => b.onclick = () => { IXS.hide[b.dataset.h] = !IXS.hide[b.dataset.h]; if (KS.every(k => IXS.hide[k])) IXS.hide = {}; paint(); });
+    B.querySelectorAll(".ix-cell").forEach(c => c.onclick = () => { IXS.cell = IXS.cell == c.dataset.c ? "" : c.dataset.c; paint(); });
+    $("#ixRk").onchange = e => { IXS.rk = e.target.value; IXS.cell = ""; paint(); }; $("#ixCk").onchange = e => { IXS.ck = e.target.value; IXS.cell = ""; paint(); };
+    B.querySelectorAll("[data-s]").forEach(h => h.onclick = () => { const k = h.dataset.s; IXS.sort = [k, IXS.sort[0] == k ? -IXS.sort[1] : (k == "d" ? -1 : 1)]; paint(); });
+    const clr = B.querySelector("[data-clr]"); if (clr) clr.onclick = () => { IXS.cell = ""; paint(); };
+    B.querySelector(".ix-csv").onclick = () => {
+      const csv = "﻿" + [H.map(h => h[1]).join(","), ...D.map(r => [r.d, ...KS.concat("tot").map(k => r[k] ?? ""), r.ix ?? "", r.chg == null ? "" : r.chg.toFixed(2), r.nx == null ? "" : r.nx.toFixed(2)].join(","))].join("\n");
+      const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], {type: "text/csv"})); a.download = `三大法人_${{twse: "上市", tpex: "上櫃", all: "上市上櫃"}[IXS.m]}_${V[0].d}_${V[V.length - 1].d}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    };
+    $("#ixCh").onclick = e => { const d = e.target.closest("[data-d]") || ($("#ixCh").dataset.hov ? {dataset: {d: $("#ixCh").dataset.hov}} : null); if (!d) return; IXS.pick = d.dataset.d; IXS.cell = ""; paint();
+      const row = host.querySelector(`.ix-tb tr[data-d="${IXS.pick}"]`); if (row) { const sc = row.closest(".scrollx"); sc.scrollTop += row.getBoundingClientRect().top - sc.getBoundingClientRect().top - sc.clientHeight / 2; sc.scrollIntoView({block: "nearest", behavior: "smooth"}); } };
+    // 區間控制的顯示
+    host.querySelectorAll("#ixRg .chip").forEach(c => c.classList.toggle("on", !IXS.from && !IXS.to && +c.dataset.n == IXS.n));
+    $("#ixFrom").min = $("#ixTo").min = d0; $("#ixFrom").max = $("#ixTo").max = d1;
+    $("#ixFrom").value = IXS.from || V[0].d; $("#ixTo").value = IXS.to || V[V.length - 1].d;
+  }
+  host.innerHTML = `<div class="in-card"><div class="in-hd"><h3 class="in-t" style="margin:0">🔎 三大法人區間交叉分析</h3><div class="cal-f" id="ixM">${[["twse", "上市"], ["tpex", "上櫃"], ["all", "上市＋上櫃"]].map(([k, n]) => `<button data-m="${k}" class="${IXS.m == k ? "on" : ""}">${n}</button>`).join("")}</div></div>
+    <div class="ix-ctl"><div class="chips" id="ixRg">${[[5, "5 天"], [20, "20 天"], [60, "60 天"], [120, "120 天"], [250, "1 年"]].map(([n, t]) => `<span class="chip" data-n="${n}">${t}</span>`).join("")}</div>
+      <label>自訂 <input type="date" id="ixFrom"> ～ <input type="date" id="ixTo"></label></div>
+    <div class="ix-body"></div></div>`;
+  host.querySelector("#ixM").onclick = e => { const b = e.target.closest("button"); if (!b) return; IXS.m = b.dataset.m; IXS.cell = ""; IXS.pick = ""; host.querySelectorAll("#ixM button").forEach(z => z.classList.toggle("on", z == b)); paint(); };
+  host.querySelector("#ixRg").onclick = e => { const c = e.target.closest("[data-n]"); if (!c) return; IXS.n = +c.dataset.n; IXS.from = IXS.to = ""; IXS.cell = ""; paint(); };
+  $("#ixFrom").onchange = e => { IXS.from = e.target.value; IXS.cell = ""; paint(); }; $("#ixTo").onchange = e => { IXS.to = e.target.value; IXS.cell = ""; paint(); };
+  paint();
+  let rw = innerWidth; addEventListener("resize", () => { if (Math.abs(innerWidth - rw) > 40 && $("#ixCh")) { rw = innerWidth; paint(); } });
+}
+function ixChart(el, V, ks, CO, NM, ixName){
+  const W = Math.max(320, el.clientWidth || 900), mob = W < 600, H = mob ? 230 : 290, P = {l: mob ? 40 : 56, r: mob ? 44 : 62, t: 12, b: 26};
+  const n = V.length, bw = (W - P.l - P.r) / n, X = i => P.l + (i + .5) * bw;
+  let hi = 0, lo = 0; V.forEach(r => { let p = 0, q = 0; ks.forEach(k => { const v = r[k] || 0; if (v > 0) p += v; else q += v; }); hi = Math.max(hi, p); lo = Math.min(lo, q); });
+  if (hi == lo) hi = 1; const pad = (hi - lo) * .08; hi += pad; lo -= lo < 0 ? pad : 0;
+  const Y = v => P.t + (hi - v) / (hi - lo) * (H - P.t - P.b);
+  const ix = V.map(r => r.ix).filter(Boolean), imx = Math.max(...ix), imn = Math.min(...ix), ip = (imx - imn) * .1 || 1;
+  const YI = v => P.t + (imx + ip - v) / (imx - imn + 2 * ip) * (H - P.t - P.b);
+  const tick = (a, b, k) => { const st = Math.pow(10, Math.floor(Math.log10((b - a) / k || 1))), m = [1, 2, 2.5, 5, 10].find(x => (b - a) / (st * x) <= k) * st, o = []; for (let v = Math.ceil(a / m) * m; v <= b; v += m) o.push(+v.toFixed(6)); return o; };
+  const ft = v => Math.abs(v) >= 1000 ? fmt(v / 1000, 1) + "K" : fmt(v, 0);
+  let g = tick(lo, hi, 5).map(v => `<line x1="${P.l}" x2="${W - P.r}" y1="${Y(v)}" y2="${Y(v)}" class="${v == 0 ? "z" : ""}"/><text x="${P.l - 6}" y="${Y(v) + 4}" text-anchor="end">${ft(v)}</text>`).join("");
+  g += tick(imn - ip, imx + ip, 4).map(v => `<text x="${W - P.r + 6}" y="${YI(v) + 4}" class="ri">${fmt(v, 0)}</text>`).join("");
+  const step = Math.max(1, Math.ceil(n / (mob ? 4 : 7)));
+  g += V.map((r, i) => i % step == 0 || i == n - 1 ? `<text x="${X(i)}" y="${H - 8}" text-anchor="middle">${r.d.slice(5).replace("-", "/")}</text>` : "").join("");
+  const bars = V.map((r, i) => { let p = 0, q = 0; return ks.map(k => { const v = r[k] || 0; if (!v) return ""; const y0 = v > 0 ? p : q, y1 = y0 + v; v > 0 ? p = y1 : q = y1;
+    return `<rect x="${X(i) - bw * .38}" width="${Math.max(1, bw * .76)}" y="${Math.min(Y(y0), Y(y1))}" height="${Math.max(.5, Math.abs(Y(y0) - Y(y1)))}" fill="${CO[k]}" data-d="${r.d}"/>`; }).join(""); }).join("");
+  const pts = V.map((r, i) => r.ix ? `${X(i).toFixed(1)},${YI(r.ix).toFixed(1)}` : "").filter(Boolean).join(" ");
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" class="ix-svg">${g}${bars}<polyline points="${pts}" class="il"/><line class="hv" y1="${P.t}" y2="${H - P.b}" x1="-9" x2="-9"/></svg><div class="ix-tip"></div>`;
+  const svg = el.querySelector("svg"), tip = el.querySelector(".ix-tip"), hv = el.querySelector(".hv");
+  svg.onmousemove = e => { const b = svg.getBoundingClientRect(), x = (e.clientX - b.left) * W / b.width, i = Math.min(n - 1, Math.max(0, Math.floor((x - P.l) / bw))), r = V[i]; if (!r) return;
+    el.dataset.hov = r.d; hv.setAttribute("x1", X(i)); hv.setAttribute("x2", X(i));
+    tip.innerHTML = `<b>${r.d}</b>${["fi", "it", "dl", "tot"].map(k => `<span>${NM[k]} <em class="${pc(r[k])}">${sgn(r[k], 1)}</em></span>`).join("")}<span>${ixName} ${r.ix ? fmt(r.ix, 2) : "—"} <em class="${pc(r.chg)}">${r.chg == null ? "" : sgn(r.chg, 2) + "%"}</em></span><small>點一下看明細</small>`;
+    tip.style.display = "block"; const tx = X(i) / W * b.width; tip.style.left = Math.min(b.width - 170, Math.max(0, tx + 12)) + "px"; };
+  svg.onmouseleave = () => { tip.style.display = "none"; hv.setAttribute("x1", -9); hv.setAttribute("x2", -9); delete el.dataset.hov; };
+}
 </script>
 </body>
 </html>
