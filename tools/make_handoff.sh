@@ -18,6 +18,8 @@ if [ "$1" = "--auto" ]; then
   echo $$ > "$STATE/pending"; sleep "${BFY_DELAY:-600}"
   [ "$(cat "$STATE/pending" 2>/dev/null)" = "$$" ] || exit 0       # 等待期間又有新 commit，交給新的那次
   exec >>"$LOG" 2>&1
+else
+  echo "manual-$$" > "$STATE/pending"                              # 手動跑過了,等待中的自動那次就不必再跑
 fi
 mkdir "$STATE/lock" 2>/dev/null || { echo "已有一個交接包正在產生，略過"; exit 0; }
 trap 'rm -rf "$STATE/lock" "$STAGE_ROOT"' EXIT
