@@ -48,14 +48,13 @@ def main():
     M = json.load(open(os.path.join(DATA, "market.json"))); C = M["cols"]
     rows = {r[0].replace("-", ""): dict(zip(C, r)) for r in M["rows"][-60:]}
     raw = json.load(open(RAWP)) if os.path.exists(RAWP) else {"twse": {}, "tpex": {}}
-    for d, r in rows.items():                                # 上市:market.json 已有
-        if r.get("fi") is not None and d not in raw["twse"]: raw["twse"][d] = {"fi": r["fi"], "it": r["it"], "dl": r["dl"], "tot": r["tot"]}
+    for d, r in rows.items():                                # 上市:market.json 已有 → 一律以它為準(證交所事後更正的數字會跟著更新)
+        if r.get("fi") is not None and r.get("it") is not None: raw["twse"][d] = {"fi": r["fi"], "it": r["it"], "dl": r["dl"], "tot": r["tot"]}
     today = dt.datetime.utcnow() + dt.timedelta(hours=8); td = today.strftime("%Y%m%d")
     if today.weekday() < 5 and today.hour >= 15:            # 今天收盤後:market.json 可能還沒更新,直接抓
-        for k, f in (("twse", twse), ("tpex", tpex)):
-            if td not in raw[k]:
-                o = f(td)
-                if o: raw[k][td] = o
+        for k, f in (("twse", twse), ("tpex", tpex)):          # 每次都重抓今天(證交所／櫃買傍晚可能更正)
+            o = f(td)
+            if o: raw[k][td] = o
     days = sorted(set(rows) | set(raw["twse"]))[-30:]
     n = 0
     for d in days[-25:]:                                      # 上櫃回補

@@ -114,6 +114,7 @@ def main():
         ds = {k: ymd(v) for k, v in (("加權", B["taiex"].get("d")), ("櫃買", (B.get("otc") or {}).get("d")), ("外資", (B.get("foreign") or {}).get("d"))) if v}
         if len(set(ds.values())) > 1: cross.append(("warn", "總表各格資料日期不同：" + "、".join(f"{k} {v.month}/{v.day}" for k, v in ds.items())))
         if I and I.get("twse") and last["d"].replace("-", "") == I["twse"]["d"] and abs(last["fi"] - I["twse"]["fi"]) > .05: cross.append(("error", f"三大法人外資 {I['twse']['fi']} 與大盤歷史 {last['fi']} 不一致"))
+        if I and I.get("twse") and last["d"].replace("-", "") == I["twse"]["d"] and last.get("it") is not None and abs(last["it"] - I["twse"]["it"]) > .05: cross.append(("warn", f"三大法人投信 {I['twse']['it']} 與大盤歷史 {last['it']} 不一致"))
     except Exception as e: cross.append(("warn", f"交叉比對無法完成：{e}"))
     RL = L("run_log.json") or {}                          # 這次更新每一步的執行結果
     fails = [x for x in RL.get("steps", []) if not x.get("ok")]

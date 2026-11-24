@@ -1570,6 +1570,36 @@ button{-webkit-tap-highlight-color:transparent}
 .ex-wb{background:var(--bg);border-radius:14px;padding:12px 14px;margin-bottom:8px}.ex-wb>b{font-size:24px;font-weight:900;color:#B45309;margin-right:8px}.ex-wb>span{color:var(--sub);font-weight:700}.ex-wb p{margin:6px 0 0;font-size:14px;line-height:1.7}
 /* 大師年紀 */
 .ex-t em.ex-age{font-style:normal;font-size:12px;font-weight:700;color:#2F5BEA;margin:1px 0}.ex-t em.ex-age.rip{color:#64748B}.ex-t em.ex-age.na{color:var(--sub);font-weight:500;font-size:11.5px}
+/* 2026-11-24 排版:個股總覽點評橫跨整排、多空卡改上下排、法人資金小卡 */
+.sk-ov>.dp-box{grid-column:1/-1!important}
+.mk-hero{grid-template-columns:minmax(0,1fr)!important;gap:14px}
+.mk-px{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);column-gap:16px;row-gap:12px;align-items:center}
+.mk-px>small{grid-column:1/-1}
+.mk-px .mk-stance,.mk-px .mk-mini{margin-top:0}
+.mk-px .mk-mini{grid-template-columns:repeat(2,minmax(0,1fr))}
+.mk-say{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.mk-say li:last-child{grid-column:1/-1}
+.mk-say li:nth-last-child(2):nth-child(odd){grid-column:1/-1}
+.kin{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) minmax(0,1.1fr);gap:8px;margin:6px 0 4px}
+.kin-c{background:var(--bg);border-radius:12px;padding:9px 12px;display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+.kin-c small{color:var(--sub);font-weight:800;font-size:12.5px}.kin-c b{font-size:19px}
+.kin-go{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:12px;padding:8px 12px;font-weight:800;cursor:pointer;text-align:left;font-size:14px}
+.kin-go small{display:block;font-weight:600;color:var(--sub);font-size:12px;margin-top:2px}.kin-go:hover{border-color:#4f6bff}
+@media(max-width:900px){.mk-px{grid-template-columns:minmax(0,1fr)}.mk-say{grid-template-columns:minmax(0,1fr)}.kin{grid-template-columns:repeat(3,minmax(0,1fr))}.kin-go{grid-column:1/-1}}
+/* 2026-11-24 排版(二):表頭一排、總經表格上下排、期權瀑布流、恐慌度左欄補滿 */
+@media(min-width:1360px){
+  header .top{flex-wrap:nowrap;align-items:center}
+  header .top .brand{flex:0 1 auto;min-width:0}
+  header .top .clk{order:0;flex:1 1 auto;margin:0;display:grid;grid-template-columns:auto auto;justify-content:center;align-items:center;column-gap:22px;row-gap:2px}
+  header .top .clk .cd{grid-column:1;grid-row:1;align-self:end}
+  header .top .clk .ct{grid-column:1;grid-row:2;align-self:start}
+  header .top .clk .cs{grid-column:2;grid-row:1/3;margin:0}
+  header .top .hacts{order:0;align-self:center;flex:none}
+}
+.imp-2{grid-template-columns:minmax(0,1fr)!important}
+@media(min-width:901px){.opt-g{display:block;column-count:2;column-gap:12px}.opt-g>*{break-inside:avoid;margin:0 0 12px;display:inline-block;width:100%}}
+.fr-g .fr-zone{margin-top:14px;text-align:left}.fr-g .fr-zone>b{display:block;margin-bottom:4px}
+.fc2.one{grid-template-columns:minmax(0,1fr)!important}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="巴菲遠">
@@ -2003,7 +2033,11 @@ async function renderPF(){
   });
   $("#hold").querySelectorAll("[data-del]").forEach(el => el.onclick = () => { PF.splice(el.dataset.del, 1); save(); renderPF(); });
 }
-$("#gMode").onchange = ev => { gMode = ev.target.value; try { localStorage.setItem("etf_gmode", gMode) } catch(e){}; renderPF(); };
+$("#gMode").onchange = ev => {               // 上方「配息參考」:全部持股一起套用(原本各自設定的也改回跟隨上方)
+  gMode = ev.target.value; try { localStorage.setItem("etf_gmode", gMode) } catch(e){}
+  const own = PF.filter(p => p.mode && p.mode != "auto").length; PF.forEach(p => p.mode = "auto"); save(); renderPF();
+  if (own) toast(`已把 ${own} 檔原本各自設定的配息參考，改成跟隨上方「${MODES().find(m => m[0] == gMode)[1]}」`, 2400);
+};
 $("#addBtn").onclick = () => {
   const v = $("#addId").value.trim().split(" ")[0].toUpperCase();
   const e = S.find(x => x.id == v) || S.find(x => x.name.includes($("#addId").value.trim()));
@@ -3026,6 +3060,8 @@ function fearUI(){
   </div>`;
   $("#fearRg").onclick = e => { const c = e.target.closest("[data-r]"); if (c) { fearRange = +c.dataset.r; fearUI(); } };
   fearChart($("#fearChart"), f, fearRange);
+  { const g = document.querySelector("#fearBody .fr-g"), c2 = [...document.querySelectorAll("#fearBody .fc2")].pop();
+    if (g && c2 && c2.children.length == 2) { const z = c2.firstElementChild; z.classList.add("fr-zone"); g.append(z); c2.classList.add("one"); } }
 }
 function fearGauge(v){
   const cx = 110, cy = 105, R = 88, arc = (a0, a1, col) => { const p = a => [cx - R * Math.cos(a / 100 * Math.PI), cy - R * Math.sin(a / 100 * Math.PI)];
@@ -3343,7 +3379,8 @@ function keyUI(){
     <div class="ksum"><div class="kbar"><i style="width:${sm.up / tot * 100}%;background:#ef4444"></i><i style="width:${sm.flat / tot * 100}%;background:#94a3b8"></i><i style="width:${sm.dn / tot * 100}%;background:#16a34a"></i></div>
       <div class="kchips">${[["全部", tot], ["利多", sm.up], ["利空", sm.dn], ["中性", sm.flat]].map(([n, c]) => `<span class="chip ${keyF == n ? "on" : ""}" data-f="${n}">${n} <b class="num">${c}</b></span>`).join("")}</div>
       <p class="mknote">今天 ${tot} 項關鍵數字中，<b style="color:#ef4444">利多 ${sm.up} 項</b>、<b style="color:#16a34a">利空 ${sm.dn} 項</b>、中性 ${sm.flat} 項（台股習慣：紅＝漲、綠＝跌）。利多利空是對「短線」的影響，極度恐慌類的指標長線常是反向訊號，白話說明會註明。</p></div>
-    ${grps.map(g => `<div class="kgrp"><h4>${g}</h4>${L.filter(d => d.grp == g).map(d => `<div class="krow"><div class="kn"><b>${d.name}</b><small>${d.date || ""}</small></div>
+    ${grps.map(g => g == "法人資金" ? `<div class="kgrp"><h4>${g}</h4><div class="kin">${L.filter(d => d.grp == g).map(d => `<div class="kin-c"><small>${d.name.replace("買賣超", "")}</small><b class="num ${d.sig > 0 ? "pos" : d.sig < 0 ? "neg" : ""}">${d.val}</b>${badge(d.sig)}</div>`).join("")}
+        <button class="kin-go" onclick="document.querySelector('#mk-mg').scrollIntoView({behavior:'smooth'})">🏦 看三大法人儀表板<small>5 日／20 日、連買賣、上市上櫃</small></button></div></div>` : `<div class="kgrp"><h4>${g}</h4>${L.filter(d => d.grp == g).map(d => `<div class="krow"><div class="kn"><b>${d.name}</b><small>${d.date || ""}</small></div>
         <div class="kv num">${d.val}${d.chg ? `<small>${d.chg}</small>` : ""}</div>${badge(d.sig)}<p class="kw">${d.why}</p></div>`).join("")}</div>`).join("")}`;
   $("#keyBody .kchips").onclick = e => { const c = e.target.closest("[data-f]"); if (c) { keyF = c.dataset.f; keyUI(); } };
 }
@@ -6684,6 +6721,28 @@ function exAgeTxt(id, full){
   return `🎂 ${ap}${x.by} 年～今・${aa}${x.a} 歲${full ? (L.b ? `（${L.b.replace(/-/g, "/")} 生）` : x.src ? `（${x.src}）` : "") : ""}`;
 }
 function exAgeLine(id){ const x = exAge(id); return `<em class="ex-age ${!x ? "na" : x.dy ? "rip" : ""}">${exAgeTxt(id)}</em>`; }
+
+/* ================= 版面平衡:最後一排只剩一兩張卡時,自動改欄數或拉寬,不留大塊空白 ================= */
+const BAL_SEL = ".mc-grid,.mc-cal,.imp-f,.icards,.ex-grid,.cats,#etfTiles,#bdTiles,#xpTiles,.nq-row,.mc-zq,.mm-sum,.sk-k";
+function balGrid(g){
+  g.style.gridTemplateColumns = ""; [...g.children].forEach(k => { if (k.dataset.bs) { k.style.gridColumn = ""; delete k.dataset.bs; } });
+  const cs = getComputedStyle(g); if (!cs.display.includes("grid")) return;
+  const kids = [...g.children].filter(k => getComputedStyle(k).display != "none");
+  if (kids.length < 2 || kids.some(k => { const c = getComputedStyle(k); return c.gridColumnStart != "auto" || c.gridColumnEnd != "auto" || c.position == "absolute"; })) return;
+  const m = cs.gridTemplateColumns.split(" ").filter(Boolean).length, n = kids.length; if (m < 2) return;
+  if (n < m) { g.style.gridTemplateColumns = `repeat(${n},minmax(0,1fr))`; return; }
+  const e = c => (c - n % c) % c, rows = c => Math.ceil(n / c);
+  let c = m, best = e(m);
+  for (let x = m - 1; x >= Math.max(2, Math.ceil(m / 2)); x--) { const cost = e(x) + (rows(x) - rows(m)) * 2; if (cost < best) { best = cost; c = x; } }
+  if (c != m) g.style.gridTemplateColumns = `repeat(${c},minmax(0,1fr))`;
+  const r = n % c; if (!r) return;
+  const base = Math.floor(c / r), extra = c % r;
+  kids.slice(n - r).forEach((k, i) => { const sp = base + (i >= r - extra ? 1 : 0); if (sp > 1) { k.style.gridColumn = `span ${sp}`; k.dataset.bs = 1; } });
+}
+let balT = 0;
+function balAll(){ clearTimeout(balT); balT = setTimeout(() => document.querySelectorAll(BAL_SEL).forEach(g => { if (g.offsetParent) try { balGrid(g); } catch (e) {} }), 250); }
+new MutationObserver(ms => { if (ms.some(m => !(m.target.closest && m.target.closest("#clk,#gtk,.toast,#nwQ")) && [...m.addedNodes].some(n => n.nodeType == 1))) balAll(); }).observe(document.body, {childList: true, subtree: true});
+addEventListener("resize", balAll); document.addEventListener("click", balAll); balAll();
 </script>
 </body>
 </html>
