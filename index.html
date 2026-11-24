@@ -1627,6 +1627,24 @@ button{-webkit-tap-highlight-color:transparent}
 .ix-tb th[data-s]{cursor:pointer;white-space:nowrap}.ix-tb th.on{color:#2F5BEA}.ix-tb tr.pick td{background:rgba(47,91,234,.12)}
 @media(max-width:900px){.ix-sum{grid-template-columns:repeat(2,minmax(0,1fr))}.ix-t b{font-size:19px}}
 @media(max-width:700px){.ix .in-card{padding:14px 12px}.ix-ctl{gap:8px}.ix-ctl .chips{gap:5px;flex-wrap:nowrap;overflow-x:auto}.ix-ctl .chip{padding:5px 10px;font-size:12.5px;white-space:nowrap}.ix-ctl label{flex-wrap:nowrap;font-size:12px}.ix-ctl input[type=date]{padding:4px 5px;font-size:12px;width:128px}.ix-t{padding:9px 10px}.ix-t b{font-size:16.5px;white-space:nowrap}.ix-say{font-size:13.5px}}
+/* 2026-11-24 盤勢摘要時間軸 */
+#mk-brief .brf-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 14px;margin:8px 0 12px;font-size:14px}
+#mk-brief .brf-top small{color:var(--sub);font-size:12px}
+#mk-brief .brf-ok{font-size:13px;color:#15803d;font-weight:600}
+.brf{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media(min-width:1500px){.brf{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.brf-c{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;min-width:0;opacity:.72}
+.brf-c.on{opacity:1;background:var(--panel)}
+.brf-c.new{border-color:var(--brand,#2F5BEA);box-shadow:0 0 0 2px color-mix(in srgb,var(--brand,#2F5BEA) 18%,transparent)}
+.brf-h{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:14px}
+.brf-h b{font-size:13px;color:var(--sub)}
+.brf-c p{margin:0;font-size:13px;line-height:1.65;color:var(--ink)}
+.brf-c small{font-size:11.5px;color:var(--sub)}
+.brf-n{font-style:normal;margin-left:6px;padding:1px 7px;border-radius:99px;background:var(--brand,#2F5BEA);color:#fff;font-size:11px}
+.brf-cf{display:flex;flex-wrap:wrap;gap:4px 14px;margin:6px 0;padding:8px 10px;border-radius:10px;background:var(--soft)}
+.brf-cf>b{flex-basis:100%;font-size:13px}
+@media(max-width:900px){.brf{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.brf{grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:84%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}.brf-c{scroll-snap-align:start}}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="巴菲遠">
@@ -2693,7 +2711,8 @@ function renderMkt(){
   const {a} = MK, t = a.tech, f = a.forecast;
   const stCol = a.score >= 12 ? "#16a34a" : a.score > -12 ? "#64748b" : "#dc2626";
   $("#mkt").innerHTML = `<div class="mk">
-  <nav class="mk-nav" id="mkNav">${[["mk-board", "📋 總表"], ["mk-sum", "🧭 總結"], ["mk-news", "📰 快訊"], ["mk-heat", "🗺️ 熱力圖"], ["mk-key", "🔑 關鍵數字"], ["mk-mg", "🏦 法人・資券"], ["mk-fut", "🐻 外資空單"], ["mk-cpt", "🔥 族群"], ["mk-ptt", "💬 PTT"], ["mk-opt", "🧮 期權・ADR"], ["mk-fear", "😱 恐慌度"], ["mk-la", "📐 線型"], ["mk-fc", "🎯 區間"], ["mk-cards", "🚦 燈號"], ["mk-chart", "📈 疊圖"], ["mk-glob", "🌏 全球"], ["mk-gx", "🔎 各國區間"], ["mk-det", "📋 明細"], ["mk-ev", "🔬 回測"]].map(([id, n]) => `<button data-to="${id}">${n}</button>`).join("")}</nav>
+  <nav class="mk-nav" id="mkNav">${[["mk-brief", "🗞️ 摘要"], ["mk-board", "📋 總表"], ["mk-sum", "🧭 總結"], ["mk-news", "📰 快訊"], ["mk-heat", "🗺️ 熱力圖"], ["mk-key", "🔑 關鍵數字"], ["mk-mg", "🏦 法人・資券"], ["mk-fut", "🐻 外資空單"], ["mk-cpt", "🔥 族群"], ["mk-ptt", "💬 PTT"], ["mk-opt", "🧮 期權・ADR"], ["mk-fear", "😱 恐慌度"], ["mk-la", "📐 線型"], ["mk-fc", "🎯 區間"], ["mk-cards", "🚦 燈號"], ["mk-chart", "📈 疊圖"], ["mk-glob", "🌏 全球"], ["mk-gx", "🔎 各國區間"], ["mk-det", "📋 明細"], ["mk-ev", "🔬 回測"]].map(([id, n]) => `<button data-to="${id}">${n}</button>`).join("")}</nav>
+  <div class="box" id="mk-brief"><div class="sk" style="height:150px"></div></div>
   <div class="bd-wrap" id="mk-board"><div class="bd-hd"><h2>📋 今日盤勢總表</h2><span id="bdUpd"></span></div><div class="bd" id="bdTiles"><div class="sk" style="height:150px;grid-column:1/-1"></div></div>
     <details class="bd-say"><summary><b>白話</b>每張卡片怎麼看？</summary><p>「百分位」＝跟自己歷史比，例如第 90 百分位代表比過去 90% 的日子都高（偏熱／偏貴），第 10 百分位代表接近低檔。站上 200 日線比例＝股價在長期均線之上的股票占比，越低代表越多股票跌破長期趨勢、市場越悲觀。台指期夜盤＝下午 3 點到隔天清晨 5 點的期貨交易，可以提前反映美股與國際消息；正價差代表期貨比現貨高（偏樂觀），逆價差相反。點卡片可跳到下方詳細分析。</p></details></div>
 
@@ -2798,7 +2817,7 @@ function renderMkt(){
 
   <p class="mknote">資料來源：臺灣證券交易所（臺股儀表板、信用交易統計）、臺灣期貨交易所（台指 VIX）、FinMind（三大法人、期貨未平倉）、Yahoo Finance（全球指數、美股 VIX）。融資相關為上市資料。所有區間、分數與機率皆為歷史統計推估，不構成任何投資建議。</p>
   </div>`;
-  mkChartUI(); gChartUI(); detailUI(); if (MK.a.fear) fearUI(); else $("#mk-fear").remove(); if (MK.a.drivers) keyUI(); else $("#mk-key").remove(); laUI(); mgUI(); nwUI(); gxUI(); heatUI(); boardUI(); optUI(); cptUI(); pttUI(); instUI(); ixUI(); futUI();
+  mkChartUI(); gChartUI(); detailUI(); if (MK.a.fear) fearUI(); else $("#mk-fear").remove(); if (MK.a.drivers) keyUI(); else $("#mk-key").remove(); laUI(); mgUI(); nwUI(); gxUI(); heatUI(); boardUI(); optUI(); cptUI(); pttUI(); instUI(); ixUI(); futUI(); briefUI(true);
   gate("#mk-la", "線型分析：任一檔個股自動畫趨勢線、頸線，判斷 W 底／M 頭，並列出全市場符合線型的股票"); gate("#mk-gx", "各國大盤區間查詢：自訂期間的走勢、統計分析、每日明細與 CSV 下載、各國排名"); gate("#mk-det", "大盤 5 年每日明細與 CSV 下載"); gate("#mk-ev", "歷史回測：過去發生同樣情況後，大盤 1 週／1 個月／1 季的實際走勢");
   $("#mkNav").onclick = e => { const b = e.target.closest("[data-to]"); if (!b) return; const el = document.getElementById(b.dataset.to);
     if (el) window.scrollTo({top: el.getBoundingClientRect().top + scrollY - (innerWidth > 700 ? 150 : 70), behavior: "smooth"}); };
@@ -5729,7 +5748,7 @@ function bpBox(d){
 /* ================= ⚡ 盤中雷達:當沖參考 + 即時警示(自己人評估用) ================= */
 const RDK = {list: "bfy_rd", cfg: "bfy_rd_cfg", on: "bfy_rd_on", log: "bfy_rd_log"};
 const rdLS = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }, rdSave = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} if (k == "bfy_rd" || k == "bfy_rd_cfg") setTimeout(() => typeof cpSync == "function" && cpSync(), 300); };
-const RD = {list: rdLS(RDK.list, null), cfg: Object.assign({drop: 2, win: 15, pct: -5, lim: -8, sell: 3, up: true, sound: true, brief: true, px: {}}, rdLS(RDK.cfg, {})), on: rdLS(RDK.on, false),
+const RD = {list: rdLS(RDK.list, null), cfg: Object.assign({drop: 2, win: 15, pct: -5, lim: -8, sell: 3, up: true, sound: true, brief: true, b_am: true, b_open: true, b_close: true, b_inst: true, b_uso: true, b_usc: true, px: {}}, rdLS(RDK.cfg, {})), on: rdLS(RDK.on, false),
   q: {}, smp: {}, bars: {}, ref: {}, log: [], fired: {}, unread: 0, t: null, barT: 0, last: null, err: null, sw: null, wake: null};
 (() => { const L = rdLS(RDK.log, {d: "", log: [], fired: {}}), td = new Date().toLocaleDateString("sv", {timeZone: "Asia/Taipei"}); if (L.d == td) { RD.log = L.log; RD.fired = L.fired; } })();
 const rdToday = () => new Date().toLocaleDateString("sv", {timeZone: "Asia/Taipei"});
@@ -5866,7 +5885,7 @@ function rdPaint(){
         <label>急跌：<input type="number" step=".5" data-cf="win" value="${cf.win}"> 分鐘內跌 <input type="number" step=".5" data-cf="drop" value="${cf.drop}"> %</label>
         <label>跌幅達 <input type="number" step="1" data-cf="pct" value="${cf.pct}"> %、接近跌停 <input type="number" step="1" data-cf="lim" value="${cf.lim}"> %</label>
         <label>委賣是委買 <input type="number" step=".5" data-cf="sell" value="${cf.sell}"> 倍以上＝大量賣壓</label>
-        <label><input type="checkbox" data-cf="up" ${cf.up ? "checked" : ""}> 也提醒上漲訊號（突破、急漲）</label><label><input type="checkbox" data-cf="sound" ${cf.sound ? "checked" : ""}> 警示音</label><label><input type="checkbox" data-cf="brief" ${cf.brief ? "checked" : ""}> ☀️ 每天 08:30 晨報、🔔 13:45 收盤摘要推播（需開「關網站也通知」）</label>
+        <label><input type="checkbox" data-cf="up" ${cf.up ? "checked" : ""}> 也提醒上漲訊號（突破、急漲）</label><label><input type="checkbox" data-cf="sound" ${cf.sound ? "checked" : ""}> 警示音</label><div class="brf-cf"><b>🗞️ 盤勢摘要推播</b>（需開「📲 關網站也通知」；美股時間依夏令／冬令自動換算）${BRFL().map(([k, ic, nm]) => `<label><input type="checkbox" data-cf="b_${k}" ${cf["b_" + k] !== false ? "checked" : ""}> ${ic} ${nm} ${brfHM(k)}</label>`).join("")}</div>
         <p class="mknote">固定會提醒：跌破開盤 15 分鐘低點、跌破今日支撐 S1、跌破月線、跌破 20 日支撐。每檔每種警示一天提醒一次（急跌、賣壓 20～30 分鐘可再提醒）。</p></div></details></div>
     ${codes.length ? `<div class="gx-tw" style="max-height:none"><table class="gx-tb rd-tb"><thead><tr><th>股票</th><th>即時價</th><th>漲跌</th><th>當沖偏向</th><th>買點（日線）</th><th>均價線</th><th>開盤區間</th><th>S2</th><th>S1</th><th>樞紐 P</th><th>R1</th><th>R2</th><th>委買/委賣</th><th>今日高/低</th><th>提示</th><th>🎯 價位提醒</th><th></th></tr></thead><tbody>
       ${codes.map(c => { const v = rdView(c), r = RD.ref[c] || {}, b = RD.bars[c] || {};
@@ -6886,6 +6905,33 @@ function ixChart(el, V, ks, CO, NM, ixName){
     tip.style.display = "block"; const tx = X(i) / W * b.width; tip.style.left = Math.min(b.width - 170, Math.max(0, tx + 12)) + "px"; };
   svg.onmouseleave = () => { tip.style.display = "none"; hv.setAttribute("x1", -9); hv.setAttribute("x2", -9); delete el.dataset.hov; };
 }
+
+/* ================= 🗞️ 盤勢摘要時間軸(大盤頁最上面)＋手機推播:晨報/台股開盤/收盤/三大法人/美股開盤/美股收盤 =================
+   內容由雲端 Worker etf-alert 在各時間點產生(GET /briefs),有開「關網站也通知」的手機同時收到推播 */
+function BRFL(){ return [["am", "☀️", "晨報", "tw", 510], ["open", "🔔", "台股開盤", "tw", 545], ["close", "🔔", "台股收盤", "tw", 815], ["inst", "🏦", "三大法人", "tw", 900], ["uso", "🇺🇸", "美股開盤", "ny", 575], ["usc", "🇺🇸", "美股收盤", "ny", 965]]; }   // 用函式宣告(會提升),頁面載入時先畫雷達也不會出錯
+var BRS = {items: [], t: 0, err: ""};
+function nyDiff(){ try { const d = new Date(), f = z => new Date(d.toLocaleString("en-US", {timeZone: z})); return Math.round((f("Asia/Taipei") - f("America/New_York")) / 36e5); } catch (e) { return 13; } }
+function brfMin(k){ const b = BRFL().find(x => x[0] == k); return b[3] == "tw" ? b[4] : (b[4] + nyDiff() * 60) % 1440; }
+function brfHM(k){ const m = brfMin(k); return String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0") + (k == "inst" ? " 起" : ""); }
+async function briefUI(force){
+  const el = $("#mk-brief"); if (!el) return;
+  if (force || Date.now() - BRS.t > 60e3) { try { const j = await fetch(CPAPI + "/briefs", {cache: "no-store"}).then(r => r.json()); BRS.items = j.items || []; BRS.t = Date.now(); BRS.err = ""; } catch (e) { BRS.err = "摘要暫時載入失敗，稍後自動重試"; } }
+  const tw = new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Taipei"})), m = tw.getHours() * 60 + tw.getMinutes();
+  const S = BRFL().map(([k, ic, nm]) => ({k, ic, nm, at: brfMin(k), last: BRS.items.find(x => x.k == k)}));
+  const nx = S.slice().sort((a, b) => (a.at - m + 1440) % 1440 - (b.at - m + 1440) % 1440)[0], newest = BRS.items[0];
+  const fresh = x => x && Date.now() - x.ts < 20 * 3600e3, when = ts => new Date(ts).toLocaleString("zh-TW", {timeZone: "Asia/Taipei", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false});
+  const cpOnNow = typeof CP != "undefined" && CP.on;
+  el.innerHTML = `<h2 class="sec">🗞️ 盤勢摘要時間軸 <small>台股開收盤、三大法人、美股開收盤，時間到雲端自動產生；開「📲 關網站也通知」手機同步收到</small></h2>
+    <div class="brf-top"><span>⏭️ 下一則：${nx.ic} ${nx.nm} <b class="num">${brfHM(nx.k)}</b>${nx.k == "usc" ? "（凌晨）" : ""}<small>　週一～五；台股休市或美股休市那天自動不發</small></span>
+      ${cpOnNow ? `<span class="brf-ok">📲 手機推播已開<small>（想關掉某幾種：專家選股 → ⚡ 盤中雷達 → ⚙️ 警示條件）</small></span>` : `<button class="lgo hl" id="brfPush">📲 手機也要收到</button><small class="mknote">iPhone 要先把網站「加入主畫面」，再從主畫面圖示開啟</small>`}</div>
+    ${BRS.err ? `<p class="mknote">${BRS.err}</p>` : ""}
+    <div class="brf">${S.map(s => `<div class="brf-c${fresh(s.last) ? " on" : ""}${newest && s.last === newest ? " new" : ""}"><div class="brf-h"><span>${s.ic} ${s.nm}</span><b class="num">${brfHM(s.k)}</b></div>
+      ${s.last ? `<p>${esc(s.last.body)}</p><small>${fresh(s.last) ? "🕒 " : "上次 "}${when(s.last.ts)} 發布${newest && s.last === newest ? '<i class="brf-n">最新</i>' : ""}</small>` : `<p class="mknote">還沒有資料，預計 ${brfHM(s.k)} 發布</p>`}</div>`).join("")}</div>`;
+  const b = $("#brfPush"); if (b) b.onclick = async () => { await cpOn(); briefUI(); };
+  const c = el.querySelector(".brf-c.new"), g = el.querySelector(".brf"); if (c && g && g.scrollWidth > g.clientWidth + 4) g.scrollLeft = c.offsetLeft - g.offsetLeft - 12;
+}
+setInterval(() => { if (!document.hidden && document.querySelector(".page.on #mk-brief")) briefUI(); }, 60e3);
+document.addEventListener("visibilitychange", () => { if (!document.hidden && document.querySelector(".page.on #mk-brief")) briefUI(); });
 </script>
 </body>
 </html>

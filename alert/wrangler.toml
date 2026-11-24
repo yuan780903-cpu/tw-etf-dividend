@@ -3,9 +3,11 @@ main = "index.js"
 compatibility_date = "2024-11-01"
 workers_dev = true
 
-# 台北 08:00～13:59(UTC 00:00～05:59)週一到週五,每分鐘一次;程式內再判斷 09:00～13:32
+# 只用 1 個排程(免費方案有數量限制):UTC 週一到週五以下時段每分鐘一次,程式內再判斷要做什麼
+#   0-5 點 = 台北 08:00～13:59 盤中雷達＋晨報/開盤/收盤摘要;7 點 = 台北 15:00～15:59 三大法人
+#   13-14 點 = 美東 09:35 美股開盤(夏令 13:35、冬令 14:35 UTC);20-21 點 = 美東 16:05 美股收盤(夏令 20:05、冬令 21:05 UTC)
 [triggers]
-crons = ["* 0-5 * * 1-5"]
+crons = ["* 0-5,7,13,14,20,21 * * 1-5"]
 
 [vars]
 VAPID_PUBLIC = "BBHDQ5nJ47ju8R7qaXR2s3umhhuDiaC3XjywFim3XLESAL-V7dopeit9QLqICDQKMiFfrhr8koiKtSLeNh2RUSE"
