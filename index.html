@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-version" content="v2026.11.25.15">
+<meta name="app-version" content="v2026.11.25.16">
 <meta name="theme-color" content="#F1F5FF">
 <title>巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
@@ -1790,7 +1790,7 @@ button{-webkit-tap-highlight-color:transparent}
   <div class="top">
     <div class="brand"><img class="logo" src="logo.svg" alt="柴犬博士" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.25.15</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
+      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.25.16</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
@@ -1935,7 +1935,7 @@ button{-webkit-tap-highlight-color:transparent}
 </div>
 
 <footer><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button>
-  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.25.15</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.25.16</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -7605,7 +7605,8 @@ async function nwsBox(host, code, name, mkt){
   P = P || P2;
   if (host.dataset.code != code) return;            // 等待時已經換到別檔
   const posts = P && P.by && P.ps ? (P.by[code] || []).map(i => P.ps[i]).filter(Boolean) : [];
-  const yq = `${code}.${mkt == "上櫃" ? "TWO" : "TW"}`, q = encodeURIComponent(name || code);
+  const yq = `${code}.${mkt == "上櫃" ? "TWO" : "TW"}`, etf = /^00/.test(code), nm0 = String(name || "").replace(/\*|-KY$/g, "").trim();
+  const pttQ = etf || !nm0 ? code : `${code} ${nm0}`;   // PTT 搜尋是整串比對:「1210 大成」只會找到大成,不會混進大成鋼
   host.innerHTML = `<div class="nws">
     <div class="box"><h3 class="mm-h3">📰 ${nwsEsc(name)} 近期新聞 <small>Yahoo 股市・鉅亨網，新到舊</small></h3>
       ${L.length ? `<div class="nws-l">${L.map(x => `<a class="nws-i" href="${nwsEsc(x.u)}" target="_blank" rel="noopener"><time>${nwsWhen(x.ts)}</time><b>${/^(【公告】|公告)|[:：]公告/.test(x.t) ? `<span class="tg an">公告</span>` : ""}${nwsEsc(x.t.replace(/^(【公告】|公告)/, ""))}</b><small>${nwsEsc(x.s)}</small></a>`).join("")}</div>`
@@ -7614,8 +7615,8 @@ async function nwsBox(host, code, name, mkt){
     <div class="box"><h3 class="mm-h3">💬 網友討論 <small>PTT 股版最新 ${P ? P.n : 400} 篇標題中提到它的${P && P.src ? `（${nwsEsc(P.src)}）` : ""}</small></h3>
       ${posts.length ? `<div class="nws-l">${posts.map(x => `<a class="nws-i" href="https://www.ptt.cc/bbs/Stock/${encodeURIComponent(x[0])}.html" target="_blank" rel="noopener"><time>${nwsEsc(x[3])}</time><b>${x[4] > 0 ? `<span class="tg up">看多</span>` : x[4] < 0 ? `<span class="tg dn">看空</span>` : ""}${nwsEsc(x[1])}</b><small>PTT 股版・${x[2] >= 100 ? "推文爆" : x[2] < 0 ? "噓文多" : `推文 ${x[2]}`}</small></a>`).join("")}</div>`
         : `<p class="nws-none">最近 PTT 股版的文章標題沒有提到 ${nwsEsc(name)}。冷門股、ETF 比較少人討論，可以用下面的連結看各社群的留言。</p>`}
-      <div class="nws-out"><a href="https://www.ptt.cc/bbs/Stock/search?q=${q}" target="_blank" rel="noopener">PTT 搜尋「${nwsEsc(name)}」↗</a><a href="https://tw.stock.yahoo.com/quote/${yq}/community" target="_blank" rel="noopener">Yahoo 股市社群 ↗</a><a href="https://www.cmoney.tw/forum/stock/${encodeURIComponent(code)}" target="_blank" rel="noopener">CMoney 爆料同學會 ↗</a></div>
-      <p class="mknote" style="margin-top:10px">👶 白話：新聞看「發生了什麼事」，網友討論看「大家在擔心或期待什麼」。討論越熱不代表會漲，常常是過熱的反指標；公告類新聞（營收、財報、董事會）通常最值得看。</p></div>
+      <div class="nws-out"><a href="https://www.ptt.cc/bbs/Stock/search?q=${encodeURIComponent(pttQ)}" target="_blank" rel="noopener">PTT 搜尋「${nwsEsc(pttQ)}」↗</a>${etf ? "" : `<a href="https://www.ptt.cc/bbs/Stock/search?q=${encodeURIComponent(code)}" target="_blank" rel="noopener" title="標題有寫代號的都會找到（可能混到日期或價格相同的數字）">PTT 只搜代號 ${code} ↗</a>`}<a href="https://tw.stock.yahoo.com/quote/${yq}/community" target="_blank" rel="noopener">Yahoo 股市社群 ↗</a><a href="https://www.cmoney.tw/forum/stock/${encodeURIComponent(code)}" target="_blank" rel="noopener">CMoney 爆料同學會 ↗</a></div>
+      <p class="mknote" style="margin-top:10px">👶 白話：新聞看「發生了什麼事」，網友討論看「大家在擔心或期待什麼」。討論越熱不代表會漲，常常是過熱的反指標；公告類新聞（營收、財報、董事會）通常最值得看。PTT 搜尋用「代號＋名稱」比較準，不會混進名字相似的公司（例如大成、大成鋼）。</p></div>
   </div>`;
   host.dataset.done = "1";
 }
