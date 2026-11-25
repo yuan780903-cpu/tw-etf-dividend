@@ -177,7 +177,7 @@ def main():
 
     if QUICK:                          # 一鍵快速更新(約 10～15 分鐘):只重算當天會變的大盤、法人、籌碼、風險、期權
         print("== 快速模式 ==")
-        for x in (("build_summary.py",), ("fetch_inst.py",), ("fetch_market.py",), ("build_futures.py",), ("build_macro_map.py",), ("fetch_breadth.py", "--keep", "300", "--max", "300"), ("build_tech.py",),
+        for x in (("build_summary.py",), ("build_etf_val.py",), ("fetch_inst.py",), ("fetch_market.py",), ("build_futures.py",), ("build_macro_map.py",), ("fetch_breadth.py", "--keep", "300", "--max", "300"), ("build_tech.py",),
                   ("build_market_analysis.py",), ("fetch_news.py",), ("fetch_chips.py",), ("build_board.py",), ("fetch_risk.py",), ("fetch_options.py",),
                   ("build_concepts.py",), ("build_smart.py",), ("fetch_calendar.py",), ("fetch_ptt.py",)):
             step(*x)
@@ -187,6 +187,7 @@ def main():
 
     # 6. 總表
     step("build_summary.py")
+    step("build_etf_val.py")           # ETF 估價:便宜/合理/昂貴價＋位階(殖利率法、成長軌道法)
 
     # 7. 大盤儀表板(融資/維持率/追繳/法人/期貨/VIX/全球指數),失敗不影響 ETF 資料
     step("fetch_inst.py")              # 三大法人買賣超(上市＋上櫃),大盤歷史/總表/總經/行事曆共用(先抓,當天就有)

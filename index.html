@@ -1448,6 +1448,17 @@ button{-webkit-tap-highlight-color:transparent}
 .rk-f{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0 10px}.rk-f button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:13px}.rk-f button.on{background:#2F5BEA;color:#fff;border-color:#2F5BEA}.rk-f button i{font-style:normal;opacity:.7;margin-left:3px}.rk-f label{font-size:13px;margin-left:6px}
 .rk-mine{background:#FDECEC;border:1px solid #F5B3B3;border-radius:12px;padding:9px 12px;font-size:13.5px;margin:6px 0}.rk-mine.ok{background:#E8F7EE;border-color:#A7E3C2}.rk-mine b[data-c]{cursor:pointer;text-decoration:underline}
 .rk-tb td.rk-w{white-space:normal;min-width:170px;font-size:12.5px}.rk-box.bad{border-left:5px solid #CF3A3A}.rk-ok{color:#1A8F57;font-weight:800}.rk-dp{font-size:13.5px;font-weight:700;color:#CF3A3A}.rk-tags{margin:4px 0}
+/* ===== 💎 ETF 估價位階 ===== */
+.ev-b{display:block;margin:2px 0}.ev-b:empty{display:none}.ev-b em{font-style:normal;font-size:12px;font-weight:800;border-radius:7px;padding:1px 7px;white-space:nowrap}
+.ev-hd{display:flex;align-items:baseline;gap:8px 12px;flex-wrap:wrap;margin:2px 0 4px}.ev-hd b{font-size:22px}.ev-hd .zp{font-size:14px;font-weight:900;border-radius:9px;padding:2px 10px;color:#fff}
+.ev-hd small{color:var(--sub);font-size:13px;font-weight:700}
+.ev-bar{position:relative;display:flex;height:14px;margin:34px 0 6px}.ev-bar i{height:100%}.ev-bar i:first-child{border-radius:7px 0 0 7px}.ev-bar i:nth-child(4){border-radius:0 7px 7px 0}
+.ev-bar b{position:absolute;top:-30px;transform:translateX(-50%);font-size:12px;font-weight:900;white-space:nowrap;background:var(--ink);color:var(--panel);border-radius:7px;padding:2px 7px}
+.ev-bar b::after{content:"";position:absolute;left:50%;bottom:-5px;transform:translateX(-50%);border:5px solid transparent;border-bottom:0;border-top-color:var(--ink)}
+.ev-bar s{position:absolute;top:-3px;bottom:-3px;width:3px;margin-left:-1.5px;background:var(--ink);border-radius:2px;text-decoration:none}
+.ev-l{position:relative;height:40px;font-size:12px;color:var(--sub);font-weight:700}.ev-l span{position:absolute;transform:translateX(-50%);text-align:center;white-space:nowrap}.ev-l span b{display:block;color:var(--ink);font-size:14px}
+.ev-m{font-size:13px;line-height:1.75;margin:8px 0 0;color:var(--ink)}.ev-m b{font-weight:800}
+.ev-y{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.ev-y span{background:var(--hover);border-radius:10px;padding:6px 10px;font-size:13px;font-weight:700}
 /* ===== 💸 ETF 即時折溢價總表 ===== */
 .box.pz{margin-bottom:18px}
 .pz-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.pz-hd h2.sec{margin:0 0 6px}
@@ -1771,12 +1782,14 @@ button{-webkit-tap-highlight-color:transparent}
           <option value="annYield">年化殖利率高→低</option>
           <option value="ret1y">近一年漲幅高→低</option>
           <option value="ta">技術面分數高→低</option>
+          <option value="val">估價位階低→高（便宜優先）</option>
           <option value="id">代號</option>
         </select>
       </div>
       <div class="bar">
         <div class="flt"><b class="fl">配息</b><div class="chips" id="freqChips"></div>
-        <b class="fl" style="margin-left:8px">市場</b><div class="chips" id="regChips"></div></div>
+        <b class="fl" style="margin-left:8px">市場</b><div class="chips" id="regChips"></div>
+        <b class="fl" style="margin-left:8px">估價</b><div class="chips" id="valChips"></div></div>
       </div>
       <div class="bar exbar">
         <div class="flt"><b class="fl">除息月</b><div class="chips" id="exChips"></div></div>
@@ -1864,7 +1877,7 @@ const money = n => "$" + fmt(Math.round(n));
 const yi = n => n ? (n>=1e8 ? fmt(n/1e8) + " 億" : fmt(n/1e4) + " 萬") : "—";
 const $ = s => document.querySelector(s);
 
-let S = null, TX = null, curCat = "全部", curFreq = "全部", curReg = "全部", curEx = "全部";
+let S = null, TX = null, curCat = "全部", curFreq = "全部", curReg = "全部", curEx = "全部", curVal = "全部", EV = null;
 let UP = {};                          // 已公告除息(證交所預告表):{id:{ex, cash}}
 const TODAY = new Date().toISOString().slice(0,10), THIS_M = new Date().getMonth() + 1;
 function nextEx(e){                   // 下一次已公告的除息日(證交所預告 or FinMind 已公布的未來除息日)
@@ -1910,13 +1923,14 @@ function buildChips(){
   };
   mk("#freqChips", ["全部","月配","季配","半年配","年配","不配息"], () => curFreq, v => curFreq = v);
   mk("#regChips", ["全部","台股","海外"], () => curReg, v => curReg = v);
+  mk("#valChips", ["全部","便宜","合理","偏貴","昂貴"], () => curVal, v => { curVal = v; if (v != "全部") evLoad().then(() => render()); });
   const nSoon = S ? S.filter(e => { const n = nextEx(e); return n && dayDiff(n.ex) <= 30; }).length : 0;
   const ex = [["全部","全部"], ["soon", `💧 即將除息${nSoon ? " " + nSoon : ""}`],
     ...[...Array(12)].map((_, i) => { const m = (THIS_M - 1 + i) % 12 + 1; return [String(m), m + "月" + (i == 0 ? "・本月" : i == 1 ? "・下月" : "")]; })];
   $("#exChips").innerHTML = ex.map(([v, t]) => `<span class="chip ${curEx==v?"on":""} ${v=="soon"?"soon":""}" data-v="${v}">${t}</span>`).join("");
   $("#exChips").querySelectorAll(".chip").forEach(el => el.onclick = () => { curEx = el.dataset.v; buildChips(); render(); });
 }
-$("#q").oninput = render; $("#sort").onchange = render;
+$("#q").oninput = render; $("#sort").onchange = () => { if ($("#sort").value == "val") evLoad().then(() => render()); else render(); };
 
 function spark(m, color){
   if (!m || m.length < 2) return "";
@@ -1946,7 +1960,7 @@ function cardHTML(e){
         <span class="freq" style="color:${c}">${e.freq}</span>
       </div>
       <div class="bd">
-        <div class="pr"><b class="num">${fmt(e.price,2)}</b><span class="num" style="color:${up?"var(--up)":"var(--down)"}">${up?"▲":"▼"} ${fmt(Math.abs(e.chg),2)} (${fmt(e.chgPct,2)}%)</span></div>${navBadge(e)}
+        <div class="pr"><b class="num">${fmt(e.price,2)}</b><span class="num" style="color:${up?"var(--up)":"var(--down)"}">${up?"▲":"▼"} ${fmt(Math.abs(e.chg),2)} (${fmt(e.chgPct,2)}%)</span></div>${navBadge(e)}${evBadge(e)}
         ${spark(e.monthly, c)}
         ${taBadge(e)}
         <div class="kpis">
@@ -1967,7 +1981,7 @@ function rowHTML(e){
       <span class="cb" style="background:${grad(e.category)}"></span>
       <div class="nm"><b>${e.id} ${e.name}</b><small>${exBadge(e, 1)}${(e.exMonths||[]).length && e.perYear ? `除息 ${e.exMonths.join("・")} 月・` : ""}${e.freq}・規模 ${yi(e.aum)}</small></div>
       <div class="sp">${spark(e.monthly, c)}</div>
-      <div class="v"><b class="num">${fmt(e.price,2)}</b><small class="num" style="color:${up?"var(--up)":"var(--down)"}">${up?"▲":"▼"}${fmt(Math.abs(e.chgPct),2)}%</small>${navBadge(e, 1)}</div>
+      <div class="v"><b class="num">${fmt(e.price,2)}</b><small class="num" style="color:${up?"var(--up)":"var(--down)"}">${up?"▲":"▼"}${fmt(Math.abs(e.chgPct),2)}%</small>${navBadge(e, 1)}${evBadge(e)}</div>
       <div class="v"><b class="num" style="color:${e.annYield > 15 ? "#b25e00" : "inherit"}">${e.ttmYield ? e.ttmYield + "%" : "—"}</b><small>殖利率</small></div>
       <div class="v r1"><b class="num" style="color:${e.ret1y>=0?"var(--up)":"var(--down)"}">${fmt(e.ret1y,1)}%</b><small>近一年</small></div>
       <div class="ta" style="background:${tc}1f;color:${tc}">${sc == null ? "—" : sc + " 分"}</div>
@@ -1978,9 +1992,9 @@ function render(){                      // 篩選/排序改變 -> 重新從第�
   const q = $("#q").value.trim().toLowerCase(), key = $("#sort").value;
   const exOk = e => { if (curEx == "全部") return true; if (curEx == "soon") { const n = nextEx(e); return n && dayDiff(n.ex) <= 30; }
     const m = +curEx, n = nextEx(e); return (e.exMonths || []).includes(m) || (n && +n.ex.slice(5,7) == m); };
-  L = S.filter(e => (curCat=="全部"||e.category==curCat) && (curFreq=="全部"||e.freq==curFreq) && (curReg=="全部"||e.region==curReg) && exOk(e)
+  L = S.filter(e => (curCat=="全部"||e.category==curCat) && (curFreq=="全部"||e.freq==curFreq) && (curReg=="全部"||e.region==curReg) && exOk(e) && (curVal=="全部"||evZ(e.id)==curVal)
       && (!q || (e.id+e.name+e.category+(e.issuer||"")+(e.top3||[]).join("")).toLowerCase().includes(q)));
-  L.sort((a,b) => key=="id" ? a.id.localeCompare(b.id) : key=="ta" ? ((b.ta||{}).score||0) - ((a.ta||{}).score||0) : (b[key]||0) - (a[key]||0));
+  L.sort((a,b) => key=="id" ? a.id.localeCompare(b.id) : key=="val" ? evP(a.id) - evP(b.id) : key=="ta" ? ((b.ta||{}).score||0) - ((a.ta||{}).score||0) : (b[key]||0) - (a[key]||0));
   if (curEx == "soon") L.sort((a,b) => nextEx(a).ex.localeCompare(nextEx(b).ex));
   $("#count").textContent = `共 ${L.length} 檔`;
   document.querySelectorAll("#vt button").forEach(b => b.classList.toggle("on", b.dataset.v == VIEW));
@@ -2266,7 +2280,7 @@ async function openDetail(id){
   }
   const [h, dv] = await Promise.all([
     fetch(`data/holdings/${id}.json`).then(r => r.ok ? r.json() : {}).catch(() => ({})),
-    loadDV(id),
+    loadDV(id), evLoad(),
   ]);
   const up = e.chg >= 0, G = CAT[e.category].g;
   const stat = (t, v, i) => `<div class="stat" style="background:linear-gradient(135deg,${G[i%2]},${G[(i+1)%2]})"><small>${t}</small><b class="num">${v}</b></div>`;
@@ -2293,6 +2307,7 @@ async function openDetail(id){
       ${stat("規模", yi(h.aum||e.aum), 0)}${stat("近一年殖利率", e.ttmYield? e.ttmYield+"%":"—", 1)}${stat("年化殖利率", e.annYield? e.annYield+"%":"—", 0)}
       ${stat("近一年配息", e.ttmCash? fmt(e.ttmCash,3)+" 元":"—", 1)}${stat("經理費", h.fee||"—", 0)}${stat("近一年漲跌", fmt(e.ret1y,1)+"%", 1)}
     </div>${h.benchmark?`<div style="font-size:13px;color:var(--sub);margin-top:10px">追蹤指數：${h.benchmark}　｜　成立日：${h.inception||"—"}${h.manager?"　｜　經理人："+h.manager:""}</div>`:""}</div>
+    ${evBox(e)}
     <div class="box"><h2>近 60 個月走勢 vs 大盤 <span class="seg" id="mode"><button class="on" data-m="pct">累積漲跌%</button><button data-m="px">股價</button></span></h2>
       <div id="chart" style="margin-top:10px"></div>
       <div class="legend"><span><i style="background:${c}"></i>${e.name}</span><span><i style="background:#94a3b8"></i>加權指數</span></div></div>
@@ -5657,7 +5672,7 @@ async function etfBoard(){
     {t: "本月除息", v: tm.length + " 檔", sub: nx ? `下一檔 ${nx.ex.slice(5)} ${nx.id} ${nx.name}${nx.cash ? `・${nx.cash} 元` : ""}` : "目前無公告"},
     big ? {t: "規模最大", v: big.id, sub: `${big.name}・${fmt(big.aum / 1e8, 0)} 億`} : null,
     best ? {t: "近一年報酬最佳", v: `<span style="color:#CF3A3A">+${fmt(best.ret1y, 1)}%</span>`, sub: `${best.id} ${best.name}`} : null,
-    hiY ? {t: "近一年殖利率最高", v: fmt(hiY.ttmYield, 2) + "%", sub: `${hiY.id} ${hiY.name}（規模 10 億以上）`} : null, navTile()].filter(Boolean);
+    hiY ? {t: "近一年殖利率最高", v: fmt(hiY.ttmYield, 2) + "%", sub: `${hiY.id} ${hiY.name}（規模 10 億以上）`} : null, navTile(), await evTile()].filter(Boolean);
   $("#etfTiles").innerHTML = T.map(tile).join(""); $("#etfBdUpd").textContent = S[0] && S[0].date ? `報價日 ${S[0].date}` : "";
 }
 let XPB = false;
@@ -7057,6 +7072,47 @@ function pzPaint(){
   $("#pzMore").innerHTML = L.length > 15 ? `<button type="button" id="pzAll">${PZ.all ? "收合 ▴" : `看全部 ${L.length} 檔 ▾`}</button>` : "";
   const any = Object.values(src)[0];
   $("#pzUpd").textContent = any && any.d ? `${any.d.slice(4, 6)}/${any.d.slice(6, 8)} ${any.t} 更新・證交所即時淨值，盤中每 2 分鐘自動更新` : "";
+}
+
+/* ================= 💎 ETF 估價位階(資料:data/etf_val.json,scripts/build_etf_val.py 產生) ================= */
+var EVP = null;
+function evLoad(){ if (EV) return Promise.resolve(EV); if (!EVP) EVP = getJ("etf_val").then(j => { EV = (j && j.etfs) || {}; evPaint(); return EV; }).catch(() => { EV = {}; return EV; }); return EVP; }
+function evZC(z){ return {"便宜": "#16A34A", "合理": "#2F7FE0", "偏貴": "#E08A00", "昂貴": "#E5484D"}[z] || "#94A3B8"; }
+function evZone(px, v){ const [c, f, x] = v; return px <= c ? "便宜" : px <= f ? "合理" : px <= x ? "偏貴" : "昂貴"; }
+function evPos(px, v){ const [c, f, x] = v, pts = [[c * .8, 0], [c, 20], [f, 50], [x, 80], [x * 1.2, 100]];
+  if (px <= pts[0][0]) return 0; if (px >= pts[4][0]) return 100;
+  for (let i = 1; i < pts.length; i++) { const [x0, y0] = pts[i - 1], [x1, y1] = pts[i]; if (px <= x1) return Math.round(y0 + (y1 - y0) * (px - x0) / ((x1 - x0) || 1)); } return 100; }
+function evCur(id){                    // 用畫面上顯示的價格重算區間,標籤和卡片價格永遠一致
+  const v = EV && EV[id]; if (!v || !v.v) return null;
+  const e = typeof S != "undefined" && S ? S.find(x => x.id == id) : null, px = e && e.price > 0 ? e.price : v.px;
+  return {z: evZone(px, v.v), p: evPos(px, v.v), px};
+}
+function evZ(id){ const r = evCur(id); return r ? r.z : null; }
+function evP(id){ const r = evCur(id); return r ? r.p : 999; }
+function evTxt(id){ const r = evCur(id); if (!r) return ""; const c = evZC(r.z); return `<em style="background:${c}1f;color:${c}" title="跟自己過去比的估價位階（0 最便宜、100 最貴）">💎 ${r.z}・位階 ${r.p}</em>`; }
+function evBadge(e){ return `<span class="ev-b" data-ev="${e.id}">${evTxt(e.id)}</span>`; }
+function evPaint(){ document.querySelectorAll("[data-ev]").forEach(el => el.innerHTML = evTxt(el.dataset.ev)); }
+async function evTile(){ await evLoad(); const L = Object.keys(EV).map(evCur).filter(Boolean); if (!L.length) return null;
+  const n = L.filter(v => v.z == "便宜").length, m = L.filter(v => v.z == "昂貴").length;
+  return {t: "💎 估價便宜的 ETF", v: n + " 檔", col: "#16A34A", sub: `共 ${L.length} 檔能估價・昂貴 ${m} 檔（篩選「估價」看名單）`}; }
+function evBox(e){
+  if (!EV) return "";
+  const v = EV[e.id];
+  if (!v || !v.v) return `<div class="box"><h2>💎 估價位階</h2><p class="mknote">${esc(v && v.na || "這檔 ETF 暫時沒有估價資料。")}</p></div>`;
+  const n = typeof INAV != "undefined" && INAV[e.id] && INAV[e.id].px > 0 ? INAV[e.id] : null, px = n ? n.px : e.price;
+  const [c, f, x] = v.v, z = evZone(px, v.v), p = evPos(px, v.v), zc = evZC(z), k = v.k || [];
+  const seg = [[20, "#16A34A"], [30, "#2F7FE0"], [30, "#E08A00"], [20, "#E5484D"]].map(([w, col]) => `<i style="width:${w}%;background:${col}40"></i>`).join("");
+  const how = v.m == "y"
+    ? `📏 <b>殖利率法</b>：這檔近一年配息 <b>${fmt(v.tt, 3)} 元</b>${v.j ? `，比過去 3 年平均 ${fmt(v.a3, 3)} 元多很多，所以用兩者平均 <b>${fmt(v.d, 3)} 元</b>來估，比較保守` : ""}。過去 5 年它的殖利率大多在 <b>${k[2]}%～${k[0]}%</b>，中間值 ${k[1]}%。殖利率越高代表價格越便宜：便宜價＝${fmt(v.d, 3)} ÷ ${k[0]}%、合理價＝÷ ${k[1]}%、昂貴價＝÷ ${k[2]}%。`
+    : `📏 <b>成長軌道法</b>：把配息加回去算，這檔過去 5 年平均每年漲 <b>${sgn(v.g, 1)}%</b>，照這條軌道今天大約在 <b>${fmt(v.tr, 2)} 元</b>。過去有兩成的時間股價比軌道低 ${fmt(Math.abs(Math.min(0, k[0])), 1)}% 以上、兩成的時間比軌道高 ${fmt(Math.max(0, k[2]), 1)}% 以上：便宜價＝軌道 ${sgn(k[0], 1)}%、合理價＝軌道 ${sgn(k[1], 1)}%、昂貴價＝軌道 ${sgn(k[2], 1)}%。`;
+  const yd = v.ya && v.y ? v.y - v.ya : null;
+  const yl = v.ya ? `<div class="ev-y"><span>💵 近一年殖利率 <b>${fmt(v.y, 2)}%</b></span><span>過去 ${v.yn} 年平均 <b>${fmt(v.ya, 2)}%</b></span><span>${yd > .5 ? "👉 比平常高（領得比較多）" : yd < -.5 ? "👉 比平常低（領得比較少）" : "👉 和平常差不多"}</span></div>` : "";
+  return `<div class="box"><h2>💎 估價位階 <small style="font-size:12px;color:var(--sub);font-weight:600">跟這檔自己的過去比</small></h2>
+    <div class="ev-hd"><span class="zp" style="background:${zc}">${z}</span><b class="num">位階 ${p}</b><small>／100・現價 ${fmt(px, 2)}${n ? `（${n.d ? n.d.slice(4, 6) + "/" + n.d.slice(6, 8) + " " : ""}${String(n.t || "").slice(0, 5)} 即時報價）` : `（${e.date} 收盤）`}</small></div>
+    <div class="ev-bar">${seg}<s style="left:${p}%"></s><b style="left:${Math.min(92, Math.max(8, p))}%">現價 ${fmt(px, 2)}</b></div>
+    <div class="ev-l"><span style="left:20%">便宜價<b class="num">${fmt(c, 2)}</b></span><span style="left:50%">合理價<b class="num">${fmt(f, 2)}</b></span><span style="left:80%">昂貴價<b class="num">${fmt(x, 2)}</b></span></div>
+    ${yl}<p class="ev-m">${how}</p>
+    <p class="mknote">👶 白話：位階 0～100，越低越便宜。20 以下＝便宜、50 附近＝合理、80 以上＝昂貴。這是跟這檔 ETF 自己過去 5 年比，不是跟別檔比；只是參考，不是買賣建議。</p></div>`;
 }
 </script>
 </body>
