@@ -81,10 +81,11 @@ def tdcc():
 def quotes():
     """今日收盤與漲跌:{代號: [收盤, 漲跌%, 成交張數]}"""
     q = {}
-    for x in get("https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL", 90) or []:
+    import quotes                                  # 官網當日行情優先(OpenAPI 晚上才更新)
+    for x in quotes.twse_all():
         c, cl, ch = x.get("Code"), N(x.get("ClosingPrice")), N(x.get("Change"))
         if c and cl: q[c] = [cl, round(ch / (cl - ch) * 100, 2) if cl - ch else 0, round(N(x.get("TradeVolume")) / 1000)]
-    for x in get("https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes", 180) or []:
+    for x in quotes.tpex_all():
         c, cl, ch = x.get("SecuritiesCompanyCode"), N(x.get("Close")), N(x.get("Change"))
         if c and cl: q[c] = [cl, round(ch / (cl - ch) * 100, 2) if cl - ch else 0, round(N(x.get("TradingShares")) / 1000)]
     return q

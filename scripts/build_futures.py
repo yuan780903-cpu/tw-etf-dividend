@@ -31,7 +31,8 @@ def prank(v, x):
 def foreign_hold(days):
     """外資持有上市股票市值(億元):證交所 MI_QFIIS 全體外資持股股數 × 收盤價"""
     px = {}
-    for x in get("https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL") or []:
+    import quotes                                  # 官網當日行情優先
+    for x in quotes.twse_all():
         try: px[x["Code"]] = float(x["ClosingPrice"])
         except Exception: pass
     for d in reversed(days[-5:]):

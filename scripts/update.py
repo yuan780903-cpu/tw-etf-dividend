@@ -51,13 +51,13 @@ def bulk_quotes():
     """上市+上櫃當日收盤(全市場一次抓)"""
     q = {}
     try:
-        tw = get_json("https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL", 90)
+        import quotes; tw = quotes.twse_all()       # 先用官網當日行情(下午就有),抓不到才用 OpenAPI
         for x in tw:
             c = num(x["ClosingPrice"])
             if c: q[x["Code"]] = [roc(x["Date"]), num(x["OpeningPrice"]), num(x["HighestPrice"]), num(x["LowestPrice"]), c, round((num(x["TradeVolume"]) or 0) / 1000)]
     except Exception as e: print("證交所當日行情失敗:", e)
     try:
-        tp = get_json("https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes", 180)
+        import quotes; tp = quotes.tpex_all()
         for x in tp:
             c = num(x["Close"])
             if c: q[x["SecuritiesCompanyCode"]] = [roc(x["Date"]), num(x["Open"]), num(x["High"]), num(x["Low"]), c, round((num(x["TradingShares"]) or 0) / 1000)]
@@ -85,7 +85,7 @@ def fill_taiex():
     if add:
         rows += [add[d] for d in sorted(add)]; fh.save(p, rows); print("  加權指數用證交所補上:", ", ".join(sorted(add)))
 
-QUICK = os.environ.get("MODE", "full") == "quick"   # 一鍵更新:只重算當天會變的大盤/法人/籌碼(約 10～15 分鐘)
+QUICK = os.environ.get("MODE", "full") == "quick"   # 一鍵更新:只重算當天會變的大盤/法人/籌碼/股價/估價(約 10～15 分鐘)
 
 STEPS = []                     # 每一步的結果,寫進 data/run_log.json 給資料健康面板看
 LONG = {"fetch_breadth.py": 2700, "fetch_fundamentals.py": 2700, "fetch_holdings.py": 1800, "fetch_market.py": 1500, "fetch_chips.py": 1500, "fetch_risk.py": 1200, "fetch_divs.py": 1200}
@@ -178,7 +178,10 @@ def main():
     if QUICK:                          # 一鍵快速更新(約 10～15 分鐘):只重算當天會變的大盤、法人、籌碼、風險、期權
         print("== 快速模式 ==")
         for x in (("build_summary.py",), ("build_etf_val.py",), ("fetch_inst.py",), ("fetch_market.py",), ("build_futures.py",), ("build_macro_map.py",), ("fetch_breadth.py", "--keep", "300", "--max", "300"), ("build_tech.py",),
-                  ("build_market_analysis.py",), ("fetch_news.py",), ("fetch_chips.py",), ("build_board.py",), ("fetch_risk.py",), ("fetch_options.py",),
+                  ("build_market_analysis.py",), ("fetch_news.py",), ("fetch_chips.py",),
+                  # 個股股價/估價也要當天:更新財報檔裡的現價(已抓過的季報會跳過,約 2～3 分鐘)→ 重算個股頁、評分、估價篩選
+                  ("fetch_fundamentals.py",), ("build_value_picks.py",), ("build_experts.py",), ("build_stock_pages.py",), ("build_stock_screen.py",),
+                  ("build_board.py",), ("fetch_risk.py",), ("fetch_options.py",),
                   ("build_concepts.py",), ("build_smart.py",), ("fetch_calendar.py",), ("fetch_ptt.py",)):
             step(*x)
         step("validate.py"); print("快速模式完成"); return

@@ -183,14 +183,16 @@ VOL = {}
 def current_prices():
     q, day = {}, None
     try:
-        for x in get_json("https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL", 90):
+        import quotes                              # 官網當日行情優先(OpenAPI 晚上才更新)
+        for x in quotes.twse_all():
             v = num(x.get("ClosingPrice", ""));
             if v: q[x["Code"]] = v
             tv = num(x.get("TradeVolume", "")); day = day or x.get("Date")
             if tv is not None: VOL[x["Code"]] = round(tv / 1000)
     except Exception as e: print("證交所目前股價失敗:", e)
     try:
-        for x in get_json("https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes", 180):
+        import quotes
+        for x in quotes.tpex_all():
             v = num(x.get("Close", ""))
             if v: q[x["SecuritiesCompanyCode"]] = v
             tv = num(x.get("TradingShares", ""))

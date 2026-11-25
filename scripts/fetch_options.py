@@ -16,10 +16,35 @@ def raw(u, t=120):
 def J(u):
     r = raw(u); return json.loads(r) if r and r.strip().startswith(("[", "{")) else None
 
+TODAY = (dt.datetime.utcnow() + dt.timedelta(hours=8)).date()
+
+def www_csv(u):
+    """期交所官網 CSV 下載(Big5,當天收盤後就有;OpenAPI 通常隔天才更新)"""
+    try: b = urllib.request.urlopen(urllib.request.Request(u, headers=UA), timeout=120).read()
+    except Exception as e: print("  官網失敗", u[:70], e); return []
+    t = b.decode("big5", "ignore")
+    if t.lstrip().startswith("<"): return []
+    R = list(csv.reader(io.StringIO(t)))
+    if len(R) < 2: return []
+    H = [h.strip() for h in R[0]]
+    return [{H[i]: (r[i].strip() if i < len(r) else "") for i in range(len(H))} for r in R[1:] if len(r) >= len(H) - 2]
+
+_OPT = {}
+def opt_today():
+    """今天的選擇權每日行情(官網),轉成 OpenAPI DailyMarketReportOpt 的欄位名稱"""
+    if "rows" in _OPT: return _OPT["rows"]
+    d = f"{TODAY:%Y/%m/%d}"
+    rows = [dict(r, 日期=r.get("交易日期", "").replace("/", ""), 未沖銷契約量=r.get("未沖銷契約數", ""))
+            for r in www_csv(f"https://www.taifex.com.tw/cht/3/optDataDown?down_type=1&commodity_id=TXO&queryStartDate={d}&queryEndDate={d}") if r.get("契約") == "TXO"]
+    _OPT["rows"] = rows; print("  官網選擇權行情", len(rows), "筆", rows[0]["日期"] if rows else "")
+    return rows
+
 def max_oi():
-    t = raw("https://openapi.taifex.com.tw/v1/DailyMarketReportOpt")
-    if not t: return None
-    rows = [r for r in csv.DictReader(io.StringIO(t)) if r.get("契約") == "TXO" and r.get("交易時段") == "一般"]
+    rows = [r for r in opt_today() if r.get("交易時段") == "一般"]
+    if not rows:
+        t = raw("https://openapi.taifex.com.tw/v1/DailyMarketReportOpt")
+        if not t: return None
+        rows = [r for r in csv.DictReader(io.StringIO(t)) if r.get("契約") == "TXO" and r.get("交易時段") == "一般"]
     if not rows: return None
     import calendar
     def expiry(e):      # 202612=月選(第 3 個週三)、202611W4=第 4 個週三、202611F3=第 3 個週五
@@ -43,6 +68,13 @@ def max_oi():
     return dict(month=pick(month), week=pick(week))
 
 def inst():
+    d = f"{TODAY:%Y/%m/%d}"
+    W = www_csv(f"https://www.taifex.com.tw/cht/3/callsAndPutsDateDown?queryStartDate={d}&queryEndDate={d}&commodityId=TXO")
+    out = {}
+    for r in W:                                  # 官網(當天):外資及陸資的買權/賣權未平倉淨額
+        if r.get("商品名稱") == "臺指選擇權" and r.get("身份別", "").startswith("外資"):
+            out[r["買賣權別"].lower()] = dict(oi=F(r.get("未平倉口數買賣淨額")), val=F(r.get("未平倉契約金額買賣淨額(千元)")), d=r.get("日期", "").replace("/", ""))
+    if out.get("call") and out.get("put"): return out
     d = J("https://openapi.taifex.com.tw/v1/MarketDataOfMajorInstitutionalTradersDetailsOfCallsAndPutsBytheDate") or []   # 名稱是「外資及陸資」
     out = {}
     for r in d:
@@ -69,6 +101,11 @@ def adr():
 def main():
     pcr = J("https://openapi.taifex.com.tw/v1/PutCallRatio") or []
     P = sorted([[r["Date"], F(r.get("PutCallOIRatio%")), F(r.get("PutCallVolumeRatio%"))] for r in pcr if r.get("Date")])
+    R = opt_today()                              # OpenAPI 還沒有今天 → 用官網今天的行情自己算(和官方算法一致:未平倉只有一般時段、成交量含盤後)
+    if R and (not P or R[0]["日期"] > P[-1][0]):
+        s = lambda k, cp: sum(F(r.get(k)) or 0 for r in R if r.get("買賣權") == cp)
+        co, po, cv, pv = s("未沖銷契約量", "買權"), s("未沖銷契約量", "賣權"), s("成交量", "買權"), s("成交量", "賣權")
+        if co and cv: P.append([R[0]["日期"], round(po / co * 100, 2), round(pv / cv * 100, 2)])
     out = dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), pcr=P, oi=max_oi(), inst=inst(), adr=adr(),
                note="P/C Ratio＝賣權未平倉÷買權未平倉×100,高於 100 偏多(法人買賣權避險/看多)、低於 80 偏保守;最大未平倉履約價常被視為短線壓力(買權)與支撐(賣權)")
     fh.save(os.path.join(DATA, "options.json"), out)
