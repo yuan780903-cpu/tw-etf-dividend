@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-version" content="v2026.11.25.9">
+<meta name="app-version" content="v2026.11.25.10">
 <meta name="theme-color" content="#F1F5FF">
 <title>巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
@@ -1457,6 +1457,12 @@ button{-webkit-tap-highlight-color:transparent}
 .nhi-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;opacity:.95}
 .nhi-t{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 10px 2px 6px;cursor:pointer;font-weight:700;font-size:12.5px;user-select:none}
 .nhi-t input{width:15px;height:15px;margin:0;accent-color:#fff;cursor:pointer}
+/* ===== 💾 配息試算存檔/讀取 ===== */
+.pf-io{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0 2px}
+.pf-io button,.pf-ld{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:11px;padding:8px 13px;font-weight:800;cursor:pointer;font-size:13.5px;font-family:inherit;line-height:1.2}
+.pf-io button:hover,.pf-ld:hover{border-color:var(--gold)}
+.pf-ld input{display:none}
+.pf-io span{flex:1 1 180px;font-size:12px;color:var(--sub);line-height:1.5}
 /* ===== 🧾 我的配息從哪裡來(配息試算頁) ===== */
 .h-dm{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:12px;color:var(--sub)}.h-dm .dm-bar{flex:0 0 90px;margin:0}
 .h-dm span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1751,7 +1757,7 @@ button{-webkit-tap-highlight-color:transparent}
   <div class="top">
     <div class="brand"><img class="logo" src="logo.svg" alt="柴犬博士" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.25.9</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
+      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.25.10</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
@@ -1876,6 +1882,7 @@ button{-webkit-tap-highlight-color:transparent}
       <div class="box" id="boxHold">
         <h2>我的持股 <span style="font-size:12px;color:var(--sub);font-weight:500">張數可填小數=零股</span></h2>
         <div class="addrow"><input id="addId" list="etfList" placeholder="輸入代號或名稱新增，如 00919"><button id="addBtn">＋</button></div>
+        <div class="pf-io"><button id="pfSave" type="button">💾 存檔</button><label class="pf-ld">📂 讀取檔案<input type="file" id="pfFile" accept=".json,application/json"></label><span>存成檔案留在手機或電腦，換裝置、清掉瀏覽器資料都能讀回來</span></div>
         <datalist id="etfList"></datalist>
         <div class="hold" id="hold"></div>
       </div>
@@ -1893,7 +1900,7 @@ button{-webkit-tap-highlight-color:transparent}
 </div>
 
 <footer><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button>
-  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.25.9</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.25.10</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -7333,6 +7340,38 @@ function tabFit(){
   if (m.textContent && n.scrollWidth > n.clientWidth + 1) m.classList.add("cut");
 }
 window.addEventListener("resize", () => { clearTimeout(window.tabFitT); window.tabFitT = setTimeout(tabFit, 150); });
+
+/* ================= 💾 配息試算:存檔 / 讀取檔案(.json,內容只有代號、張數、二代健保勾選,不含任何個資) ================= */
+function pfFileSave(){
+  if (!PF.length) { toast("目前沒有持股可以存檔", 1800); return; }
+  const d = new Date().toLocaleDateString("sv", {timeZone: "Asia/Taipei"});
+  const o = {app: "巴菲遠不負責任財富系統", kind: "配息試算", ver: typeof APP_VER == "string" ? APP_VER : "", saved: new Date().toISOString(),
+    pf: PF.map(p => ({id: p.id, lots: +p.lots})), nhi: typeof nhiOn == "function" ? nhiOn() : true};
+  const u = URL.createObjectURL(new Blob([JSON.stringify(o, null, 1)], {type: "application/json"})), a = document.createElement("a");
+  a.href = u; a.download = `巴菲遠配息試算_${d}.json`; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 5000);
+  toast(`💾 已存檔 ${PF.length} 檔持股：${a.download}`, 2600);
+}
+async function pfFileLoad(f){
+  if (!f) return;
+  let o; try { o = JSON.parse(await f.text()); } catch (e) { toast("讀不懂這個檔案，請選巴菲遠「💾 存檔」存下來的 .json 檔", 3000); return; }
+  const L = Array.isArray(o) ? o : o && Array.isArray(o.pf) ? o.pf : null;
+  if (!L) { toast("這個檔案裡沒有配息試算的持股", 3000); return; }
+  const ok = [], bad = [];
+  L.forEach(x => { const id = String((x && (x.id || x.code)) || "").trim().toUpperCase(), lots = +(x && x.lots);
+    if (!id) return; if (S.find(e => e.id == id) && lots > 0 && !ok.some(y => y.id == id)) ok.push({id, lots}); else if (!ok.some(y => y.id == id)) bad.push(id); });
+  if (!ok.length) { toast("檔案裡的代號都找不到對應的 ETF", 3000); return; }
+  const when = o.saved ? new Date(o.saved).toLocaleString("zh-TW", {hour12: false, year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit"}) : "";
+  const list = ok.slice(0, 8).map(x => `${x.id} ${+x.lots.toFixed(3)} 張`).join("、") + (ok.length > 8 ? ` 等 ${ok.length} 檔` : "");
+  if (!confirm(`📂 讀取檔案${when ? `（存檔時間 ${when}）` : ""}\n${list}${bad.length ? `\n\n找不到的代號會略過：${bad.join("、")}` : ""}\n\n按「確定」會用這 ${ok.length} 檔取代目前的 ${PF.length} 檔持股。`)) return;
+  PF = ok; save();
+  if (typeof o.nhi == "boolean") { try { localStorage.setItem("etf_nhi", o.nhi ? "1" : "0"); } catch (e) {} }
+  renderPF(); toast(`📂 已讀回 ${ok.length} 檔持股`, 2400);
+}
+(function(){
+  const b = document.getElementById("pfSave"), f = document.getElementById("pfFile"); if (!b || !f) return;
+  b.onclick = pfFileSave;
+  f.onchange = () => { const x = f.files && f.files[0]; f.value = ""; pfFileLoad(x); };
+})();
 </script>
 </body>
 </html>
