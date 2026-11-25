@@ -148,8 +148,11 @@ def main():
         t = f.get("ttm") or {}; cap = t.get("cap")
         if not cap: continue
         if c in q: cl, ch, vol = q[c]
-        elif f.get("px"): cl, ch, vol = f["px"], 0, 0          # 今天沒成交(官網收盤價是 --):沿用上次股價,漲跌 0
-        else: continue
+        else:                                                   # 今天沒成交(官網收盤價是 --):沿用上次股價,漲跌 0
+            try: lp = f.get("px") or json.load(open(os.path.join(DATA, "stk", c + ".json"))).get("px")
+            except Exception: lp = None
+            if not lp: continue
+            cl, ch, vol = lp, 0, 0
         mcap = cl * (FIX.get(c) or cap * 100) / 1e8     # 億元(非 10 元面額用實際股數)
         items.append([c, f.get("name"), f.get("ind") or "其他", round(mcap, 1), ch, cl, vol])
     items.sort(key=lambda x: -x[3])

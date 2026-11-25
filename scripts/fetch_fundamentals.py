@@ -173,6 +173,8 @@ def monthly_revenue(n=3):
                     if len(td) >= 9 and re.match(r"^\d{4}$", td[0]):
                         rows[td[0]] = [num(td[2]), num(td[4]), num(td[7]), num(td[8])]
                 time.sleep(4)
+            if bad and os.path.exists(p):                    # 有一個市場暫時抓不到:用上次存的同月份補齊,避免只剩一半公司
+                rows = {**json.load(open(p)), **rows}; print(f"  {m:%Y-%m} 月營收有市場抓失敗,用快取補齊到 {len(rows)} 家")
             if len(rows) < 500: print(f"  {m:%Y-%m} 月營收尚未齊全({len(rows)} 家),略過"); continue
             if not bad: fh.save(p, rows)                      # 有市場抓失敗就不存快取,下次重抓
         got += 1; print(f"{m:%Y-%m} 月營收 {len(rows)} 家")
@@ -257,11 +259,14 @@ def build(ps, latest):
     try:                                                   # 今天沒成交的股票(官網收盤價是 --):沿用上一版的股價
         prev_px = {c: v.get("px") for c, v in json.load(open(os.path.join(FD, "fundamentals.json")))["companies"].items() if v.get("px")}
     except Exception: prev_px = {}
+    def stk_px(c):                                         # 再沒有就用個股頁上次的股價
+        try: return json.load(open(os.path.join(DATA, "stk", c + ".json"))).get("px")
+        except Exception: return None
     p1m = prices_on(TODAY - dt.timedelta(days=30), "px_1m", cache=False)       # 價格動能:1 個月前、1 年前
     p12m = prices_on(TODAY - dt.timedelta(days=365), "px_12m", cache=False)
     rev = monthly_revenue(24)                          # 近 2 年月營收(個股頁趨勢、營收創新高)
     for c, d in comp.items():
-        d["px"] = now.get(c) or prev_px.get(c); d["pxY"] = {y: px_year[y].get(c) for y in years if px_year[y].get(c)}
+        d["px"] = now.get(c) or prev_px.get(c) or stk_px(c); d["pxY"] = {y: px_year[y].get(c) for y in years if px_year[y].get(c)}
         d["px1m"], d["px12m"] = p1m.get(c), p12m.get(c); d["vol5"] = VOL.get(c)
         if c in rev: d["rev"] = sorted(rev[c], reverse=True)
         d.update(ind.get(c, {}))
