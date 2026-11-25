@@ -1448,10 +1448,41 @@ button{-webkit-tap-highlight-color:transparent}
 .rk-f{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0 10px}.rk-f button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:13px}.rk-f button.on{background:#2F5BEA;color:#fff;border-color:#2F5BEA}.rk-f button i{font-style:normal;opacity:.7;margin-left:3px}.rk-f label{font-size:13px;margin-left:6px}
 .rk-mine{background:#FDECEC;border:1px solid #F5B3B3;border-radius:12px;padding:9px 12px;font-size:13.5px;margin:6px 0}.rk-mine.ok{background:#E8F7EE;border-color:#A7E3C2}.rk-mine b[data-c]{cursor:pointer;text-decoration:underline}
 .rk-tb td.rk-w{white-space:normal;min-width:170px;font-size:12.5px}.rk-box.bad{border-left:5px solid #CF3A3A}.rk-ok{color:#1A8F57;font-weight:800}.rk-dp{font-size:13.5px;font-weight:700;color:#CF3A3A}.rk-tags{margin:4px 0}
+/* ===== 💸 ETF 即時折溢價總表 ===== */
+.box.pz{margin-bottom:18px}
+.pz-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.pz-hd h2.sec{margin:0 0 6px}
+.pz-hd h2.sec{display:block}.pz-upd{font-size:12px;color:var(--sub);font-weight:600;margin:-2px 0 6px}
+.pz-rf{border:1px solid var(--line);background:var(--field);color:var(--ink);border-radius:10px;padding:6px 12px;font-weight:800;font-size:13px;cursor:pointer}.pz-rf:disabled{opacity:.5}
+.pz-is{display:flex;gap:6px;overflow-x:auto;padding:8px 0 8px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.pz-is button,.pz-qk button,.pz-more button{flex:none;border:1px solid var(--line);background:var(--field);color:var(--sub);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:800;cursor:pointer;white-space:nowrap}
+.pz-is button.on,.pz-qk button.on{background:var(--brand);border-color:transparent;color:#fff}
+.pz-is button i{font-style:normal;opacity:.7;font-weight:700;margin-left:4px;font-size:11.5px}
+.pz-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:2px 0 8px}
+.pz-bar input{flex:1 1 200px;min-width:0;border:1px solid var(--line);background:var(--field);color:var(--ink);border-radius:10px;padding:8px 12px;font-size:14px}
+.pz-qk{display:flex;gap:6px;flex-wrap:wrap}
+.pz-tw{width:100%}
+.pz-t{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;table-layout:fixed}
+.pz-t th{font-size:12.5px;color:var(--sub);font-weight:800;text-align:right;padding:8px 6px;border-bottom:2px solid var(--line);cursor:pointer;white-space:nowrap;user-select:none}
+.pz-t th.on{color:var(--brand)}
+.pz-t th:first-child,.pz-t td:first-child{text-align:left}
+.pz-t th:nth-child(1){width:30%}.pz-t th.is{width:13%;cursor:default}
+.pz-t td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:right;font-weight:800;font-size:14px;vertical-align:middle;overflow:hidden;white-space:nowrap}.pz-t td i.u{font-style:normal;font-size:.8em;margin-left:2px;opacity:.85}
+.pz-t tr.c{cursor:pointer}.pz-t tr.c:hover td{background:var(--hover)}
+.pz-t td b{display:block;font-size:14.5px;white-space:nowrap}
+.pz-t td small{display:block;color:var(--sub);font-weight:600;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pz-t td.is{color:var(--sub);font-weight:700;font-size:13px;white-space:nowrap;text-overflow:ellipsis}
+.pz-p{display:inline-block;border-radius:7px;padding:1px 6px}
+.pz-p.hi{background:rgba(229,56,59,.13)}.pz-p.lo{background:rgba(19,160,95,.13)}
+.pz-up{color:var(--up)}.pz-dn{color:var(--down)}.pz-up small,.pz-dn small{color:inherit!important;opacity:.85}
+.pz-emp{text-align:center!important;color:var(--sub);padding:24px 6px!important}
+.pz-more{text-align:center;margin-top:12px}.pz-more:empty{display:none}.pz-more button{padding:8px 20px;color:var(--ink)}
+@media(max-width:700px){.box.pz{padding:14px 12px}.pz-t .is{display:none}.pz-t th:nth-child(1){width:31%}.pz-t th:nth-child(2){width:17%}.pz-t th:nth-child(3){width:15%}.pz-t th:nth-child(4){width:18%}
+  .pz-qk{flex-wrap:nowrap;overflow-x:auto;width:100%;-webkit-overflow-scrolling:touch;scrollbar-width:none}.pz-qk button{padding:5px 10px;font-size:12.5px}.pz-bar .count{margin-left:auto}
+  .pz-t td{font-size:13px;padding:8px 3px}.pz-t th{font-size:11.5px;padding:6px 3px}.pz-t td b{font-size:13.5px}.pz-t td small{font-size:11px}.pz-p{padding:1px 3px}}
 /* ===== ETF 折溢價 ===== */
 .nav-b{display:block;min-height:0;margin:2px 0}.nav-b.row{display:block}.nav-b em{font-style:normal;font-size:12px;font-weight:800;border-radius:7px;padding:1px 7px;white-space:nowrap}
 .nav-b em.ok{background:#EEF2FF;color:#2F5BEA}.nav-b em.hi{background:#FDECEC;color:#CF3A3A}.nav-b em.lo{background:#E8F7EE;color:#1A8F57}
-.nav-l{display:block;font-size:12px;margin-bottom:2px;opacity:.95}
+.nav-l{display:block;font-size:12px;margin-bottom:2px;opacity:.95}.dhd .px .nav-l b{display:inline;font-size:inherit;font-weight:800}
 @media(min-width:1301px){.bd{grid-template-columns:repeat(7,minmax(0,1fr))}}
 /* 價位提醒 */
 .px-b{border:1px dashed var(--line);background:var(--panel);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap}.px-b.on{border:1px solid #F59E0B;background:#FFF7E6;color:#B45309}
@@ -1720,6 +1751,14 @@ button{-webkit-tap-highlight-color:transparent}
 
   <div class="page" id="pg-etf">
   <div class="bd-wrap" id="etfBoard"><div class="bd-hd"><h2>📋 ETF 市場總表</h2><span id="etfBdUpd"></span></div><div class="bd" id="etfTiles"><div class="sk" style="height:120px;grid-column:1/-1"></div></div></div>
+  <div class="box pz" id="pzBox">
+    <div class="pz-hd"><h2 class="sec"><span class="pz-tt">💸 ETF 即時折溢價總表</span></h2><button class="pz-rf" id="pzRf" type="button">⟳ 更新</button></div><div class="pz-upd" id="pzUpd"></div>
+    <p class="mknote">👶 白話：市價比淨值（ETF 裡面股票真正值多少）貴叫「溢價」＝買貴了，便宜叫「折價」。<b>溢價超過 1% 先別追</b>。資金進出＝今天有人申購（錢流進來）或贖回（錢流出去）。點任一列看詳細。</p>
+    <div class="pz-is" id="pzIs"></div>
+    <div class="pz-bar"><input id="pzQ" type="search" placeholder="🔍 代號或名稱，例如 0050、高股息" autocomplete="off"><div class="pz-qk" id="pzQk"></div><span class="count" id="pzN"></span></div>
+    <div class="pz-tw"><table class="pz-t"><thead><tr id="pzH"></tr></thead><tbody id="pzB"><tr><td colspan="6"><div class="sk" style="height:160px"></div></td></tr></tbody></table></div>
+    <div class="pz-more" id="pzMore"></div>
+  </div>
   <div class="cats" id="cats"><div class="sk sk-cat"></div><div class="sk sk-cat"></div><div class="sk sk-cat"></div><div class="sk sk-cat"></div><div class="sk sk-cat"></div><div class="sk sk-cat"></div><div class="sk sk-cat"></div><div class="sk sk-cat"></div><div class="sk sk-cat"></div><div class="sk sk-cat"></div><div class="sk sk-cat"></div><div class="sk sk-cat"></div></div>
 
   <div class="main">
@@ -5605,6 +5644,7 @@ async function boardUI(){
 }
 async function etfBoard(){
   if (!$("#etfTiles") || typeof S == "undefined" || !S || !S.length) { setTimeout(etfBoard, 800); return; }
+  pzUI();
   const up = S.filter(e => e.chgPct > 0).length, dn = S.filter(e => e.chgPct < 0).length, yl = S.map(e => e.ttmYield).filter(v => v > 0).sort((a, b) => a - b);
   const mdn = yl.length ? yl[Math.floor(yl.length / 2)] : null, ym = new Date().toISOString().slice(0, 7);
   let U = []; try { U = await getJ("upcoming") || []; } catch (e) {}
@@ -6264,15 +6304,15 @@ let INAV = {}, INAVT = 0;
 async function navLoad(){
   try {
     const j = await fetch(CFG.proxy + encodeURIComponent("https://mis.twse.com.tw/stock/data/all_etf.txt")).then(r => r.json());
-    const o = {}; (j.a1 || []).forEach(g => (g.msgArray || []).forEach(x => { if (x.a && +x.f > 0) o[x.a] = {px: +x.e, nav: +x.f, prem: +x.g, prev: +x.h, t: x.j, d: x.i}; }));
-    if (Object.keys(o).length) { INAV = o; INAVT = Date.now(); navPaint(); }
+    const o = {}; (j.a1 || []).forEach(g => { const is = pzIss(g.refURL); (g.msgArray || []).forEach(x => { if (x.a && +x.f > 0) o[x.a] = {px: +x.e, nav: +x.f, prem: +x.g, prev: +x.h, t: x.j, d: x.i, u: +x.c, du: +x.d, is, raw: x.b}; }); });
+    if (Object.keys(o).length) { INAV = o; INAVT = Date.now(); navPaint(); if (PZ && PZ.is == "ETN") pzEtn(true); }
   } catch (e) {}
 }
 function navBadge(e, row){ return `<span class="nav-b ${row ? "row" : ""}" data-nav="${e.id}">${navTxt(e.id)}</span>`; }
 function navTxt(id){ const n = INAV[id]; if (!n || n.prem == null || isNaN(n.prem)) return "";
   const c = n.prem >= 1 ? "hi" : n.prem <= -1 ? "lo" : "ok"; return `<em class="${c}" title="即時淨值 ${fmt(n.nav, 2)}（${n.t}）">${n.prem >= 0 ? "溢價" : "折價"} ${fmt(Math.abs(n.prem), 2)}%${n.prem >= 1 ? "・買貴了" : ""}</em>`; }
 function navLine(id){ const n = INAV[id]; return n ? `<small class="nav-l">即時淨值 <b>${fmt(n.nav, 2)}</b>・${n.prem >= 0 ? "溢價" : "折價"} <b>${fmt(Math.abs(n.prem), 2)}%</b>（${n.t}）</small>` : ""; }
-function navPaint(){ document.querySelectorAll("[data-nav]").forEach(el => el.innerHTML = navTxt(el.dataset.nav)); }
+function navPaint(){ document.querySelectorAll("[data-nav]").forEach(el => el.innerHTML = navTxt(el.dataset.nav)); pzPaint(); }
 function navTile(){ const L = Object.entries(INAV).filter(([, n]) => n.prem != null && !isNaN(n.prem)); if (!L.length) return null;
   const hi = L.sort((a, b) => b[1].prem - a[1].prem)[0], n1 = L.filter(([, n]) => n.prem >= 1).length;
   return {t: "💸 溢價最高的 ETF", v: `${hi[0]} ${sgn(hi[1].prem, 2)}%`, col: hi[1].prem >= 1 ? "#CF3A3A" : "var(--ink)", sub: `溢價超過 1% 的有 ${n1} 檔（買貴了要小心）`}; }
@@ -6932,6 +6972,92 @@ async function briefUI(force){
 }
 setInterval(() => { if (!document.hidden && document.querySelector(".page.on #mk-brief")) briefUI(); }, 60e3);
 document.addEventListener("visibilitychange", () => { if (!document.hidden && document.querySelector(".page.on #mk-brief")) briefUI(); });
+
+/* ================= 💸 ETF 即時折溢價總表（投信分類、ETN、資金進出） ================= */
+var PZ = (() => { const d = {is: "全部", qk: "", k: "id", dir: 1}; try { return Object.assign(d, JSON.parse(localStorage.getItem("bfy_pz") || "{}"), {all: false}); } catch (e) { return Object.assign(d, {all: false}); } })();
+var PZE = null, PZEL = false;
+function pzIss(u){
+  const M = [["yuantaetfs", "元大"], ["websys.fsit.", "富邦"], ["cathaysite", "國泰"], ["fhtrust", "復華"], ["capitalfund", "群益"], ["tsit.com", "台新"], ["megafunds", "兆豐"],
+    ["jkoam", "街口"], ["fsitc.com", "第一金"], ["ezmoney", "統一"], ["ctbcinvestments", "中信"], ["kgifund", "凱基"], ["sinopac", "永豐"], ["ftft", "富蘭克林華美"],
+    ["uobam", "大華銀"], ["nomurafunds", "野村"], ["esunam", "玉山"], ["usitc", "聯邦"], ["hnfunds", "華南永昌"], ["allianzgi", "安聯"], ["abfunds", "聯博"],
+    ["jpmorgan", "摩根"], ["blackrock", "貝萊德"], ["skit", "新光"], ["manulife", "宏利"], ["fidelity", "富達"], ["pinebridge", "柏瑞"], ["prudential", "保德信"]];
+  let h = ""; try { h = new URL(u).hostname; } catch (e) { return "其他"; }
+  const f = M.find(([k]) => h.includes(k)); return f ? f[1] : "其他";
+}
+function pzSave(){ try { localStorage.setItem("bfy_pz", JSON.stringify({is: PZ.is, qk: PZ.qk, k: PZ.k, dir: PZ.dir})); } catch (e) {} }
+function pzNm(c, raw){
+  const e = typeof S != "undefined" && S ? S.find(x => x.id == c) : null; if (e && e.name) return e.name;
+  const n = (typeof NAMES != "undefined" && NAMES || []).find(x => x[0] == c); if (n) return n[1];
+  return String(raw || "").replace(/(證券投資信託基金|指數股票型期貨信託基金|期貨信託基金|ETF基金|基金)$/, "");
+}
+function pzMine(){ const s = new Set((typeof PF != "undefined" && PF || []).map(x => x.id)); try { (typeof rdCodes == "function" ? rdCodes() : []).forEach(c => s.add(c)); } catch (e) {} return s; }
+function pzFl(v){ if (!v) return "—"; return Math.abs(v) >= 1e8 ? sgn(v / 1e8, 1) + '<i class="u">億</i>' : sgn(v / 1e4, 0) + '<i class="u">萬</i>'; }
+async function pzEtn(force){
+  if (PZEL || (PZE && !force)) return; PZEL = true;
+  try {
+    const j = await fetch(CFG.proxy + encodeURIComponent("https://mis.twse.com.tw/stock/data/all_etn.txt")).then(r => r.json()), o = {};
+    (j.a1 || []).forEach(g => (g.msgArray || []).forEach(x => { if (x.a && +x.f > 0) o[x.a] = {px: +x.e, nav: +x.f, prem: +x.g, prev: +x.h, t: x.j, d: x.i, u: +x.c, du: +x.d, is: "ETN", raw: x.b}; }));
+    PZE = o;
+  } catch (e) { if (!PZE) PZE = {}; }
+  PZEL = false; pzPaint();
+}
+function pzUI(){
+  const box = $("#pzBox"); if (!box || !PZ) return;
+  if (!box.dataset.init) {
+    box.dataset.init = 1;
+    $("#pzQ").oninput = () => { PZ.all = false; pzPaint(); };
+    $("#pzRf").onclick = async () => { const b = $("#pzRf"); b.disabled = true; await navLoad(); if (PZ.is == "ETN") await pzEtn(true); b.disabled = false; toast("已更新即時淨值", 1200); };
+    box.addEventListener("click", ev => {
+      const b = ev.target.closest("[data-pzi]"); if (b) { PZ.is = b.dataset.pzi; PZ.all = false; pzSave(); if (PZ.is == "ETN") pzEtn(); pzPaint(); return; }
+      const q = ev.target.closest("[data-pzq]"); if (q) { const k = q.dataset.pzq; PZ.qk = PZ.qk == k ? "" : k; PZ.all = false;
+        if (PZ.qk) { PZ.k = {hi: "prem", lo: "prem", in: "fl", out: "fl"}[k]; PZ.dir = (k == "lo" || k == "out") ? 1 : -1; }
+        pzSave(); pzPaint(); return; }
+      const h = ev.target.closest("[data-pzk]"); if (h) { const k = h.dataset.pzk; if (PZ.k == k) PZ.dir *= -1; else { PZ.k = k; PZ.dir = k == "id" ? 1 : -1; } pzSave(); pzPaint(); return; }
+      if (ev.target.closest("#pzAll")) { PZ.all = !PZ.all; pzPaint(); if (!PZ.all) box.scrollIntoView({block: "start", behavior: "smooth"}); return; }
+      const r = ev.target.closest("tr[data-c]"); if (r) { const c = r.dataset.c;
+        if (typeof S != "undefined" && S && S.find(e => e.id == c)) openDetail(c); else if (typeof openStock == "function") openStock(c); }
+    });
+    if (typeof loadNames == "function") loadNames().then(pzPaint).catch(() => {});
+    if (PZ.is == "ETN") pzEtn();
+  }
+  pzPaint();
+}
+function pzPaint(){
+  const B = $("#pzB"), bx = $("#pzBox"); if (!B || !PZ || !bx || !bx.dataset.init) return;
+  const isE = PZ.is == "ETN", mine = pzMine(), src = isE ? (PZE || {}) : INAV;
+  const cnt = {}; Object.values(INAV).forEach(n => { const k = n.is || "其他"; cnt[k] = (cnt[k] || 0) + 1; });
+  const iss = Object.entries(cnt).sort((a, b) => (a[0] == "其他") - (b[0] == "其他") || b[1] - a[1]);
+  const tabs = [["全部", Object.keys(INAV).length], ["⭐ 我的", [...mine].filter(c => INAV[c]).length], ...iss, ["ETN", PZE ? Object.keys(PZE).length : ""]];
+  if (!tabs.some(([k]) => k == PZ.is)) PZ.is = "全部";
+  $("#pzIs").innerHTML = tabs.map(([k, n]) => `<button type="button" data-pzi="${k}" class="${PZ.is == k ? "on" : ""}">${k}${n !== "" ? `<i>${n}</i>` : ""}</button>`).join("");
+  $("#pzQk").innerHTML = [["hi", "🔥 溢價 ≥1%"], ["lo", "🧊 折價 ≥1%"], ["in", "💰 資金流入"], ["out", "💸 資金流出"]].map(([k, t]) => `<button type="button" data-pzq="${k}" class="${PZ.qk == k ? "on" : ""}">${t}</button>`).join("");
+  const ok = x => x.n.px > 0 && !isNaN(x.n.prem);
+  let L = Object.entries(src).map(([c, n]) => ({c, n, nm: pzNm(c, n.raw), fl: n.du && n.prev ? n.du * n.prev : 0}));
+  if (!isE && PZ.is != "全部") L = L.filter(x => PZ.is == "⭐ 我的" ? mine.has(x.c) : (x.n.is || "其他") == PZ.is);
+  const q = ($("#pzQ").value || "").trim().toLowerCase();
+  if (q) L = L.filter(x => x.c.toLowerCase().includes(q) || x.nm.toLowerCase().includes(q) || String(x.n.raw || "").toLowerCase().includes(q));
+  if (PZ.qk == "hi") L = L.filter(x => ok(x) && x.n.prem >= 1);
+  if (PZ.qk == "lo") L = L.filter(x => ok(x) && x.n.prem <= -1);
+  if (PZ.qk == "in") L = L.filter(x => x.fl > 0);
+  if (PZ.qk == "out") L = L.filter(x => x.fl < 0);
+  const K = {id: x => x.c, nav: x => x.n.nav, px: x => x.n.px > 0 ? x.n.px : null, prem: x => ok(x) ? x.n.prem : null, fl: x => x.fl || null};
+  const f = K[PZ.k] || K.id, d = PZ.dir;
+  L.sort((a, b) => { const va = f(a), vb = f(b); if (va == null && vb == null) return a.c.localeCompare(b.c); if (va == null) return 1; if (vb == null) return -1; return (typeof va == "string" ? va.localeCompare(vb) : va - vb) * d; });
+  const H = [["id", "ETF"], ["nav", "淨值"], ["px", "市價"], ["prem", "折溢價"], ["fl", "資金進出"]];
+  $("#pzH").innerHTML = H.map(([k, t]) => `<th data-gl="1" data-pzk="${k}" class="${PZ.k == k ? "on" : ""}">${t}${PZ.k == k ? (PZ.dir > 0 ? " ↑" : " ↓") : ""}</th>`).join("") + `<th data-gl="1" class="is">${isE ? "類別" : "投信"}</th>`;
+  const N = PZ.all ? L.length : Math.min(L.length, 15);
+  B.innerHTML = L.slice(0, N).map(x => { const n = x.n, has = ok(x), pd = n.nav >= 50 ? 2 : 3, df = has ? n.px - n.nav : null;
+    const pc = !has ? "" : n.prem >= 1 ? "hi" : n.prem <= -1 ? "lo" : "", cc = !has ? "" : n.prem > 0 ? "pz-up" : n.prem < 0 ? "pz-dn" : "";
+    return `<tr class="c" data-c="${esc(x.c)}"><td><b>${mine.has(x.c) ? "⭐" : ""}${esc(x.c)}</b><small>${esc(x.nm)}</small></td>`
+      + `<td>${fmt(n.nav, pd)}</td><td>${has ? fmt(n.px, 2) : "—"}</td>`
+      + `<td class="${cc}"><span class="pz-p ${pc}">${has ? sgn(n.prem, 2) + "%" : "—"}</span><small>${has ? sgn(df, pd) : ""}</small></td>`
+      + `<td class="${x.fl > 0 ? "pz-up" : x.fl < 0 ? "pz-dn" : ""}">${pzFl(x.fl)}</td><td class="is">${isE ? "ETN" : esc(n.is || "—")}</td></tr>`; }).join("")
+    || `<tr><td colspan="6" class="pz-emp">${isE && !PZE ? "讀取 ETN 中…" : !Object.keys(INAV).length ? "讀取即時淨值中…" : PZ.is == "⭐ 我的" && !mine.size ? "你的配息試算和盤中雷達清單裡還沒有 ETF" : "沒有符合條件的 ETF"}</td></tr>`;
+  $("#pzN").textContent = L.length ? `共 ${L.length} 檔` : "";
+  $("#pzMore").innerHTML = L.length > 15 ? `<button type="button" id="pzAll">${PZ.all ? "收合 ▴" : `看全部 ${L.length} 檔 ▾`}</button>` : "";
+  const any = Object.values(src)[0];
+  $("#pzUpd").textContent = any && any.d ? `${any.d.slice(4, 6)}/${any.d.slice(6, 8)} ${any.t} 更新・證交所即時淨值，盤中每 2 分鐘自動更新` : "";
+}
 </script>
 </body>
 </html>
