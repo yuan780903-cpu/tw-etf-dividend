@@ -94,6 +94,7 @@ function rules(c, q, st, cf, ref, m){
 /* ---------- 盤勢摘要(網站時間軸＋推播)----------
  * ☀️ 晨報 08:30、🔔 台股開盤 09:05、🔔 台股收盤 13:35、🏦 三大法人 15:00 起每 5 分鐘試到有資料
  * 🇺🇸 美股開盤 美東 09:35、美股收盤 美東 16:05(台灣冬令 22:35／05:05,夏令 21:35／04:05,程式自動換算)
+ * 晨報、美股收盤都附「💱 美元兌台幣」:升貶幾角、近一個月位置、對台股的白話判讀(fxTwd/fxTxt)
  * 台股休市看證交所休市日；美股休市看最後成交日期不是今天就不發 */
 const BKEY = {am: "b_am", open: "b_open", close: "b_close", inst: "b_inst", uso: "b_uso", usc: "b_usc"};
 const SLOTS = [["am", "tw", 510, 520, 1], ["open", "tw", 545, 552, 1], ["close", "tw", 815, 825, 1], ["inst", "tw", 900, 960, 5], ["uso", "ny", 575, 590, 1], ["usc", "ny", 965, 990, 1]];
@@ -135,10 +136,35 @@ async function twHoliday(env, day){   // 證交所休市日(含「市場無交�
   return !!(L && L.includes(day));
 }
 
+/* 美元兌台幣(Yahoo 國際報價 TWD=X):現價、前一日收盤、近一個月高低 → 白話判讀 */
+async function fxTwd(){
+  const q = (await spark(["TWD=X"]))["TWD=X"] || {}; if (!q.px) return null;
+  let hi = null, lo = null;
+  try { const r = await fetch("https://query1.finance.yahoo.com/v8/finance/chart/TWD=X?range=1mo&interval=1d", {headers: YUA});
+    const cl = ((await r.json()).chart.result[0].indicators.quote[0].close || []).filter(x => x != null);
+    if (cl.length >= 10) { hi = Math.max(...cl, q.px); lo = Math.min(...cl, q.px); } } catch (e) {}
+  return {px: q.px, pv: q.pv, hi, lo};
+}
+function fxTxt(f){
+  if (!f || !f.px) return "";
+  const d = f.pv ? f.px - f.pv : 0, p = f.pv ? d / f.pv * 100 : 0, a = Math.abs(d);
+  const mv = a < 0.005 ? "持平" : `台幣${d > 0 ? "貶" : "升"} ${a >= 0.1 ? (a * 10).toFixed(1) + " 角" : Math.round(a * 100) + " 分"}`;
+  let pos = "";
+  if (f.hi != null && f.hi - f.lo >= 0.05) { const r = (f.px - f.lo) / (f.hi - f.lo);
+    pos = r >= 0.9 ? "，台幣在近一個月最弱的位置" : r <= 0.1 ? "，台幣在近一個月最強的位置" : ""; }
+  const say = p >= 0.3 ? "台幣明顯貶值，常是外資把錢匯出、賣台股，對台股偏空（出口電子股帳上有匯兌收益）"
+    : p <= -0.3 ? "台幣明顯升值，常是外資匯入買台股，對台股偏多（出口商的匯兌收益會變少）"
+    : p >= 0.1 ? "台幣小貶，外資略偏匯出，影響有限"
+    : p <= -0.1 ? "台幣小升，外資略偏匯入，影響有限"
+    : "匯率平穩，外資資金進出不大";
+  return `💱 美元兌台幣 ${f.px.toFixed(3)}（${mv}${a >= 0.005 ? `，${p > 0 ? "+" : ""}${p.toFixed(2)}%` : ""}${pos}）→ ${say}。`;
+}
+
 /* 各時間點的摘要內容:回傳 null 代表資料還沒好(下一分鐘再試) */
 async function genAm(T){
-  const y = await spark(["^GSPC", "^IXIC", "^SOX", "TSM", "TWD=X", "^VIX"]), g = k => y[k] || {}; if (!g("^GSPC").px) return null;
-  return {title: `☀️ 巴菲遠晨報 ${md(T.day)}`, body: `美股：標普 ${pc(g("^GSPC").chg, 2)}、那斯達克 ${pc(g("^IXIC").chg, 2)}、費半 ${pc(g("^SOX").chg, 2)}；台積電 ADR ${pc(g("TSM").chg, 2)}；VIX ${g("^VIX").px ? g("^VIX").px.toFixed(1) : "—"}；美元兌台幣 ${g("TWD=X").px ? g("TWD=X").px.toFixed(3) : "—"}。台股 09:00 開盤。`};
+  const y = await spark(["^GSPC", "^IXIC", "^SOX", "TSM", "^VIX"]), g = k => y[k] || {}; if (!g("^GSPC").px) return null;
+  const fx = fxTxt(await fxTwd());
+  return {title: `☀️ 巴菲遠晨報 ${md(T.day)}`, body: `美股：標普 ${pc(g("^GSPC").chg, 2)}、那斯達克 ${pc(g("^IXIC").chg, 2)}、費半 ${pc(g("^SOX").chg, 2)}；台積電 ADR ${pc(g("TSM").chg, 2)}；VIX ${g("^VIX").px ? g("^VIX").px.toFixed(1) : "—"}。${fx ? fx + " " : ""}台股 09:00 開盤。`};
 }
 async function genTw(T, k){
   const q = await mis(["tse_t00.tw", "otc_o00.tw", "tse_2330.tw"]), t = q.t00, o = q.o00, s = q["2330"];
@@ -178,7 +204,8 @@ async function genUs(N, k){
   let body = `道瓊 ${nf(g("^DJI").px)}（${pc(g("^DJI").chg, 2)}）、標普 ${nf(sp.px)}（${pc(sp.chg, 2)}）、那斯達克 ${nf(g("^IXIC").px)}（${pc(g("^IXIC").chg, 2)}）、費半 ${nf(g("^SOX").px)}（${pc(g("^SOX").chg, 2)}）；台積電 ADR ${nf(g("TSM").px, 2)}（${pc(g("TSM").chg, 2)}）`;
   if (k == "uso") return {title: `🇺🇸 美股開盤（美東 ${md(N.day)}）`, body: body + "。"};
   const v = g("^VIX").px, s = [g("^SOX").chg, g("TSM").chg].filter(x => x != null), av = s.length ? s.reduce((a, b) => a + b, 0) / s.length : 0;
-  return {title: `🇺🇸 美股收盤（美東 ${md(N.day)}）`, body: body + `${v ? `；VIX ${v.toFixed(1)}` : ""}。→ 台股今天開盤參考：${av >= 1 ? "偏多" : av <= -1 ? "偏空" : "持平"}（看費半與台積電 ADR，僅供參考）。`};
+  const fx = fxTxt(await fxTwd());
+  return {title: `🇺🇸 美股收盤（美東 ${md(N.day)}）`, body: body + `${v ? `；VIX ${v.toFixed(1)}` : ""}。${fx ? fx + " " : ""}→ 台股今天開盤參考：${av >= 1 ? "偏多" : av <= -1 ? "偏空" : "持平"}（看費半與台積電 ADR，僅供參考）。`};
 }
 
 /* 存進全站時間軸,再推播給有訂閱且開著這種摘要的人 */
