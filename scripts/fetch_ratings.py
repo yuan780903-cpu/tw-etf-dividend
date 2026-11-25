@@ -13,6 +13,7 @@ BROKERS = ["摩根士丹利", "大摩", "摩根大通", "小摩", "高盛", "美
 BULL = r"買進|加碼|優於大盤|增持|看多|喊進|強力買進|看好|樂觀|跑贏"
 NEUT = r"中立|持有|區間操作|觀望|中性"
 BEAR = r"賣出|減碼|劣於大盤|看空|看淡|跑輸|保守"
+MYST = r"「這[^」]{0,10}」|這(?:家|檔|間|支|\d+檔|[\u4e00-\u9fffA-Za-z]{0,4}?(?:廠|股|公司|龍頭|供應商|業者))|神秘|小金雞|1檔|一檔|此檔"
 
 def jget(u):
     try: return json.loads(urllib.request.urlopen(urllib.request.Request(u, headers=UA), timeout=40).read())
@@ -32,23 +33,56 @@ def parse(title, NM):
     if "目標價" not in t: return None
     tp = re.search(r"目標價(?:大幅)?(?:上看|調升至|調降至|拉高至|下修至|上修至|調高至|調低至|喊|至|為|到|直指|調升|調降|上調至|下調至)?\s*(\d[\d,]*(?:\.\d+)?)\s*元", t)
     if not tp: return None
-    code = None; m = re.search(r"\((\d{4})\)|（(\d{4})）", t)
+    code = None; myst = False; ctx = []; m = re.search(r"\((\d{4})\)|（(\d{4})）", t)
     if m: code = m[1] or m[2]
     if not code:
         # 公司名後面接「大單、訂單、概念、供應鏈、客戶…」時,標題主角是別家公司(例:吃下台積電大單 這大廠目標價…)
+        ctx = [NM[n] for n in NM if n in t]
         hit = sorted([n for n in NM if n in t and not re.search(re.escape(n) + r"(?:的)?(?:大單|訂單|轉單|概念|供應鏈|大客戶|客戶|夥伴|合作|效應|帶動|加持)", t)], key=len, reverse=True)
-        if not hit or re.search(r"這(?:家|檔|大)?廠|這家公司|這檔|此檔|1檔|一檔|小金雞|神秘", t) and len(hit) == 1 and re.search(re.escape(hit[0]) + r"(?:的)?(?:大單|訂單|轉單|概念|供應鏈|客戶)", title): return None
-        code = NM[hit[0]]
+        # 標題用「這封測大廠」「這檔」「神秘…」代替主角:標題裡出現的公司(台積電)只是背景,要讀原文才知道是誰
+        myst = bool(re.search(MYST, t))
+        if myst: code = None
+        elif not hit: return None
+        else: code = NM[hit[0]]
     br = next((b for b in BROKERS if b in t), "法人")
     br = {"大摩": "摩根士丹利", "小摩": "摩根大通", "美銀": "美銀證券", "德銀": "德意志"}.get(br, br)
     r = "看多" if re.search(BULL, t) else "看空" if re.search(BEAR, t) else "中立" if re.search(NEUT, t) else "未標示"
     act = "調升目標價" if re.search(r"調升|上修|拉高|調高|上調|大升", t) else "調降目標價" if re.search(r"調降|下修|調低|下調|砍", t) else "首次評等" if re.search(r"首評|首次|初評", t) else "維持"
-    return dict(id=code, src=br, act=act, tp=float(tp[1].replace(",", "")), r=r)
+    o = dict(id=code, src=br, act=act, tp=float(tp[1].replace(",", "")), r=r)
+    if myst: o["_myst"] = ctx          # 主角待原文確認(ctx=標題裡只是背景的公司)
+    return o
 
 def sane(r, PX):
-    """目標價離現價太遠(低於 1/3 或超過 3.5 倍)多半是標題解析錯公司,不收"""
+    """目標價離現價太遠(低於一半或超過 3.5 倍)多半是標題解析錯公司,不收"""
     px = PX.get(r["id"]); tp = r.get("tp")
-    return not (px and tp) or 0.33 <= tp / px <= 3.5
+    return not (px and tp) or 0.5 <= tp / px <= 3.5
+
+def article_text(u):
+    """抓原文:鉅亨用新聞 API,Yahoo 取第一個 <article>(後面是推薦文章,不算)"""
+    try:
+        m = re.search(r"news\.cnyes\.com/news/id/(\d+)", u)
+        if m:
+            j = json.loads(urllib.request.urlopen(urllib.request.Request(f"https://api.cnyes.com/media/api/v1/news/{m[1]}", headers=UA), timeout=30).read())
+            t = html.unescape(((j.get("items") or {}).get("content")) or "")
+        else:
+            t = urllib.request.urlopen(urllib.request.Request(u, headers=UA), timeout=30).read().decode("utf-8", "ignore")
+            i = t.find("<article"); 
+            if i >= 0: t = t[i:t.find("</article>", i) if t.find("</article>", i) > 0 else i + 40000]
+        return html.unescape(re.sub(r"<[^>]+>", " ", t))
+    except Exception as e:
+        print("  原文抓取失敗", u[:60], e); return ""
+
+def resolve(r, u, PX, NAME, skip=()):
+    """原文裡「公司（代號）」出現最多次、且目標價在現價 0.5～3.5 倍之間的公司當主角;分不出來就回 None"""
+    txt = article_text(u)
+    if not txt: return None
+    cnt = {}
+    for c in re.findall(r"[（(](\d{4})[)）]", txt):
+        if c in NAME and c not in skip and sane(dict(r, id=c), PX) and PX.get(c): cnt[c] = cnt.get(c, 0) + 1
+    if not cnt: return None
+    best = sorted(cnt.items(), key=lambda z: -z[1])
+    if len(best) > 1 and best[0][1] == best[1][1]: return None
+    return dict(r, id=best[0][0], via="原文")
 
 def main():
     NM, PX, NAME = names()
@@ -73,12 +107,23 @@ def main():
     for n in news:
         if n["k"] in have or not n["ts"]: continue
         r = parse(n["t"], NM)
-        if not r or r["id"] not in NAME: continue
-        if not sane(r, PX): continue
+        if not r: continue
+        if "_myst" in r or (r["id"] in NAME and not sane(r, PX)):
+            skip = set(r.pop("_myst", None) or []) | ({r["id"]} if r.get("id") else set()); r = resolve(r, n["u"], PX, NAME, skip); time.sleep(.5)
+            if not r: continue
+        if r["id"] not in NAME or not sane(r, PX): continue
         items.append(dict(k=n["k"], d=dt.datetime.fromtimestamp(n["ts"]).strftime("%Y-%m-%d"), n=NAME[r["id"]], title=n["t"], u=n["u"], media=n["s"], **r))
         have.add(n["k"]); add += 1
     cut = (dt.date.today() - dt.timedelta(days=120)).isoformat()
-    items = [x for x in items if x["d"] >= cut and sane(x, PX)]; items.sort(key=lambda x: (x["d"], x["k"]), reverse=True)
+    keep = []
+    for x in items:
+        if x["d"] < cut: continue
+        if not sane(x, PX):
+            y = resolve({k: v for k, v in x.items() if k not in ("n",)}, x["u"], PX, NAME, {x["id"]})
+            if not y: print("  移除(目標價不合理)", x["id"], x["title"][:40]); continue
+            print("  改正", x["id"], "→", y["id"], x["title"][:40]); x = dict(y, n=NAME[y["id"]])
+        keep.append(x)
+    items = keep; items.sort(key=lambda x: (x["d"], x["k"]), reverse=True)
     fh.save(OUT, dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), px={x["id"]: PX.get(x["id"]) for x in items}, items=items,
                       note="整理自公開新聞標題，每筆附原文連結；評等以標題文字判斷，FactSet 為多家法人預估的共識值。"))
     print(f"ratings.json:新增 {add} 筆,共 {len(items)} 筆({len({x['id'] for x in items})} 檔)")

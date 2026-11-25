@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-version" content="v2026.11.26.2">
+<meta name="app-version" content="v2026.11.26.3">
 <meta name="theme-color" content="#F1F5FF">
 <title>巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
@@ -966,7 +966,8 @@ td.r,th.r{text-align:right}
 .rt-k p{font-size:12px;color:var(--sub);line-height:1.6;margin-top:6px;border-top:1px dashed var(--line);padding-top:6px}.rt-k .pos,.gx-tb .pos{color:var(--up)}.rt-k .neg,.gx-tb .neg{color:var(--down)}
 .rt-tabs{display:flex;gap:4px;margin:6px 0 10px;border-bottom:1px solid var(--line)}.rt-tabs button{border:0;background:none;padding:9px 14px;font-weight:600;font-size:14px;color:var(--sub);cursor:pointer;border-bottom:3px solid transparent}
 .rt-tabs button.on{color:var(--ink);border-bottom-color:#2F5BEA}
-.rt-s{cursor:pointer}.gx-tb a{color:#2F5BEA;text-decoration:none}
+.rt-s{cursor:pointer}
+.rt-via{margin-left:6px;font-size:11px;font-weight:700;color:var(--sub);border:1px solid var(--line);border-radius:6px;padding:0 5px;white-space:nowrap}.gx-tb a{color:#2F5BEA;text-decoration:none}
 .dv-ctl{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px}.dv-ctl label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--sub);font-weight:600}
 .dv-ctl select,.dv-ctl input[type=text],.dv-ctl #dvQ{border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:14px;background:var(--field,var(--panel));color:var(--ink)}
 .dv-ctl label.ck{flex-direction:row;align-items:center;padding-bottom:8px;cursor:pointer}
@@ -1808,7 +1809,7 @@ button{-webkit-tap-highlight-color:transparent}
   <div class="top">
     <div class="brand"><img class="logo" src="logo.svg" alt="柴犬博士" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.26.2</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
+      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.26.3</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
@@ -1953,7 +1954,7 @@ button{-webkit-tap-highlight-color:transparent}
 </div>
 
 <footer><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button>
-  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.26.2</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.26.3</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -2637,7 +2638,8 @@ function pickEtfs(){
   const byAum = (a,b) => (b.aum||0) - (a.aum||0);
   const g = S.filter(e => ok(e) && e.category=="市值型" && e.region=="台股").sort(byAum).slice(0,1);
   const groups = [[1,4,7,10],[2,5,8,11],[3,6,9,12]];
-  const hd = S.filter(e => ok(e) && e.category=="高股息" && e.region=="台股" && e.ttmYield > 0 && e.annYield <= 15).sort(byAum);
+  // 用過去幾年平均殖利率篩掉配太兇(可能配本金)的;不用最新年化——股價大跌時 0056、00878 年化會暫時衝過 15% 被誤排除
+  const hd = S.filter(e => ok(e) && e.category=="高股息" && e.region=="台股" && e.ttmYield > 0 && avgYld(e) <= 12).sort(byAum);
   const d = [];
   groups.forEach(gr => { const x = hd.find(e => !d.includes(e) && e.freq=="季配" && gr.some(m => e.payMonths.includes(m))); if (x) d.push(x); });
   if (!d.length) d.push(...hd.slice(0,2));
@@ -2712,6 +2714,7 @@ function renderPlan(){
     </div>
     <div class="pk-hd"><b>✅ 自動建議的 ETF</b><small>勾選要放入配息試算的標的；同一類勾幾檔，金額就平均分給幾檔</small></div>
     <div class="picks" id="pkMain">${picks.map((l,bi) => l.map(e => pkCard(e, bi, true)).join("")).join("")}</div>
+    <p class="mknote" id="pkLow" style="display:none"></p>
     <details class="pk-alt"><summary>➕ 其他候選 ETF（可改勾或加勾）</summary><div class="picks">${PLAN_ALT.map((l,bi) => l.map(e => pkCard(e, bi, false)).join("")).join("")}</div></details>
     <div class="why">
       <b>🧮 怎麼算的？四步看懂</b>
@@ -2734,6 +2737,9 @@ function renderPlan(){
       const amt = lump * mix[bi]/100 / n, mAmt = mon * mix[bi]/100 / n; c.classList.toggle("off", !x.checked);
       c.querySelector(".amt").innerHTML = x.checked ? `一次投入 <b class="num">${money(amt)}</b>（約 ${(amt/e.price/1000).toFixed(2)} 張）<br>每月扣款 <b class="num">${money(mAmt)}</b>` : `<span style="color:var(--sub)">勾選後放入試算</span>`;
       x.dataset.lots = (amt/e.price/1000).toFixed(3); });
+    const low = boxes.filter(x => x.checked && mon * mix[+x.dataset.b]/100 / (cnt[+x.dataset.b] || 1) < 1000).length, pl = $("#pkLow");
+    if (pl) { pl.style.display = mon > 0 && low ? "" : "none";
+      pl.innerHTML = `⚠️ 有 ${low} 檔每月扣款不到 1,000 元。多數券商定期定額每檔最低 1,000 元（少數 100 元），可以把每月投入集中在 1～2 檔（例如先全放市值型），或把每月投入提高到 ${money(Math.ceil(1000 / Math.min(...[0,1,2].filter(bi => cnt[bi]).map(bi => mix[bi]/100/cnt[bi])) / 100) * 100)}。`; }
     const n = boxes.filter(x => x.checked).length; $("#applyPlan").textContent = n ? `✨ 把勾選的 ${n} 檔放入我的配息試算` : "請先勾選 ETF"; $("#applyPlan").disabled = !n;
   };
   document.querySelectorAll("#pres .pick input").forEach(x => x.onchange = pkUpd); pkUpd();
@@ -4032,12 +4038,13 @@ const GQ = [["^TWII", "台股加權", "tw"], ["^GSPC", "標普500", "us"], ["^IX
 let GQD = {}, NWS = null, nwTab = "tw", gqT = 0, nwT = 0;
 const yc = (sym, q) => fetch(PXY + encodeURIComponent(`https://query1.finance.yahoo.com/v8/finance/chart/${sym}?${q}`)).then(r => r.json());
 async function gqOne(sym){
-  const [r, dd] = await Promise.all([yc(sym, "range=5d&interval=15m"), yc(sym, "range=10d&interval=1d").catch(() => null)]);
+  const [r, dd] = await Promise.all([yc(sym, "range=5d&interval=15m"), yc(sym, gq24(sym) ? "range=1d&interval=5m" : "range=10d&interval=1d").catch(() => null)]);
   const x = r.chart.result[0], m = x.meta, off = m.gmtoffset || 0, day = t => Math.floor((t + off) / 86400);
   const ts = x.timestamp || [], cl = (x.indicators.quote[0] || {}).close || [], md = day(m.regularMarketTime);
   let prev = null; const sp = [];
   ts.forEach((t, i) => { if (cl[i] == null) return; if (day(t) < md) prev = cl[i]; else if (day(t) == md) sp.push(cl[i]); });
-  if (dd) { const y = dd.chart.result[0], dc = y.indicators.quote[0].close; let dp = null; (y.timestamp || []).forEach((t, i) => { if (dc[i] != null && day(t) < md) dp = dc[i]; }); if (dp) prev = dp; }   // 用日線收盤當昨收(較準)
+  if (dd && gq24(sym)) { const pv = dd.chart.result[0].meta.chartPreviousClose; if (pv) prev = pv; }            // 期貨、匯率:前一盤結算
+  else if (dd) { const y = dd.chart.result[0], dc = y.indicators.quote[0].close; let dp = null; (y.timestamp || []).forEach((t, i) => { if (dc[i] != null && day(t) < md) dp = dc[i]; }); if (dp) prev = dp; }   // 用日線收盤當昨收(較準)
   const px = m.regularMarketPrice; prev = prev || m.chartPreviousClose;
   return {px, prev, chg: prev ? (px / prev - 1) * 100 : null, t: m.regularMarketTime, sp: sp.length > 1 ? sp : null, live: Date.now() / 1000 - m.regularMarketTime < 1200};
 }
@@ -4056,6 +4063,7 @@ async function gqBatch(){
       GQD[r.symbol] = {px, prev, chg: prev ? (px / prev - 1) * 100 : null, t: m.regularMarketTime, sp: sp.length > 1 ? sp : null, live: Date.now() / 1000 - m.regularMarketTime < 1200}; got.add(r.symbol);
     } catch (e) {}
   }
+  await gqPrev([...got]);
   return syms.filter(s => !got.has(s));
 }
 async function gqLoad(force){
@@ -4124,20 +4132,23 @@ function clkTick(){
   const now = new Date(), tz = z => new Date(now.toLocaleString("en-US", {timeZone: z}));
   const tp = tz("Asia/Taipei"), ny = tz("America/New_York"), p2 = n => String(n).padStart(2, "0");
   const wk = "日一二三四五六"[tp.getDay()], m = (d) => d.getHours() * 60 + d.getMinutes();
-  const twOpen = tp.getDay() % 6 && m(tp) >= 540 && m(tp) < 810, usOpen = ny.getDay() % 6 && m(ny) >= 570 && m(ny) < 960;
-  const twTxt = twOpen ? "台股 盤中" : tp.getDay() % 6 && m(tp) < 540 ? "台股 尚未開盤" : "台股 已收盤";
+  mkhLoad(); const H = MKH || {us: new Set(), ush: {}, tw: new Set(), un: {}, tn: {}}, ymd = d => `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())}`;
+  const twTd = d => d.getDay() % 6 && !H.tw.has(ymd(d)), usTd = d => d.getDay() % 6 && !H.us.has(ymd(d)), usC = d => H.ush[ymd(d)] || 960;
+  const twOpen = twTd(tp) && m(tp) >= 540 && m(tp) < 810, usOpen = usTd(ny) && m(ny) >= 570 && m(ny) < usC(ny);
+  const twTxt = twOpen ? "台股 盤中" : H.tw.has(ymd(tp)) ? "台股 休市" : twTd(tp) && m(tp) < 540 ? "台股 尚未開盤" : "台股 已收盤";
+  const usTxt = usOpen ? (H.ush[ymd(ny)] ? "盤中・提早收盤" : "盤中") : H.us.has(ymd(ny)) ? `休市・${H.un[ymd(ny)] || "美國假日"}` : "休市";
   // 下一次開盤/收盤(週一～五;不含國定假日)。美股換算成台北時間
   const off = tp - ny, W = "日一二三四五六";
-  const nxt = (loc, o, c) => { const cur = m(loc), wd = loc.getDay() % 6;
-    if (wd && cur >= o && cur < c) return {k: "收盤", d: new Date(loc.getFullYear(), loc.getMonth(), loc.getDate(), 0, c)};
-    const d = new Date(loc.getFullYear(), loc.getMonth(), loc.getDate(), 0, o); if (!(wd && cur < o)) do d.setDate(d.getDate() + 1); while (!(d.getDay() % 6)); return {k: "開盤", d}; };
+  const nxt = (loc, o, c, td, cf) => { const cur = m(loc), wd = td(loc), cc = cf ? cf(loc) : c;
+    if (wd && cur >= o && cur < cc) return {k: "收盤", d: new Date(loc.getFullYear(), loc.getMonth(), loc.getDate(), 0, cc)};
+    const d = new Date(loc.getFullYear(), loc.getMonth(), loc.getDate(), 0, o); if (!(wd && cur < o)) do d.setDate(d.getDate() + 1); while (!td(d)); return {k: "開盤", d}; };
   const fd = (d, base) => `${d.getMonth() + 1}/${d.getDate()}（${W[d.getDay()]}）${p2(d.getHours())}:${p2(d.getMinutes())}`;
-  const twN = nxt(tp, 540, 810), usN0 = nxt(ny, 570, 960), usN = {k: usN0.k, d: new Date(usN0.d.getTime() + off)};
+  const twN = nxt(tp, 540, 810, twTd), usN0 = nxt(ny, 570, 960, usTd, usC), usN = {k: usN0.k, d: new Date(usN0.d.getTime() + off)};
   const left = d => { const t = Math.max(0, Math.round((d - tp) / 60000)), h = Math.floor(t / 60), mm = t % 60; return h >= 24 ? `還有 ${Math.floor(h / 24)} 天 ${h % 24} 小時` : `還有 ${h ? h + " 小時 " : ""}${mm} 分`; };
   const card = (nm, on, st, n, tip) => `<div class="mkc ${on ? "on" : ""}" title="${tip}"><div class="mkc-h"><i></i>${nm}</div><div class="mkc-s">${st}</div><div class="mkc-k">下次${n.k}・台北時間</div><div class="mkc-d">${n.d.getMonth() + 1}/${n.d.getDate()}（${W[n.d.getDay()]}）</div><div class="mkc-t">${p2(n.d.getHours())}:${p2(n.d.getMinutes())}</div><div class="mkc-c">${left(n.d)}</div></div>`;
   el.innerHTML = `<div class="cd">${tp.getFullYear()} 年 ${tp.getMonth() + 1} 月 ${tp.getDate()} 日　星期${wk}</div>
     <div class="ct">${p2(tp.getHours())}:${p2(tp.getMinutes())}:${p2(tp.getSeconds())}<small>台北</small></div>${gtTick(`${p2(tp.getHours())}:${p2(tp.getMinutes())}:${p2(tp.getSeconds())}`)}
-    <div class="cs">${card("🇹🇼 台股", twOpen, twTxt.replace("台股 ", ""), twN, "台股交易時間 09:00～13:30（不含國定假日）")}${card("🇺🇸 美股", usOpen, usOpen ? "盤中" : "休市", usN, "美股交易時間紐約 09:30～16:00，已換算台北時間（不含美國假日）")}</div>`;
+    <div class="cs">${card("🇹🇼 台股", twOpen, twTxt.replace("台股 ", ""), twN, "台股交易時間 09:00～13:30；已排除證交所公告的休市日")}${card("🇺🇸 美股", usOpen, usTxt, usN, "美股交易時間紐約 09:30～16:00，已換算台北時間；已排除美國假日（感恩節、聖誕節…）與提早收盤日")}</div>`;
 }
 clkTick(); setInterval(clkTick, 1000);
 /* ---------- 各國大盤:區間明細查詢 + 統計分析 ---------- */
@@ -5040,7 +5051,7 @@ function rtList(){
       ${rows.map(r => { const gp = gap(r.last); return `<tr data-c="${r.id}"><td><b>${r.id} ${r.n}</b></td><td class="num">${fmt(r.last.tp, 1)}</td><td class="num ${pc(gp)}">${gp == null ? "—" : sgn(gp, 0) + "%"}</td><td class="num">${fmt(Math.min(...r.tps), 0)}～${fmt(Math.max(...r.tps), 0)}</td><td class="num">${r.cnt}</td><td><span class="pos">${r.up}</span> ／ <span class="neg">${r.dn}</span></td><td>${r.last.d}</td></tr>`; }).join("") || "<tr><td colspan=7>沒有資料</td></tr>"}</tbody></table></div>`;
   } else {
     $("#rtList").innerHTML = `<div class="gx-tw" style="max-height:640px"><table class="gx-tb xl3"><thead><tr><th>日期</th><th>股票</th><th>券商／來源</th><th>評等</th><th>動作</th><th>目標價</th><th>距現價</th><th>出處</th></tr></thead><tbody>
-      ${L.slice(0, 300).map(x => { const gp = gap(x); return `<tr><td>${x.d.slice(5)}</td><td data-c="${x.id}" class="rt-s"><b>${x.id} ${x.n}</b></td><td>${x.src}</td><td class="${RC(x.r)}">${x.r}</td><td class="${/調升|上修/.test(x.act) ? "pos" : /調降|下修/.test(x.act) ? "neg" : ""}">${x.act}${x.chg ? `（${sgn(x.chg, 1)}%）` : x.eps ? `・EPS ${fmt(x.eps, 2)}` : ""}</td><td class="num">${fmt(x.tp, 1)}</td><td class="num ${pc(gp)}">${gp == null ? "—" : sgn(gp, 0) + "%"}</td><td><a href="${x.u}" target="_blank" rel="noopener">${x.media} ↗</a></td></tr>`; }).join("") || "<tr><td colspan=8>沒有資料</td></tr>"}</tbody></table></div>`;
+      ${L.slice(0, 300).map(x => { const gp = gap(x); return `<tr><td>${x.d.slice(5)}</td><td data-c="${x.id}" class="rt-s"><b>${x.id} ${x.n}</b>${x.via ? `<small class="rt-via" title="標題沒寫明是哪家公司（例如「這封測大廠」），已讀原文確認">依原文</small>` : ""}</td><td>${x.src}</td><td class="${RC(x.r)}">${x.r}</td><td class="${/調升|上修/.test(x.act) ? "pos" : /調降|下修/.test(x.act) ? "neg" : ""}">${x.act}${x.chg ? `（${sgn(x.chg, 1)}%）` : x.eps ? `・EPS ${fmt(x.eps, 2)}` : ""}</td><td class="num">${fmt(x.tp, 1)}</td><td class="num ${pc(gp)}">${gp == null ? "—" : sgn(gp, 0) + "%"}</td><td><a href="${x.u}" target="_blank" rel="noopener">${x.media} ↗</a></td></tr>`; }).join("") || "<tr><td colspan=8>沒有資料</td></tr>"}</tbody></table></div>`;
   }
   $("#rtList").querySelectorAll("[data-c]").forEach(t => t.onclick = () => openStock(t.dataset.c));
 }
@@ -7673,6 +7684,35 @@ function pzDdHTML(tabs){
       <div class="pz-ddg">發行投信（依 ETF 檔數排序）</div>
       <div class="pz-ddw">${iss.map(opt).join("")}</div>
     </div></div>`;
+}
+
+/* ================= 全球即時:指數昨收用日線收盤(Yahoo previousClose 對加權/上證/恆生會落後);開收盤卡片的假日資料 ================= */
+var GQP, MKH;
+function gq24(sym){ return /=F$|=X$/.test(sym); }            // 期貨、匯率 24 小時交易:昨收＝前一盤結算,不用日線
+async function gqPrev(syms){
+  GQP = GQP || {};
+  const need = syms.filter(s => !gq24(s) && GQD[s] && !(GQP[s] && GQP[s].md == Math.floor(GQD[s].t / 86400) && Date.now() - GQP[s].ts < 15 * 60e3));
+  if (need.length) {
+    const url = `https://query1.finance.yahoo.com/v7/finance/spark?symbols=${need.map(encodeURIComponent).join(",")}&range=10d&interval=1d`;
+    const j = await fetch(PXY + encodeURIComponent(url)).then(r => r.ok ? r.json() : null).catch(() => null);
+    for (const r of (j && j.spark && j.spark.result) || []) {
+      try { const x = r.response[0], m = x.meta, off = m.gmtoffset || 0, day = t => Math.floor((t + off) / 86400), md = day(m.regularMarketTime), cl = x.indicators.quote[0].close; let dp = null;
+        (x.timestamp || []).forEach((t, i) => { if (cl[i] != null && day(t) < md) dp = cl[i]; });
+        if (dp) GQP[r.symbol] = {prev: dp, md: Math.floor(GQD[r.symbol].t / 86400), ts: Date.now()}; } catch (e) {}
+    }
+  }
+  for (const s of syms) { const q = GQP[s], d = GQD[s]; if (q && d && !gq24(s)) { d.prev = q.prev; d.chg = (d.px / q.prev - 1) * 100; } }
+}
+function mkhLoad(){
+  if (MKH || mkhLoad.busy) return; mkhLoad.busy = 1;
+  getJ("calendar").then(j => { const H = {us: new Set(), ush: {}, tw: new Set(), un: {}, tn: {}};
+    for (const e of (j && j.ev) || []) {
+      const nm = String(e.n || "").replace(/^\S+\s/, "").split("｜")[0];
+      if (e.key == "USHOL") { H.us.add(e.d); H.un[e.d] = nm.length <= 6 ? nm : ""; }
+      else if (e.key == "USHALF") H.ush[e.d] = 780;            // 提早收盤:紐約 13:00
+      else if (e.key == "TWHOL") { H.tw.add(e.d); H.tn[e.d] = nm; }
+    }
+    MKH = H; }).catch(() => { mkhLoad.busy = 0; });
 }
 </script>
 </body>
