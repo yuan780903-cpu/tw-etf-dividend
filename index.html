@@ -1448,6 +1448,17 @@ button{-webkit-tap-highlight-color:transparent}
 .rk-f{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0 10px}.rk-f button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:13px}.rk-f button.on{background:#2F5BEA;color:#fff;border-color:#2F5BEA}.rk-f button i{font-style:normal;opacity:.7;margin-left:3px}.rk-f label{font-size:13px;margin-left:6px}
 .rk-mine{background:#FDECEC;border:1px solid #F5B3B3;border-radius:12px;padding:9px 12px;font-size:13.5px;margin:6px 0}.rk-mine.ok{background:#E8F7EE;border-color:#A7E3C2}.rk-mine b[data-c]{cursor:pointer;text-decoration:underline}
 .rk-tb td.rk-w{white-space:normal;min-width:170px;font-size:12.5px}.rk-box.bad{border-left:5px solid #CF3A3A}.rk-ok{color:#1A8F57;font-weight:800}.rk-dp{font-size:13.5px;font-weight:700;color:#CF3A3A}.rk-tags{margin:4px 0}
+/* ===== 🧾 我的配息從哪裡來(配息試算頁) ===== */
+.h-dm{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:12px;color:var(--sub)}.h-dm .dm-bar{flex:0 0 90px;margin:0}
+.h-dm span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pd-sum{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.pd-sum div{border-radius:12px;padding:10px 12px;background:var(--hover)}.pd-sum small{display:block;font-size:12px;color:var(--sub);font-weight:700}.pd-sum b{font-size:18px}
+.pd-sum i{display:block;font-style:normal;font-size:11.5px;color:var(--sub);margin-top:2px;line-height:1.5}
+.pd-tb{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:12px;font-variant-numeric:tabular-nums}
+.pd-tb th{font-size:11.5px;color:var(--sub);text-align:right;padding:6px 4px;border-bottom:1px solid var(--line);white-space:nowrap}
+.pd-tb td{padding:7px 4px;border-bottom:1px solid var(--line);text-align:right;font-weight:700;white-space:nowrap}.pd-tb th:first-child,.pd-tb td:first-child{text-align:left}
+.pd-tb td:first-child small{display:block;color:var(--sub);font-weight:600;font-size:11px}
+@media(max-width:700px){.pd-tb{font-size:11.5px}.pd-tb th{font-size:10.5px}.pd-tb td,.pd-tb th{padding:6px 2px}.pd-tb td:first-child small{max-width:84px;overflow:hidden;text-overflow:ellipsis}.pd-sum b{font-size:16px}}
 /* ===== 🧾 ETF 配息來源組成 ===== */
 .dm-bar{display:flex;height:18px;border-radius:9px;overflow:hidden;background:var(--hover);margin:10px 0 8px}.dm-bar i{height:100%}
 .dm-bar.sm{height:10px;margin:0;border-radius:5px;min-width:90px}
@@ -1866,6 +1877,7 @@ button{-webkit-tap-highlight-color:transparent}
         <div class="mbars" id="mbars"></div>
         <div id="mdetail"></div>
       </div>
+      <div class="box" id="pfDmBox" hidden></div>
      </div>
     </div>
   </div>
@@ -2123,7 +2135,7 @@ function schedule(){                            // 未來12個月每一筆入帳
   return {months, keys, items};
 }
 async function renderPF(){
-  await Promise.all(PF.map(p => loadDV(p.id)));
+  await Promise.all([...PF.map(p => loadDV(p.id)), dmLoad()]);
   const {months, keys, items} = schedule();
   const gross = items.reduce((s,x)=>s+x.amt,0), nhi = items.reduce((s,x)=>s+x.nhi,0);
   let cost = 0; PF.forEach(p => { const e = S.find(x => x.id == p.id); if (e) cost += e.price * p.lots * 1000; });
@@ -2158,6 +2170,7 @@ async function renderPF(){
       <div class="ctl"><select data-i="${i}" data-f="mode"><option value="auto">跟隨上方（${MODES().find(m=>m[0]==gMode)[1]}）</option>${MODES().map(([v,t]) => `<option value="${v}" ${p.mode==v?"selected":""}>${t}</option>`).join("")}</select>
       ${modeOf(p)=="custom" ? `<input class="cy" type="number" step="0.1" value="${p.cy||""}" placeholder="%" data-i="${i}" data-f="cy">%` : ""}</div>
       <div class="res">${e.freq} · 每次每股 <b>${fmt(per,3)}</b> 元 · 每次約 <b>${money(per*p.lots*1000)}</b> · 一年 <b>${money(yr)}</b></div>
+      ${pfDmLine(e.id)}
     </div></div>`;
   }).join("") : `<div class="empty">上面輸入代號，或點左邊圖卡「＋ 加入我的試算」</div>`;
   $("#hold").querySelectorAll("[data-f]").forEach(el => el.onchange = () => {
@@ -2165,6 +2178,7 @@ async function renderPF(){
     p[f] = f == "mode" ? el.value : (+el.value || 0); save(); renderPF();
   });
   $("#hold").querySelectorAll("[data-del]").forEach(el => el.onclick = () => { PF.splice(el.dataset.del, 1); save(); renderPF(); });
+  pfDmBox(items);
 }
 $("#gMode").onchange = ev => {               // 上方「配息參考」:全部持股一起套用(原本各自設定的也改回跟隨上方)
   gMode = ev.target.value; try { localStorage.setItem("etf_gmode", gMode) } catch(e){}
@@ -2484,7 +2498,7 @@ function placeCalc(){       // 總覽頁(寬螢幕)右側直接顯示試算;試�
   const side = WIDE.matches && $("#pg-etf").classList.contains("on");
   const B = ["#boxSum", "#boxMon", "#boxHold"].map(q => $(q));
   if (side) B.forEach(b => $("#side").appendChild(b));
-  else { $("#colA").append(B[0], B[2]); $("#colB").append(B[1]); }
+  else { $("#colA").append(B[0], B[2]); $("#colB").append(B[1]); if ($("#pfDmBox")) $("#colB").append($("#pfDmBox")); }
 }
 WIDE.addEventListener("change", placeCalc);
 function go(tab, scroll = true){
@@ -7241,6 +7255,45 @@ function dmBox(e){
     ${L.length > 1 ? `<table class="dm-tb"><thead><tr><th>除息日</th><th>配息</th><th>組成</th><th>股利</th><th class="dm-x">利息</th><th>平準金</th><th>價差</th></tr></thead><tbody>
       ${L.slice(0, 12).map(x => `<tr><td>${(x[0] || x[7]).slice(2).replace(/-/g, "/")}</td><td>${x[1] != null ? fmt(x[1], 3) : "—"}</td><td>${dmBar(x, 1)}</td><td>${fmt(x[2], 0)}%</td><td class="dm-x">${fmt(x[3], 0)}%</td><td>${fmt(x[4], 0)}%</td><td>${fmt(x[5], 0)}%</td></tr>`).join("")}</tbody></table>` : ""}
     <p class="mknote">👶 白話：同樣配 1 元，來自<b>股息、利息</b>的是基金真正收到的錢；<b>收益平準金</b>是新申購的人帶進來的錢先墊；<b>已實現資本利得</b>是賣掉持股賺的價差。資料：集保結算所 ETF 觀測站、證交所 ETF e添富 收益分配公告（投信公告的占比，實際以收益分配通知為準）。</p></div>`;
+}
+
+/* ================= 🧾 我的配息從哪裡來(配息試算頁;資料同 div_mix.json) ================= */
+function dmYear(id){                     // 近一年(365 天)依每次配息金額加權的組成;沒有近一年就用最近一次
+  const L = ((DM || {})[id] || []).filter(r => r[2] + r[3] + r[4] + r[5] + r[6] > 50);
+  if (!L.length) return null;
+  const yr = L.filter(x => x[0] && (Date.now() - new Date(x[0])) / 864e5 <= 365), use = yr.length ? yr : [L[0]];
+  const W = use.reduce((s, x) => s + (x[1] || 1), 0);
+  return {mix: [0, 1, 2, 3, 4].map(i => use.reduce((s, x) => s + (x[1] || 1) * x[2 + i], 0) / W), n: use.length, last: L[0][0]};
+}
+function pfDmLine(id){
+  if (!DM) return "";
+  const d = dmYear(id);
+  if (!d) return `<div class="h-dm"><span>🧾 配息組成：還沒有資料</span></div>`;
+  const K = dmK(), short = ["股利", "利息", "平準金", "價差", "其他"];
+  return `<div class="h-dm">${dmBar([0, 0, ...d.mix], 1)}<span>${d.mix.map((v, i) => v >= .5 ? `${short[i]} ${fmt(v, 0)}%` : "").filter(Boolean).join("・")}</span></div>`;
+}
+function pfDmBox(items){
+  const box = $("#pfDmBox"); if (!box) return;
+  if (!PF.length || !DM) { box.hidden = true; return; }
+  const K = dmK(), short = ["股利", "利息", "平準金", "價差", "其他"], tot = [0, 0, 0, 0, 0]; let none = 0, all = 0;
+  const rows = PF.map(p => {
+    const e = S.find(x => x.id == p.id); if (!e) return null;
+    const yr = items.filter(x => x.e.id == e.id).reduce((s, x) => s + x.amt, 0), d = dmYear(e.id); all += yr;
+    if (d) d.mix.forEach((v, i) => tot[i] += yr * v / 100); else none += yr;
+    return {e, yr, d};
+  }).filter(Boolean);
+  if (!all) { box.hidden = true; return; }
+  const known = all - none, pct = tot.map(v => known ? v / known * 100 : 0);
+  const taxed = tot[0] + tot[1], free = tot[2] + tot[3];
+  box.hidden = false;
+  box.innerHTML = `<h2>🧾 我的配息從哪裡來 <span style="font-size:12px;color:var(--sub);font-weight:500">依每檔近一年的配息組成估算</span></h2>
+    ${known ? `${dmBar([0, 0, ...pct])}<div class="dm-lg">${K.map(([n, c], i) => pct[i] >= .5 ? `<span><i style="background:${c}"></i>${n} <b>${fmt(pct[i], 1)}%</b>・${money(tot[i])}</span>` : "").join("")}</div>
+    <div class="pd-sum"><div><small>股利＋利息（真正收到的收入）</small><b class="num">${money(taxed)}</b><i>一般要併入所得稅；單次領 2 萬元以上，這部分會扣 2.11% 二代健保</i></div>
+      <div><small>平準金＋價差</small><b class="num">${money(free)}</b><i>一般不用繳所得稅、不扣二代健保；但不是基金穩定收入，可能變少</i></div></div>` : ""}
+    ${none ? `<p class="mknote" style="margin-top:8px">有 ${money(none)}（${fmt(none / all * 100, 0)}%）的持股還沒有配息組成資料，沒算進上面的比例。</p>` : ""}
+    <table class="pd-tb"><thead><tr><th>ETF</th><th>一年約領</th><th>股利</th><th class="dm-x">利息</th><th>平準金</th><th>價差</th></tr></thead><tbody>
+    ${rows.sort((a, b) => b.yr - a.yr).map(({e, yr, d}) => `<tr><td><b>${e.id}</b><small>${e.name}</small></td><td>${money(yr)}</td>${d ? `<td>${fmt(d.mix[0], 0)}%</td><td class="dm-x">${fmt(d.mix[1], 0)}%</td><td>${fmt(d.mix[2], 0)}%</td><td>${fmt(d.mix[3], 0)}%</td>` : `<td colspan="4" style="text-align:center;color:var(--sub)">還沒有資料</td>`}</tr>`).join("")}</tbody></table>
+    <p class="mknote">👶 白話：同樣領 1 萬元，來自股息、利息的是基金真正收到的錢；收益平準金是新申購的人帶進來的錢先墊，價差是賣股票賺的，這兩種行情不好時可能變少。稅和健保只是一般情況的參考，實際以投信寄的收益分配通知書為準。資料：集保 ETF 觀測站、證交所 ETF e添富。</p>`;
 }
 </script>
 </body>
