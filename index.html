@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-version" content="v2026.11.25.7">
+<meta name="app-version" content="v2026.11.25.8">
 <meta name="theme-color" content="#F1F5FF">
 <title>巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
@@ -1750,7 +1750,7 @@ button{-webkit-tap-highlight-color:transparent}
   <div class="top">
     <div class="brand"><img class="logo" src="logo.svg" alt="柴犬博士" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.25.7</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
+      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.25.8</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
@@ -1862,7 +1862,7 @@ button{-webkit-tap-highlight-color:transparent}
       <div class="box big" id="boxSum">
         <h2>未來 12 個月預估配息 <span style="font-size:12px;opacity:.85" id="rangeTxt"></span></h2>
         <div class="sum num" id="yearSum">$0</div>
-        <div class="nhi-r"><label class="nhi-t" title="單次領 2 萬元以上扣 2.11% 補充保費。低收入戶、中低收入戶等符合免扣資格，或想看不扣的金額，可以取消勾選"><input type="checkbox" id="nhiOn" checked> 扣二代健保</label><span><span id="nhiLbl">扣補充保費後</span> <b class="num" id="netSum">$0</b></span></div>
+        <div class="nhi-r"><label class="nhi-t" title="只算配息裡的股利所得、利息所得：各自單次 2 萬元以上扣 2.11%；收益平準金、資本利得不扣。沒有配息組成資料的 ETF 先整筆計算（比較保守）。低收入戶、中低收入戶等符合免扣資格，或想看不扣的金額，可以取消勾選"><input type="checkbox" id="nhiOn" checked> 扣二代健保</label><span><span id="nhiLbl">扣補充保費後</span> <b class="num" id="netSum">$0</b></span></div>
         <div class="row">
           <div>平均每月<b class="num" id="avgM">$0</b></div>
           <div>投入成本<b class="num" id="cost">$0</b></div>
@@ -1892,7 +1892,7 @@ button{-webkit-tap-highlight-color:transparent}
 </div>
 
 <footer><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button>
-  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.25.7</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.25.8</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -2139,7 +2139,7 @@ function schedule(){                            // 未來12個月每一筆入帳
       if (per > 0) items.push({k, date:`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`, e, per, amt:per*sh, ok:false});
     }));
   });
-  const nOn = nhiOn(); items.forEach(x => x.nhi = nOn && x.amt >= NHI_MIN ? x.amt * NHI : 0);   // 使用者可取消勾選「扣二代健保」
+  const nOn = nhiOn(); items.forEach(x => { const r = nOn ? nhiOf(x.e.id, x.amt) : {v: 0}; x.nhi = r.v; x.nhiW = r.w; });   // 使用者可取消勾選「扣二代健保」;只算股利、利息部分
   return {months, keys, items};
 }
 async function renderPF(){
@@ -2168,7 +2168,7 @@ async function renderPF(){
   const det = selMonth ? items.filter(x => x.k == selMonth).sort((a,b) => a.date.localeCompare(b.date)) : [];
   $("#mdetail").innerHTML = selMonth ? `<div class="mdt">${det.length ? det.map(x => `<div class="it">
       <span class="d">${+x.date.slice(5,7)}/${+x.date.slice(8,10)}</span>
-      <span><b>${x.e.id}</b> ${x.e.name}<span class="badge ${x.ok?"b-ok":"b-est"}">${x.ok?"已公告":"預估"}</span><br><span style="color:var(--sub)">每股 ${fmt(x.per,3)} 元${x.nhi?` · 扣補充保費 ${money(x.nhi)}`:""}</span></span>
+      <span><b>${x.e.id}</b> ${x.e.name}<span class="badge ${x.ok?"b-ok":"b-est"}">${x.ok?"已公告":"預估"}</span><br><span style="color:var(--sub)">每股 ${fmt(x.per,3)} 元${x.nhi?` · 扣補充保費 ${money(x.nhi)}${x.nhiW ? `（${x.nhiW}）` : ""}`:""}</span></span>
       <b class="num">${money(x.amt - x.nhi)}</b></div>`).join("") : `<div class="empty">這個月沒有入帳</div>`}</div>` : "";
   $("#etfList").innerHTML = S.map(e => `<option value="${e.id} ${e.name}">`).join("");
   $("#hold").innerHTML = PF.length ? PF.map((p,i) => {
@@ -7306,12 +7306,19 @@ function pfDmBox(items){
 }
 
 /* ================= 二代健保補充保費開關(配息試算) ================= */
+function nhiOf(id, amt){                 // 只算配息裡的股利所得、利息所得(各自單次 ≥ 2 萬扣 2.11%);平準金、資本利得不扣
+  const d = typeof dmYear == "function" && typeof DM != "undefined" && DM ? dmYear(id) : null;
+  if (!d) return {v: amt >= NHI_MIN ? amt * NHI : 0, w: amt >= NHI_MIN ? "沒有配息組成資料，整筆估算" : ""};
+  const dv = amt * d.mix[0] / 100, it = amt * d.mix[1] / 100;
+  const v = (dv >= NHI_MIN ? dv * NHI : 0) + (it >= NHI_MIN ? it * NHI : 0);
+  return {v, w: v ? `只算${dv >= NHI_MIN ? "股利" : ""}${dv >= NHI_MIN && it >= NHI_MIN ? "＋" : ""}${it >= NHI_MIN ? "利息" : ""}部分` : ""};
+}
 function nhiOn(){ try { return localStorage.getItem("etf_nhi") != "0"; } catch (e) { return true; } }
 (function(){ const c = document.getElementById("nhiOn"); if (!c) return;
   c.checked = nhiOn();
   c.onchange = () => { try { localStorage.setItem("etf_nhi", c.checked ? "1" : "0"); } catch (e) {}
     if (typeof renderPF == "function") renderPF();
-    toast(c.checked ? "已改回扣二代健保補充保費（單次 2 萬元以上扣 2.11%）" : "已改成不扣二代健保補充保費", 1800); };
+    toast(c.checked ? "已改回扣二代健保補充保費（只算股利、利息部分，單次 2 萬元以上扣 2.11%）" : "已改成不扣二代健保補充保費", 2000); };
 })();
 /* ================= 網站版本號(tools/stamp_version.sh 在 commit 時自動更新) ================= */
 var APP_VER = (document.querySelector('meta[name="app-version"]') || {}).content || "";
