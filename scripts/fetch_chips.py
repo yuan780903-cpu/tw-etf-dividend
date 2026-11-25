@@ -146,11 +146,18 @@ def main():
     import shares; FIX = shares.par_fix(F)
     for c, f in F.items():
         t = f.get("ttm") or {}; cap = t.get("cap")
-        if c not in q or not cap: continue
-        cl, ch, vol = q[c]; mcap = cl * (FIX.get(c) or cap * 100) / 1e8     # 億元(非 10 元面額用實際股數)
+        if not cap: continue
+        if c in q: cl, ch, vol = q[c]
+        elif f.get("px"): cl, ch, vol = f["px"], 0, 0          # 今天沒成交(官網收盤價是 --):沿用上次股價,漲跌 0
+        else: continue
+        mcap = cl * (FIX.get(c) or cap * 100) / 1e8     # 億元(非 10 元面額用實際股數)
         items.append([c, f.get("name"), f.get("ind") or "其他", round(mcap, 1), ch, cl, vol])
     items.sort(key=lambda x: -x[3])
-    fh.save(os.path.join(DATA, "heatmap.json"), dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), date=out["days"][-1] if out["days"] else None, items=items))
+    try:                                                       # 熱力圖日期＝行情日期(法人個股資料 16 點後才公布,不能拿它當日期)
+        import quotes as QM; r0 = str((QM.twse_all() or [{}])[0].get("Date") or "")
+        qd = f"{int(r0[:3]) + 1911}-{r0[3:5]}-{r0[5:7]}" if len(r0) == 7 else None
+    except Exception: qd = None
+    fh.save(os.path.join(DATA, "heatmap.json"), dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), date=qd or (out["days"][-1] if out["days"] else None), items=items))
     print(f"chips.json:{len(days)} 個交易日、{len(stocks)} 檔;集保 {len(tdh)} 週;heatmap {len(items)} 檔")
 
 if __name__ == "__main__":

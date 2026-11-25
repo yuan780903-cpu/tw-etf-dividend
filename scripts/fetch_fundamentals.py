@@ -254,11 +254,14 @@ def build(ps, latest):
             d["ttm"] = ttm; d["ttmLabel"] = f"{yy}Q{q} 近四季"
     px_year = {y: year_end_prices(y) for y in years}
     now = current_prices(); ind = industries()
+    try:                                                   # 今天沒成交的股票(官網收盤價是 --):沿用上一版的股價
+        prev_px = {c: v.get("px") for c, v in json.load(open(os.path.join(FD, "fundamentals.json")))["companies"].items() if v.get("px")}
+    except Exception: prev_px = {}
     p1m = prices_on(TODAY - dt.timedelta(days=30), "px_1m", cache=False)       # 價格動能:1 個月前、1 年前
     p12m = prices_on(TODAY - dt.timedelta(days=365), "px_12m", cache=False)
     rev = monthly_revenue(24)                          # 近 2 年月營收(個股頁趨勢、營收創新高)
     for c, d in comp.items():
-        d["px"] = now.get(c); d["pxY"] = {y: px_year[y].get(c) for y in years if px_year[y].get(c)}
+        d["px"] = now.get(c) or prev_px.get(c); d["pxY"] = {y: px_year[y].get(c) for y in years if px_year[y].get(c)}
         d["px1m"], d["px12m"] = p1m.get(c), p12m.get(c); d["vol5"] = VOL.get(c)
         if c in rev: d["rev"] = sorted(rev[c], reverse=True)
         d.update(ind.get(c, {}))
