@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-version" content="v2026.11.25.8">
+<meta name="app-version" content="v2026.11.25.9">
 <meta name="theme-color" content="#F1F5FF">
 <title>巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
@@ -196,8 +196,8 @@ header:after{content:"";position:absolute;right:-120px;top:-160px;width:520px;he
 .tabs .ic{font-style:normal;font-size:20px;line-height:1}
 .tabs .n{background:#ff3d77;color:#fff;border-radius:999px;font-size:11px;padding:3px 7px;min-width:20px;text-align:center}
 .tabs button.on .n{background:#fff;color:#7b2ff7}
-.tabs .mini{margin-left:auto;font-size:14px;color:var(--sub);padding:0 12px;white-space:nowrap;cursor:pointer}
-.tabs .mini b{color:var(--ink);font-size:17px}
+.tabs .mini{margin-left:auto;font-size:12.5px;color:var(--sub);padding:0 10px 0 8px;white-space:nowrap;cursor:pointer;display:flex;flex-direction:column;align-items:flex-end;line-height:1.3}.tabs .mini.cut{display:none!important}
+.tabs .mini b{color:var(--ink);font-size:15px}
 .page{display:none}.page.on{display:block;animation:pgIn .25s ease}
 @keyframes pgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .tabs .sm{display:none}
@@ -1360,6 +1360,7 @@ body:not(.on-mkt) .hst{display:none}
   .clk .cs{gap:6px}.clk .cs span{font-size:11.5px!important;padding:4px 10px!important}
 }
 .gt-m{display:none}.gt-d{display:contents}
+@media(min-width:701px){.gt-d{display:grid;grid-template-columns:auto auto;align-items:center;justify-content:start;column-gap:7px;row-gap:2px}.gt-d .gt-tm{grid-column:2;padding:0!important;flex-basis:auto;white-space:nowrap;font-family:Inter,sans-serif;font-variant-numeric:tabular-nums}}
 @media(max-width:700px){.gt-d{display:none}.gt-m{display:flex;flex-direction:column;align-items:center;line-height:1.15}.gt-m b{font-size:13px;font-weight:900;color:#1A8F57}.gt-m em{font-style:normal;font-size:11px;font-weight:700;opacity:.85;font-family:Inter,sans-serif}
   .gt-lb{width:56px!important;padding:0!important}
   .hacts .btn-mem .t{flex-direction:column!important;align-items:flex-start!important}.hacts .btn-mem .t small{display:block}}
@@ -1750,7 +1751,7 @@ button{-webkit-tap-highlight-color:transparent}
   <div class="top">
     <div class="brand"><img class="logo" src="logo.svg" alt="柴犬博士" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.25.8</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
+      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.25.9</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
@@ -1892,7 +1893,7 @@ button{-webkit-tap-highlight-color:transparent}
 </div>
 
 <footer><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button>
-  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.25.8</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.25.9</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -2152,7 +2153,8 @@ async function renderPF(){
   $("#tabN").textContent = PF.length; $("#tabN").style.display = PF.length ? "" : "none";
   document.body.classList.toggle("has-pf", PF.length > 0);
   $("#mbN").textContent = PF.length; tweenMoney($("#mbSum"), gross); $("#mbAvg").textContent = money(gross / 12);
-  $("#tabMini").innerHTML = PF.length ? `未來 12 個月約領 <b class="num">${money(gross)}</b> ・ 平均每月 <b class="num">${money(gross/12)}</b>` : "";
+  $("#tabMini").innerHTML = PF.length ? `<span>未來 12 個月約領 <b class="num">${money(gross)}</b></span><span>平均每月 <b class="num">${money(gross/12)}</b></span>` : "";
+  tabFit();
   $("#avgM").textContent = money(gross/12); $("#cost").textContent = money(cost);
   $("#pYld").textContent = cost ? (gross/cost*100).toFixed(2) + "%" : "0%";
   $("#rangeTxt").textContent = `${months[0].getFullYear()}/${months[0].getMonth()+1}～${months[11].getFullYear()}/${months[11].getMonth()+1}`;
@@ -4015,7 +4017,7 @@ function gqPaint(){
   const items = GQ.filter(([s]) => GQD[s]);
   if (!items.length) return;
   const one = ([s, n]) => { const d = GQD[s], c = d.chg; return `<span class="gt-i"><b>${n}</b><em class="num">${gqFmt(s, d.px)}</em><i class="num ${pc(c)}">${c == null ? "" : (c >= 0 ? "▲" : "▼") + Math.abs(c).toFixed(2) + "%"}</i></span>`; };
-  if ($("#gtk")) { const h = items.map(one).join(""); $("#gtk").innerHTML = `<div class="gt-lb"><span class="gt-d"><i class="dot"></i><span class="gt-l1">全球即時</span><em class="gt-tm">${new Date().toLocaleTimeString("zh-TW", {hour12: false, hour: "2-digit", minute: "2-digit"})} 更新</em></span><span class="gt-m"><b>即時</b><em>${new Date().toLocaleTimeString("zh-TW", {hour12: false, hour: "2-digit", minute: "2-digit"})}</em></span></div><div class="gt-vw"><div class="gt-tr">${h}${h}</div></div>`; }
+  if ($("#gtk")) { const h = items.map(one).join(""); const tm = new Date().toLocaleTimeString("zh-TW", {hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit"}); $("#gtk").innerHTML = `<div class="gt-lb"><span class="gt-d"><i class="dot"></i><span class="gt-l1">全球即時</span><em class="gt-tm">${tm} 更新</em></span><span class="gt-m"><b>即時</b><em>${tm}</em></span></div><div class="gt-vw"><div class="gt-tr">${h}${h}</div></div>`; }
   if ($("#nwQ")) $("#nwQ").innerHTML = [["tw", "台股"], ["us", "美股"], ["as", "亞股"], ["mc", "匯率・利率・原物料"]].map(([g, gn]) => `<div class="nq-g"><small>${gn}</small><div class="nq-row">${items.filter(x => x[2] == g).map(([s, n]) => { const d = GQD[s], c = d.chg;
     return `<div class="nq ${c > 0 ? "up" : c < 0 ? "dn" : ""}${s == "^TWII" ? " hero" : ""}"><div class="nq-h"><b>${n}</b>${d.live ? `<i class="dot" title="交易中"></i>` : `<small>${new Date(d.t * 1000).toLocaleString("zh-TW", {month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false})}</small>`}</div>
       <div class="nq-v num">${gqFmt(s, d.px)}</div><div class="nq-c num">${c == null ? "—" : `${c >= 0 ? "▲" : "▼"}<span class="ab"> ${gqFmt(s, Math.abs(d.px - d.prev))}（</span>${sgn(c)}%<span class="ab">）</span>`}</div>${gqSpark(d.sp, c >= 0)}</div>`; }).join("")}</div></div>`).join("");
@@ -4035,7 +4037,7 @@ async function nwLoad(){
 function ago(ts){ const s = Date.now() / 1000 - ts; return s < 60 ? "剛剛" : s < 3600 ? Math.floor(s / 60) + " 分鐘前" : s < 86400 ? Math.floor(s / 3600) + " 小時前" : new Date(ts * 1000).toLocaleDateString("zh-TW", {month: "numeric", day: "numeric"}); }
 function nwPaint(live){
   if (!$("#nwL") || !NWS) return;
-  const L = (NWS[nwTab] || []).filter(x => /^https:\/\/([a-z]+\.)?(yahoo\.com|news\.yahoo\.com)\//.test(x.u));
+  const L = (NWS[nwTab] || []).filter(x => /^https:\/\/([a-z0-9-]+\.)*yahoo\.com\//.test(x.u));   // tw.news.yahoo.com、tw.stock.yahoo.com 都收
   $("#nwL").innerHTML = L.length ? L.slice(0, 18).map((x, i) => `<a class="nw-i${i < 3 ? " top" : ""}" href="${x.u}" target="_blank" rel="noopener"><span class="nw-t">${ago(x.ts)}</span><span class="nw-h">${x.t.replace(/</g, "&lt;")}</span><span class="nw-s">${x.s}</span></a>`).join("") : `<p class="mknote">目前抓不到新聞，稍後會自動重試。</p>`;
   if (live && $("#nwNt")) $("#nwNt").textContent = "新聞更新 " + new Date().toLocaleTimeString("zh-TW", {hour12: false});
 }
@@ -7323,6 +7325,14 @@ function nhiOn(){ try { return localStorage.getItem("etf_nhi") != "0"; } catch (
 /* ================= 網站版本號(tools/stamp_version.sh 在 commit 時自動更新) ================= */
 var APP_VER = (document.querySelector('meta[name="app-version"]') || {}).content || "";
 try { console.info("巴菲遠不負責任財富系統 " + APP_VER); } catch (e) {}
+
+/* ================= 分頁列右邊小字放不下就先藏起來(不要被切一半) ================= */
+function tabFit(){
+  const n = document.getElementById("tabs"), m = document.getElementById("tabMini"); if (!n || !m) return;
+  m.classList.remove("cut");
+  if (m.textContent && n.scrollWidth > n.clientWidth + 1) m.classList.add("cut");
+}
+window.addEventListener("resize", () => { clearTimeout(window.tabFitT); window.tabFitT = setTimeout(tabFit, 150); });
 </script>
 </body>
 </html>
