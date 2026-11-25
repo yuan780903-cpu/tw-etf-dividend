@@ -183,7 +183,7 @@ def main():
                   ("fetch_fundamentals.py",), ("build_value_picks.py",), ("build_experts.py",), ("build_stock_pages.py",), ("build_stock_screen.py",),
                   ("fetch_div_mix.py",),          # ETF 配息來源組成(集保 ETF 觀測站約 10 次請求,很快)
                   ("build_board.py",), ("fetch_risk.py",), ("fetch_options.py",),
-                  ("build_concepts.py",), ("build_smart.py",), ("fetch_calendar.py",), ("fetch_ptt.py",)):
+                  ("build_concepts.py",), ("build_smart.py",), ("fetch_calendar.py",), ("build_pf_events.py",), ("fetch_ptt.py",)):
             step(*x)
         step("validate.py"); print("快速模式完成"); return
     # 5. 持股/規模輪流更新
@@ -226,6 +226,7 @@ def main():
     step("build_smart.py")             # 綜合評分 1～10、大戶吸籌
     step("build_backtest.py")          # 大師選股歷年回測
     step("fetch_calendar.py")          # 經濟行事曆(美國 FRED/Fed、台灣慣例日期、除息、法說會)
+    step("build_pf_events.py")         # 配息提醒事件表(除息/入帳/填息)→ 雲端推播 Worker 每天早上比對訂閱者的配息試算持股
     step("fetch_ptt.py")               # PTT 股版熱度(只抓標題)
     step("validate.py")               # 資料健康檢查:筆數、範圍、交叉比對;抓壞自動還原上一版 → health.json
     print(f"完成。FinMind 用了 {used}/{BUDGET} 次")

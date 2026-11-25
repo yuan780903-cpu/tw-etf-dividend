@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-version" content="v2026.11.25.11">
+<meta name="app-version" content="v2026.11.25.12">
 <meta name="theme-color" content="#F1F5FF">
 <title>巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
@@ -1469,6 +1469,9 @@ button{-webkit-tap-highlight-color:transparent}
 .pn-i em{font-style:normal;font-size:10.5px;font-weight:800;color:#fff;background:#EA580C;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:1px}
 .pn-bar{height:6px;border-radius:99px;background:var(--line);margin-top:6px;overflow:hidden}.pn-bar u{display:block;height:100%;background:linear-gradient(90deg,#60A5FA,#16A34A)}
 .pn-none{font-size:13px;color:var(--sub);margin:8px 0 2px}
+.pn-cl{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;font-size:12.5px;color:var(--sub);background:var(--bg);border:1px dashed var(--line);border-radius:12px;padding:7px 10px;margin:2px 0 4px}
+.pn-cl b{color:#16A34A}.pn-cl button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:4px 11px;font-weight:800;font-size:12px;cursor:pointer;font-family:inherit}
+.pn-cl button.on{background:#2F5BEA;border-color:#2F5BEA;color:#fff}.pn-cl button:disabled{opacity:.6;cursor:wait}
 /* ===== 💾 配息試算存檔/讀取 ===== */
 .pf-io{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0 2px}
 .pf-io button,.pf-ld{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:11px;padding:8px 13px;font-weight:800;cursor:pointer;font-size:13.5px;font-family:inherit;line-height:1.2}
@@ -1769,7 +1772,7 @@ button{-webkit-tap-highlight-color:transparent}
   <div class="top">
     <div class="brand"><img class="logo" src="logo.svg" alt="柴犬博士" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.25.11</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
+      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.25.12</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
@@ -1913,7 +1916,7 @@ button{-webkit-tap-highlight-color:transparent}
 </div>
 
 <footer><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button>
-  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.25.11</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.25.12</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -6094,10 +6097,10 @@ async function cpOn(){
     toast(`☁️ 雲端監控已開啟（${j.n} 檔），關掉網站也會通知`, 2600); cpRecent();
   } catch (e) { CP.err = e.message; toast(e.message, 3200); }
 }
-async function cpOff(){ try { const sub = await cpSubObj(false); if (sub) { await cpPost("/unsub", {endpoint: sub.endpoint}).catch(() => {}); await sub.unsubscribe(); } } catch (e) {} CP.on = false; try { localStorage.removeItem("bfy_cp"); } catch (e) {} }
+async function cpOff(){ try { const sub = await cpSubObj(false); if (sub) { await cpPost("/unsub", {endpoint: sub.endpoint}).catch(() => {}); if (!pnCloudOn()) await sub.unsubscribe(); } } catch (e) {} CP.on = false; try { localStorage.removeItem("bfy_cp"); } catch (e) {} }
 async function cpSync(){ if (!CP.on) return; clearTimeout(CP.t); CP.t = setTimeout(async () => { try { const sub = await cpSubObj(true); if (!TECH) TECH = await getJ("tech"); await cpPost("/sub", {endpoint: sub.endpoint, codes: rdCodes(), cfg: RD.cfg, refs: cpRefs()}); CP.err = ""; } catch (e) { CP.err = "雲端同步失敗：" + e.message; } }, 800); }
 async function cpTest(){ try { const sub = await cpSubObj(false); if (!sub) return false; const j = await cpPost("/test", {endpoint: sub.endpoint}); setTimeout(cpRecent, 4000); return j.ok; } catch (e) { CP.err = e.message; return false; } }
-async function cpRecent(){ try { const sub = await cpSubObj(false); if (!sub) return; const j = await fetch(CPAPI + "/recent?ep=" + encodeURIComponent(sub.endpoint)).then(r => r.json()); CP.recent = (j.items || []).filter(x => x.code != "TEST" || Date.now() - x.ts < 864e5); if (j.sub === false && CP.on) { CP.err = "雲端找不到這台裝置的訂閱，請重新開啟一次"; } rdPaint(); } catch (e) {} }
+async function cpRecent(){ try { const sub = await cpSubObj(false); if (!sub) return; const j = await fetch(CPAPI + "/recent?ep=" + encodeURIComponent(sub.endpoint)).then(r => r.json()); CP.recent = (j.items || []).filter(x => x.code != "PF" && (x.code != "TEST" || Date.now() - x.ts < 864e5)); if (j.sub === false && CP.on) { CP.err = "雲端找不到這台裝置的訂閱，請重新開啟一次"; } rdPaint(); } catch (e) {} }
 if (CP.on) setTimeout(cpSync, 4000);     // 每次開網站同步一次最新名單與日線參考價
 /* ================= 📖 全站白話術語(5 歲小孩也看得懂):[分類, 白話, 小故事, 怎麼看] ================= */
 const GL2 = {
@@ -7461,9 +7464,14 @@ function pnPaint(L, fresh){
   const perm = window.Notification ? Notification.permission : "unsupported";
   const grp = [["ex", "📅 即將除息（一個月內，已公告）"], ["pay", "💰 即將入帳（一個月內）"], ["fill", "💧 填息進度（最近一次除息）"]];
   box.innerHTML = `<h2>🔔 我的配息提醒 <small>持股的除息、入帳、填息</small>${perm == "default" ? `<button class="pn-perm" id="pnPerm">開啟系統通知</button>` : perm == "granted" ? `<span class="pn-ok">✓ 系統通知已開啟</span>` : ""}</h2>
+    <div class="pn-cl">${pnCloudOn() ? `☁️ 關掉網站也通知：<b>已開啟</b>（每天早上 8 點多檢查）<button id="pnCT">送測試</button><button id="pnCX">關閉</button>` : `☁️ 關掉網站也要收到通知？<button id="pnCO" class="on">開啟雲端推播</button>`}</div>
     ${L.length ? grp.map(([g, h]) => { const A = L.filter(x => x.g == g); return A.length ? `<div class="pn-g"><small>${h}</small>${A.map(x => `<div class="pn-i ${x.lv}"><i>${x.ic}</i><div><b>${x.t}${fresh.has(x.key) ? "<em>新</em>" : ""}</b><span>${x.b}</span>${x.prog != null ? `<div class="pn-bar"><u style="width:${x.prog.toFixed(0)}%"></u></div>` : ""}</div></div>`).join("")}</div>` : ""; }).join("")
       : `<p class="pn-none">目前沒有提醒：一個月內沒有除息、也沒有入帳。</p>`}
-    <p class="mknote" style="margin-top:8px">每次打開網站會自動檢查，有新的除息公告、配息公告、入帳前一天、剛填息就跳通知；同一件事只通知一次。除息日以證交所預告為準，最後買進日遇連假要再往前。</p>`;
+    <p class="mknote" style="margin-top:8px">每次打開網站會自動檢查，有新的除息公告、配息公告、入帳前一天、剛填息就跳通知；同一件事只通知一次。開啟雲端推播後，網站關著也會在每天早上 8 點多推播：新的除息／配息公告、今天是最後買進日、今天入帳、剛填息（網站已經跳過的不會再推）。iPhone 要先用 Safari 把網站「加入主畫面」，再從主畫面圖示打開才能開啟。除息日以證交所預告為準，最後買進日遇連假要再往前。</p>`;
+  const bo = document.getElementById("pnCO"), bx = document.getElementById("pnCX"), bt = document.getElementById("pnCT");
+  if (bo) bo.onclick = () => { bo.disabled = true; bo.textContent = "開啟中…"; pnCloudEnable(); };
+  if (bx) bx.onclick = () => pnCloudDisable();
+  if (bt) bt.onclick = () => pnCloudTest();
   const b = document.getElementById("pnPerm");
   if (b) b.onclick = async () => { try { if (typeof rdSW == "function") await rdSW(); await Notification.requestPermission(); } catch (e) {} pnPaint(L, fresh);
     if (window.Notification && Notification.permission == "granted") pnSys("✅ 配息提醒通知已開啟", "之後打開網站時，有除息、配息、填息的新消息會跳出通知", "pf-ok"); };
@@ -7487,10 +7495,44 @@ function pnAlert(L){
 function pfNtfRun(){
   clearTimeout(PFNT);
   PFNT = setTimeout(async () => {
-    try { const L = await pnBuild(); PFNF = new Set([...(PFNF || []), ...pnAlert(L)]); PFN = {L, t: Date.now()}; pnPaint(L, PFNF); } catch (e) { console.warn("配息提醒", e); }
+    try { const L = await pnBuild(); PFNF = new Set([...(PFNF || []), ...pnAlert(L)]); PFN = {L, t: Date.now()}; pnPaint(L, PFNF); pnCloudSync(); } catch (e) { console.warn("配息提醒", e); }
   }, 400);
 }
 setInterval(() => { if (!document.hidden && typeof S != "undefined" && S && S.length) pfNtfRun(); }, 30 * 60e3);   // 網站一直開著:每 30 分鐘再檢查(跨日、新公告)
+
+/* ================= ☁️ 配息提醒雲端推播(關掉網站也通知):etf-alert Worker /pfsub /pfunsub /pftest;
+   和盤中雷達共用同一個瀏覽器推播訂閱(cpSubObj),Worker 用 rd 欄位分辨。每天台北 08:01～08:29 檢查(data/pf_events.json)。 ================= */
+var PNC_T;
+function pnCloudOn(){ try { return localStorage.getItem("bfy_pfcp") == "1"; } catch (e) { return false; } }
+function pnPfList(){ return PF.filter(p => +p.lots > 0).map(p => ({id: p.id, lots: +p.lots})); }
+function pnRepaint(){ if (PFN) pnPaint(PFN.L, PFNF || new Set()); }
+async function pnCloudEnable(){
+  try {
+    if (!window.Notification) throw new Error("這個瀏覽器不支援通知（iPhone 請先「加入主畫面」，再從主畫面圖示打開）");
+    if (Notification.permission != "granted" && await Notification.requestPermission() != "granted") throw new Error("需要允許通知才能開啟（瀏覽器網址列左邊的設定 → 通知 → 允許）");
+    const sub = await cpSubObj(true), j = await cpPost("/pfsub", {endpoint: sub.endpoint, pf: pnPfList()});
+    try { localStorage.setItem("bfy_pfcp", "1"); } catch (e) {}
+    toast(`☁️ 配息提醒雲端推播已開啟（${j.n} 檔），關掉網站也會通知`, 3000);
+  } catch (e) { toast(e.message || "開啟失敗，稍後再試", 3800); }
+  pnRepaint();
+}
+async function pnCloudDisable(){
+  try { const sub = await cpSubObj(false); if (sub) { await cpPost("/pfunsub", {endpoint: sub.endpoint}).catch(() => {}); if (!(typeof CP != "undefined" && CP.on)) await sub.unsubscribe(); } } catch (e) {}
+  try { localStorage.removeItem("bfy_pfcp"); } catch (e) {}
+  toast("已關閉配息提醒雲端推播（打開網站時的提醒照常）", 2600); pnRepaint();
+}
+function pnCloudSync(){                      // 持股有變、或每次打開網站:把最新持股送上去(順便讓雲端知道網站已經提醒過哪些)
+  if (!pnCloudOn()) return; clearTimeout(PNC_T);
+  PNC_T = setTimeout(async () => { try {
+    const sub = await cpSubObj(window.Notification && Notification.permission == "granted"); if (!sub) return;
+    await cpPost("/pfsub", {endpoint: sub.endpoint, pf: pnPfList()});
+  } catch (e) {} }, 1500);
+}
+async function pnCloudTest(){
+  try { const sub = await cpSubObj(false); if (!sub) throw new Error("這台裝置還沒開啟推播，請先按「開啟雲端推播」");
+    const j = await cpPost("/pftest", {endpoint: sub.endpoint}); toast(j.ok ? "已送出測試推播，幾秒內會跳通知（可以先把網站關掉試試）" : "測試失敗，請重新開啟一次", 3200);
+  } catch (e) { toast(e.message, 3200); }
+}
 </script>
 </body>
 </html>

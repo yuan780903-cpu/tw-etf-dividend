@@ -186,7 +186,7 @@ async function deliver(env, k, day, B){
   const DB = env.DB, now = Date.now();
   const ins = await DB.prepare("INSERT OR IGNORE INTO briefs(day,k,ts,title,body) VALUES(?,?,?,?,?)").bind(day, k, now, B.title, B.body).run();
   if (!ins.meta.changes) return 0;
-  const subs = ((await DB.prepare("SELECT * FROM subs").all()).results || []).filter(s => { const c = JSON.parse(s.cfg || "{}"); return BKEY[k] in c ? !!c[BKEY[k]] : c.brief !== false; });
+  const subs = ((await DB.prepare("SELECT * FROM subs WHERE rd != 0").all()).results || []).filter(s => { const c = JSON.parse(s.cfg || "{}"); return BKEY[k] in c ? !!c[BKEY[k]] : c.brief !== false; });
   if (!subs.length) return 0;
   let Q = {}; if (B.radar) { const codes = [...new Set(subs.flatMap(s => JSON.parse(s.codes || "[]")))].slice(0, 120); if (codes.length) Q = await mis(codes.flatMap(c => [`tse_${c}.tw`, `otc_${c}.tw`])); }
   const cnt = {}; if (k == "close") for (const r of ((await DB.prepare("SELECT sub, COUNT(*) n FROM alerts WHERE ts>? AND code NOT IN ('BRIEF','TEST') GROUP BY sub").bind(now - 6 * 3600e3).all()).results || [])) cnt[r.sub] = r.n;
@@ -215,9 +215,72 @@ async function briefs(env, T){
   return out;
 }
 
+/* ---------- 💰 配息提醒(網站「我的配息試算」持股):台北 08:01～08:29 每分鐘檢查一批訂閱者,有新事件就推播 ----------
+   事件表 data/pf_events.json 由 GitHub Actions 每天產生(scripts/build_pf_events.py);同一件事只推一次(pffired)。
+   網站每次打開會同步持股到 /pfsub,同時把「現在已經看得到的事件」記成已通知,避免網站剛跳過、隔天早上又推一次。 */
+const PFE = "https://yuan780903-cpu.github.io/tw-etf-dividend/data/pf_events.json";
+const PF_BATCH = 15;
+let PFC = null;
+async function pfData(){
+  if (PFC && Date.now() - PFC.t < 300e3) return PFC.d;
+  const r = await fetch(PFE + "?t=" + Math.floor(Date.now() / 300e3), {cf: {cacheTtl: 120}});
+  if (!r.ok) return PFC ? PFC.d : null;
+  const d = await r.json(); PFC = {t: Date.now(), d}; return d;
+}
+const cleanPf = a => { const o = [], seen = new Set();
+  for (const x of (Array.isArray(a) ? a : [])) { const id = String((x && x.id) || "").toUpperCase(), lots = +(x && x.lots);
+    if (/^[0-9A-Z]{4,6}$/.test(id) && lots > 0 && lots < 1e6 && !seen.has(id)) { seen.add(id); o.push({id, lots: Math.round(lots * 1000) / 1000}); } }
+  return o.slice(0, 60); };
+const mdw = s => { const d = new Date(s + "T00:00:00Z"); return `${d.getUTCMonth() + 1}/${d.getUTCDate()}（${"日一二三四五六"[d.getUTCDay()]}）`; };
+const cash$ = v => "$" + nf(Math.round(v));
+const dayDiff = (a, b) => Math.round((Date.parse(a) - Date.parse(b)) / 864e5);
+function pfEvents(E, pf, day){
+  const out = [];
+  for (const {id, lots} of pf) {
+    const e = E[id]; if (!e) continue;
+    const nm = `${id} ${e.n}`, sh = lots * 1000, L = +lots.toFixed(3);
+    for (const [ex, cash, lb] of e.ex || []) {
+      const n = dayDiff(ex, day); if (n < 0 || n > 30) continue;
+      const amt = cash ? `每股 ${+cash} 元，你 ${L} 張約領 ${cash$(cash * sh)}` : "配息金額還沒公布";
+      out.push({k: `exa:${id}:${ex}:${cash ? 1 : 0}`, title: `📅 ${nm} ${mdw(ex)} 除息`, body: `${amt}；最後買進日 ${mdw(lb)}，那天收盤前持有才領得到。`});
+      if (lb == day) out.push({k: `exl:${id}:${ex}`, title: `⏰ 今天是 ${nm} 最後買進日`, body: `${mdw(ex)} 除息，今天收盤前持有才領得到這次配息。${cash ? `每股 ${+cash} 元，你 ${L} 張約領 ${cash$(cash * sh)}。` : ""}`});
+    }
+    for (const [pay, cash, ex] of e.pay || []) {
+      const n = dayDiff(pay, day); if (n < 0 || n > 30 || !cash) continue;
+      if (n == 0) out.push({k: `pyd:${id}:${pay}`, title: `💰 今天入帳：${nm} 約 ${cash$(cash * sh)}`, body: `每股 ${+cash} 元 × ${L} 張（${md(ex)} 除息）。單次股利/利息 2 萬元以上會扣二代健保，實際以券商入帳為準。`});
+      else out.push({k: `pya:${id}:${pay}`, title: `💰 ${nm} ${mdw(pay)} 入帳約 ${cash$(cash * sh)}`, body: `已公告每股 ${+cash} 元 × ${L} 張（${md(ex)} 除息），再 ${n} 天入帳。`});
+    }
+    const f = e.fill;
+    if (f && f[3] && f[4] - f[3] < 3) out.push({k: `fil:${id}:${f[0]}`, title: `✅ ${nm} 已填息`, body: `${mdw(f[0])} 除息（每股 ${+f[1]} 元），${f[5] ? mdw(f[5]) + " " : ""}第 ${f[3]} 個交易日收盤漲回除息前的 ${f[2]} 元。`});
+  }
+  return out;
+}
+async function pfMark(env, sid, ev){        // 記成已通知,回傳這次新出現的
+  if (!ev.length) return [];
+  const R = await env.DB.batch(ev.map(a => env.DB.prepare("INSERT OR IGNORE INTO pffired(sub,k,ts) VALUES(?,?,?)").bind(sid, a.k, Date.now())));
+  return ev.filter((a, i) => R[i] && R[i].meta && R[i].meta.changes);
+}
+async function pfRun(env, T){
+  if (T.m < 481 || T.m > 509) return null;
+  const DB = env.DB, subs = (await DB.prepare("SELECT id, endpoint, pf FROM subs WHERE pf != '[]' AND (pfday IS NULL OR pfday < ?) LIMIT ?").bind(T.day, PF_BATCH).all()).results || [];
+  if (!subs.length) return {checked: 0};
+  const D = await pfData(); if (!D || !D.e) return {err: "沒有 pf_events"};
+  let pushed = 0; const now = Date.now();
+  for (const s of subs) {
+    const neu = await pfMark(env, s.id, pfEvents(D.e, JSON.parse(s.pf || "[]"), T.day));
+    const rows = [DB.prepare("UPDATE subs SET pfday=? WHERE id=?").bind(T.day, s.id)];
+    if (neu.length > 3) rows.push(DB.prepare("INSERT INTO alerts(sub,ts,code,title,body,bad) VALUES(?,?,?,?,?,0)").bind(s.id, now, "PF", `🔔 ${neu.length} 則配息提醒`, neu.map(a => a.title.replace(/^\S+\s/, "")).join("\n")));
+    else neu.forEach(a => rows.push(DB.prepare("INSERT INTO alerts(sub,ts,code,title,body,bad) VALUES(?,?,?,?,?,0)").bind(s.id, now, "PF", a.title, a.body)));
+    await DB.batch(rows);
+    if (neu.length) { await push(env, s); pushed++; }
+  }
+  return {checked: subs.length, pushed};
+}
+
 async function run(env){
   const T = tpe(), DB = env.DB, res = {};
-  if (T.m == 480) { await DB.prepare("DELETE FROM alerts WHERE ts < ?").bind(Date.now() - 7 * 864e5).run(); await DB.prepare("DELETE FROM fired WHERE day < ?").bind(new Date(Date.now() - 3 * 864e5).toISOString().slice(0, 10)).run(); await DB.prepare("DELETE FROM briefs WHERE ts < ?").bind(Date.now() - 30 * 864e5).run(); }
+  if (T.m == 480) { await DB.prepare("DELETE FROM alerts WHERE ts < ?").bind(Date.now() - 7 * 864e5).run(); await DB.prepare("DELETE FROM fired WHERE day < ?").bind(new Date(Date.now() - 3 * 864e5).toISOString().slice(0, 10)).run(); await DB.prepare("DELETE FROM briefs WHERE ts < ?").bind(Date.now() - 30 * 864e5).run(); await DB.prepare("DELETE FROM pffired WHERE ts < ?").bind(Date.now() - 150 * 864e5).run(); }
+  try { const r = await pfRun(env, T); if (r) res.pf = r; } catch (e) { res.pfErr = e.message; }
   try { res.briefs = await briefs(env, T); } catch (e) { res.briefErr = e.message; }
   if (!(T.wd >= 1 && T.wd <= 5) || T.m < 480 || T.m > 812) return res;          // 盤中雷達只在台北 08:00～13:32
   if (await twHoliday(env, T.day)) return {...res, skip: "台股休市"};
@@ -260,11 +323,34 @@ export default {
         const refs = {}; for (const [c, r] of Object.entries(b.refs || {})) if (/^[0-9A-Z]{4,6}$/.test(c) && r) refs[c] = {ma20: +r.ma20 || null, sup: +r.sup || null, res: +r.res || null};
         const cfg = {}; for (const k of Object.keys(DEF)) if (b.cfg && b.cfg[k] != null) cfg[k] = typeof DEF[k] == "boolean" ? !!b.cfg[k] : +b.cfg[k];
         if (b.cfg && b.cfg.px && typeof b.cfg.px == "object") { cfg.px = {}; for (const [c, v] of Object.entries(b.cfg.px).slice(0, 80)) if (/^[0-9A-Z]{4,6}$/.test(c) && Array.isArray(v)) cfg.px[c] = [+v[0] || 0, +v[1] || 0]; }
-        await env.DB.prepare("INSERT INTO subs(id,endpoint,codes,cfg,refs,created,updated,fails) VALUES(?,?,?,?,?,?,?,0) ON CONFLICT(endpoint) DO UPDATE SET codes=excluded.codes,cfg=excluded.cfg,refs=excluded.refs,updated=excluded.updated,fails=0")
+        await env.DB.prepare("INSERT INTO subs(id,endpoint,codes,cfg,refs,created,updated,fails) VALUES(?,?,?,?,?,?,?,0) ON CONFLICT(endpoint) DO UPDATE SET codes=excluded.codes,cfg=excluded.cfg,refs=excluded.refs,updated=excluded.updated,fails=0,rd=1")
           .bind(id, b.endpoint, JSON.stringify(cleanCodes(b.codes)), JSON.stringify(cfg), JSON.stringify(refs), now, now).run();
         return J(req, {ok: true, id, n: cleanCodes(b.codes).length});
       }
-      if (p == "/unsub" && req.method == "POST") { const b = await req.json(); await env.DB.prepare("DELETE FROM subs WHERE endpoint=?").bind(b.endpoint || "").run(); return J(req, {ok: true}); }
+      if (p == "/unsub" && req.method == "POST") {    // 關盤中雷達;同一台還開著配息提醒就保留訂閱
+        const b = await req.json(), s = await env.DB.prepare("SELECT id, pf FROM subs WHERE endpoint=?").bind(b.endpoint || "").first();
+        if (s && s.pf && s.pf != "[]") await env.DB.prepare("UPDATE subs SET rd=0, codes='[]', refs='{}', cfg='{\"brief\":false}' WHERE id=?").bind(s.id).run();
+        else await env.DB.prepare("DELETE FROM subs WHERE endpoint=?").bind(b.endpoint || "").run();
+        return J(req, {ok: true});
+      }
+      if (p == "/pfsub" && req.method == "POST") {    // 配息提醒:同步持股(網站每次打開都會送),順便把現在看得到的事件記成已通知
+        const b = await req.json(); if (!okEndpoint(b.endpoint)) return J(req, {error: "不支援的推播服務"}, 400);
+        const pf = cleanPf(b.pf), now = Date.now(), ex = await env.DB.prepare("SELECT id FROM subs WHERE endpoint=?").bind(b.endpoint).first(), id = ex ? ex.id : crypto.randomUUID();
+        await env.DB.prepare("INSERT INTO subs(id,endpoint,codes,cfg,refs,created,updated,fails,pf,rd) VALUES(?,?,'[]','{\"brief\":false}','{}',?,?,0,?,0) ON CONFLICT(endpoint) DO UPDATE SET pf=excluded.pf,updated=excluded.updated,fails=0")
+          .bind(id, b.endpoint, now, now, JSON.stringify(pf)).run();
+        let seen = 0; try { const D = await pfData(); if (D && D.e && b.seen !== false) seen = (await pfMark(env, id, pfEvents(D.e, pf, tpe().day))).length; } catch (e) {}
+        return J(req, {ok: true, id, n: pf.length, seen});
+      }
+      if (p == "/pfunsub" && req.method == "POST") {  // 關配息提醒;同一台還開著盤中雷達就保留訂閱
+        const b = await req.json(), s = await env.DB.prepare("SELECT id, rd FROM subs WHERE endpoint=?").bind(b.endpoint || "").first();
+        if (s) { if (s.rd) await env.DB.prepare("UPDATE subs SET pf='[]', pfday=NULL WHERE id=?").bind(s.id).run(); else await env.DB.prepare("DELETE FROM subs WHERE id=?").bind(s.id).run(); }
+        return J(req, {ok: true, rd: !!(s && s.rd)});
+      }
+      if (p == "/pftest" && req.method == "POST") {
+        const b = await req.json(), s = await env.DB.prepare("SELECT * FROM subs WHERE endpoint=?").bind(b.endpoint || "").first(); if (!s) return J(req, {error: "尚未訂閱"}, 404);
+        await env.DB.prepare("INSERT INTO alerts(sub,ts,code,title,body,bad) VALUES(?,?,?,?,?,0)").bind(s.id, Date.now(), "PF", "✅ 配息提醒推播測試成功", `關掉網站也會通知：持股 ${JSON.parse(s.pf || "[]").length} 檔的除息、最後買進日、入帳、填息（每天早上 8 點多檢查）`).run();
+        return J(req, {ok: true, status: await push(env, s)});
+      }
       if (p == "/test" && req.method == "POST") {
         const b = await req.json(), s = await env.DB.prepare("SELECT * FROM subs WHERE endpoint=?").bind(b.endpoint || "").first(); if (!s) return J(req, {error: "尚未訂閱"}, 404);
         await env.DB.prepare("INSERT INTO alerts(sub,ts,code,title,body,bad) VALUES(?,?,?,?,?,1)").bind(s.id, Date.now(), "TEST", "✅ 雲端推播測試成功", `網站關閉時也會收到盤中警示（雷達 ${JSON.parse(s.codes).length} 檔）`).run();

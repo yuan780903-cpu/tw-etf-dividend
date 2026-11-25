@@ -18,8 +18,9 @@ self.addEventListener("push", e => {      // 雲端推播(不帶內容):收到�
       if (sub) items = (await (await fetch(API + "/pending?ep=" + encodeURIComponent(sub.endpoint), {cache: "no-store"})).json()).items || [];
     } catch (x) {}
     const url = self.registration.scope + "#vp";
-    if (!items.length) return self.registration.showNotification("巴菲遠：盤中警示", {body: "雷達有新的警示，點開查看", icon: "icon-192.png", badge: "favicon-32.png", tag: "rd-cloud", renotify: true, data: {url}});
-    const show = items.length > 3 ? [{title: `🔔 ${items.length} 則盤中警示`, body: items.slice(0, 4).map(x => x.title.replace(/^\S+\s/, "")).join("\n"), bad: 1, id: "sum"}] : items;
-    for (const x of show) await self.registration.showNotification(x.title, {body: x.body, icon: "icon-192.png", badge: "favicon-32.png", tag: "rd-" + (x.id || Date.now()), renotify: true, requireInteraction: !!x.bad, vibrate: x.bad ? [300, 120, 300, 120, 300] : [150], data: {url: x.code == "BRIEF" ? self.registration.scope + "#mkt" : url}});   // 盤勢摘要點開到大盤頁
+    if (!items.length) return self.registration.showNotification("巴菲遠：有新的通知", {body: "點開查看最新的提醒", icon: "icon-192.png", badge: "favicon-32.png", tag: "rd-cloud", renotify: true, data: {url}});
+    const allPf = items.every(x => x.code == "PF");
+    const show = items.length > 3 ? [{title: `🔔 ${items.length} 則${allPf ? "配息提醒" : "盤中警示"}`, body: items.slice(0, 4).map(x => x.title.replace(/^\S+\s/, "")).join("\n"), bad: allPf ? 0 : 1, id: "sum", code: allPf ? "PF" : ""}] : items;
+    for (const x of show) await self.registration.showNotification(x.title, {body: x.body, icon: "icon-192.png", badge: "favicon-32.png", tag: "rd-" + (x.id || Date.now()), renotify: true, requireInteraction: !!x.bad, vibrate: x.bad ? [300, 120, 300, 120, 300] : [150], data: {url: x.code == "BRIEF" ? self.registration.scope + "#mkt" : x.code == "PF" ? self.registration.scope + "#calc" : url}});   // 盤勢摘要點開到大盤頁、配息提醒到配息試算頁
   })());
 });
