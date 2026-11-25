@@ -1448,6 +1448,17 @@ button{-webkit-tap-highlight-color:transparent}
 .rk-f{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0 10px}.rk-f button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:13px}.rk-f button.on{background:#2F5BEA;color:#fff;border-color:#2F5BEA}.rk-f button i{font-style:normal;opacity:.7;margin-left:3px}.rk-f label{font-size:13px;margin-left:6px}
 .rk-mine{background:#FDECEC;border:1px solid #F5B3B3;border-radius:12px;padding:9px 12px;font-size:13.5px;margin:6px 0}.rk-mine.ok{background:#E8F7EE;border-color:#A7E3C2}.rk-mine b[data-c]{cursor:pointer;text-decoration:underline}
 .rk-tb td.rk-w{white-space:normal;min-width:170px;font-size:12.5px}.rk-box.bad{border-left:5px solid #CF3A3A}.rk-ok{color:#1A8F57;font-weight:800}.rk-dp{font-size:13.5px;font-weight:700;color:#CF3A3A}.rk-tags{margin:4px 0}
+/* ===== 🧾 ETF 配息來源組成 ===== */
+.dm-bar{display:flex;height:18px;border-radius:9px;overflow:hidden;background:var(--hover);margin:10px 0 8px}.dm-bar i{height:100%}
+.dm-bar.sm{height:10px;margin:0;border-radius:5px;min-width:90px}
+.dm-lg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;font-weight:700}.dm-lg span{display:inline-flex;align-items:center;gap:5px}.dm-lg i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.dm-lg b{font-variant-numeric:tabular-nums}
+.dm-say{margin:10px 0 0;padding:10px 12px;border-radius:12px;font-size:13.5px;line-height:1.7;font-weight:700}
+.dm-say.ok{background:rgba(22,163,74,.1);color:#15803D}.dm-say.warn{background:rgba(245,158,11,.13);color:#B45309}
+.dm-tb{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;font-variant-numeric:tabular-nums}.dm-tb th{font-size:12px;color:var(--sub);text-align:right;padding:6px 4px;border-bottom:1px solid var(--line)}
+.dm-tb td{padding:7px 4px;border-bottom:1px solid var(--line);text-align:right;font-weight:700}.dm-tb th:first-child,.dm-tb td:first-child,.dm-tb th:nth-child(3),.dm-tb td:nth-child(3){text-align:left}
+.dm-tb td:nth-child(3){width:38%}.dm-tb th,.dm-tb td{white-space:nowrap}
+@media(max-width:700px){.dm-tb .dm-x{display:none}.dm-lg{font-size:12.5px;gap:4px 10px}.dm-tb{font-size:12px}.dm-tb th{font-size:11px}.dm-tb td,.dm-tb th{padding:6px 3px}.dm-bar.sm{min-width:44px}.dm-tb td:nth-child(3){width:auto}}
 /* ===== 🎯 個股估價篩選器 ===== */
 .vs-g{display:flex;gap:6px 12px;align-items:flex-start;margin:10px 0}
 .vs-l{flex:none;width:72px;font-size:13.5px;color:var(--brand);font-weight:900;padding-top:9px}
@@ -2304,7 +2315,7 @@ async function openDetail(id){
   }
   const [h, dv] = await Promise.all([
     fetch(`data/holdings/${id}.json`).then(r => r.ok ? r.json() : {}).catch(() => ({})),
-    loadDV(id), evLoad(),
+    loadDV(id), evLoad(), dmLoad(),
   ]);
   const up = e.chg >= 0, G = CAT[e.category].g;
   const stat = (t, v, i) => `<div class="stat" style="background:linear-gradient(135deg,${G[i%2]},${G[(i+1)%2]})"><small>${t}</small><b class="num">${v}</b></div>`;
@@ -2346,6 +2357,7 @@ async function openDetail(id){
     <div class="box s5"><h2>${e.region=="海外"?"地區 / 產業":"產業"}比重</h2><div id="donut" style="margin-top:8px"></div></div>
   </div>
   <div class="dbd dp" data-p="div">
+    ${dmBox(e)}
     <div class="box s5"><h2>配息時間表</h2>
       <div style="margin-top:10px"><div class="lbl">除息月份</div>${monthsRow(e.exMonths, G[1])}</div>
       <div style="margin-top:10px"><div class="lbl">發放月份（錢入帳）</div>${monthsRow(e.payMonths, c)}</div>
@@ -7203,6 +7215,32 @@ function vsRes(){
     ${L.length > VSS.page ? `<button type="button" class="vs-more" id="vsMore">顯示更多（還有 ${L.length - VSS.page} 檔）</button>` : ""}`;
   $("#vsRes").querySelectorAll("tr[data-c]").forEach(tr => tr.onclick = () => openStock(tr.dataset.c));
   if ($("#vsMore")) $("#vsMore").onclick = () => { VSS.page += 100; vsRes(); };
+}
+
+/* ================= 🧾 ETF 配息來源組成(資料:data/div_mix.json,scripts/fetch_div_mix.py 抓證交所 e添富 收益分配公告) ================= */
+var DM, DMP;
+function dmLoad(){ if (DM) return Promise.resolve(DM); if (!DMP) DMP = getJ("div_mix").then(j => { DM = (j && j.etfs) || {}; return DM; }).catch(() => { DM = {}; return DM; }); return DMP; }
+function dmK(){ return [["股利所得", "#16A34A", "成分股發的股息"], ["利息所得", "#2F7FE0", "債券或存款利息"], ["收益平準金", "#F59E0B", "新申購的人帶進來的錢先墊，不是基金賺的"], ["已實現資本利得", "#8B5CF6", "賣股票、債券賺到的價差"], ["其他所得", "#94A3B8", "其他收入"]]; }
+function dmBar(r, sm){ const K = dmK(); return `<div class="dm-bar ${sm ? "sm" : ""}">${K.map(([n, c], i) => r[2 + i] > 0 ? `<i style="width:${r[2 + i]}%;background:${c}" title="${n} ${fmt(r[2 + i], 2)}%"></i>` : "").join("")}</div>`; }
+function dmBox(e){
+  if (!DM) return "";
+  const L = (DM[e.id] || []).filter(r => r[2] + r[3] + r[4] + r[5] + r[6] > 50);
+  if (!L.length) return e.perYear ? `<div class="box"><h2>🧾 配息從哪裡來</h2><p class="mknote">${e.market == "上櫃" ? "這檔是上櫃 ETF（多數債券 ETF 在上櫃），目前資料來源只有上市 ETF 的配息公告，配息來源組成暫時還沒有。" : "這檔還沒有公告配息來源組成（2023 年 11 月以後的配息公告才有，新上市或還沒配息的 ETF 也會沒有）。"}</p></div>` : "";
+  const K = dmK(), r = L[0], yr = L.filter(x => x[0] && (Date.now() - new Date(x[0])) / 864e5 <= 380);
+  const W = yr.reduce((s, x) => s + (x[1] || 0), 0);           // 近一年用每次配息金額加權
+  const avg = W > 0 ? [0, 1, 2, 3, 4].map(i => yr.reduce((s, x) => s + (x[1] || 0) * x[2 + i], 0) / W) : null;
+  const base = r[2] + r[3], eq = r[4], cap = r[5];
+  const say = eq >= 30 ? `<p class="dm-say warn">⚠️ 這次配息有 ${fmt(eq, 1)}% 來自<b>收益平準金</b>：是新申購的人帶進來的錢先拿來配，不是基金真的賺到的。占比高時，要留意配息能不能維持。</p>`
+    : cap >= 50 ? `<p class="dm-say warn">⚠️ 這次配息有 ${fmt(cap, 1)}% 來自<b>賣股票賺的價差</b>。行情好時配得多，行情差時可能配不出這麼多。</p>`
+    : base >= 70 ? `<p class="dm-say ok">👍 這次配息有 ${fmt(base, 1)}% 來自股息和利息，是基金真正收到的收入，比較穩定。</p>` : "";
+  const lg = x => `<div class="dm-lg">${K.map(([n, c], i) => x[2 + i] > 0 ? `<span><i style="background:${c}"></i>${n} <b>${fmt(x[2 + i], 1)}%</b></span>` : "").join("")}</div>`;
+  return `<div class="box"><h2>🧾 配息從哪裡來 <small style="font-size:12px;color:var(--sub);font-weight:600">收益分配組成</small></h2>
+    <p style="margin:6px 0 0;font-weight:800">最近一次：${r[0] || r[7]} 除息，每單位 ${r[1] != null ? fmt(r[1], 3) + " 元" : "—"}</p>
+    ${dmBar(r)}${lg(r)}${say}
+    ${avg && yr.length > 1 ? `<p style="margin:14px 0 0;font-weight:800">近一年 ${yr.length} 次配息合計（依金額加權）</p>${dmBar([0, 0, ...avg])}${lg([0, 0, ...avg])}` : ""}
+    ${L.length > 1 ? `<table class="dm-tb"><thead><tr><th>除息日</th><th>配息</th><th>組成</th><th>股利</th><th class="dm-x">利息</th><th>平準金</th><th>價差</th></tr></thead><tbody>
+      ${L.slice(0, 12).map(x => `<tr><td>${(x[0] || x[7]).slice(2).replace(/-/g, "/")}</td><td>${x[1] != null ? fmt(x[1], 3) : "—"}</td><td>${dmBar(x, 1)}</td><td>${fmt(x[2], 0)}%</td><td class="dm-x">${fmt(x[3], 0)}%</td><td>${fmt(x[4], 0)}%</td><td>${fmt(x[5], 0)}%</td></tr>`).join("")}</tbody></table>` : ""}
+    <p class="mknote">👶 白話：同樣配 1 元，來自<b>股息、利息</b>的是基金真正收到的錢；<b>收益平準金</b>是新申購的人帶進來的錢先墊；<b>已實現資本利得</b>是賣掉持股賺的價差。資料：證交所 ETF e添富 收益分配公告（投信公告的預估占比，實際以收益分配通知為準）。</p></div>`;
 }
 </script>
 </body>

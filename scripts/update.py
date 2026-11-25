@@ -212,6 +212,7 @@ def main():
         step("build_value_picks.py")
         step("build_experts.py")      # 專家選股(9 位大師條件)
     step("fetch_divs.py")               # 個股股利排行+除權息行事曆
+    step("fetch_div_mix.py")            # ETF 配息來源組成(證交所 e添富 收益分配公告:股利/利息/平準金/資本利得占比)
     step("fetch_ratings.py")            # 券商評等/法人共識目標價
     step("fetch_chips.py")              # 三大法人個股、集保大戶、熱力圖
     step("fetch_events.py")             # 法說會、內部人持股轉讓
