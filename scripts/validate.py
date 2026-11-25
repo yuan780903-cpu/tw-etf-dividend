@@ -49,6 +49,7 @@ SPEC = [
   ("三大法人", "inst.json", lambda j: len((j.get("twse") or {}).get("fiH") or []), lambda j: j["twse"]["d"], 1, lambda j: [f"外資單日 {j['twse']['fi']} 億異常"] if abs(j["twse"]["fi"]) > 5000 else []),
   ("ETF 總表", "summary.json", lambda j: len(j["etfs"]), lambda j: max(e.get("date") or "" for e in j["etfs"]), 1, lambda j: [f"{e['id']} 價格異常" for e in j["etfs"] if not e.get("price") or e["price"] <= 0][:5]),
   ("ETF 估價", "etf_val.json", lambda j: sum(1 for v in j["etfs"].values() if v.get("z")), lambda j: j["updated"], 2, lambda j: [f"能估價的只有 {sum(1 for v in j['etfs'].values() if v.get('z'))} 檔"] if sum(1 for v in j["etfs"].values() if v.get("z")) < 100 else []),
+  ("估價篩選", "stk_screen.json", lambda j: sum(1 for r in j["stocks"] if r[6]), lambda j: j["updated"], 2, lambda j: [f"台灣50 只對到 {j['src']['t50'][0]} 檔"] if j["src"]["t50"][0] < 45 else []),
   ("量化評分", "scores.json", lambda j: len(j["stocks"]), lambda j: j["updated"], 2, None),
   ("大師選股", "experts.json", lambda j: len(j["stocks"]), lambda j: j["updated"], 2, None),
   ("定存股", "dingcun.json", lambda j: len(j["stocks"]), lambda j: j["updated"], 2, None),

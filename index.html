@@ -1448,6 +1448,30 @@ button{-webkit-tap-highlight-color:transparent}
 .rk-f{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0 10px}.rk-f button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:13px}.rk-f button.on{background:#2F5BEA;color:#fff;border-color:#2F5BEA}.rk-f button i{font-style:normal;opacity:.7;margin-left:3px}.rk-f label{font-size:13px;margin-left:6px}
 .rk-mine{background:#FDECEC;border:1px solid #F5B3B3;border-radius:12px;padding:9px 12px;font-size:13.5px;margin:6px 0}.rk-mine.ok{background:#E8F7EE;border-color:#A7E3C2}.rk-mine b[data-c]{cursor:pointer;text-decoration:underline}
 .rk-tb td.rk-w{white-space:normal;min-width:170px;font-size:12.5px}.rk-box.bad{border-left:5px solid #CF3A3A}.rk-ok{color:#1A8F57;font-weight:800}.rk-dp{font-size:13.5px;font-weight:700;color:#CF3A3A}.rk-tags{margin:4px 0}
+/* ===== 🎯 個股估價篩選器 ===== */
+.vs-g{display:flex;gap:6px 12px;align-items:flex-start;margin:10px 0}
+.vs-l{flex:none;width:72px;font-size:13.5px;color:var(--brand);font-weight:900;padding-top:9px}
+.vs-o{display:flex;gap:8px;flex-wrap:wrap;flex:1;min-width:0;align-items:center}
+.vs-o button{border:1px solid var(--line);background:var(--field);color:var(--ink);border-radius:12px;padding:8px 14px;font-weight:800;font-size:14px;cursor:pointer}
+.vs-o button small{color:var(--sub);font-weight:600;font-size:12px;margin-left:4px}
+.vs-o button.on{background:var(--brand);color:#fff;border-color:transparent}.vs-o button.on small{color:#fff;opacity:.85}.vs-o button.on::before{content:"✓ "}
+.vs-o select,.vs-o input{border:1px solid var(--line);background:var(--field);color:var(--ink);border-radius:10px;padding:7px 10px;font-size:13.5px;font-weight:700}
+.vs-o input{flex:1 1 150px;min-width:0}
+.vs-k{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0 6px}.vs-k button{border:0;border-left:4px solid var(--c);background:var(--hover);border-radius:10px;padding:8px 10px;text-align:left;cursor:pointer;color:var(--ink)}
+.vs-k button small{display:block;font-size:12px;color:var(--sub);font-weight:700}.vs-k button b{font-size:18px}
+.vs-t{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;table-layout:fixed}
+.vs-t th{font-size:12.5px;color:var(--sub);font-weight:800;text-align:right;padding:8px 6px;border-bottom:2px solid var(--line);white-space:nowrap}
+.vs-t th:first-child,.vs-t td:first-child,.vs-t th:nth-child(3),.vs-t td:nth-child(3){text-align:left}
+.vs-t th:nth-child(1){width:27%}.vs-t th:nth-child(2){width:15%}.vs-t th:nth-child(3){width:40%}
+.vs-t td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:right;font-weight:800;font-size:14px;vertical-align:middle}
+.vs-t tr[data-c]{cursor:pointer}.vs-t tr[data-c]:hover td{background:var(--hover)}
+.vs-t td b{display:block;font-size:14.5px}.vs-t td small{display:block;color:var(--sub);font-weight:600;font-size:12px;line-height:1.5}
+.vs-t .zp{display:inline-block;margin-right:6px}.vs-pr span{white-space:nowrap}.vs-pr span+span::before{content:"｜";color:var(--line);margin:0 2px}.vs-t .vs-pr{font-size:12px;color:var(--sub);font-weight:700;margin-top:3px;line-height:1.5}.vs-t .vs-pr em{font-style:normal;color:var(--ink);font-weight:900}
+.vs-cy{display:inline-block;font-size:11px;font-weight:800;color:#B45309;background:rgba(245,158,11,.15);border-radius:6px;padding:0 5px;margin-left:4px}
+.vs-more{display:block;margin:12px auto 0;border:1px solid var(--line);background:var(--field);color:var(--ink);border-radius:999px;padding:8px 20px;font-weight:800;cursor:pointer}
+@media(max-width:700px){.vs-g{flex-direction:column}.vs-l{width:auto;padding-top:0}.vs-o button{padding:7px 11px;font-size:13px}
+  .vs-k{grid-template-columns:repeat(2,minmax(0,1fr))}.vs-t th:nth-child(1){width:29%}.vs-t th:nth-child(2){width:19%}.vs-t th:nth-child(3){width:33%}
+  .vs-t td{font-size:13px;padding:8px 3px}.vs-t th{font-size:11.5px;padding:6px 3px}.vs-hx{display:none}.vs-pr span{display:block}.vs-pr span+span::before{content:none}.vs-t td b{font-size:13.5px}.vs-t td small{font-size:11px}.vs-t .zp{font-size:11.5px;padding:1px 6px}}
 /* ===== 💎 ETF 估價位階 ===== */
 .ev-b{display:block;margin:2px 0}.ev-b:empty{display:none}.ev-b em{font-style:normal;font-size:12px;font-weight:800;border-radius:7px;padding:1px 7px;white-space:nowrap}
 .ev-hd{display:flex;align-items:baseline;gap:8px 12px;flex-wrap:wrap;margin:2px 0 4px}.ev-hd b{font-size:22px}.ev-hd .zp{font-size:14px;font-weight:900;border-radius:9px;padding:2px 10px;color:#fff}
@@ -1722,7 +1746,7 @@ button{-webkit-tap-highlight-color:transparent}
     <span class="mini" id="tabMini" data-tab="calc"></span>
   </nav>
 
-  <div class="page" id="pg-vp"><div class="bd-wrap" id="xpBoard"><div class="bd-hd"><h2>📋 選股總表</h2><span>點卡片直接看名單</span></div><div class="bd" id="xpTiles"><div class="sk" style="height:120px;grid-column:1/-1"></div></div></div><div id="xpNav"></div><div id="xpKid"></div><div id="xpEx"></div><div id="xpDc"></div><div id="xpQs"></div><div id="vp"></div><div id="xpCk"></div><div id="xpRv"></div><div id="xpRt"></div><div id="xpDv"></div><div id="xpEv"></div><div id="xpWl"></div><div id="xpRd"></div><div id="xpRk"></div><div id="xpPt"></div><div id="xpWh"></div><div id="xpBt"></div></div>
+  <div class="page" id="pg-vp"><div class="bd-wrap" id="xpBoard"><div class="bd-hd"><h2>📋 選股總表</h2><span>點卡片直接看名單</span></div><div class="bd" id="xpTiles"><div class="sk" style="height:120px;grid-column:1/-1"></div></div></div><div id="xpNav"></div><div id="xpKid"></div><div id="xpEx"></div><div id="xpDc"></div><div id="xpVs"></div><div id="xpQs"></div><div id="vp"></div><div id="xpCk"></div><div id="xpRv"></div><div id="xpRt"></div><div id="xpDv"></div><div id="xpEv"></div><div id="xpWl"></div><div id="xpRd"></div><div id="xpRk"></div><div id="xpPt"></div><div id="xpWh"></div><div id="xpBt"></div></div>
   <div class="page" id="pg-mkt"><div id="mkt"></div></div>
   <div class="page" id="pg-macro"><div id="macro"></div></div>
 
@@ -4717,7 +4741,7 @@ async function admCfg(){
 memBadge(); if (!isPaid()) lgShow(); memCheck(); setInterval(memCheck, 10 * 60e3);
 /* ================= 🧠 專家選股:大師選股 / 巴菲遠綜合 / 券商評等 / 股利排行 ================= */
 let XP = {sub: (() => { try { return localStorage.getItem("bfy_xp") || "ex"; } catch (e) { return "ex"; } })()}, EXD = null, RTD = null, DVD = null;
-const XSUB = [["rd", "⚡ 盤中雷達"], ["bt", "📈 大師回測"], ["pt", "💼 投資組合"], ["rk", "⚠️ 風險股"], ["wh", "🐳 大戶吸籌"], ["ex", "🧠 大師選股"], ["dc", "💎 定存股"], ["qs", "❄️ 量化評分"], ["vp", "🏆 綜合 Top150"], ["ck", "🏦 籌碼排行"], ["rv", "📈 月營收"], ["rt", "📣 券商評等"], ["dv", "💰 股利"], ["ev", "📅 法說會・內部人"], ["wl", "⭐ 自選股"]];
+const XSUB = [["rd", "⚡ 盤中雷達"], ["bt", "📈 大師回測"], ["pt", "💼 投資組合"], ["rk", "⚠️ 風險股"], ["wh", "🐳 大戶吸籌"], ["ex", "🧠 大師選股"], ["dc", "💎 定存股"], ["vs", "🎯 估價篩選"], ["qs", "❄️ 量化評分"], ["vp", "🏆 綜合 Top150"], ["ck", "🏦 籌碼排行"], ["rv", "📈 月營收"], ["rt", "📣 券商評等"], ["dv", "💰 股利"], ["ev", "📅 法說會・內部人"], ["wl", "⭐ 自選股"]];
 function loadXP(){
   if (!$("#xpNav").innerHTML) $("#xpNav").innerHTML = `<div class="xp-nav">${XSUB.map(([k, n]) => `<button data-k="${k}">${n}</button>`).join("")}</div>`;
   $("#xpNav").onclick = e => { const b = e.target.closest("button[data-k]"); if (b) { XP.sub = b.dataset.k; try { localStorage.setItem("bfy_xp", XP.sub); } catch (er) {} xpShow(); } };
@@ -4726,9 +4750,9 @@ function loadXP(){
 function xpShow(){
   $("#xpNav").querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.k == XP.sub));
   if (!XSUB.some(x => x[0] == XP.sub)) XP.sub = "ex";
-  [["ex", "#xpEx"], ["dc", "#xpDc"], ["qs", "#xpQs"], ["vp", "#vp"], ["ck", "#xpCk"], ["rv", "#xpRv"], ["rt", "#xpRt"], ["dv", "#xpDv"], ["ev", "#xpEv"], ["wl", "#xpWl"], ["rd", "#xpRd"], ["rk", "#xpRk"], ["pt", "#xpPt"], ["wh", "#xpWh"], ["bt", "#xpBt"]].forEach(([k, s]) => $(s).style.display = k == XP.sub ? "" : "none"); kidSub();
+  [["ex", "#xpEx"], ["dc", "#xpDc"], ["vs", "#xpVs"], ["qs", "#xpQs"], ["vp", "#vp"], ["ck", "#xpCk"], ["rv", "#xpRv"], ["rt", "#xpRt"], ["dv", "#xpDv"], ["ev", "#xpEv"], ["wl", "#xpWl"], ["rd", "#xpRd"], ["rk", "#xpRk"], ["pt", "#xpPt"], ["wh", "#xpWh"], ["bt", "#xpBt"]].forEach(([k, s]) => $(s).style.display = k == XP.sub ? "" : "none"); kidSub();
   const nb = $("#xpNav").querySelector("button.on"); if (nb && nb.scrollIntoView && innerWidth < 900) nb.scrollIntoView({inline: "center", block: "nearest"});
-  ({ex: loadEx, dc: loadDc, qs: loadQs, vp: loadVP, ck: loadCk, rv: loadRv, rt: loadRt, dv: loadDv, ev: loadEv, wl: loadWl, rd: loadRd, rk: loadRk, pt: loadPt, wh: loadWh, bt: loadBt})[XP.sub]();
+  ({ex: loadEx, dc: loadDc, vs: loadVs, qs: loadQs, vp: loadVP, ck: loadCk, rv: loadRv, rt: loadRt, dv: loadDv, ev: loadEv, wl: loadWl, rd: loadRd, rk: loadRk, pt: loadPt, wh: loadWh, bt: loadBt})[XP.sub]();
 }
 
 /* ---------- 大師插畫肖像(原創插畫,非本人照片) ---------- */
@@ -5685,6 +5709,7 @@ async function xpBoard(){
   const t0 = new Date().toISOString().slice(0, 10), t7 = new Date(Date.now() + 7 * 864e5).toISOString().slice(0, 10), wk = ev ? ev.conf.filter(x => x.d >= t0 && x.d <= t7).length : 0;
   const T = [top ? {t: "🧠 最多大師選中", v: `${top[0]} ${top[1].n}`, sub: `${top[1].hit.length} 位大師同時選中`, go: `stk:${top[0]}`} : null,
     {t: "💎 定存股・目前便宜", v: cheap + " 檔", sub: `共 ${dc ? dc.stocks.length : 0} 檔體質良好`, go: "xp:dc"},
+    await vsTile(),
     {t: "❄️ 量化總評 A 以上", v: aa + " 家", sub: "五面向綜合排名前 20%", go: "xp:qs"},
     fb ? {t: "🏦 外資連買最久", v: `${fb[0]} ${fb[1].n}`, sub: `連買 ${fb[1].fS} 天`, go: "xp:ck"} : null,
     {t: "📈 營收創近 2 年新高", v: hi + " 家", sub: rv ? `${rv.ym.slice(0, 4)}/${rv.ym.slice(4)} 月營收` : "", go: "xp:rv"},
@@ -7113,6 +7138,71 @@ function evBox(e){
     <div class="ev-l"><span style="left:20%">便宜價<b class="num">${fmt(c, 2)}</b></span><span style="left:50%">合理價<b class="num">${fmt(f, 2)}</b></span><span style="left:80%">昂貴價<b class="num">${fmt(x, 2)}</b></span></div>
     ${yl}<p class="ev-m">${how}</p>
     <p class="mknote">👶 白話：位階 0～100，越低越便宜。20 以下＝便宜、50 附近＝合理、80 以上＝昂貴。這是跟這檔 ETF 自己過去 5 年比，不是跟別檔比；只是參考，不是買賣建議。</p></div>`;
+}
+
+/* ================= 🎯 個股估價篩選器(資料:data/stk_screen.json,scripts/build_stock_screen.py 產生) ================= */
+var VSD, VSS;                            // 不給初始值:專家選股頁若在載入時就開到這個分頁,不會被蓋掉
+function vsInit(){ if (VSS) return; const d = {u: "all", val: true, cheap: false, fair: false, cyc: true, y: 0, ind: "全部", sort: "pos", q: "", page: 50, zf: ""};
+  try { VSS = Object.assign(d, JSON.parse(localStorage.getItem("bfy_vs") || "{}"), {q: "", page: 50, zf: ""}); } catch (e) { VSS = d; } }
+function vsSave(){ try { const {u, val, cheap, fair, cyc, y, ind, sort} = VSS; localStorage.setItem("bfy_vs", JSON.stringify({u, val, cheap, fair, cyc, y, ind, sort})); } catch (e) {} }
+// 欄位:0代號 1名稱 2產業 3市場 4股價 5漲跌% 6便宜 7合理 8昂貴 9區間 10殖利率 11平均殖利率 12平均年數 13景氣循環 14成分 15連續配息 16市值億
+function vsZone(r){ const px = r[4]; if (!r[6] || !px) return null; return px <= r[6] ? "便宜" : px <= r[7] ? "合理" : px <= r[8] ? "偏貴" : "昂貴"; }
+function vsPos(r){ return r[6] && r[4] ? evPos(r[4], [r[6], r[7], r[8]]) : 999; }
+async function vsTile(){
+  if (!VSD) VSD = await getJ("stk_screen"); if (!VSD) return null;
+  const A = VSD.stocks.filter(r => r[14] == 1 && r[6]), n = A.filter(r => vsZone(r) == "便宜").length, f = A.filter(r => vsZone(r) == "合理").length;
+  return {t: "🎯 台灣50・目前便宜", v: n + " 檔", sub: `合理價以下 ${n + f} 檔・點進去篩選全台股`, go: "xp:vs"};
+}
+async function loadVs(){
+  vsInit();
+  if (!VSD) { $("#xpVs").innerHTML = `<div class="box"><div class="sk" style="height:300px"></div></div>`; VSD = await getJ("stk_screen"); }
+  if (!VSD) { $("#xpVs").innerHTML = `<div class="box empty">估價篩選資料載入失敗，請稍後再試</div>`; return; }
+  vsUI();
+}
+function vsUI(){
+  const cy = VSD.cyc || {ind: [], code: {}}, inds = [...new Set(VSD.stocks.map(r => r[2]).filter(Boolean))].sort();
+  const U = [["t50", "台灣50", "最大的 50 家"], ["m100", "中型100", "第 51～150 大"], ["all", "全台股上市櫃", ""]];
+  const C = [["val", "有估價的股票"], ["cheap", "便宜價以下"], ["fair", "合理價以下"], ["cyc", "剔除景氣循環股"]];
+  $("#xpVs").innerHTML = `<div class="box"><h2 class="sec">🎯 估價選股篩選器 <small>快速篩出價格在便宜價、合理價以下的股票</small></h2>
+    <p class="dv-say"><b>白話</b>每檔股票用它自己過去的股利、本益比、股價淨值比，算出便宜價、合理價、昂貴價（三種方法平均）。股價在便宜價以下＝便宜，合理價以下＝合理。景氣循環股（${cy.ind.map(x => x.replace(/工業|業$/g, "")).slice(0, 5).join("、")}…以及面板、記憶體股）賺錢忽多忽少，估價容易失準，建議剔除。</p>
+    <div class="vs-g"><b class="vs-l">觀察對象</b><div class="vs-o" id="vsU">${U.map(([k, t, sm]) => `<button type="button" data-u="${k}" class="${VSS.u == k ? "on" : ""}">${t}${sm ? `<small>（${sm}）</small>` : ""}</button>`).join("")}</div></div>
+    <div class="vs-g"><b class="vs-l">基本條件</b><div class="vs-o" id="vsC">${C.map(([k, t]) => `<button type="button" data-k="${k}" class="${VSS[k] ? "on" : ""}">${t}</button>`).join("")}</div></div>
+    <div class="vs-g"><b class="vs-l">更多條件</b><div class="vs-o">
+      <select id="vsY" aria-label="殖利率至少">${[[0, "殖利率不限"], [3, "殖利率 ≥3%"], [4, "殖利率 ≥4%"], [5, "殖利率 ≥5%"], [6, "殖利率 ≥6%"]].map(([v, t]) => `<option value="${v}" ${VSS.y == v ? "selected" : ""}>${t}</option>`).join("")}</select>
+      <select id="vsI" aria-label="產業"><option value="全部">全部產業</option>${inds.map(i => `<option ${VSS.ind == i ? "selected" : ""}>${esc(i)}</option>`).join("")}</select>
+      <select id="vsS" aria-label="排序">${[["pos", "最便宜優先（位階低→高）"], ["yld", "殖利率高→低"], ["cap", "市值大→小"], ["chg", "今日漲幅高→低"]].map(([v, t]) => `<option value="${v}" ${VSS.sort == v ? "selected" : ""}>${t}</option>`).join("")}</select>
+      <input id="vsQ" type="search" placeholder="🔍 代號或名稱" autocomplete="off"></div></div>
+    <div class="vs-k" id="vsK"></div><div id="vsRes"></div>
+    <p class="mknote">資料：${VSD.updated} 收盤後計算。台灣50、中型100 成分股取自 0050、0051 最新持股（${(VSD.src && VSD.src.t50 && VSD.src.t50[2]) || ""}）。估價只是參考，不是買賣建議；位階 0～100，越低越便宜。</p></div>`;
+  $("#vsU").onclick = e => { const b = e.target.closest("[data-u]"); if (!b) return; VSS.u = b.dataset.u; VSS.page = 50; vsSave(); vsUI(); };
+  $("#vsC").onclick = e => { const b = e.target.closest("[data-k]"); if (!b) return; const k = b.dataset.k; VSS[k] = !VSS[k]; if (k == "cheap" && VSS.cheap) VSS.fair = false; if (k == "fair" && VSS.fair) VSS.cheap = false; VSS.zf = ""; VSS.page = 50; vsSave(); vsUI(); };
+  $("#vsY").onchange = e => { VSS.y = +e.target.value; VSS.page = 50; vsSave(); vsRes(); };
+  $("#vsI").onchange = e => { VSS.ind = e.target.value; VSS.page = 50; vsSave(); vsRes(); };
+  $("#vsS").onchange = e => { VSS.sort = e.target.value; vsSave(); vsRes(); };
+  $("#vsQ").oninput = e => { VSS.q = e.target.value.trim().toLowerCase(); VSS.page = 50; vsRes(); };
+  vsRes();
+}
+function vsRes(){
+  const q = VSS.q, base = VSD.stocks.filter(r => (VSS.u == "all" || (VSS.u == "t50" ? r[14] == 1 : r[14] == 2)) && (!VSS.val || r[6]) && (!VSS.cyc || !r[13])
+    && (!VSS.y || (r[10] || 0) >= VSS.y) && (VSS.ind == "全部" || r[2] == VSS.ind) && (!q || (r[0] + r[1]).toLowerCase().includes(q)));
+  const cnt = z => base.filter(r => vsZone(r) == z).length;
+  $("#vsK").innerHTML = ["便宜", "合理", "偏貴", "昂貴"].map(z => `<button type="button" data-z="${z}" style="--c:${ZONEC[z]};${VSS.zf == z ? "outline:2px solid " + ZONEC[z] : ""}"><small>目前${z}</small><b class="num">${cnt(z)}</b> 檔</button>`).join("");
+  $("#vsK").onclick = e => { const b = e.target.closest("[data-z]"); if (!b) return; VSS.zf = VSS.zf == b.dataset.z ? "" : b.dataset.z; VSS.page = 50; vsRes(); };
+  let L = base.filter(r => (!VSS.cheap || (r[6] && r[4] <= r[6])) && (!VSS.fair || (r[7] && r[4] <= r[7])) && (!VSS.zf || vsZone(r) == VSS.zf));
+  const K = {pos: r => vsPos(r), yld: r => -(r[10] || 0), cap: r => -(r[16] || 0), chg: r => -(r[5] || 0)}[VSS.sort] || (r => vsPos(r));
+  L.sort((a, b) => K(a) - K(b) || (b[16] || 0) - (a[16] || 0));
+  const row = r => { const z = vsZone(r), p = z ? vsPos(r) : null, up = (r[5] || 0) >= 0;
+    const hl = (t, v, on) => `<span>${t} ${on ? "<em>" : ""}${fmt(v, 2)}${on ? "</em>" : ""}</span>`;
+    const pr = r[6] ? `<div class="vs-pr">${hl("便宜", r[6], z == "便宜")}${hl("合理", r[7], z == "合理")}${hl("昂貴", r[8], z == "偏貴" || z == "昂貴")}</div>` : "";
+    return `<tr data-c="${esc(r[0])}"><td><b>${esc(r[0])} ${esc(r[1])}</b><small>${esc(r[2] || "")}${r[13] ? `<span class="vs-cy">循環・${esc(r[13] == "產業" ? "原物料" : r[13])}</span>` : ""}${typeof riskTag == "function" ? riskTag(r[0]) : ""}</small></td>
+      <td><b>${fmt(r[4], 2)}</b><small style="color:${!r[5] ? "var(--sub)" : up ? "var(--up)" : "var(--down)"}">${r[5] == null ? "" : !r[5] ? "平盤" : (up ? "▲" : "▼") + fmt(Math.abs(r[5]), 2) + "%"}</small></td>
+      <td>${z ? `<span class="zp" style="background:${ZONEC[z]}">${z}</span><small style="display:inline">位階 ${p}</small>` : `<small>無法估價</small>`}${pr}</td>
+      <td><b>${r[10] != null ? fmt(r[10], 2) + "%" : "—"}</b><small>${r[11] != null ? `${r[12]}年均 ${fmt(r[11], 2)}%` : ""}</small></td></tr>`; };
+  $("#vsRes").innerHTML = `<p class="mknote">符合條件 <b>${L.length}</b> 檔${VSS.zf ? `（只看「${VSS.zf}」，再點一次取消）` : ""}</p>
+    <table class="vs-t"><thead><tr><th>股票</th><th>股價</th><th>估價<span class="vs-hx">（便宜｜合理｜昂貴）</span></th><th>殖利率</th></tr></thead><tbody>${L.slice(0, VSS.page).map(row).join("") || `<tr><td colspan="4" style="text-align:center;color:var(--sub);padding:24px">沒有符合條件的股票，放寬條件試試</td></tr>`}</tbody></table>
+    ${L.length > VSS.page ? `<button type="button" class="vs-more" id="vsMore">顯示更多（還有 ${L.length - VSS.page} 檔）</button>` : ""}`;
+  $("#vsRes").querySelectorAll("tr[data-c]").forEach(tr => tr.onclick = () => openStock(tr.dataset.c));
+  if ($("#vsMore")) $("#vsMore").onclick = () => { VSS.page += 100; vsRes(); };
 }
 </script>
 </body>

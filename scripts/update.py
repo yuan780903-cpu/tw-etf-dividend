@@ -213,6 +213,7 @@ def main():
     step("fetch_chips.py")              # 三大法人個股、集保大戶、熱力圖
     step("fetch_events.py")             # 法說會、內部人持股轉讓
     step("build_stock_pages.py")        # 量化評分、個股分析頁、月營收排行、搜尋名單
+    step("build_stock_screen.py")       # 估價選股篩選器(台灣50/中型100/全上市櫃、便宜/合理價以下、景氣循環股)
     step("build_board.py")              # 大盤總表(含台指期夜盤)
     step("fetch_risk.py")              # 風險雷達:處置/注意股、借券、外資持股、當沖比
     step("fetch_options.py")           # 期權籌碼:P/C、最大未平倉、外資選擇權、ADR 溢價
