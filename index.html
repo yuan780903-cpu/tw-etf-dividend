@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-version" content="v2026.11.25.14">
+<meta name="app-version" content="v2026.11.25.15">
 <meta name="theme-color" content="#F1F5FF">
 <title>巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
@@ -111,7 +111,7 @@ header:after{content:"";position:absolute;right:-120px;top:-160px;width:520px;he
 .lr:hover{transform:translateX(3px);box-shadow:0 10px 22px -12px rgba(20,26,46,.5)}
 .lr .cb{align-self:stretch;border-radius:4px}
 .lr .nm{min-width:0}
-.lr .nm b{display:block;font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lr .nm b{display:block;font-size:15px;font-weight:800;line-height:1.35;overflow-wrap:anywhere}
 .lr .nm small,.lr .v small{display:block;font-size:11.5px;color:var(--sub);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lr .v{text-align:right}
 .lr .v b{font-size:16px;font-weight:800}
@@ -120,7 +120,11 @@ header:after{content:"";position:absolute;right:-120px;top:-160px;width:520px;he
 .lr .ad{width:40px;height:40px;border:0;border-radius:12px;color:#fff;font-size:22px;font-weight:700;cursor:pointer;line-height:1}
 .lr.hdr{background:none;box-shadow:none;cursor:default;padding-top:0;padding-bottom:0;font-size:12px;color:var(--sub);font-weight:700}
 .lr.hdr:hover{transform:none}
-@media(max-width:900px){.lr{grid-template-columns:5px minmax(0,1fr) auto auto 40px;gap:10px;padding:10px 10px 10px 8px}.lr .sp,.lr .r1,.lr .ta{display:none}.lr.hdr{display:none}.lr .ad{width:38px;height:38px}}
+.ynote{font-size:12.5px;color:var(--sub);line-height:1.6;margin:-4px 2px 12px}.ynote b{color:var(--ink)}
+@media(max-width:900px){.lr{grid-template-columns:5px minmax(0,1fr) auto auto 40px;gap:10px;padding:10px 10px 10px 8px}.lr .sp,.lr .r1,.lr .ta{display:none}.lr.hdr{display:none}.lr .ad{width:38px;height:38px}
+  .lr{grid-template-rows:auto auto;row-gap:6px}.lr .nm{display:contents}.lr .cb{grid-column:1;grid-row:1 / 3}
+  .lr .nm b{grid-column:2 / 5;grid-row:1;font-size:15.5px}.lr .nm small{grid-column:2;grid-row:2;align-self:start;white-space:normal;line-height:1.5;margin-top:0}
+  .lr .v{grid-row:2;align-self:start}.lr .v:not(.vy){grid-column:3}.lr .vy{grid-column:4}.lr .v small{white-space:nowrap}.lr .ad{grid-column:5;grid-row:1 / 3}}
 .flt{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .fl{font-size:13px;color:var(--sub);white-space:nowrap}
 @media(max-width:700px){
@@ -1786,7 +1790,7 @@ button{-webkit-tap-highlight-color:transparent}
   <div class="top">
     <div class="brand"><img class="logo" src="logo.svg" alt="柴犬博士" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.25.14</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
+      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.25.15</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
@@ -1886,6 +1890,7 @@ button{-webkit-tap-highlight-color:transparent}
         <span class="count" id="count"></span>
         <div class="vt" id="vt"><button data-v="card">▦ 卡片</button><button data-v="list">☰ 清單</button></div>
       </div>
+      <p class="ynote">💡 「近一年殖利率」＝過去 12 個月<b>所有配息加起來</b> ÷ 現在股價，是<b>整年合計</b>，不是單次配息。例如季配息就是最近 4 次配息的總和；想看單次配多少，點進 ETF 的「配息」分頁。</p>
       <div class="grid" id="grid"><div class="sk-card"><div class="sk" style="height:74px;border-radius:0"></div><div style="padding:16px 18px;display:flex;flex-direction:column;gap:12px"><div class="sk" style="height:30px;width:55%"></div><div class="sk" style="height:42px"></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div class="sk" style="height:46px"></div><div class="sk" style="height:46px"></div><div class="sk" style="height:46px"></div></div><div class="sk" style="height:40px"></div></div></div><div class="sk-card"><div class="sk" style="height:74px;border-radius:0"></div><div style="padding:16px 18px;display:flex;flex-direction:column;gap:12px"><div class="sk" style="height:30px;width:55%"></div><div class="sk" style="height:42px"></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div class="sk" style="height:46px"></div><div class="sk" style="height:46px"></div><div class="sk" style="height:46px"></div></div><div class="sk" style="height:40px"></div></div></div><div class="sk-card"><div class="sk" style="height:74px;border-radius:0"></div><div style="padding:16px 18px;display:flex;flex-direction:column;gap:12px"><div class="sk" style="height:30px;width:55%"></div><div class="sk" style="height:42px"></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div class="sk" style="height:46px"></div><div class="sk" style="height:46px"></div><div class="sk" style="height:46px"></div></div><div class="sk" style="height:40px"></div></div></div><div class="sk-card"><div class="sk" style="height:74px;border-radius:0"></div><div style="padding:16px 18px;display:flex;flex-direction:column;gap:12px"><div class="sk" style="height:30px;width:55%"></div><div class="sk" style="height:42px"></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div class="sk" style="height:46px"></div><div class="sk" style="height:46px"></div><div class="sk" style="height:46px"></div></div><div class="sk" style="height:40px"></div></div></div><div class="sk-card"><div class="sk" style="height:74px;border-radius:0"></div><div style="padding:16px 18px;display:flex;flex-direction:column;gap:12px"><div class="sk" style="height:30px;width:55%"></div><div class="sk" style="height:42px"></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div class="sk" style="height:46px"></div><div class="sk" style="height:46px"></div><div class="sk" style="height:46px"></div></div><div class="sk" style="height:40px"></div></div></div><div class="sk-card"><div class="sk" style="height:74px;border-radius:0"></div><div style="padding:16px 18px;display:flex;flex-direction:column;gap:12px"><div class="sk" style="height:30px;width:55%"></div><div class="sk" style="height:42px"></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div class="sk" style="height:46px"></div><div class="sk" style="height:46px"></div><div class="sk" style="height:46px"></div></div><div class="sk" style="height:40px"></div></div></div></div>
     </section>
     <aside id="side"></aside>
@@ -1930,7 +1935,7 @@ button{-webkit-tap-highlight-color:transparent}
 </div>
 
 <footer><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button>
-  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.25.14</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.25.15</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -2072,10 +2077,10 @@ function rowHTML(e){
   const tc = sc == null ? "#8a93a8" : sc >= 70 ? "#13a05f" : sc >= 50 ? "#d4a000" : sc >= 35 ? "#f07b14" : "#e5383b";
   return `<div class="lr" data-id="${e.id}">
       <span class="cb" style="background:${grad(e.category)}"></span>
-      <div class="nm"><b>${e.id} ${e.name}</b><small>${exBadge(e, 1)}${(e.exMonths||[]).length && e.perYear ? `除息 ${e.exMonths.join("・")} 月・` : ""}${e.freq}・規模 ${yi(e.aum)}</small></div>
+      <div class="nm"><b><span class="lr-id">${e.id}</span> ${e.name}</b><small>${exBadge(e, 1)}${(e.exMonths||[]).length && e.perYear ? `除息 ${e.exMonths.join("・")} 月・` : ""}${e.freq}・規模 ${yi(e.aum)}</small></div>
       <div class="sp">${spark(e.monthly, c)}</div>
       <div class="v"><b class="num">${fmt(e.price,2)}</b><small class="num" style="color:${up?"var(--up)":"var(--down)"}">${up?"▲":"▼"}${fmt(Math.abs(e.chgPct),2)}%</small>${navBadge(e, 1)}${evBadge(e)}</div>
-      <div class="v"><b class="num" style="color:${e.annYield > 15 ? "#b25e00" : "inherit"}">${e.ttmYield ? e.ttmYield + "%" : "—"}</b><small>殖利率</small></div>
+      <div class="v vy" title="近 12 個月所有配息加起來 ÷ 現在股價（整年合計，不是單次配息）"><b class="num" style="color:${e.annYield > 15 ? "#b25e00" : "inherit"}">${e.ttmYield ? e.ttmYield + "%" : "—"}</b><small>近一年殖利率</small></div>
       <div class="v r1"><b class="num" style="color:${e.ret1y>=0?"var(--up)":"var(--down)"}">${fmt(e.ret1y,1)}%</b><small>近一年</small></div>
       <div class="ta" style="background:${tc}1f;color:${tc}">${sc == null ? "—" : sc + " 分"}</div>
       <button class="ad" style="background:${grad(e.category)}" data-add="${e.id}" title="加入我的試算">＋</button>
@@ -2092,7 +2097,7 @@ function render(){                      // 篩選/排序改變 -> 重新從第�
   $("#count").textContent = `共 ${L.length} 檔`;
   document.querySelectorAll("#vt button").forEach(b => b.classList.toggle("on", b.dataset.v == VIEW));
   $("#grid").className = "grid" + (VIEW == "list" ? " list" : "");
-  $("#grid").innerHTML = VIEW == "list" ? `<div class="lr hdr"><span></span><span>ETF</span><span>近 5 年走勢</span><span style="text-align:right">股價</span><span style="text-align:right">殖利率</span><span style="text-align:right">漲跌</span><span style="text-align:center">技術面</span><span></span></div>` : "";
+  $("#grid").innerHTML = VIEW == "list" ? `<div class="lr hdr"><span></span><span>ETF</span><span>近 5 年走勢</span><span style="text-align:right">股價</span><span style="text-align:right" title="近 12 個月所有配息加起來 ÷ 現在股價（整年合計，不是單次配息）">近一年殖利率</span><span style="text-align:right">漲跌</span><span style="text-align:center">技術面</span><span></span></div>` : "";
   shown = 0; loadMore();
 }
 function added(btn){                  // 按下加入:按鈕變勾勾+彈跳
@@ -6130,6 +6135,8 @@ const GL2 = {
 "漲跌停": ["基礎", "台股一天最多漲或跌 10%，到頂就不能再動。", "像溜滑梯有護欄，一天最多只能滑 10 公尺，避免一下摔太深。", "跌停打不開代表大家搶著賣、買的人很少。"],
 "除權息": ["基礎", "公司發股利那天，股價會先扣掉發出去的錢。", "撲滿裡有 100 元，倒出 5 元給你當零用錢，撲滿就剩 95 元。", "除息日前一天要持有股票才領得到股利。"],
 "填息": ["基礎", "發完股利後，股價漲回原本的價錢。", "撲滿倒出 5 元後，過幾天又存回 100 元，等於零用錢是白賺的。", "填息天數越短越好；一直沒填息等於左手換右手。"],
+"近一年殖利率": ["基礎", "過去 12 個月所有配息加起來 ÷ 現在股價，是整年合計，不是單次配息。", "母雞過去一年總共下了 4 次蛋（季配息），把 4 次的蛋全部加起來，再除以買母雞的價錢。", "季配息＝最近 4 次合計、月配息＝最近 12 次合計。單次配息殖利率大約是它 ÷ 一年配息次數；想看每次配多少，點 ETF 的「配息」分頁。"],
+"年化殖利率": ["基礎", "用「最近一次配息 × 一年配幾次」÷ 現在股價推算的整年殖利率。", "母雞最近一次下了 3 顆蛋，一年下 4 次，就推算一年約 12 顆。", "最近一次配息變多時，年化會比近一年殖利率高；超過 15% 要小心是不是一次性或配到本金。"],
 "殖利率": ["基礎", "一年領到的股利 ÷ 股價，就像存款利率。", "花 100 元買一隻母雞，一年下的蛋賣 5 元，殖利率就是 5%。", "台股常見 3～6%；太高（例如 15%）要小心是不是一次性或配到本金。"],
 "現金殖利率": ["基礎", "只算現金股利的殖利率。", "母雞下的蛋直接換成現金給你。", "同「殖利率」，數字越高每年領越多，但要確認能持續。"],
 "配息率": ["基礎", "公司賺的錢拿多少比例出來發股利。", "雞排店賺 100 元，拿 60 元分給老闆們，配息率 60%，剩下 40 元留著開分店。", "長期超過 100% 代表發的比賺的多，不能持久。"],
@@ -6271,7 +6278,7 @@ document.addEventListener("click", e => {
   if (!(e.target.closest && e.target.closest("#glPop"))) glClose();
 }, true);
 /* 自動幫表格標題、卡片標籤上的專有名詞加上可點的說明 */
-const GLSEL = "th, .bd-t>small, .kpi small, .bp-row span, .bp-lv small, .ci-k small, .tick small, .rc-lv small, .sk-dims span, .fr-card>small, .mk-mini small, .imp-tb td:first-child b, .jd-sum b, .bd-hd h2, .mm-h3, h2.sec, .opt-k small, .rk-box small, .hl-hd b, .px small, .kid-t";
+const GLSEL = "th, .lr .v small, .bd-t>small, .kpi small, .bp-row span, .bp-lv small, .ci-k small, .tick small, .rc-lv small, .sk-dims span, .fr-card>small, .mk-mini small, .imp-tb td:first-child b, .jd-sum b, .bd-hd h2, .mm-h3, h2.sec, .opt-k small, .rk-box small, .hl-hd b, .px small, .kid-t";
 function glScan(){
   document.querySelectorAll(GLSEL).forEach(el => {
     if (el.dataset.gl || el.closest(".tm,#glPop,#glDlg,button,a,select,.gt-i,.kid summary")) return;
