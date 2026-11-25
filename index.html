@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-version" content="v2026.11.26.1">
+<meta name="app-version" content="v2026.11.26.2">
 <meta name="theme-color" content="#F1F5FF">
 <title>巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
@@ -1562,6 +1562,23 @@ button{-webkit-tap-highlight-color:transparent}
 .pz-is button,.pz-qk button,.pz-more button{flex:none;border:1px solid var(--line);background:var(--field);color:var(--sub);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:800;cursor:pointer;white-space:nowrap}
 .pz-is button.on,.pz-qk button.on{background:var(--brand);border-color:transparent;color:#fff}
 .pz-is button i{font-style:normal;opacity:.7;font-weight:700;margin-left:4px;font-size:11.5px}
+.pz-is{overflow:visible;padding:8px 0 6px}
+.pz-dd{position:relative;display:inline-block;max-width:100%}
+.pz-is .pz-ddb{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--c);background:color-mix(in srgb,var(--c) 12%,var(--panel));color:var(--ink);border-radius:12px;padding:7px 12px 7px 10px;font-size:14px}
+.pz-ddb .lb{font-size:12px;color:var(--sub);font-weight:700}.pz-ddb b{font-size:15px;color:var(--c)}
+.pz-is .pz-ddb i{opacity:1;color:var(--sub)}.pz-ddb .cv{font-size:12px;color:var(--sub);transition:transform .15s}.pz-dd.open .pz-ddb .cv{transform:rotate(180deg)}
+.pz-dot{width:10px;height:10px;border-radius:50%;background:var(--c);flex:none;box-shadow:0 0 0 2px color-mix(in srgb,var(--c) 25%,transparent)}
+.pz-ddl{display:none;position:absolute;top:calc(100% + 6px);left:0;z-index:60;width:min(600px,calc(100vw - 40px));max-height:min(420px,62vh);overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 36px rgba(15,23,42,.18);padding:10px}
+.pz-dd.open .pz-ddl{display:block}
+.pz-ddg{font-size:11.5px;font-weight:800;color:var(--sub);margin:4px 2px 6px}
+.pz-ddw{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:6px;margin-bottom:8px}
+.pz-is .pz-ddw button{display:flex;align-items:center;gap:7px;border:1px solid color-mix(in srgb,var(--c) 35%,var(--line));border-left:4px solid var(--c);background:color-mix(in srgb,var(--c) 8%,var(--panel));color:var(--ink);border-radius:10px;padding:7px 9px;font-size:13.5px;text-align:left;white-space:nowrap}
+.pz-is .pz-ddw button:hover{background:color-mix(in srgb,var(--c) 18%,var(--panel))}
+.pz-is .pz-ddw button.on{background:var(--c);border-color:var(--c);color:#fff}.pz-is .pz-ddw button.on .pz-dot{background:#fff}
+.pz-is .pz-ddw button i{margin-left:auto}
+.pz-isd{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c);margin-right:5px;vertical-align:1px}
+.pz-ist{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:800;color:var(--c);background:color-mix(in srgb,var(--c) 13%,transparent);border:1px solid color-mix(in srgb,var(--c) 30%,transparent)}
+@media(max-width:700px){.pz-ddw{grid-template-columns:repeat(2,minmax(0,1fr))}.pz-ddl{width:calc(100vw - 40px)}}
 .pz-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:2px 0 8px}
 .pz-bar input{flex:1 1 200px;min-width:0;border:1px solid var(--line);background:var(--field);color:var(--ink);border-radius:10px;padding:8px 12px;font-size:14px}
 .pz-qk{display:flex;gap:6px;flex-wrap:wrap}
@@ -1791,7 +1808,7 @@ button{-webkit-tap-highlight-color:transparent}
   <div class="top">
     <div class="brand"><img class="logo" src="logo.svg" alt="柴犬博士" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.26.1</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
+      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.26.2</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
@@ -1936,7 +1953,7 @@ button{-webkit-tap-highlight-color:transparent}
 </div>
 
 <footer><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button>
-  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.26.1</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.26.2</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -7137,7 +7154,8 @@ function pzUI(){
     $("#pzQ").oninput = () => { PZ.all = false; pzPaint(); };
     $("#pzRf").onclick = async () => { const b = $("#pzRf"); b.disabled = true; await navLoad(); if (PZ.is == "ETN") await pzEtn(true); b.disabled = false; toast("已更新即時淨值", 1200); };
     box.addEventListener("click", ev => {
-      const b = ev.target.closest("[data-pzi]"); if (b) { PZ.is = b.dataset.pzi; PZ.all = false; pzSave(); if (PZ.is == "ETN") pzEtn(); pzPaint(); return; }
+      if (ev.target.closest("#pzDdB")) { PZDD = !PZDD; pzPaint(); return; }
+      const b = ev.target.closest("[data-pzi]"); if (b) { PZ.is = b.dataset.pzi; PZ.all = false; PZDD = false; pzSave(); if (PZ.is == "ETN") pzEtn(); pzPaint(); return; }
       const q = ev.target.closest("[data-pzq]"); if (q) { const k = q.dataset.pzq; PZ.qk = PZ.qk == k ? "" : k; PZ.all = false;
         if (PZ.qk) { PZ.k = {hi: "prem", lo: "prem", in: "fl", out: "fl"}[k]; PZ.dir = (k == "lo" || k == "out") ? 1 : -1; }
         pzSave(); pzPaint(); return; }
@@ -7147,6 +7165,8 @@ function pzUI(){
         if (typeof S != "undefined" && S && S.find(e => e.id == c)) openDetail(c); else if (typeof openStock == "function") openStock(c); }
     });
     if (typeof loadNames == "function") loadNames().then(pzPaint).catch(() => {});
+    document.addEventListener("click", ev => { if (PZDD && !ev.target.closest(".pz-dd")) { PZDD = false; pzPaint(); } });
+    document.addEventListener("keydown", ev => { if (PZDD && ev.key == "Escape") { PZDD = false; pzPaint(); } });
     if (PZ.is == "ETN") pzEtn();
   }
   pzPaint();
@@ -7158,7 +7178,7 @@ function pzPaint(){
   const iss = Object.entries(cnt).sort((a, b) => (a[0] == "其他") - (b[0] == "其他") || b[1] - a[1]);
   const tabs = [["全部", Object.keys(INAV).length], ["⭐ 我的", [...mine].filter(c => INAV[c]).length], ...iss, ["ETN", PZE ? Object.keys(PZE).length : ""]];
   if (!tabs.some(([k]) => k == PZ.is)) PZ.is = "全部";
-  $("#pzIs").innerHTML = tabs.map(([k, n]) => `<button type="button" data-pzi="${k}" class="${PZ.is == k ? "on" : ""}">${k}${n !== "" ? `<i>${n}</i>` : ""}</button>`).join("");
+  $("#pzIs").innerHTML = pzDdHTML(tabs);
   $("#pzQk").innerHTML = [["hi", "🔥 溢價 ≥1%"], ["lo", "🧊 折價 ≥1%"], ["in", "💰 資金流入"], ["out", "💸 資金流出"]].map(([k, t]) => `<button type="button" data-pzq="${k}" class="${PZ.qk == k ? "on" : ""}">${t}</button>`).join("");
   const ok = x => x.n.px > 0 && !isNaN(x.n.prem);
   let L = Object.entries(src).map(([c, n]) => ({c, n, nm: pzNm(c, n.raw), fl: n.du && n.prev ? n.du * n.prev : 0}));
@@ -7177,10 +7197,11 @@ function pzPaint(){
   const N = PZ.all ? L.length : Math.min(L.length, 15);
   B.innerHTML = L.slice(0, N).map(x => { const n = x.n, has = ok(x), pd = n.nav >= 50 ? 2 : 3, df = has ? n.px - n.nav : null;
     const pc = !has ? "" : n.prem >= 1 ? "hi" : n.prem <= -1 ? "lo" : "", cc = !has ? "" : n.prem > 0 ? "pz-up" : n.prem < 0 ? "pz-dn" : "";
-    return `<tr class="c" data-c="${esc(x.c)}"><td><b>${mine.has(x.c) ? "⭐" : ""}${esc(x.c)}</b><small>${esc(x.nm)}</small></td>`
+    const ic = pzColor(isE ? "ETN" : n.is || "其他");
+    return `<tr class="c" data-c="${esc(x.c)}"><td><b>${mine.has(x.c) ? "⭐" : ""}${esc(x.c)}</b><small><i class="pz-isd" style="--c:${ic}" title="${esc(isE ? "ETN" : n.is || "其他")}"></i>${esc(x.nm)}</small></td>`
       + `<td>${fmt(n.nav, pd)}</td><td>${has ? fmt(n.px, 2) : "—"}</td>`
       + `<td class="${cc}"><span class="pz-p ${pc}">${has ? sgn(n.prem, 2) + "%" : "—"}</span><small>${has ? sgn(df, pd) : ""}</small></td>`
-      + `<td class="${x.fl > 0 ? "pz-up" : x.fl < 0 ? "pz-dn" : ""}">${pzFl(x.fl)}</td><td class="is">${isE ? "ETN" : esc(n.is || "—")}</td></tr>`; }).join("")
+      + `<td class="${x.fl > 0 ? "pz-up" : x.fl < 0 ? "pz-dn" : ""}">${pzFl(x.fl)}</td><td class="is"><span class="pz-ist" style="--c:${ic}">${isE ? "ETN" : esc(n.is || "—")}</span></td></tr>`; }).join("")
     || `<tr><td colspan="6" class="pz-emp">${isE && !PZE ? "讀取 ETN 中…" : !Object.keys(INAV).length ? "讀取即時淨值中…" : PZ.is == "⭐ 我的" && !mine.size ? "你的配息試算和盤中雷達清單裡還沒有 ETF" : "沒有符合條件的 ETF"}</td></tr>`;
   $("#pzN").textContent = L.length ? `共 ${L.length} 檔` : "";
   $("#pzMore").innerHTML = L.length > 15 ? `<button type="button" id="pzAll">${PZ.all ? "收合 ▴" : `看全部 ${L.length} 檔 ▾`}</button>` : "";
@@ -7628,6 +7649,30 @@ function brfBody(t){
   if (i < 0) return esc(s);
   const j = s.indexOf("。", i), fx = j < 0 ? s.slice(i) : s.slice(i, j + 1), rest = (s.slice(0, i) + (j < 0 ? "" : s.slice(j + 1))).replace(/\s+/g, " ").trim();
   return `${esc(rest)}<span class="brf-fx">${esc(fx)}</span>`;
+}
+
+/* ================= 💸 折溢價總表:投信彩色下拉選單(每家投信固定一個顏色,表格同色標記) ================= */
+var PZDD;
+function pzColor(k){
+  const F = {"全部": "#2F5BEA", "⭐ 我的": "#C9930A", "ETN": "#64748B", "其他": "#94A3B8"};
+  if (F[k]) return F[k];
+  const P = ["#2563EB", "#E0533D", "#16A34A", "#D97706", "#9333EA", "#0891B2", "#DB2777", "#65A30D", "#EA580C", "#4F46E5", "#0D9488", "#B45309", "#7C3AED", "#DC2626",
+    "#0284C7", "#CA8A04", "#059669", "#C026D3", "#E11D48", "#4D7C0F", "#6366F1", "#0E7490", "#BE185D", "#A16207", "#15803D", "#7E22CE", "#C2410C", "#1D4ED8"];
+  const O = ["元大", "富邦", "國泰", "復華", "群益", "台新", "兆豐", "街口", "第一金", "統一", "中信", "凱基", "永豐", "富蘭克林華美", "大華銀", "野村", "玉山", "聯邦", "華南永昌", "安聯", "聯博", "摩根", "貝萊德", "新光", "宏利", "富達", "柏瑞", "保德信"];
+  let i = O.indexOf(k); if (i < 0) { i = 0; for (const ch of String(k)) i = (i * 31 + ch.charCodeAt(0)) % 997; }
+  return P[i % P.length];
+}
+function pzDdHTML(tabs){
+  const cur = tabs.find(([k]) => k == PZ.is) || tabs[0], c = pzColor(cur[0]);
+  const opt = ([k, n]) => `<button type="button" role="option" aria-selected="${PZ.is == k}" data-pzi="${esc(k)}" class="${PZ.is == k ? "on" : ""}" style="--c:${pzColor(k)}"><span class="pz-dot"></span>${esc(k)}${n !== "" ? `<i>${n}</i>` : ""}</button>`;
+  const top = tabs.filter(([k]) => k == "全部" || k == "⭐ 我的"), iss = tabs.filter(([k]) => !["全部", "⭐ 我的", "ETN"].includes(k)), etn = tabs.filter(([k]) => k == "ETN");
+  return `<div class="pz-dd${PZDD ? " open" : ""}">
+    <button type="button" class="pz-ddb" id="pzDdB" style="--c:${c}" aria-haspopup="listbox" aria-expanded="${!!PZDD}"><span class="pz-dot"></span><span class="lb">發行投信</span><b>${esc(cur[0])}</b>${cur[1] !== "" ? `<i>${cur[1]} 檔</i>` : ""}<span class="cv">▼</span></button>
+    <div class="pz-ddl" role="listbox">
+      <div class="pz-ddw">${top.map(opt).join("")}${etn.map(opt).join("")}</div>
+      <div class="pz-ddg">發行投信（依 ETF 檔數排序）</div>
+      <div class="pz-ddw">${iss.map(opt).join("")}</div>
+    </div></div>`;
 }
 </script>
 </body>
