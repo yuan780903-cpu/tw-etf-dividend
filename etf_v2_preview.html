@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>ETF 總覽 新版樣稿</title>
+<style>
+:root{--bg:#f3f5fa;--panel:#fff;--ink:#141a2e;--sub:#5b6478;--line:#e4e8f1;--soft:#f8fafc;--hover:#f1f4fb;--brand:#1f3cff;--up:#e5383b;--down:#13a05f;--gold:#c9930a;
+  --font:"IBM Plex Sans","Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0f1a;--panel:#151a29;--ink:#e9edf7;--sub:#9aa4bb;--line:#262d42;--soft:#1a2033;--hover:#1f2639;--brand:#6f86ff}}
+:root[data-theme="dark"]{--bg:#0b0f1a;--panel:#151a29;--ink:#e9edf7;--sub:#9aa4bb;--line:#262d42;--soft:#1a2033;--hover:#1f2639;--brand:#6f86ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1440px;margin:0 auto;padding:16px 20px 80px}
+.mock{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;background:#fff7e0;color:#7a5600;border:1px solid #f1d58a;border-radius:14px;padding:10px 16px;font-size:15px;font-weight:600;margin-bottom:16px}
+.mock a{color:#7a5600}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mock{background:#2a2412;color:#f1d58a;border-color:#5c4a17}:root:not([data-theme="light"]) .mock a{color:#f1d58a}}
+h1{font-size:28px;margin:4px 0 2px;letter-spacing:.5px}
+.upd{color:var(--sub);font-size:14.5px;margin-bottom:14px}
+/* KPI */
+.kpi{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.kpi>div{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px 18px;cursor:pointer}
+.kpi>div:hover{border-color:var(--brand)}
+.kpi small{display:block;color:var(--sub);font-size:14.5px;font-weight:700}
+.kpi b{display:block;font-size:30px;line-height:1.25;margin:2px 0}
+.kpi i{font-style:normal;font-size:14.5px;color:var(--sub)}
+/* 分類 */
+.cats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.cat{border:0;border-radius:16px;padding:12px 14px;color:#fff;text-align:left;cursor:pointer;font-family:inherit;position:relative;box-shadow:0 2px 8px rgba(15,23,42,.12);opacity:.9}
+.cat:hover{opacity:1}.cat.on{opacity:1;outline:3px solid var(--gold);outline-offset:2px}
+.cat b{display:block;font-size:18px}.cat span{font-size:14px;opacity:.95}
+/* 篩選列 */
+.fbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);padding:10px 0;display:flex;flex-direction:column;gap:10px}
+.frow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.q{flex:1 1 280px;min-width:0;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);border-radius:14px;padding:11px 14px;font-size:16.5px;font-family:inherit}
+.q:focus{outline:none;border-color:var(--brand)}
+.dd{position:relative}
+.ddb{display:inline-flex;align-items:center;gap:7px;border:1.5px solid var(--c,var(--line));background:color-mix(in srgb,var(--c,#94a3b8) 10%,var(--panel));color:var(--ink);border-radius:12px;padding:9px 12px;font-size:15.5px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
+.ddb .lb{color:var(--sub);font-size:14px}.ddb b{color:var(--c,var(--ink))}.ddb .cv{font-size:11px;color:var(--sub)}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--c);flex:none;display:inline-block}
+.ddl{display:none;position:absolute;top:calc(100% + 6px);left:0;z-index:60;min-width:240px;width:max-content;max-width:min(620px,calc(100vw - 32px));max-height:min(440px,64vh);overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 36px rgba(15,23,42,.2);padding:10px}
+.dd.open .ddl{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px}
+.ddl button{display:flex;align-items:center;gap:8px;border:1px solid color-mix(in srgb,var(--c) 35%,var(--line));border-left:4px solid var(--c);background:color-mix(in srgb,var(--c) 8%,var(--panel));color:var(--ink);border-radius:10px;padding:8px 10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;text-align:left;white-space:nowrap}
+.ddl button i{margin-left:auto;font-style:normal;color:var(--sub);font-size:13.5px;font-weight:600}
+.ddl button.on{background:var(--c);color:#fff;border-color:var(--c)}.ddl button.on i{color:#fff}.ddl button.on .dot{background:#fff}
+.tg{border:1.5px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:8px 14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
+.tg.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.cnt{margin-left:auto;color:var(--sub);font-size:15px;font-weight:600;white-space:nowrap}
+.clr{border:0;background:none;color:var(--brand);font-weight:700;font-size:15px;cursor:pointer;font-family:inherit}
+.mysum{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;background:linear-gradient(135deg,#1f3cff,#4f6bff);color:#fff;border-radius:14px;padding:10px 16px;font-size:15.5px;margin:4px 0 12px}
+.mysum b{font-size:19px}.mysum a{color:#fff;margin-left:auto;font-weight:700}
+/* 表格 */
+.tw{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{position:sticky;top:0;background:var(--soft);color:var(--sub);font-size:14.5px;font-weight:800;text-align:right;padding:12px 12px;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap;user-select:none}
+th:first-child{text-align:left}th.on{color:var(--brand)}th.ns{cursor:default}
+td{padding:12px 12px;border-bottom:1px solid var(--line);text-align:right;font-size:16px;vertical-align:middle;white-space:nowrap}
+td:first-child{text-align:left;white-space:normal}
+tr.r{cursor:pointer}tr.r:hover td{background:var(--hover)}
+.nm{display:flex;align-items:center;gap:10px}
+.bar4{width:5px;align-self:stretch;border-radius:4px;background:var(--cc);flex:none}
+.nm b{font-size:17px}.nm .n{font-size:15.5px;font-weight:600}
+.nm small{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;color:var(--sub);font-size:13.5px;margin-top:2px}
+.ctag{color:#fff;background:var(--cc);border-radius:6px;padding:0 7px;font-weight:700;font-size:12.5px}
+.ist{display:inline-flex;align-items:center;gap:4px;color:var(--c);font-weight:700}
+.px{font-size:17px;font-weight:700}
+.up{color:var(--up)}.dn{color:var(--down)}
+.prem{display:inline-block;border-radius:8px;padding:2px 8px;font-weight:700}
+.prem.hi{background:color-mix(in srgb,var(--up) 14%,transparent);color:var(--up)}.prem.lo{background:color-mix(in srgb,var(--down) 14%,transparent);color:var(--down)}
+.yl{font-size:17px;font-weight:800}.yl small{display:block;font-size:13px;color:var(--sub);font-weight:600}
+.mo{display:inline-grid;grid-template-columns:repeat(12,9px);gap:3px;vertical-align:middle}
+.mo i{width:9px;height:9px;border-radius:50%;background:var(--line)}.mo i.x{background:var(--gold)}.mo i.now{box-shadow:0 0 0 2px var(--brand)}
+.mol{display:block;font-size:13px;color:var(--sub);margin-top:3px}
+.val{display:inline-flex;flex-direction:column;align-items:flex-end;gap:3px}
+.val b{font-size:15px}.val .vb{width:74px;height:6px;border-radius:9px;background:linear-gradient(90deg,#13a05f,#2f5bea 45%,#f59e0b 70%,#e5383b);position:relative}
+.val .vb i{position:absolute;top:-3px;width:4px;height:12px;border-radius:3px;background:var(--ink)}
+.ta{display:inline-block;min-width:38px;text-align:center;border-radius:999px;padding:1px 8px;font-weight:800;font-size:15px}
+.add{border:1.5px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:5px 10px;font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit}
+.add.in{background:#fff4cc;border-color:#f1c84b;color:#7a5600}
+.more{display:block;margin:14px auto 0;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:10px 22px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit}
+.emp{padding:30px;text-align:center;color:var(--sub)}
+.note{color:var(--sub);font-size:14.5px;margin:10px 4px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#141a2e;color:#fff;padding:10px 18px;border-radius:12px;font-size:15px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:99}
+.toast.on{opacity:.95}
+@media(max-width:1100px){.cats{grid-template-columns:repeat(4,minmax(0,1fr))}.hide-m{display:none}}
+@media(max-width:760px){
+  .wrap{padding:12px 12px 80px}h1{font-size:24px}
+  .kpi{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi b{font-size:24px}
+  .cats{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.cat{padding:10px}.cat b{font-size:16px}.cat span{font-size:13px}
+  .frow.flt{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}.ddl{position:fixed;left:12px;right:12px;top:auto;max-width:none}
+  .dd.open .ddl{grid-template-columns:repeat(2,minmax(0,1fr))}
+  thead{display:none}table,tbody,tr,td{display:block}
+  tr.r{display:grid;grid-template-columns:1fr auto;gap:6px 10px;padding:12px 12px 12px 14px;border-bottom:1px solid var(--line);position:relative}
+  tr.r td{border:0;padding:0;text-align:left;background:none!important}
+  tr.r td.c-nm{grid-column:1}tr.r td.c-px{grid-column:2;text-align:right}
+  tr.r td.c-chips{grid-column:1 / 3;grid-row:3;display:flex;flex-wrap:wrap;gap:5px}
+  tr.r td.c-mo{grid-column:1;grid-row:2;align-self:center}tr.r td.c-add{grid-column:2;grid-row:2;text-align:right;align-self:center}
+  .chip{display:inline-flex;gap:4px;align-items:baseline;background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:3px 8px;font-size:14.5px}
+  .chip em{font-style:normal;color:var(--sub);font-size:13px}
+}
+@media(min-width:761px){.c-chips{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="mock">🧪 這是「ETF 總覽」新版樣稿，資料是真的，但還沒取代正式頁面。按鈕「＋試算」在樣稿裡不會真的加入。<a href="./#etf">← 回正式版比較</a></div>
+  <h1>📊 ETF 總覽</h1>
+  <div class="upd" id="upd">讀取中…</div>
+  <div class="kpi" id="kpi"></div>
+  <div class="cats" id="cats"></div>
+  <div class="mysum" id="mysum" style="display:none"></div>
+  <div class="fbar">
+    <div class="frow"><input class="q" id="q" type="search" placeholder="🔍 搜尋代號或名稱，例如 0050、00878、高股息、半導體" autocomplete="off"><button class="clr" id="clr">清除篩選</button></div>
+    <div class="frow flt" id="flt"></div>
+  </div>
+  <div class="tw"><table><thead><tr id="th"></tr></thead><tbody id="tb"><tr><td class="emp" colspan="11">讀取中…</td></tr></tbody></table></div>
+  <button class="more" id="more" style="display:none"></button>
+  <p class="note">💡 近一年殖利率＝過去 12 個月所有配息加起來 ÷ 現在股價（整年合計，不是單次）。折溢價、資金進出是證交所即時資料（盤中每 2 分鐘更新）。除息月：金色圓點＝會除息的月份，藍框＝本月。估價位階 0～100，越低越便宜。</p>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const $ = s => document.querySelector(s);
+const PXY = "https://crm-proxy.yuan780903.workers.dev/?url=";
+try { const t = localStorage.getItem("etf_theme"); if (t && t != "auto") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+const CAT = {"高股息":{ic:"💵",g:["#7A1F35","#B4405A"]},"市值型":{ic:"🏛️",g:["#16306B","#3A5DAE"]},"科技":{ic:"🔬",g:["#3B2470","#6A4BB0"]},"債券":{ic:"🛡️",g:["#0E4F43","#21826A"]},
+  "槓桿反向":{ic:"⚡",g:["#5B1A1A","#923434"]},"ESG永續":{ic:"🌱",g:["#24543A","#3F8659"]},"金融":{ic:"🏦",g:["#1B2747","#3B4E82"]},"不動產":{ic:"🏢",g:["#5E3D1F","#916538"]},
+  "原物料期貨":{ic:"🛢️",g:["#6E5114","#A67D2C"]},"平衡型":{ic:"⚖️",g:["#17465A","#2F718A"]},"其他主題":{ic:"🧩",g:["#333A49","#5B6478"]}};
+const ISS = ["元大","富邦","國泰","復華","群益","台新","兆豐","街口","第一金","統一","中信","凱基","永豐","富蘭克林華美","大華銀","野村","玉山","聯邦","華南永昌","安聯","聯博","摩根","貝萊德","新光","宏利","富達","柏瑞","保德信"];
+const PAL = ["#2563EB","#E0533D","#16A34A","#D97706","#9333EA","#0891B2","#DB2777","#65A30D","#EA580C","#4F46E5","#0D9488","#B45309","#7C3AED","#DC2626","#0284C7","#CA8A04","#059669","#C026D3","#E11D48","#4D7C0F","#6366F1","#0E7490","#BE185D","#A16207","#15803D","#7E22CE","#C2410C","#1D4ED8"];
+const iss = full => { const s = String(full || "").replace("中國信託", "中信").replace("兆豐國際", "兆豐"); return ISS.find(k => s.startsWith(k)) || (s ? s.replace(/證券投資信託.*$/, "") : "其他"); };
+const icol = k => { const i = ISS.indexOf(k); if (i >= 0) return PAL[i % PAL.length]; let h = 0; for (const c of String(k)) h = (h * 31 + c.charCodeAt(0)) % 997; return k == "其他" ? "#94A3B8" : PAL[h % PAL.length]; };
+const VALC = {"便宜":"#13a05f","合理":"#2f5bea","偏貴":"#f59e0b","昂貴":"#e5383b"};
+const FREQC = {"月配":"#DB2777","季配":"#2563EB","半年配":"#0D9488","年配":"#D97706","不配息":"#64748B"};
+const fmt = (n, d = 0) => n == null || isNaN(n) ? "—" : Number(n).toLocaleString("zh-TW", {minimumFractionDigits: d, maximumFractionDigits: d});
+const sg = (n, d = 2) => n == null || isNaN(n) ? "—" : (n > 0 ? "+" : "") + fmt(n, d);
+const yi = n => !n ? "—" : n >= 1e8 ? fmt(n / 1e8, n >= 1e10 ? 0 : 1) + " 億" : fmt(n / 1e4) + " 萬";
+const fl = v => !v ? "—" : Math.abs(v) >= 1e8 ? sg(v / 1e8, 1) + " 億" : sg(v / 1e4, 0) + " 萬";
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]);
+const toast = t => { const el = $("#toast"); el.textContent = t; el.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("on"), 1800); };
+const NOWM = new Date().getMonth() + 1;
+let E = [], NAV = {}, VAL = {}, PF = [], ST = {cat: "全部", iss: "全部", freq: "全部", reg: "全部", val: "全部", ex: "全部", qk: "", k: "aum", dir: -1, all: false}, OPEN = "";
+try { PF = (JSON.parse(localStorage.getItem("etf_pf") || "[]") || []).map(x => x.id); } catch (e) {}
+
+async function load(){
+  const [s, v] = await Promise.all([fetch("data/summary.json?" + Date.now()).then(r => r.json()), fetch("data/etf_val.json?" + Date.now()).then(r => r.json()).catch(() => ({etfs: {}}))]);
+  VAL = v.etfs || {};
+  E = s.etfs.map(e => ({...e, is: iss(e.issuer)}));
+  $("#upd").textContent = `收盤資料 ${E[0] && E[0].date || ""}・共 ${E.length} 檔・讀取證交所即時淨值中…`;
+  paintAll();
+  navLoad(); setInterval(navLoad, 120e3);
+}
+async function navLoad(){
+  try {
+    const j = await fetch(PXY + encodeURIComponent("https://mis.twse.com.tw/stock/data/all_etf.txt")).then(r => r.json()), o = {};
+    (j.a1 || []).forEach(g => (g.msgArray || []).forEach(x => { if (x.a && +x.f > 0) o[x.a] = {px: +x.e, nav: +x.f, prem: +x.g, prev: +x.h, t: x.j, d: x.i, du: +x.d}; }));
+    if (Object.keys(o).length) { NAV = o; const a = Object.values(o)[0]; $("#upd").textContent = `收盤資料 ${E[0] && E[0].date || ""}・共 ${E.length} 檔・即時淨值 ${a.d.slice(4, 6)}/${a.d.slice(6, 8)} ${a.t}（盤中每 2 分鐘更新）`; paintAll(); }
+  } catch (e) { $("#upd").textContent += "（即時淨值暫時抓不到）"; }
+}
+const row = e => { const n = NAV[e.id] || {}, v = VAL[e.id] || {};
+  return {...e, prem: n.nav > 0 && n.px > 0 ? n.prem : null, flow: n.du && n.prev ? n.du * n.prev : null, vp: v.p ?? null, vz: v.z || null, tas: e.ta ? e.ta.score : null}; };
+function list(){
+  const q = ($("#q").value || "").trim().toLowerCase();
+  let L = E.map(row).filter(e =>
+    (ST.cat == "全部" || e.category == ST.cat) && (ST.iss == "全部" || e.is == ST.iss) && (ST.freq == "全部" || e.freq == ST.freq) &&
+    (ST.reg == "全部" || e.region == ST.reg) && (ST.val == "全部" || e.vz == ST.val) &&
+    (ST.ex == "全部" || (ST.ex == "即將除息" ? (e.exMonths || []).some(m => m == NOWM || m == NOWM % 12 + 1) : (e.exMonths || []).includes(+ST.ex))) &&
+    (!q || (e.id + e.name + e.category + e.is + (e.tags || []).join("")).toLowerCase().includes(q)));
+  if (ST.qk == "hi") L = L.filter(e => e.prem != null && e.prem >= 1);
+  if (ST.qk == "lo") L = L.filter(e => e.prem != null && e.prem <= -1);
+  if (ST.qk == "in") L = L.filter(e => e.flow > 0);
+  if (ST.qk == "out") L = L.filter(e => e.flow < 0);
+  const K = {id: e => e.id, price: e => e.price || null, chgPct: e => e.chgPct, prem: e => e.prem, flow: e => e.flow, ttmYield: e => e.freq == "不配息" ? null : e.ttmYield, aum: e => e.aum || null, vp: e => e.vp, tas: e => e.tas}, f = K[ST.k] || K.aum;
+  return L.sort((a, b) => { const x = f(a), y = f(b); if (x == null && y == null) return 0; if (x == null) return 1; if (y == null) return -1; return (typeof x == "string" ? x.localeCompare(y) : x - y) * ST.dir; });
+}
+function paintKpi(){
+  const big = E.map(row).filter(e => e.aum >= 1e9);
+  const top = (L, f) => L.filter(e => f(e) != null).sort((a, b) => f(b) - f(a))[0];
+  const up = top(big, e => e.chgPct), yl = top(big.filter(e => e.freq != "不配息" && e.category != "槓桿反向"), e => e.ttmYield), pr = top(big, e => e.prem), cheap = big.filter(e => e.vz == "便宜");
+  const K = [["今日漲最多（規模 10 億以上）", up ? `<span class="${up.chgPct >= 0 ? "up" : "dn"}">${sg(up.chgPct)}%</span>` : "—", up ? `${up.id} ${esc(up.name)}` : "", up && up.id],
+    ["殖利率最高（規模 10 億以上）", yl ? `${fmt(yl.ttmYield, 2)}%` : "—", yl ? `${yl.id} ${esc(yl.name)}・${yl.freq}` : "", yl && yl.id],
+    ["溢價最高（買貴要小心）", pr ? `<span class="up">${sg(pr.prem)}%</span>` : "—", pr ? `${pr.id} ${esc(pr.name)}` : "讀取即時淨值中…", pr && pr.id],
+    ["估價「便宜」可留意", `${cheap.length} 檔`, `點一下只看估價便宜的 ETF`, "@cheap"]];
+  $("#kpi").innerHTML = K.map(([a, b, c, id]) => `<div data-k="${id || ""}"><small>${a}</small><b class="num">${b}</b><i>${c}</i></div>`).join("");
+}
+function paintCats(){
+  const cs = ["全部", ...Object.keys(CAT)];
+  $("#cats").innerHTML = cs.map(c => { const L = c == "全部" ? E : E.filter(e => e.category == c), d = L.filter(e => e.freq != "不配息" && e.ttmYield > 0), y = d.length ? d.reduce((a, e) => a + e.ttmYield, 0) / d.length : 0;
+    const g = c == "全部" ? ["#141a2e", "#3b4664"] : CAT[c].g;
+    return `<button class="cat${ST.cat == c ? " on" : ""}" data-cat="${c}" style="background:linear-gradient(135deg,${g[0]},${g[1]})"><b>${c == "全部" ? "📦" : CAT[c].ic} ${c == "全部" ? "全部 ETF" : c}</b><span>${L.length} 檔${y ? `・殖利率 ${y.toFixed(1)}%` : ""}</span></button>`; }).join("");
+}
+function ddHTML(key, label, opts, colorOf, lab = v => v){
+  const cur = ST[key], c = cur == "全部" ? "#94A3B8" : colorOf(cur);
+  return `<div class="dd${OPEN == key ? " open" : ""}" data-dd="${key}"><button class="ddb" data-ddb="${key}" style="--c:${c}"><span class="dot"></span><span class="lb">${label}</span><b>${esc(lab(cur))}</b><span class="cv">▼</span></button>
+    <div class="ddl">${opts.map(([v, n]) => `<button data-set="${key}" data-v="${esc(v)}" class="${cur == v ? "on" : ""}" style="--c:${v == "全部" ? "#94A3B8" : colorOf(v)}"><span class="dot"></span>${esc(lab(v))}${n != null ? `<i>${n}</i>` : ""}</button>`).join("")}</div></div>`;
+}
+function paintFilters(){
+  const base = E.map(row), cnt = (f) => { const o = {}; base.forEach(e => { const k = f(e); if (k) o[k] = (o[k] || 0) + 1; }); return o; };
+  const ci = cnt(e => e.is), cf = cnt(e => e.freq), cr = cnt(e => e.region), cv = cnt(e => e.vz);
+  const isOpts = [["全部", E.length], ...Object.entries(ci).sort((a, b) => (a[0] == "其他") - (b[0] == "其他") || b[1] - a[1])];
+  const mo = ["全部", "即將除息", ...Array.from({length: 12}, (_, i) => String(i + 1))];
+  $("#flt").innerHTML = ddHTML("iss", "發行投信", isOpts, icol)
+    + ddHTML("freq", "配息", [["全部", null], ...["月配", "季配", "半年配", "年配", "不配息"].map(k => [k, cf[k] || 0])], k => FREQC[k] || "#64748B")
+    + ddHTML("reg", "市場", [["全部", null], ["台股", cr["台股"] || 0], ["海外", cr["海外"] || 0]], k => k == "台股" ? "#E0533D" : "#2563EB")
+    + ddHTML("val", "估價", [["全部", null], ...["便宜", "合理", "偏貴", "昂貴"].map(k => [k, cv[k] || 0])], k => VALC[k])
+    + ddHTML("ex", "除息月", mo.map(m => [m, null]), k => k == "即將除息" ? "#0891B2" : "#C9930A", v => /^\d+$/.test(v) ? v + " 月" : v)
+    + [["hi", "🔥 溢價 ≥1%"], ["lo", "🧊 折價 ≥1%"], ["in", "💰 資金流入"], ["out", "💸 資金流出"]].map(([k, t]) => `<button class="tg${ST.qk == k ? " on" : ""}" data-qk="${k}">${t}</button>`).join("")
+    + `<span class="cnt" id="cnt"></span>`;
+}
+const H = [["id", "ETF"], ["price", "市價"], ["chgPct", "漲跌"], ["prem", "折溢價"], ["flow", "資金進出", "hide-m"], ["ttmYield", "近一年殖利率"], ["", "配息・除息月", ""], ["aum", "規模"], ["vp", "估價位階"], ["tas", "技術面", "hide-m"], ["", "試算", ""]];
+function paintTable(){
+  const L = list(), N = ST.all ? L.length : Math.min(L.length, 40);
+  $("#cnt").textContent = `共 ${L.length} 檔`;
+  $("#th").innerHTML = H.map(([k, t, c]) => `<th class="${k ? "" : "ns"} ${c || ""} ${ST.k == k && k ? "on" : ""}" data-sk="${k}">${t}${ST.k == k && k ? (ST.dir > 0 ? " ↑" : " ↓") : ""}</th>`).join("");
+  $("#tb").innerHTML = L.slice(0, N).map(e => {
+    const cc = CAT[e.category] ? CAT[e.category].g[0] : "#475569", ic = icol(e.is), up = e.chgPct > 0, dn = e.chgPct < 0;
+    const pm = e.prem == null ? "—" : `<span class="prem ${e.prem >= 1 ? "hi" : e.prem <= -1 ? "lo" : ""}">${sg(e.prem)}%</span>`;
+    const yl = e.freq == "不配息" ? `<span style="color:var(--sub)">不配息</span>` : `<span class="yl">${fmt(e.ttmYield, 2)}%</span>`;
+    const mo = `<span class="mo" title="除息月：${(e.exMonths || []).join("、") || "無"}">${Array.from({length: 12}, (_, i) => `<i class="${(e.exMonths || []).includes(i + 1) ? "x" : ""}${i + 1 == NOWM ? " now" : ""}"></i>`).join("")}</span>`;
+    const vl = e.vp == null ? "—" : `<span class="val"><b style="color:${VALC[e.vz] || "var(--ink)"}">${e.vz} ${e.vp}</b><span class="vb"><i style="left:calc(${Math.max(0, Math.min(100, e.vp))}% - 2px)"></i></span></span>`;
+    const ta = e.tas == null ? "—" : `<span class="ta" style="background:color-mix(in srgb,${e.tas >= 60 ? "var(--up)" : e.tas >= 40 ? "#f59e0b" : "var(--down)"} 16%,transparent);color:${e.tas >= 60 ? "var(--up)" : e.tas >= 40 ? "#b45309" : "var(--down)"}">${e.tas}</span>`;
+    const inPf = PF.includes(e.id);
+    return `<tr class="r" data-id="${e.id}">
+      <td class="c-nm"><div class="nm"><span class="bar4" style="--cc:${cc}"></span><div><b>${inPf ? "⭐" : ""}${e.id}</b> <span class="n">${esc(e.name)}</span>
+        <small><span class="ctag" style="--cc:${cc}">${e.category}</span><span class="ist" style="--c:${ic}"><span class="dot" style="--c:${ic};width:8px;height:8px"></span>${esc(e.is)}</span><span>${e.region}</span></small></div></div></td>
+      <td class="c-px hide-mm"><span class="px num">${fmt(e.price, e.price >= 100 ? 1 : 2)}</span><div class="num ${up ? "up" : dn ? "dn" : ""} only-m" style="font-size:15px;font-weight:700">${up ? "▲" : dn ? "▼" : ""}${fmt(Math.abs(e.chgPct), 2)}%</div></td>
+      <td class="num ${up ? "up" : dn ? "dn" : ""} d-only" style="font-weight:700">${up ? "▲" : dn ? "▼" : ""}${fmt(Math.abs(e.chgPct), 2)}%</td>
+      <td class="num d-only">${pm}</td>
+      <td class="num d-only hide-m ${e.flow > 0 ? "up" : e.flow < 0 ? "dn" : ""}" style="font-weight:700">${fl(e.flow)}</td>
+      <td class="num d-only">${yl}<div style="font-size:13px;color:var(--sub)">${e.freq != "不配息" ? e.freq : ""}</div></td>
+      <td class="c-mo">${mo}<span class="mol">${e.freq == "不配息" ? "不配息" : `${e.freq}・除息 ${(e.exMonths || []).join("/")} 月`}</span></td>
+      <td class="num d-only">${yi(e.aum)}</td>
+      <td class="d-only">${vl}</td>
+      <td class="d-only hide-m">${ta}</td>
+      <td class="c-chips"><span class="chip"><em>殖利率</em>${e.freq == "不配息" ? "—" : fmt(e.ttmYield, 2) + "%"}</span><span class="chip"><em>折溢價</em>${pm}</span><span class="chip"><em>資金</em><span class="${e.flow > 0 ? "up" : e.flow < 0 ? "dn" : ""}">${fl(e.flow)}</span></span><span class="chip"><em>估價</em>${e.vp == null ? "—" : `<b style="color:${VALC[e.vz]}">${e.vz} ${e.vp}</b>`}</span><span class="chip"><em>規模</em>${yi(e.aum)}</span></td>
+      <td class="c-add"><button class="add${inPf ? " in" : ""}" data-add="${e.id}">${inPf ? "⭐ 已在試算" : "＋試算"}</button></td></tr>`; }).join("") || `<tr><td class="emp" colspan="11">沒有符合條件的 ETF，試試「清除篩選」</td></tr>`;
+  const m = $("#more"); m.style.display = L.length > 40 ? "" : "none"; m.textContent = ST.all ? "收合 ▴" : `看全部 ${L.length} 檔 ▾`;
+}
+function paintSum(){
+  if (!PF.length) return; const el = $("#mysum"); el.style.display = "";
+  el.innerHTML = `⭐ 你的配息試算有 <b>${PF.length}</b> 檔（清單裡標 ⭐）<span style="opacity:.9">— 正式版這裡會顯示「未來 12 個月約領多少、平均每月」，原本右邊那一欄移到這裡，表格就能放更寬、字更大</span><a href="./#calc">看試算 →</a>`;
+}
+function paintAll(){ paintKpi(); paintCats(); paintFilters(); paintTable(); paintSum(); }
+document.addEventListener("click", ev => {
+  const t = ev.target;
+  const ddb = t.closest("[data-ddb]"); if (ddb) { OPEN = OPEN == ddb.dataset.ddb ? "" : ddb.dataset.ddb; paintFilters(); return; }
+  const set = t.closest("[data-set]"); if (set) { ST[set.dataset.set] = set.dataset.v; ST.all = false; OPEN = ""; paintFilters(); paintTable(); return; }
+  if (OPEN && !t.closest(".dd")) { OPEN = ""; paintFilters(); }
+  const qk = t.closest("[data-qk]"); if (qk) { ST.qk = ST.qk == qk.dataset.qk ? "" : qk.dataset.qk; if (ST.qk) { ST.k = ST.qk == "hi" || ST.qk == "lo" ? "prem" : "flow"; ST.dir = ST.qk == "lo" || ST.qk == "out" ? 1 : -1; } paintFilters(); paintTable(); return; }
+  const cat = t.closest("[data-cat]"); if (cat) { ST.cat = cat.dataset.cat; ST.all = false; paintCats(); paintTable(); return; }
+  const th = t.closest("th[data-sk]"); if (th && th.dataset.sk) { const k = th.dataset.sk; if (ST.k == k) ST.dir *= -1; else { ST.k = k; ST.dir = k == "id" || k == "vp" ? 1 : -1; } paintTable(); return; }
+  const kp = t.closest(".kpi>div"); if (kp) { const k = kp.dataset.k; if (k == "@cheap") { ST.val = "便宜"; ST.k = "vp"; ST.dir = 1; } else if (k) $("#q").value = k; paintFilters(); paintTable(); $(".fbar").scrollIntoView({behavior: "smooth"}); return; }
+  const add = t.closest("[data-add]"); if (add) { toast(`樣稿：正式版會把 ${add.dataset.add} 加入配息試算`); return; }
+  const r = t.closest("tr.r"); if (r) { toast(`樣稿：正式版點這列會打開 ${r.dataset.id} 的詳細頁`); return; }
+  if (t.closest("#more")) { ST.all = !ST.all; paintTable(); return; }
+  if (t.closest("#clr")) { Object.assign(ST, {cat: "全部", iss: "全部", freq: "全部", reg: "全部", val: "全部", ex: "全部", qk: "", k: "aum", dir: -1, all: false}); $("#q").value = ""; paintAll(); }
+});
+document.addEventListener("keydown", e => { if (e.key == "Escape" && OPEN) { OPEN = ""; paintFilters(); } });
+$("#q").addEventListener("input", () => { ST.all = false; paintTable(); });
+load().catch(e => { $("#upd").textContent = "資料載入失敗：" + e.message; });
+</script>
+<style>
+@media(min-width:761px){.only-m{display:none}}
+@media(max-width:760px){.d-only{display:none!important}}
+</style>
+</body>
+</html>
