@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-version" content="v2026.11.26.3">
+<meta name="app-version" content="v2026.11.26.4">
 <meta name="theme-color" content="#F1F5FF">
 <title>巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
@@ -1809,7 +1809,7 @@ button{-webkit-tap-highlight-color:transparent}
   <div class="top">
     <div class="brand"><img class="logo" src="logo.svg" alt="柴犬博士" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.26.3</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
+      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.26.4</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
@@ -1954,7 +1954,7 @@ button{-webkit-tap-highlight-color:transparent}
 </div>
 
 <footer><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button>
-  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.26.3</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.26.4</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -2684,8 +2684,10 @@ function renderPlan(){
   // 全部換算成「今天的錢」:累積金額扣掉通膨、目標月領不用再膨脹
   const deflate = Math.pow(1 + infl, years);
   const haveNom = fv(lump, mon, r, years), have = haveNom / deflate;        // 退休時累積(今天的錢)
-  const need = want * 12 / yRet;                                             // 需要的本金(今天的錢)
-  const monthlyNow = have * yRet / 12, ratio = need ? have / need : 0;
+  // 退休後也要扣通膨:配息不會自己跟著物價漲,殖利率裡要留通膨那一段再投入(本金跟著長大),能花的是實質殖利率(最低算 1%)
+  const yReal = Math.max(0.01, yRet - infl);
+  const need = want * 12 / yReal;                                            // 需要的本金(今天的錢)
+  const monthlyNow = have * yReal / 12, ratio = need ? have / need : 0;
   const i = Math.pow(1 + r, 1/12) - 1, m = years*12;
   const needMon = years ? Math.max(0, (need * deflate - lump*Math.pow(1+i,m)) * (i ? i / (Math.pow(1+i,m)-1) : 1/m)) : 0;
   let okAge = null; for (let y = years; age + y <= 75; y++) { if (fv(lump, mon, r, y) / Math.pow(1+infl, y) >= need) { okAge = age + y; break; } }
@@ -2699,12 +2701,12 @@ function renderPlan(){
     <div class="verdict" style="background:linear-gradient(135deg,${tone[0]},${tone[1]})">
       <div class="em">${tone[2]}</div>
       <div><h3>${tone[3]}　預估可達成 ${Math.round(ratio*100)}%</h3>
-      <p>照你現在的投入，${ret} 歲退休時每月約可領 <b>${money(monthlyNow)}</b>（今天的購買力），目標是 ${money(want)}。</p></div>
+      <p>照你現在的投入，${ret} 歲退休時每月約可領 <b>${money(monthlyNow)}</b>（今天的購買力，已扣通膨，退休後每年都維持這個購買力），目標是 ${money(want)}。</p></div>
     </div>
     <div class="bigs">
       <div><small>離退休還有</small><b class="num">${years} 年</b><i>每月投入共 ${years*12} 次</i></div>
       <div><small>退休時累積（今天的錢）</small><b class="num">${wan(have)}</b><i>帳面 ${wan(haveNom)}・投入本金 ${wan(lump + mon*years*12)}</i></div>
-      <div><small>需要的本金（今天的錢）</small><b class="num">${wan(need)}</b><i>每月 ${money(want)} × 12 ÷ ${(yRet*100).toFixed(1)}%</i></div>
+      <div><small>需要的本金（今天的錢）</small><b class="num">${wan(need)}</b><i>每月 ${money(want)} × 12 ÷ ${(yReal*100).toFixed(1)}%（殖利率 ${(yRet*100).toFixed(1)}% − 通膨 ${(infl*100).toFixed(1)}%${yRet - infl < 0.01 ? "，最低以 1% 計" : ""}）</i></div>
       <div><small>${ratio>=1?"多出":"缺口"}</small><b class="num" style="color:${ratio>=1?"var(--down)":"var(--up)"}">${wan(Math.abs(have-need))}</b><i>${ratio>=1?"可以更保守或提早退休":"見下方調整建議"}</i></div>
     </div>
     <div>
@@ -2721,8 +2723,8 @@ function renderPlan(){
       <ol class="plan-steps">
         <li>現在投入 <b>${money(lump)}</b>，之後每月 <b>${money(mon)}</b>，以年報酬 ${(r*100).toFixed(1)}% 複利滾 <b>${years} 年</b> → 帳面累積 <b>${wan(haveNom)}</b>。</li>
         <li>扣掉每年 ${(infl*100).toFixed(1)}% 通膨，等於今天的 <b>${wan(have)}</b>（${years} 年後的錢比較薄）。</li>
-        <li>退休後只領息不賣股，以殖利率 ${(yRet*100).toFixed(1)}% 計算 → 每月可領 <b>${money(monthlyNow)}</b>（今天的購買力）。</li>
-        <li>目標每月 ${money(want)} → 需要本金 ${money(want)} × 12 ÷ ${(yRet*100).toFixed(1)}% = <b>${wan(need)}</b>，達成率 <b>${Math.round(ratio*100)}%</b>。</li>
+        <li>退休後只領息不賣股。配息金額不會自己跟著物價漲，所以殖利率 ${(yRet*100).toFixed(1)}% 裡要留 ${(infl*100).toFixed(1)}% 再投入、讓本金跟通膨一起長大，<b>真正能花的是 ${(yReal*100).toFixed(1)}%</b> → 每月可領 <b>${money(monthlyNow)}</b>（今天的購買力，退休後每年都維持）。</li>
+        <li>目標每月 ${money(want)} → 需要本金 ${money(want)} × 12 ÷ ${(yReal*100).toFixed(1)}% = <b>${wan(need)}</b>，達成率 <b>${Math.round(ratio*100)}%</b>。${yRet - infl < 0.01 ? "（殖利率扣掉通膨不到 1%，以 1% 計算）" : ""}<br><small style="color:var(--sub)">如果不扣通膨（每月領固定金額），${wan(want * 12 / yRet)} 就夠，但 15 年後這筆錢的購買力只剩約 ${Math.round(100 / Math.pow(1 + infl, 15))}%。</small></li>
       </ol>
       ${ratio < 1 ? `<p><b>怎麼補缺口？</b>三選一或混著用：①每月投入加到 <b>${money(needMon)}</b>；②${okAge ? `延到 <b>${okAge} 歲</b>退休` : "就算延到 75 歲也不夠，建議搭配①或③"}；③把目標月領調到 <b>${money(monthlyNow)}</b>。</p>`
         : `<p><b>已經夠了：</b>可以把債券比重加一點降低波動，或${okAge && okAge < ret ? `最早 <b>${okAge} 歲</b>就能退休` : "維持現在的節奏"}。</p>`}
