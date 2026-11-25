@@ -181,6 +181,7 @@ def main():
                   ("build_market_analysis.py",), ("fetch_news.py",), ("fetch_chips.py",),
                   # 個股股價/估價也要當天:更新財報檔裡的現價(已抓過的季報會跳過,約 2～3 分鐘)→ 重算個股頁、評分、估價篩選
                   ("fetch_fundamentals.py",), ("build_value_picks.py",), ("build_experts.py",), ("build_stock_pages.py",), ("build_stock_screen.py",),
+                  ("fetch_div_mix.py",),          # ETF 配息來源組成(集保 ETF 觀測站約 10 次請求,很快)
                   ("build_board.py",), ("fetch_risk.py",), ("fetch_options.py",),
                   ("build_concepts.py",), ("build_smart.py",), ("fetch_calendar.py",), ("fetch_ptt.py",)):
             step(*x)

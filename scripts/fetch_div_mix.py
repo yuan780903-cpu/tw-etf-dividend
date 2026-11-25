@@ -1,5 +1,8 @@
 """ETF 配息來源組成(股利所得/利息所得/收益平準金/已實現資本利得/其他所得 占比) -> data/div_mix.json
-資料:證交所 ETF e添富「重大消息 → 收益分配」公告(2023/11 起投信公告配息時必須揭露組成占比)
+資料一(主要,上市＋上櫃都有):集保「基金資訊觀測站 ETF 觀測站」收益分配 API
+  POST https://www.fundclear.com.tw/api/etf/dividend/query-dividend  每頁最多 500 筆、約 10 頁就是全部
+  divDet1~5 = 股利所得、利息所得、收益平準金、已實現資本利得、其他所得(%)
+資料二(補充):證交所 ETF e添富「重大消息 → 收益分配」公告(只有上市 ETF;掩護性買權 ETF 的權利金在集保是 0,這裡讀得到)
   列表 https://www.twse.com.tw/zh/ETFortune/announcementList?type=distribution&max=10&offset=N(每頁 10 則,新到舊)
   內文 https://www.twse.com.tw/zh/ETFortune/announcement?company=..&date=..&seq=..&fund=..&type=distribution
 用法:
@@ -83,6 +86,54 @@ def list_page(off):
     return out
 
 
+FC = "https://www.fundclear.com.tw/api/etf/dividend/query-dividend"
+FCH = {"User-Agent": "Mozilla/5.0", "Content-Type": "application/json", "Accept": "application/json",
+       "Origin": "https://www.fundclear.com.tw", "Referer": "https://www.fundclear.com.tw/etf/dividend"}
+
+
+def fundclear():
+    """集保 ETF 觀測站:全部 ETF 的收益分配(含組成占比) -> {代號: {除息日: row}}"""
+    out, page, total, got = {}, 1, None, 0
+    while page <= 30:
+        body = json.dumps({"_pageNum": page, "_pageSize": 500, "etfType": "", "searchName": "", "exDividendDateStart": "",
+                           "exDividendDateEnd": "", "payDateStart": "", "payDateEnd": ""}).encode()
+        j = None
+        for i in range(3):
+            try:
+                with urllib.request.urlopen(urllib.request.Request(FC, data=body, headers=FCH), timeout=120) as r: j = json.loads(r.read()); break
+            except Exception as e:
+                print("  集保 ETF 觀測站失敗", page, e); time.sleep(5 + i * 5)
+        L = (j or {}).get("list") or []
+        if not L: break
+        total = total or j.get("total"); got += len(L)
+        for x in L:
+            ex = str(x.get("exDivDate") or "")
+            if len(ex) != 8 or ex < SINCE[:4] + "0101": continue
+            try: mix = [round(float(x.get(f"divDet{i}") or 0), 2) for i in range(1, 6)]
+            except ValueError: continue
+            if not 90 <= sum(mix) <= 110: continue          # 沒填或全 0(例如掩護性買權權利金)→ 交給 e添富
+            try: amt = float(x.get("disAmount")); amt = amt if amt > 0 else None
+            except (TypeError, ValueError): amt = None
+            d = f"{ex[:4]}-{ex[4:6]}-{ex[6:]}"
+            out.setdefault(str(x.get("stockNo") or "").strip(), {})[d] = [d, amt, *mix, d, 0]
+        if total and got >= total: break
+        page += 1; time.sleep(1)
+    print(f"  集保 ETF 觀測站:{got} 筆,有組成的 {sum(len(v) for v in out.values())} 筆、{len(out)} 檔", flush=True)
+    return out
+
+
+def merge(E, FCD):
+    """同一檔同一除息日:集保有完整組成就用集保,否則留 e添富"""
+    for f, rows in FCD.items():
+        if not f: continue
+        cur = {(r[0] or r[7]): r for r in E.get(f, [])}
+        for d, r in rows.items():
+            if r[1] is None and d in cur and cur[d][1] is not None: r[1] = cur[d][1]
+            cur[d] = fill_amount(f, r)
+        E[f] = sorted(cur.values(), key=lambda x: (x[0] or x[7], x[7]), reverse=True)[:KEEP]
+    return E
+
+
 def main():
     back = "--backfill" in sys.argv
     old = {}
@@ -123,9 +174,11 @@ def main():
         off += 10
         time.sleep(.35)
         if back and p % 20 == 0: print(f"  第 {p} 頁(offset {off}),目前 {len(E)} 檔、新增 {new} 筆", flush=True)
+    try: E = merge(E, fundclear())
+    except Exception as e: print("  集保 ETF 觀測站合併失敗:", e)
     res = {"updated": dt.datetime.now().strftime("%Y-%m-%d %H:%M"),
            "cols": ["除息日", "每單位配息", "股利所得%", "利息所得%", "收益平準金%", "已實現資本利得%", "其他所得%", "公告日", "公告序號"],
-           "note": "證交所 ETF e添富 收益分配公告的「(預估)收益分配組成占比」;投信表示僅供參考,實際以受益人收益分配通知為準",
+           "note": "集保 ETF 觀測站收益分配組成占比(上市＋上櫃),不足的用證交所 ETF e添富 收益分配公告補;投信表示僅供參考,實際以受益人收益分配通知為準",
            "etfs": E}
     with open(OUT, "w", encoding="utf-8") as fh: json.dump(res, fh, ensure_ascii=False, separators=(",", ":"))
     with open(SEEN, "w", encoding="utf-8") as fh: json.dump(sorted(seen, key=lambda k: k.split("|")[1])[-8000:], fh, separators=(",", ":"))
