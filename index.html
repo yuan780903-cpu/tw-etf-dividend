@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="app-version" content="v2026.11.25.7">
 <meta name="theme-color" content="#F1F5FF">
 <title>巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
@@ -1448,6 +1449,13 @@ button{-webkit-tap-highlight-color:transparent}
 .rk-f{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0 10px}.rk-f button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:13px}.rk-f button.on{background:#2F5BEA;color:#fff;border-color:#2F5BEA}.rk-f button i{font-style:normal;opacity:.7;margin-left:3px}.rk-f label{font-size:13px;margin-left:6px}
 .rk-mine{background:#FDECEC;border:1px solid #F5B3B3;border-radius:12px;padding:9px 12px;font-size:13.5px;margin:6px 0}.rk-mine.ok{background:#E8F7EE;border-color:#A7E3C2}.rk-mine b[data-c]{cursor:pointer;text-decoration:underline}
 .rk-tb td.rk-w{white-space:normal;min-width:170px;font-size:12.5px}.rk-box.bad{border-left:5px solid #CF3A3A}.rk-ok{color:#1A8F57;font-weight:800}.rk-dp{font-size:13.5px;font-weight:700;color:#CF3A3A}.rk-tags{margin:4px 0}
+/* ===== 版本號 ===== */
+.brand p .app-ver{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.02em;border:1px solid currentColor;border-radius:6px;padding:0 5px;margin-right:6px;opacity:.85;vertical-align:1px}
+.ft-ver{font-size:12px;color:var(--sub);margin-top:2px}.ft-ver .app-ver{font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+/* ===== 二代健保開關 ===== */
+.nhi-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;opacity:.95}
+.nhi-t{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 10px 2px 6px;cursor:pointer;font-weight:700;font-size:12.5px;user-select:none}
+.nhi-t input{width:15px;height:15px;margin:0;accent-color:#fff;cursor:pointer}
 /* ===== 🧾 我的配息從哪裡來(配息試算頁) ===== */
 .h-dm{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:12px;color:var(--sub)}.h-dm .dm-bar{flex:0 0 90px;margin:0}
 .h-dm span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1742,7 +1750,7 @@ button{-webkit-tap-highlight-color:transparent}
   <div class="top">
     <div class="brand"><img class="logo" src="logo.svg" alt="柴犬博士" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
+      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.25.7</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
@@ -1854,7 +1862,7 @@ button{-webkit-tap-highlight-color:transparent}
       <div class="box big" id="boxSum">
         <h2>未來 12 個月預估配息 <span style="font-size:12px;opacity:.85" id="rangeTxt"></span></h2>
         <div class="sum num" id="yearSum">$0</div>
-        <div style="font-size:13px;opacity:.9">扣二代健保補充保費後 <b class="num" id="netSum">$0</b></div>
+        <div class="nhi-r"><label class="nhi-t" title="單次領 2 萬元以上扣 2.11% 補充保費。低收入戶、中低收入戶等符合免扣資格，或想看不扣的金額，可以取消勾選"><input type="checkbox" id="nhiOn" checked> 扣二代健保</label><span><span id="nhiLbl">扣補充保費後</span> <b class="num" id="netSum">$0</b></span></div>
         <div class="row">
           <div>平均每月<b class="num" id="avgM">$0</b></div>
           <div>投入成本<b class="num" id="cost">$0</b></div>
@@ -1884,7 +1892,7 @@ button{-webkit-tap-highlight-color:transparent}
 </div>
 
 <footer><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button>
-  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.25.7</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -2131,7 +2139,7 @@ function schedule(){                            // 未來12個月每一筆入帳
       if (per > 0) items.push({k, date:`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`, e, per, amt:per*sh, ok:false});
     }));
   });
-  items.forEach(x => x.nhi = x.amt >= NHI_MIN ? x.amt * NHI : 0);
+  const nOn = nhiOn(); items.forEach(x => x.nhi = nOn && x.amt >= NHI_MIN ? x.amt * NHI : 0);   // 使用者可取消勾選「扣二代健保」
   return {months, keys, items};
 }
 async function renderPF(){
@@ -2140,6 +2148,7 @@ async function renderPF(){
   const gross = items.reduce((s,x)=>s+x.amt,0), nhi = items.reduce((s,x)=>s+x.nhi,0);
   let cost = 0; PF.forEach(p => { const e = S.find(x => x.id == p.id); if (e) cost += e.price * p.lots * 1000; });
   tweenMoney($("#yearSum"), gross); $("#netSum").textContent = money(gross - nhi);
+  if ($("#nhiOn")) { $("#nhiOn").checked = nhiOn(); $("#nhiLbl").textContent = nhiOn() ? "扣補充保費後" : "不扣補充保費"; }
   $("#tabN").textContent = PF.length; $("#tabN").style.display = PF.length ? "" : "none";
   document.body.classList.toggle("has-pf", PF.length > 0);
   $("#mbN").textContent = PF.length; tweenMoney($("#mbSum"), gross); $("#mbAvg").textContent = money(gross / 12);
@@ -7295,6 +7304,18 @@ function pfDmBox(items){
     ${rows.sort((a, b) => b.yr - a.yr).map(({e, yr, d}) => `<tr><td><b>${e.id}</b><small>${e.name}</small></td><td>${money(yr)}</td>${d ? `<td>${fmt(d.mix[0], 0)}%</td><td class="dm-x">${fmt(d.mix[1], 0)}%</td><td>${fmt(d.mix[2], 0)}%</td><td>${fmt(d.mix[3], 0)}%</td>` : `<td colspan="4" style="text-align:center;color:var(--sub)">還沒有資料</td>`}</tr>`).join("")}</tbody></table>
     <p class="mknote">👶 白話：同樣領 1 萬元，來自股息、利息的是基金真正收到的錢；收益平準金是新申購的人帶進來的錢先墊，價差是賣股票賺的，這兩種行情不好時可能變少。稅和健保只是一般情況的參考，實際以投信寄的收益分配通知書為準。資料：集保 ETF 觀測站、證交所 ETF e添富。</p>`;
 }
+
+/* ================= 二代健保補充保費開關(配息試算) ================= */
+function nhiOn(){ try { return localStorage.getItem("etf_nhi") != "0"; } catch (e) { return true; } }
+(function(){ const c = document.getElementById("nhiOn"); if (!c) return;
+  c.checked = nhiOn();
+  c.onchange = () => { try { localStorage.setItem("etf_nhi", c.checked ? "1" : "0"); } catch (e) {}
+    if (typeof renderPF == "function") renderPF();
+    toast(c.checked ? "已改回扣二代健保補充保費（單次 2 萬元以上扣 2.11%）" : "已改成不扣二代健保補充保費", 1800); };
+})();
+/* ================= 網站版本號(tools/stamp_version.sh 在 commit 時自動更新) ================= */
+var APP_VER = (document.querySelector('meta[name="app-version"]') || {}).content || "";
+try { console.info("巴菲遠不負責任財富系統 " + APP_VER); } catch (e) {}
 </script>
 </body>
 </html>
