@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-version" content="v2026.11.25.10">
+<meta name="app-version" content="v2026.11.25.11">
 <meta name="theme-color" content="#F1F5FF">
 <title>巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
@@ -1457,6 +1457,18 @@ button{-webkit-tap-highlight-color:transparent}
 .nhi-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;opacity:.95}
 .nhi-t{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 10px 2px 6px;cursor:pointer;font-weight:700;font-size:12.5px;user-select:none}
 .nhi-t input{width:15px;height:15px;margin:0;accent-color:#fff;cursor:pointer}
+/* ===== 🔔 我的配息提醒 ===== */
+#pfNtfBox h2{display:flex;align-items:center;gap:8px;flex-wrap:wrap}#pfNtfBox h2 small{font-size:12px;color:var(--sub);font-weight:500}
+.pn-perm{margin-left:auto;border:1px solid var(--gold);background:none;color:var(--ink);border-radius:999px;padding:5px 12px;font-weight:800;font-size:12.5px;cursor:pointer;font-family:inherit}
+.pn-ok{margin-left:auto;font-size:12px;color:#16A34A;font-weight:700}
+.pn-g{margin-top:10px}.pn-g>small{display:block;font-size:12px;font-weight:800;color:var(--sub);margin-bottom:6px}
+.pn-i{display:flex;gap:10px;align-items:flex-start;padding:9px 11px;border-radius:12px;background:var(--hover);margin-bottom:6px;border-left:4px solid #2F5BEA}
+.pn-i.hot{border-left-color:#EA580C}.pn-i.good{border-left-color:#16A34A}.pn-i.wait{border-left-color:#94A3B8}
+.pn-i>i{font-style:normal;font-size:18px;line-height:1.25;flex:none}.pn-i>div{min-width:0;flex:1}
+.pn-i b{display:block;font-size:14px;line-height:1.4}.pn-i span{display:block;font-size:12.5px;color:var(--sub);line-height:1.55;margin-top:2px}
+.pn-i em{font-style:normal;font-size:10.5px;font-weight:800;color:#fff;background:#EA580C;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:1px}
+.pn-bar{height:6px;border-radius:99px;background:var(--line);margin-top:6px;overflow:hidden}.pn-bar u{display:block;height:100%;background:linear-gradient(90deg,#60A5FA,#16A34A)}
+.pn-none{font-size:13px;color:var(--sub);margin:8px 0 2px}
 /* ===== 💾 配息試算存檔/讀取 ===== */
 .pf-io{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0 2px}
 .pf-io button,.pf-ld{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:11px;padding:8px 13px;font-weight:800;cursor:pointer;font-size:13.5px;font-family:inherit;line-height:1.2}
@@ -1757,7 +1769,7 @@ button{-webkit-tap-highlight-color:transparent}
   <div class="top">
     <div class="brand"><img class="logo" src="logo.svg" alt="柴犬博士" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.25.10</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
+      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.25.11</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
@@ -1879,6 +1891,7 @@ button{-webkit-tap-highlight-color:transparent}
           <select id="gMode"></select>
         </div>
       </div>
+      <div class="box" id="pfNtfBox" hidden></div>
       <div class="box" id="boxHold">
         <h2>我的持股 <span style="font-size:12px;color:var(--sub);font-weight:500">張數可填小數=零股</span></h2>
         <div class="addrow"><input id="addId" list="etfList" placeholder="輸入代號或名稱新增，如 00919"><button id="addBtn">＋</button></div>
@@ -1900,7 +1913,7 @@ button{-webkit-tap-highlight-color:transparent}
 </div>
 
 <footer><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button>
-  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.25.10</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.25.11</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -2197,6 +2210,7 @@ async function renderPF(){
   });
   $("#hold").querySelectorAll("[data-del]").forEach(el => el.onclick = () => { PF.splice(el.dataset.del, 1); save(); renderPF(); });
   pfDmBox(items);
+  pfNtfRun();
 }
 $("#gMode").onchange = ev => {               // 上方「配息參考」:全部持股一起套用(原本各自設定的也改回跟隨上方)
   gMode = ev.target.value; try { localStorage.setItem("etf_gmode", gMode) } catch(e){}
@@ -2516,7 +2530,7 @@ function placeCalc(){       // 總覽頁(寬螢幕)右側直接顯示試算;試�
   const side = WIDE.matches && $("#pg-etf").classList.contains("on");
   const B = ["#boxSum", "#boxMon", "#boxHold"].map(q => $(q));
   if (side) B.forEach(b => $("#side").appendChild(b));
-  else { $("#colA").append(B[0], B[2]); $("#colB").append(B[1]); if ($("#pfDmBox")) $("#colB").append($("#pfDmBox")); }
+  else { $("#colA").append(B[0]); if ($("#pfNtfBox")) $("#colA").append($("#pfNtfBox")); $("#colA").append(B[2]); $("#colB").append(B[1]); if ($("#pfDmBox")) $("#colB").append($("#pfDmBox")); }
 }
 WIDE.addEventListener("change", placeCalc);
 function go(tab, scroll = true){
@@ -7346,7 +7360,8 @@ function pfFileSave(){
   if (!PF.length) { toast("目前沒有持股可以存檔", 1800); return; }
   const d = new Date().toLocaleDateString("sv", {timeZone: "Asia/Taipei"});
   const o = {app: "巴菲遠不負責任財富系統", kind: "配息試算", ver: typeof APP_VER == "string" ? APP_VER : "", saved: new Date().toISOString(),
-    pf: PF.map(p => ({id: p.id, lots: +p.lots})), nhi: typeof nhiOn == "function" ? nhiOn() : true};
+    pf: PF.map(p => Object.assign({id: p.id, lots: +p.lots}, p.mode && p.mode != "auto" ? {mode: p.mode} : {}, p.cy != null ? {cy: +p.cy} : {})),
+    gMode: gMode, nhi: typeof nhiOn == "function" ? nhiOn() : true};
   const u = URL.createObjectURL(new Blob([JSON.stringify(o, null, 1)], {type: "application/json"})), a = document.createElement("a");
   a.href = u; a.download = `巴菲遠配息試算_${d}.json`; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 5000);
   toast(`💾 已存檔 ${PF.length} 檔持股：${a.download}`, 2600);
@@ -7358,13 +7373,14 @@ async function pfFileLoad(f){
   if (!L) { toast("這個檔案裡沒有配息試算的持股", 3000); return; }
   const ok = [], bad = [];
   L.forEach(x => { const id = String((x && (x.id || x.code)) || "").trim().toUpperCase(), lots = +(x && x.lots);
-    if (!id) return; if (S.find(e => e.id == id) && lots > 0 && !ok.some(y => y.id == id)) ok.push({id, lots}); else if (!ok.some(y => y.id == id)) bad.push(id); });
+    if (!id) return; if (S.find(e => e.id == id) && lots > 0 && !ok.some(y => y.id == id)) ok.push(Object.assign({id, lots, mode: typeof x.mode == "string" ? x.mode : "auto"}, x.cy != null ? {cy: +x.cy} : {})); else if (!ok.some(y => y.id == id)) bad.push(id); });
   if (!ok.length) { toast("檔案裡的代號都找不到對應的 ETF", 3000); return; }
   const when = o.saved ? new Date(o.saved).toLocaleString("zh-TW", {hour12: false, year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit"}) : "";
   const list = ok.slice(0, 8).map(x => `${x.id} ${+x.lots.toFixed(3)} 張`).join("、") + (ok.length > 8 ? ` 等 ${ok.length} 檔` : "");
   if (!confirm(`📂 讀取檔案${when ? `（存檔時間 ${when}）` : ""}\n${list}${bad.length ? `\n\n找不到的代號會略過：${bad.join("、")}` : ""}\n\n按「確定」會用這 ${ok.length} 檔取代目前的 ${PF.length} 檔持股。`)) return;
   PF = ok; save();
   if (typeof o.nhi == "boolean") { try { localStorage.setItem("etf_nhi", o.nhi ? "1" : "0"); } catch (e) {} }
+  if (typeof o.gMode == "string" && [...$("#gMode").options].some(x => x.value == o.gMode)) { gMode = o.gMode; $("#gMode").value = gMode; try { localStorage.setItem("etf_gmode", gMode); } catch (e) {} }
   renderPF(); toast(`📂 已讀回 ${ok.length} 檔持股`, 2400);
 }
 (function(){
@@ -7372,6 +7388,109 @@ async function pfFileLoad(f){
   b.onclick = pfFileSave;
   f.onchange = () => { const x = f.files && f.files[0]; f.value = ""; pfFileLoad(x); };
 })();
+
+/* ================= 🔔 我的配息提醒(配息試算持股):除息倒數、預計入帳、填息進度;打開網站時有新提醒就跳通知 =================
+   資料:data/upcoming.json(證交所除權息預告)、data/dividends/(已公告的除息日/發放日/金額)、schedule()(未來入帳,已含二代健保)、
+        data/prices/(日線,算填息:除息後收盤回到除息前一天收盤＝填息)。同一件事只通知一次(localStorage etf_pf_ntf)。 */
+var PFN, PFNU, PFNP, PFNT, PFNF;
+function pnToday(){ return new Date().toLocaleDateString("sv", {timeZone: "Asia/Taipei"}); }
+function pnDays(a, b){ return Math.round((Date.parse(a) - Date.parse(b)) / 864e5); }
+function pnMD(d){ const x = new Date(d + "T00:00:00Z"); return `${x.getUTCMonth() + 1}/${x.getUTCDate()}（${"日一二三四五六"[x.getUTCDay()]}）`; }
+function pnPrevWk(d){ const x = new Date(d + "T00:00:00Z"); do { x.setUTCDate(x.getUTCDate() - 1); } while (x.getUTCDay() == 0 || x.getUTCDay() == 6); return x.toISOString().slice(0, 10); }
+async function pnPx(id){
+  PFNP = PFNP || {};
+  if (!PFNP[id]) PFNP[id] = fetch(`data/prices/${id}.json`).then(r => r.ok ? r.json() : []).catch(() => []);
+  return PFNP[id];
+}
+function pnFill(px, ex, cash){                // 填息:除息前一天收盤 → 除息後第幾個交易日收盤漲回去
+  const pre = px.filter(r => r[0] < ex).pop(), aft = px.filter(r => r[0] >= ex);
+  if (!pre || !aft.length) return null;
+  const i = aft.findIndex(r => r[4] >= pre[4]), now = aft[aft.length - 1][4];
+  const prog = cash > 0 ? Math.max(0, Math.min(100, (now - (pre[4] - cash)) / cash * 100)) : null;
+  return {pre: pre[4], now, n: aft.length, day: i >= 0 ? i + 1 : null, need: pre[4] - now, prog};
+}
+async function pnBuild(){
+  if (!PFNU) PFNU = fetch("data/upcoming.json?" + Date.now()).then(r => r.ok ? r.json() : []).catch(() => []);
+  const U = await PFNU || [], td = pnToday(), L = [], sch = schedule().items;
+  await Promise.all(PF.map(p => loadDV(p.id)));
+  for (const p of PF) {
+    const e = S.find(x => x.id == p.id); if (!e || !(p.lots > 0)) continue;
+    const nm = `${e.id} ${e.name}`, sh = p.lots * 1000, H = DV[p.id] || [], lots = +(+p.lots).toFixed(3);
+    // 📅 即將除息(已公告):一個月內
+    const exs = {};
+    U.filter(u => u.id == p.id && u.ex >= td).forEach(u => exs[u.ex] = u.cash);
+    H.filter(d => d.ex && d.ex >= td).forEach(d => { if (exs[d.ex] == null) exs[d.ex] = d.cash; });
+    Object.entries(exs).forEach(([ex, cash]) => {
+      const n = pnDays(ex, td); if (n < 0 || n > 30) return;
+      const lb = pnPrevWk(ex), amt = cash ? cash * sh : 0;
+      L.push({g: "ex", d: ex, lv: n <= 1 ? "hot" : "", ic: "📅", nt: true, key: `ex:${p.id}:${ex}:${n <= 1 ? 1 : 0}`,
+        t: n == 0 ? `${nm} 今天除息` : `${nm} ${pnMD(ex)} 除息（再 ${n} 天）`,
+        b: `${cash ? `每股 ${+(+cash).toFixed(4)} 元，你 ${lots} 張約領 ${money(amt)}` : "配息金額還沒公布"}；${n == 0 ? "今天起買進領不到這次配息" : `最後買進日 ${pnMD(lb)}（遇假日再往前一個交易日），收盤前持有才領得到`}`});
+    });
+    // 💰 即將入帳:一個月內(已公告的會通知;還沒公告的只列在方塊裡)
+    sch.filter(x => x.e.id == p.id).forEach(x => {
+      const n = pnDays(x.date, td); if (n < 0 || n > 30) return;
+      const net = x.amt - (x.nhi || 0);
+      L.push({g: "pay", d: x.date, lv: x.ok ? (n <= 1 ? "hot" : "") : "wait", ic: "💰", nt: x.ok, key: `pay:${p.id}:${x.date}:${n <= 1 ? 1 : 0}`,
+        t: x.ok ? (n == 0 ? `${nm} 今天入帳約 ${money(net)}` : `${nm} ${pnMD(x.date)} 入帳約 ${money(net)}`) : `${nm} 預計 ${pnMD(x.date)} 前後入帳約 ${money(net)}`,
+        b: x.ok ? `已公告每股 ${+(+x.per).toFixed(4)} 元 × ${lots} 張${x.nhi ? `，已扣二代健保 ${money(x.nhi)}` : ""}${n > 0 ? `，再 ${n} 天` : ""}`
+                : `還沒公告，依「配息參考」估每股約 ${+(+x.per).toFixed(3)} 元；公告後會再提醒`});
+    });
+    // 💧 填息:最近一次除息在 75 天內
+    const last = H.filter(d => d.ex && d.ex <= td).pop();
+    if (last && pnDays(td, last.ex) <= 75) {
+      const f = pnFill(await pnPx(p.id), last.ex, last.cash);
+      if (f) {
+        if (f.day) { const fresh = f.n - f.day < 5;
+          L.push({g: "fill", d: last.ex, lv: "good", ic: "✅", nt: fresh, key: `fill:${p.id}:${last.ex}`,
+            t: `${nm} 已填息`, b: `${pnMD(last.ex)} 除息（每股 ${+(+last.cash).toFixed(4)} 元），第 ${f.day} 個交易日收盤漲回除息前的 ${f.pre} 元${fresh ? "（剛填息）" : ""}`}); }
+        else L.push({g: "fill", d: last.ex, lv: "wait", ic: "⏳", nt: false, prog: f.prog, key: `fillw:${p.id}:${last.ex}`,
+            t: `${nm} 填息中${f.prog != null ? ` ${fmt(f.prog, 0)}%` : ""}`,
+            b: `${pnMD(last.ex)} 除息（每股 ${+(+last.cash).toFixed(4)} 元）；除息前 ${f.pre} 元，現在 ${f.now} 元，還差 ${fmt(f.need, 2)} 元；已過 ${f.n} 個交易日`});
+      }
+    }
+  }
+  const G = {ex: 0, pay: 1, fill: 2};
+  return L.sort((a, b) => G[a.g] - G[b.g] || (a.g == "fill" ? b.d.localeCompare(a.d) : a.d.localeCompare(b.d)));
+}
+function pnSeen(){ try { return new Set(JSON.parse(localStorage.getItem("etf_pf_ntf") || "[]")); } catch (e) { return new Set(); } }
+function pnPaint(L, fresh){
+  const box = document.getElementById("pfNtfBox"); if (!box) return;
+  if (!PF.length) { box.hidden = true; return; }
+  box.hidden = false;
+  const perm = window.Notification ? Notification.permission : "unsupported";
+  const grp = [["ex", "📅 即將除息（一個月內，已公告）"], ["pay", "💰 即將入帳（一個月內）"], ["fill", "💧 填息進度（最近一次除息）"]];
+  box.innerHTML = `<h2>🔔 我的配息提醒 <small>持股的除息、入帳、填息</small>${perm == "default" ? `<button class="pn-perm" id="pnPerm">開啟系統通知</button>` : perm == "granted" ? `<span class="pn-ok">✓ 系統通知已開啟</span>` : ""}</h2>
+    ${L.length ? grp.map(([g, h]) => { const A = L.filter(x => x.g == g); return A.length ? `<div class="pn-g"><small>${h}</small>${A.map(x => `<div class="pn-i ${x.lv}"><i>${x.ic}</i><div><b>${x.t}${fresh.has(x.key) ? "<em>新</em>" : ""}</b><span>${x.b}</span>${x.prog != null ? `<div class="pn-bar"><u style="width:${x.prog.toFixed(0)}%"></u></div>` : ""}</div></div>`).join("")}</div>` : ""; }).join("")
+      : `<p class="pn-none">目前沒有提醒：一個月內沒有除息、也沒有入帳。</p>`}
+    <p class="mknote" style="margin-top:8px">每次打開網站會自動檢查，有新的除息公告、配息公告、入帳前一天、剛填息就跳通知；同一件事只通知一次。除息日以證交所預告為準，最後買進日遇連假要再往前。</p>`;
+  const b = document.getElementById("pnPerm");
+  if (b) b.onclick = async () => { try { if (typeof rdSW == "function") await rdSW(); await Notification.requestPermission(); } catch (e) {} pnPaint(L, fresh);
+    if (window.Notification && Notification.permission == "granted") pnSys("✅ 配息提醒通知已開啟", "之後打開網站時，有除息、配息、填息的新消息會跳出通知", "pf-ok"); };
+}
+async function pnSys(title, body, tag){
+  if (!window.Notification || Notification.permission != "granted") return;
+  const opt = {body, tag, icon: "icon-192.png", badge: "favicon-32.png", data: {url: location.href.split("#")[0] + "#calc"}};
+  try { const reg = typeof rdSW == "function" ? await rdSW() : null; if (reg && reg.showNotification) { await reg.showNotification(title, opt); return; } } catch (e) {}
+  try { new Notification(title, opt); } catch (e) {}
+}
+function pnAlert(L){
+  const seen = pnSeen(), N = L.filter(x => x.nt && !seen.has(x.key));
+  if (!N.length) return new Set();
+  N.forEach(x => seen.add(x.key));
+  try { localStorage.setItem("etf_pf_ntf", JSON.stringify([...seen].slice(-400))); } catch (e) {}
+  toast(`🔔 配息提醒：${N[0].t}${N.length > 1 ? `，另有 ${N.length - 1} 則` : ""}（在「我的配息試算」）`, 5000);
+  if (N.length <= 3) N.forEach(x => pnSys("巴菲遠配息提醒：" + x.t, x.b, "pf-" + x.key));
+  else pnSys(`巴菲遠配息提醒：${N.length} 則新消息`, N.map(x => "・" + x.t).join("\n"), "pf-sum");
+  return new Set(N.map(x => x.key));
+}
+function pfNtfRun(){
+  clearTimeout(PFNT);
+  PFNT = setTimeout(async () => {
+    try { const L = await pnBuild(); PFNF = new Set([...(PFNF || []), ...pnAlert(L)]); PFN = {L, t: Date.now()}; pnPaint(L, PFNF); } catch (e) { console.warn("配息提醒", e); }
+  }, 400);
+}
+setInterval(() => { if (!document.hidden && typeof S != "undefined" && S && S.length) pfNtfRun(); }, 30 * 60e3);   // 網站一直開著:每 30 分鐘再檢查(跨日、新公告)
 </script>
 </body>
 </html>
