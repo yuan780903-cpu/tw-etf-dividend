@@ -20,6 +20,7 @@ def main(pages=20):
     byname = {n.replace("*", "").split("-")[0]: c for c, n in stocks}
     name_re = re.compile("|".join(sorted((re.escape(n) for n in byname if len(n) >= 2 and n not in SKIP), key=len, reverse=True)))
     codes = {c for c, _ in stocks}; nm = dict(stocks)
+    etfs = {r[0] for r in names if str(r[0]).startswith("00")}         # ETF 只認代號(名稱太像,容易誤判)
     url, posts, src = BASE + "/bbs/Stock/index.html", [], "PTT 直接讀取"
     for _ in range(pages if os.environ.get("PTT_SRC") != "phone" else 0):
         try: h = get(url)
@@ -43,7 +44,7 @@ def main(pages=20):
             print(f"  iPhone 上傳資料 {len(P.get('posts') or [])} 篇,{age:.1f} 小時前" + ("" if posts else ",太舊不用"))
         except Exception as e: print("  iPhone 上傳資料讀取失敗:", e)
     else: posts.sort(key=lambda x: -int((re.search(r"M\.(\d+)\.", x["u"]) or [0, 0])[1]))   # 新到舊
-    agg = {}
+    agg, by, ps = {}, {}, []
     for x in posts:
         if "公告" in x["t"]: continue
         nh = {byname[m] for m in name_re.findall(x["t"])}
@@ -52,6 +53,12 @@ def main(pages=20):
         bull = bool(re.search(r"\[標的\].*(多|做多|多單)\s*$", x["t"])); bear = bool(re.search(r"\[標的\].*(空|放空|空單)\s*$", x["t"]))
         for c in hit:
             a = agg.setdefault(c, [0, 0, 0, 0]); a[0] += 1; a[1] += int(bull); a[2] += int(bear); a[3] += max(x["p"], 0)
+        hit |= set(re.findall(r"(?<![0-9A-Za-z])(00\d{2,4}[A-Z]?)(?![0-9A-Za-z])", x["t"].upper())) & etfs
+        if hit:                                      # 個股/ETF 詳情頁「網友討論」:每檔最多 12 篇(新到舊)
+            ps.append([x["u"].rsplit("/", 1)[-1].replace(".html", ""), x["t"], x["p"], x["d"], 1 if bull else -1 if bear else 0])
+            for c in hit:
+                L = by.setdefault(c, [])
+                if len(L) < 12: L.append(len(ps) - 1)
     top = sorted(agg.items(), key=lambda kv: (-kv[1][0], -kv[1][3]))[:40]
     tgt = [x for x in posts if x["t"].startswith("[標的]")][:20]
     if not posts:                                   # PTT 擋雲端主機(403)時:保留上一版,不用空資料蓋掉
@@ -59,8 +66,9 @@ def main(pages=20):
     fh.save(os.path.join(DATA, "ptt.json"), dict(updated=dt.datetime.now().strftime("%Y-%m-%d %H:%M"), n=len(posts),
             top=[[c, nm.get(c, c)] + v for c, v in top], tgt=tgt, hot=sorted(posts, key=lambda x: -x["p"])[:10],
             cols=["代號", "名稱", "被提到篇數", "標的看多", "標的看空", "推文熱度"],
-            src=src, note="統計 PTT Stock 板最新文章標題；討論熱度≠會漲，常是過熱的反指標"))
-    print("ptt.json:", src, len(posts), "篇;熱門", [(c, nm.get(c), v[0]) for c, v in top[:5]])
+            src=src, note="統計 PTT Stock 板最新文章標題；討論熱度≠會漲，常是過熱的反指標",
+            ps=ps, by=by, ps_cols=["文章代碼(https://www.ptt.cc/bbs/Stock/<代碼>.html)", "標題", "推文(爆=100)", "日期", "標的方向 1多 -1空"]))
+    print("ptt.json:", src, len(posts), "篇;熱門", [(c, nm.get(c), v[0]) for c, v in top[:5]], f";詳情頁討論 {len(by)} 檔、{len(ps)} 篇")
 
 if __name__ == "__main__":
     main()
