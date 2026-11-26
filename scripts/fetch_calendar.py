@@ -24,10 +24,13 @@ FRED = {
   "Industrial Production and Capacity Utilization": ("🇺🇸 工業生產", "中", "工廠實際生產多少", None, ""),
 }
 
+_OP = urllib.request.build_opener()           # FRED 遇到瀏覽器 UA(Mozilla/5.0)會卡到逾時 → 用 urllib 預設 UA、不用全域 opener
 def get(u, t=90, tries=3):
     import time
     for k in range(tries):                       # FRED 偶爾很慢:重試
-        try: return urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"}), timeout=t).read().decode("utf-8-sig", "ignore")
+        try:
+            if "stlouisfed.org" in u: return _OP.open(u, timeout=t).read().decode("utf-8-sig", "ignore")
+            return urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"}), timeout=t).read().decode("utf-8-sig", "ignore")
         except Exception as e:
             if k == tries - 1: raise
             time.sleep(5 + k * 10)
@@ -42,29 +45,43 @@ def prev_of(macro, sid):
     if sid in ("UMCSENT", "GACDFSA066MSFRBPHI"): return f"前值 {v:.1f}"
     return f"前值 {v:+.2f}%"
 
+RID = {"Consumer Price Index": 10, "Employment Situation": 50, "Personal Income and Outlays": 54, "Producer Price Index": 46,     # FRED 發布代號(rid)
+       "Advance Monthly Sales for Retail and Food Services": 9, "Gross Domestic Product": 53, "Job Openings and Labor Turnover Survey": 192,
+       "Unemployment Insurance Weekly Claims Report": 180, "Surveys of Consumers": 91, "Manufacturing Business Outlook Survey": 351,
+       "Industrial Production and Capacity Utilization": 13}
+
+OFFICIAL_ET = {"Surveys of Consumers": (10, 0), "Industrial Production and Capacity Utilization": (9, 15)}
+
 def fred(macro, start, end):
-    out = []
-    months = sorted({(start.year, start.month), (end.year, end.month), ((start + dt.timedelta(days=31)).year, (start + dt.timedelta(days=31)).month)})
-    for y, m in months:
-        try: h = get(f"https://fred.stlouisfed.org/releases/calendar?y={y}&m={m}&vs={y}-{m:02d}-01&ve={y}-{m:02d}-{calendar.monthrange(y, m)[1]:02d}&ob=rd&od=asc", t=25, tries=1)
-        except Exception as e: print("  FRED 行事曆失敗,本次略過", y, m, e); break   # FRED 常擋/逾時:失敗就不再等其他月份
-        body = h[h.find("<tbody"):h.find("</tbody>")]
-        day = None; tm = None
-        for row in re.findall(r"<tr[^>]*>([\s\S]*?)</tr>", body):
-            dm = re.search(r"font-weight: bold;\">\s*\w+\s+(\w+ \d{1,2}, \d{4})", row)
-            if dm: day = dt.datetime.strptime(dm[1], "%B %d, %Y").date(); tm = None; continue
-            cells = re.findall(r"<td[^>]*>([\s\S]*?)</td>", row)
-            if len(cells) < 2 or not day: continue
-            t = re.sub(r"<[^>]+>|\s+", " ", cells[0]).strip(); name = html.unescape(re.sub(r"<[^>]+>", "", cells[1])).strip()
-            if t: tm = t
-            if name not in FRED: continue
-            hh, mm = 8, 30
-            if tm:
-                mt = re.match(r"(\d{1,2}):(\d{2})\s*(am|pm)", tm)
-                if mt: hh = int(mt[1]) % 12 + (12 if mt[3] == "pm" else 0); mm = int(mt[2])
-            loc = dt.datetime(day.year, day.month, day.day, hh, mm, tzinfo=ZoneInfo("America/Chicago")).astimezone(TPE)
-            zh, imp, why, sid, _ = FRED[name]
-            out.append(dict(d=loc.date().isoformat(), t=loc.strftime("%H:%M"), c="US", n=zh, imp=imp, why=why, prev=prev_of(macro, sid), src="FRED", key=sid or name))
+    """FRED 發布行事曆:逐一查每種數據(rid)整年的公布日(月檢視一頁只列 50 筆,只看得到月初一兩天,所以改逐一查)。FRED 時間是美國中部時間"""
+    out, fails = [], 0
+    for name, (zh, imp, why, sid, _) in FRED.items():
+        rid = RID.get(name)
+        if not rid: continue
+        for y in sorted({start.year, end.year}):
+            try: h = get(f"https://fred.stlouisfed.org/releases/calendar?rid={rid}&y={y}&ob=rd&od=desc", t=25, tries=2); fails = 0
+            except Exception as e:
+                print("  FRED 行事曆失敗", name, y, e); fails += 1
+                if fails >= 3: print("  FRED 連續失敗,本次略過其餘"); return out
+                continue
+            body = h[h.find("<tbody"):h.find("</tbody>")]
+            day = None; tm = None
+            for row in re.findall(r"<tr[^>]*>([\s\S]*?)</tr>", body):
+                dm = re.search(r"font-weight: bold;\">\s*\w+\s+(\w+ \d{1,2}, \d{4})", row)
+                if dm: day = dt.datetime.strptime(dm[1], "%B %d, %Y").date(); tm = None; continue
+                cells = re.findall(r"<td[^>]*>([\s\S]*?)</td>", row)
+                if len(cells) < 2 or not day: continue
+                t = re.sub(r"<[^>]+>|\s+", " ", cells[0]).strip()
+                if t: tm = t
+                if not (start <= day <= end): continue
+                hh, mm = 8, 30
+                if tm:
+                    mt = re.match(r"(\d{1,2}):(\d{2})\s*(am|pm)", tm)
+                    if mt: hh = int(mt[1]) % 12 + (12 if mt[3] == "pm" else 0); mm = int(mt[2])
+                loc = dt.datetime(day.year, day.month, day.day, hh, mm, tzinfo=ZoneInfo("America/Chicago")).astimezone(TPE)
+                if name in OFFICIAL_ET:              # FRED 列的是它自己更新的時間(密大、工業生產會晚 1 小時以上),改用官方公布時間(美東)
+                    oh, om = OFFICIAL_ET[name]; loc = dt.datetime(day.year, day.month, day.day, oh, om, tzinfo=ZoneInfo("America/New_York")).astimezone(TPE)
+                out.append(dict(d=loc.date().isoformat(), t=loc.strftime("%H:%M"), c="US", n=zh, imp=imp, why=why, prev=prev_of(macro, sid), src="FRED", key=sid or name))
     return out
 
 def fomc():
@@ -192,6 +209,8 @@ def assess(ev, macro, ctx):
         txt = f"上次（{last['d']}）{'升' if last['bp'] > 0 else '降'}息 {abs(last['bp']) / 25:.0f} 碼。" if last else ""
         if k == "FOMC": put("波動大", txt + "若再升息或暗示不降息 → 偏空；若維持不變並釋出降息訊號 → 偏多。決策在台北凌晨公布，隔天台股開盤直接反應，持股可先降低槓桿。")
         else: put("中性", txt + "會議紀錄會透露委員們的真實想法，若偏鷹（想升息）美股容易回檔。")
+    elif k in ("Job Openings and Labor Turnover Survey", "Industrial Production and Capacity Utilization"):
+        put("看數據", ("企業職缺越多代表還想請人、景氣穩；職缺大減會讓市場擔心景氣轉弱（但也提高降息機會）。" if k.startswith("Job") else "工廠實際生產多少；明顯走弱代表製造業降溫，對景氣循環股較不利。") + "單一數據影響通常一兩天。")
     elif k in ("A191RL1Q225SBEA", "Advance Monthly Sales for Retail and Food Services", "RSAFS", "UMCSENT", "Surveys of Consumers", "GACDFSA066MSFRBPHI", "ICSA"):
         put("看數據", "數據比預期好 → 景氣強、股市偏多，但太強會讓降息延後；比預期差 → 擔心衰退。單一數據影響通常一兩天。")
     elif k == "USHOL":

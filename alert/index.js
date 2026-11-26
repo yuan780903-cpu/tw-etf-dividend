@@ -210,7 +210,7 @@ async function genUs(N, k){
 }
 
 /* ---------- ⚡ 總經快訊 ----------
- * 美國:美東週一～五 08:25～11:00 每 5 分鐘看 FRED(勞工統計局/商務部數據 08:30、密大信心 10:00 公布後幾分鐘內 FRED 就更新)
+ * 美國:美東週一～五 08:25～11:40 每 5 分鐘看 FRED(勞工統計局/商務部數據 08:30、密大信心 10:00 公布後幾分鐘內 FRED 就更新)
  * FOMC:美東 14:00～15:30 每 3 分鐘看聯準會新聞稿 RSS;台灣:每 30 分鐘看網站 data/macro.json(GitHub Actions 每天 15:40/21:30/22:30 更新)
  * 第一次看到某指標只記錄、不發(避免舊數字被當快訊);只跟「前一次公布值」比,沒有市場預期值 */
 const MACR = [
@@ -221,7 +221,7 @@ const MACR = [
   {k: "RET", n: "🇺🇸 零售銷售", s: ["RSAFS"], f: "m"},
   {k: "GDP", n: "🇺🇸 GDP 經濟成長率", s: ["A191RL1Q225SBEA"], f: "q"},
   {k: "CLM", n: "🇺🇸 初領失業救濟金", s: ["ICSA"], f: "w"},
-  {k: "UMS", n: "🇺🇸 密大消費者信心", s: ["UMCSENT"], f: "m"},
+  // 密大消費者信心不列:FRED 應密大要求延後 1 個月才放數字,不是快訊
   {k: "PHI", n: "🇺🇸 費城聯準會製造業指數", s: ["GACDFSA066MSFRBPHI"], f: "m"},
 ];
 const MAC_GAP = {m: 20, w: 5, q: 25};          // 抓到新數字後幾天內不用再看(月資料 20 天、週資料 5 天、季資料 25 天)
@@ -383,7 +383,7 @@ async function macDeliver(env, M){
 }
 async function macRun(env, T){
   const N = nyNow(), out = {};
-  if (N.wd >= 1 && N.wd <= 5 && N.m >= 505 && N.m <= 660 && N.m % 5 == 0) { try { out.us = await macUS(env); } catch (e) { out.usErr = e.message; } }
+  if (N.wd >= 1 && N.wd <= 5 && N.m >= 505 && N.m <= 700 && N.m % 5 == 0) { try { out.us = await macUS(env); } catch (e) { out.usErr = e.message; } }
   if (N.wd >= 1 && N.wd <= 5 && N.m >= 840 && N.m <= 930 && N.m % 3 == 0) { try { out.fomc = await macFOMC(env); } catch (e) { out.fomcErr = e.message; } }
   if (T.m % 30 == 7) { try { out.tw = await macTW(env); } catch (e) { out.twErr = e.message; } }
   return out;
