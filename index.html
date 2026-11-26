@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-version" content="v2026.11.26.5">
+<meta name="app-version" content="v2026.11.26.6">
 <meta name="theme-color" content="#F1F5FF">
 <title>巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
@@ -1543,6 +1543,26 @@ button{-webkit-tap-highlight-color:transparent}
   .o2-chip{display:inline-flex;gap:4px;align-items:baseline;background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:3px 8px;font-size:14.5px}
   .o2-chip em{font-style:normal;color:var(--sub);font-size:13px}
 }
+/* ===== ⚡ 總經快訊 ===== */
+.mf-pop{position:fixed;right:18px;bottom:22px;z-index:95;width:min(440px,calc(100vw - 24px));background:var(--panel);color:var(--ink);border:1px solid var(--line);border-left:6px solid var(--c);border-radius:18px;box-shadow:0 18px 48px rgba(15,23,42,.28);padding:14px 16px 12px;animation:mfIn .35s ease}
+@keyframes mfIn{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+.mf-pop .mf-h{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--sub);font-weight:800;margin-bottom:4px}
+.mf-pop .mf-x{margin-left:auto;border:0;background:none;color:var(--sub);font-size:20px;cursor:pointer;line-height:1}
+.mf-pop h4{margin:0 0 6px;font-size:17px;line-height:1.45}
+.mf-pop p{margin:0;font-size:15px;line-height:1.7;white-space:pre-line}
+.mf-pop .mf-a{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.mf-pop .mf-a button{border:1.5px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:7px 12px;font-size:14.5px;font-weight:800;cursor:pointer;font-family:inherit}
+.mf-pop .mf-a button.pri{background:var(--brand);border-color:var(--brand);color:#fff}
+.mf-dir{display:inline-block;border-radius:999px;padding:1px 9px;font-size:12.5px;font-weight:800;color:#fff;background:var(--c)}
+.mf-box h2{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}.mf-box h2 small{font-size:13.5px;color:var(--sub);font-weight:600}
+.mf-list{display:flex;flex-direction:column;gap:10px}
+.mf-i{border:1px solid var(--line);border-left:5px solid var(--c);border-radius:14px;padding:11px 14px;background:var(--panel)}
+.mf-i .mf-t{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;font-size:13px;color:var(--sub);font-weight:700}
+.mf-i b{display:block;font-size:16.5px;margin:3px 0 4px;line-height:1.45}
+.mf-i p{margin:0;font-size:15px;line-height:1.7;white-space:pre-line;color:var(--ink)}
+.mf-i.new{box-shadow:0 0 0 2px color-mix(in srgb,var(--brand) 25%,transparent)}
+.mf-none{color:var(--sub);font-size:15px;margin:4px 0}
+@media(max-width:700px){.mf-pop{right:12px;left:12px;width:auto;bottom:calc(84px + env(safe-area-inset-bottom))}}
 /* ===== 📰 個股/ETF 新聞・討論 ===== */
 .nws .box{margin-bottom:14px}.nws .mm-h3 small{font-weight:500}
 .nws-l{display:flex;flex-direction:column}
@@ -1891,7 +1911,7 @@ button{-webkit-tap-highlight-color:transparent}
   <div class="top">
     <div class="brand"><img class="logo" src="logo.svg" alt="柴犬博士" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.26.5</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
+      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.26.6</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
@@ -1919,7 +1939,7 @@ button{-webkit-tap-highlight-color:transparent}
 
   <div class="page" id="pg-vp"><div class="bd-wrap" id="xpBoard"><div class="bd-hd"><h2>📋 選股總表</h2><span>點卡片直接看名單</span></div><div class="bd" id="xpTiles"><div class="sk" style="height:120px;grid-column:1/-1"></div></div></div><div id="xpNav"></div><div id="xpKid"></div><div id="xpEx"></div><div id="xpDc"></div><div id="xpVs"></div><div id="xpQs"></div><div id="vp"></div><div id="xpCk"></div><div id="xpRv"></div><div id="xpRt"></div><div id="xpDv"></div><div id="xpEv"></div><div id="xpWl"></div><div id="xpRd"></div><div id="xpRk"></div><div id="xpPt"></div><div id="xpWh"></div><div id="xpBt"></div></div>
   <div class="page" id="pg-mkt"><div id="mkt"></div></div>
-  <div class="page" id="pg-macro"><div id="macro"></div></div>
+  <div class="page" id="pg-macro"><div id="macFlash"></div><div id="macro"></div></div>
 
   <div class="page" id="pg-learn"><div id="learn"></div></div>
 
@@ -2050,7 +2070,7 @@ button{-webkit-tap-highlight-color:transparent}
 </div>
 
 <footer><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button>
-  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.26.5</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.26.6</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -4558,6 +4578,7 @@ async function mcZQ(){
   return out.filter(o => o.r != null);
 }
 async function loadMacro(){
+  macFlashLoad(true);
   if (MC) return;
   $("#macro").innerHTML = `<div class="box"><div class="sk" style="height:180px"></div></div><div class="box"><div class="sk" style="height:320px"></div></div>`;
   MC = await getJ("macro");
@@ -6041,7 +6062,7 @@ function bpBox(d){
 /* ================= ⚡ 盤中雷達:當沖參考 + 即時警示(自己人評估用) ================= */
 const RDK = {list: "bfy_rd", cfg: "bfy_rd_cfg", on: "bfy_rd_on", log: "bfy_rd_log"};
 const rdLS = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }, rdSave = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} if (k == "bfy_rd" || k == "bfy_rd_cfg") setTimeout(() => typeof cpSync == "function" && cpSync(), 300); };
-const RD = {list: rdLS(RDK.list, null), cfg: Object.assign({drop: 2, win: 15, pct: -5, lim: -8, sell: 3, up: true, sound: true, brief: true, b_am: true, b_open: true, b_close: true, b_inst: true, b_uso: true, b_usc: true, px: {}}, rdLS(RDK.cfg, {})), on: rdLS(RDK.on, false),
+const RD = {list: rdLS(RDK.list, null), cfg: Object.assign({drop: 2, win: 15, pct: -5, lim: -8, sell: 3, up: true, sound: true, brief: true, b_am: true, b_open: true, b_close: true, b_inst: true, b_uso: true, b_usc: true, b_mac: true, px: {}}, rdLS(RDK.cfg, {})), on: rdLS(RDK.on, false),
   q: {}, smp: {}, bars: {}, ref: {}, log: [], fired: {}, unread: 0, t: null, barT: 0, last: null, err: null, sw: null, wake: null};
 (() => { const L = rdLS(RDK.log, {d: "", log: [], fired: {}}), td = new Date().toLocaleDateString("sv", {timeZone: "Asia/Taipei"}); if (L.d == td) { RD.log = L.log; RD.fired = L.fired; } })();
 const rdToday = () => new Date().toLocaleDateString("sv", {timeZone: "Asia/Taipei"});
@@ -6178,7 +6199,7 @@ function rdPaint(){
         <label>急跌：<input type="number" step=".5" data-cf="win" value="${cf.win}"> 分鐘內跌 <input type="number" step=".5" data-cf="drop" value="${cf.drop}"> %</label>
         <label>跌幅達 <input type="number" step="1" data-cf="pct" value="${cf.pct}"> %、接近跌停 <input type="number" step="1" data-cf="lim" value="${cf.lim}"> %</label>
         <label>委賣是委買 <input type="number" step=".5" data-cf="sell" value="${cf.sell}"> 倍以上＝大量賣壓</label>
-        <label><input type="checkbox" data-cf="up" ${cf.up ? "checked" : ""}> 也提醒上漲訊號（突破、急漲）</label><label><input type="checkbox" data-cf="sound" ${cf.sound ? "checked" : ""}> 警示音</label><div class="brf-cf"><b>🗞️ 盤勢摘要推播</b>（需開「📲 關網站也通知」；美股時間依夏令／冬令自動換算）${BRFL().map(([k, ic, nm]) => `<label><input type="checkbox" data-cf="b_${k}" ${cf["b_" + k] !== false ? "checked" : ""}> ${ic} ${nm} ${brfHM(k)}</label>`).join("")}</div>
+        <label><input type="checkbox" data-cf="up" ${cf.up ? "checked" : ""}> 也提醒上漲訊號（突破、急漲）</label><label><input type="checkbox" data-cf="sound" ${cf.sound ? "checked" : ""}> 警示音</label><div class="brf-cf"><b>🗞️ 盤勢摘要推播</b>（需開「📲 關網站也通知」；美股時間依夏令／冬令自動換算）${BRFL().map(([k, ic, nm]) => `<label><input type="checkbox" data-cf="b_${k}" ${cf["b_" + k] !== false ? "checked" : ""}> ${ic} ${nm} ${brfHM(k)}</label>`).join("")}<label><input type="checkbox" data-cf="b_mac" ${cf.b_mac !== false ? "checked" : ""}> ⚡ 總經快訊（CPI、非農、FOMC、景氣燈號…一公布就推）</label></div>
         <p class="mknote">固定會提醒：跌破開盤 15 分鐘低點、跌破今日支撐 S1、跌破月線、跌破 20 日支撐。每檔每種警示一天提醒一次（急跌、賣壓 20～30 分鐘可再提醒）。</p></div></details></div>
     ${codes.length ? `<div class="gx-tw" style="max-height:none"><table class="gx-tb rd-tb"><thead><tr><th>股票</th><th>即時價</th><th>漲跌</th><th>當沖偏向</th><th>買點（日線）</th><th>均價線</th><th>開盤區間</th><th>S2</th><th>S1</th><th>樞紐 P</th><th>R1</th><th>R2</th><th>委買/委賣</th><th>今日高/低</th><th>提示</th><th>🎯 價位提醒</th><th></th></tr></thead><tbody>
       ${codes.map(c => { const v = rdView(c), r = RD.ref[c] || {}, b = RD.bars[c] || {};
@@ -7932,6 +7953,42 @@ function o2Init(){
   }
   o2Paint();
 }
+
+/* ================= ⚡ 總經快訊:雲端 Worker 偵測到新數字(美國 FRED、FOMC、台灣景氣燈號/出口/外銷訂單)→ GET /macro;
+   網站每 2 分鐘看一次,12 小時內沒看過的跳出判讀卡;總經頁上方列出近 30 天快訊 ================= */
+var MACF, MACT;
+function macDirC(d){ return d == "偏多" ? "#CF3A3A" : d == "偏空" ? "#1A8F57" : "#64748B"; }
+function macSeen(){ try { return JSON.parse(localStorage.getItem("bfy_mac_seen") || "[]"); } catch (e) { return []; } }
+function macMark(keys){ try { const a = [...new Set([...macSeen(), ...keys])].slice(-120); localStorage.setItem("bfy_mac_seen", JSON.stringify(a)); } catch (e) {} }
+function macWhen(ts){ return new Date(ts).toLocaleString("zh-TW", {timeZone: "Asia/Taipei", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false}); }
+async function macFlashLoad(force){
+  if (document.hidden && !force) return;
+  if (!force && MACF && Date.now() - MACF.t < 100e3) return;
+  try { const j = await fetch(CPAPI + "/macro", {cache: "no-store"}).then(r => r.json()); MACF = {items: j.items || [], t: Date.now()}; } catch (e) { if (!MACF) MACF = {items: [], t: Date.now(), err: 1}; }
+  macFlashList(); macFlashPop();
+}
+function macFlashList(){
+  const el = $("#macFlash"); if (!el || !MACF) return; const seen = new Set(macSeen()), L = MACF.items;
+  el.innerHTML = `<div class="box mf-box"><h2 class="sec">⚡ 總經快訊 <small>美國 CPI、非農、PCE、FOMC 等一公布幾分鐘內就出現；台灣景氣燈號、出口、外銷訂單在網站每天更新時出現。開「📲 關網站也通知」手機也會收到</small></h2>
+    ${L.length ? `<div class="mf-list">${L.slice(0, 12).map(x => `<div class="mf-i${seen.has(x.k) ? "" : " new"}" style="--c:${macDirC(x.dir)}"><div class="mf-t"><span class="mf-dir" style="--c:${macDirC(x.dir)}">${esc(x.dir || "中性")}</span><span>${macWhen(x.ts)} 公布</span>${x.g == "TW" ? "<span>🇹🇼 台灣</span>" : "<span>🇺🇸 美國</span>"}</div><b>${esc(String(x.title).replace(/^⚡\s*/, ""))}</b><p>${esc(x.body)}</p></div>`).join("")}</div>`
+      : `<p class="mf-none">${MACF.err ? "快訊暫時載入失敗，稍後自動重試。" : "近 30 天還沒有新的總經數字公布（快訊功能 2026/11/26 啟用，下一個數字公布時會出現在這裡）。可以先看下方的總經指標與行事曆。"}</p>`}</div>`;
+}
+function macFlashPop(){
+  if (!MACF || document.querySelector(".mf-pop")) return;
+  const seen = new Set(macSeen()), L = MACF.items.filter(x => !seen.has(x.k) && Date.now() - x.ts < 12 * 3600e3);
+  if (!L.length) return; const x = L[0], c = macDirC(x.dir), more = L.length - 1;
+  const d = document.createElement("div"); d.className = "mf-pop"; d.style.setProperty("--c", c); d.setAttribute("role", "dialog");
+  d.innerHTML = `<div class="mf-h">⚡ 總經快訊・${macWhen(x.ts)}<span class="mf-dir" style="--c:${c}">${esc(x.dir || "中性")}</span><button class="mf-x" type="button" aria-label="關閉">×</button></div>
+    <h4>${esc(String(x.title).replace(/^⚡\s*/, ""))}</h4><p>${esc(x.body)}</p>
+    <div class="mf-a"><button class="pri" type="button" data-mf="go">${more ? `看全部 ${more + 1} 則快訊` : "到總經頁看更多"}</button><button type="button" data-mf="ok">知道了</button></div>`;
+  document.body.appendChild(d);
+  const close = () => { macMark(L.map(y => y.k)); d.remove(); macFlashList(); };
+  d.querySelector(".mf-x").onclick = close; d.querySelector('[data-mf="ok"]').onclick = close;
+  d.querySelector('[data-mf="go"]').onclick = () => { close(); go("macro"); setTimeout(() => { const b = $("#macFlash"); if (b) b.scrollIntoView({behavior: "smooth", block: "start"}); }, 400); };
+}
+setTimeout(() => macFlashLoad(true), 4000);
+clearInterval(MACT); MACT = setInterval(() => macFlashLoad(), 120e3);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) macFlashLoad(); });
 </script>
 </body>
 </html>

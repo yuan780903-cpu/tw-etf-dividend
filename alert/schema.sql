@@ -24,3 +24,5 @@ CREATE TABLE IF NOT EXISTS state (k TEXT PRIMARY KEY, v TEXT, ts INTEGER);
 -- 全站盤勢摘要時間軸(晨報/開盤/收盤/三大法人/美股開盤/美股收盤),每天每種一筆
 CREATE TABLE IF NOT EXISTS briefs (day TEXT, k TEXT, ts INTEGER, title TEXT, body TEXT, PRIMARY KEY (day, k));
 CREATE INDEX IF NOT EXISTS briefs_ts ON briefs(ts);
+-- ⚡ 總經快訊(2026-11-26):k=指標:資料月份,g=US/TW,dir=偏多/偏空/中性
+CREATE TABLE IF NOT EXISTS macro (k TEXT PRIMARY KEY, ts INTEGER, g TEXT, title TEXT, body TEXT, dir TEXT);

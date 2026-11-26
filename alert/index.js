@@ -1,6 +1,7 @@
 /* 巴菲遠・盤中雷達雲端推播 Worker
  * - 網站把「雷達名單 + 警示條件 + 推播訂閱」存到這裡(POST /sub)
  * - 另有盤勢摘要(晨報/台股開盤/收盤/三大法人/美股開盤/美股收盤,見 SLOTS),存全站時間軸 /briefs 並推播
+ * - ⚡ 總經快訊(macRun):美國數據一公布(FRED)、FOMC 決策(聯準會 RSS)、台灣景氣燈號/出口/外銷訂單 → 白話判讀,存 macro 表(GET /macro)並推播
  * - Cron 盤中每分鐘抓證交所即時報價,依條件判斷,觸發就送 Web Push(網站關閉也收得到)
  * - 推播不帶內容(免加密),手機收到後由 Service Worker 呼叫 GET /pending 取得警示文字再跳通知
  * 秘密:VAPID_PRIVATE_JWK(wrangler secret)。公開金鑰放在 wrangler.toml 的 VAPID_PUBLIC。
@@ -9,7 +10,7 @@ const ORIGINS = ["https://yuan780903-cpu.github.io", "http://localhost:8770"];
 const PUSH_HOSTS = /^(fcm\.googleapis\.com|android\.googleapis\.com|updates\.push\.services\.mozilla\.com|web\.push\.apple\.com|[a-z0-9-]+\.notify\.windows\.com|[a-z0-9-]+\.push\.apple\.com)$/;
 const UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/124 Safari/537.36"};
 const YUA = {"User-Agent": "Mozilla/5.0"};   // Yahoo 會擋完整瀏覽器字串(429),用簡短版
-const DEF = {drop: 2, win: 15, pct: -5, lim: -8, sell: 3, up: true, brief: true, b_am: true, b_open: true, b_close: true, b_inst: true, b_uso: true, b_usc: true};
+const DEF = {drop: 2, win: 15, pct: -5, lim: -8, sell: 3, up: true, brief: true, b_am: true, b_open: true, b_close: true, b_inst: true, b_uso: true, b_usc: true, b_mac: true};
 
 const cors = req => { const o = req.headers.get("Origin") || ""; return {"Access-Control-Allow-Origin": ORIGINS.includes(o) ? o : ORIGINS[0], "Access-Control-Allow-Methods": "GET,POST,OPTIONS", "Access-Control-Allow-Headers": "Content-Type", "Vary": "Origin"}; };
 const J = (req, d, s = 200) => new Response(JSON.stringify(d), {status: s, headers: {"Content-Type": "application/json; charset=utf-8", ...cors(req)}});
@@ -208,6 +209,186 @@ async function genUs(N, k){
   return {title: `🇺🇸 美股收盤（美東 ${md(N.day)}）`, body: body + `${v ? `；VIX ${v.toFixed(1)}` : ""}。${fx ? fx + " " : ""}→ 台股今天開盤參考：${av >= 1 ? "偏多" : av <= -1 ? "偏空" : "持平"}（看費半與台積電 ADR，僅供參考）。`};
 }
 
+/* ---------- ⚡ 總經快訊 ----------
+ * 美國:美東週一～五 08:25～11:00 每 5 分鐘看 FRED(勞工統計局/商務部數據 08:30、密大信心 10:00 公布後幾分鐘內 FRED 就更新)
+ * FOMC:美東 14:00～15:30 每 3 分鐘看聯準會新聞稿 RSS;台灣:每 30 分鐘看網站 data/macro.json(GitHub Actions 每天 15:40/21:30/22:30 更新)
+ * 第一次看到某指標只記錄、不發(避免舊數字被當快訊);只跟「前一次公布值」比,沒有市場預期值 */
+const MACR = [
+  {k: "CPI", n: "🇺🇸 CPI 消費者物價", s: ["CPIAUCSL", "CPILFESL"], f: "m"},
+  {k: "PCE", n: "🇺🇸 PCE 物價（聯準會最看重）", s: ["PCEPILFE", "PCEPI"], f: "m"},
+  {k: "PPI", n: "🇺🇸 PPI 生產者物價", s: ["PPIFIS"], f: "m"},
+  {k: "NFP", n: "🇺🇸 非農就業＋失業率", s: ["PAYEMS", "UNRATE"], f: "m"},
+  {k: "RET", n: "🇺🇸 零售銷售", s: ["RSAFS"], f: "m"},
+  {k: "GDP", n: "🇺🇸 GDP 經濟成長率", s: ["A191RL1Q225SBEA"], f: "q"},
+  {k: "CLM", n: "🇺🇸 初領失業救濟金", s: ["ICSA"], f: "w"},
+  {k: "UMS", n: "🇺🇸 密大消費者信心", s: ["UMCSENT"], f: "m"},
+  {k: "PHI", n: "🇺🇸 費城聯準會製造業指數", s: ["GACDFSA066MSFRBPHI"], f: "m"},
+];
+const MAC_GAP = {m: 20, w: 5, q: 25};          // 抓到新數字後幾天內不用再看(月資料 20 天、週資料 5 天、季資料 25 天)
+const f2 = (x, d = 2) => x == null || !isFinite(x) ? "—" : x.toFixed(d);
+const sg2 = (x, d = 2) => x == null || !isFinite(x) ? "—" : (x > 0 ? "+" : "") + x.toFixed(d);
+const ymTxt = d => `${+d.slice(5, 7)} 月`;
+async function fred(id, months){
+  const st = new Date(Date.now() - months * 31 * 864e5).toISOString().slice(0, 10);
+  const r = await fetch(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${id}&cosd=${st}`, {cf: {cacheTtl: 0}});
+  if (!r.ok) throw new Error("FRED " + id + " " + r.status);
+  const rows = (await r.text()).split(/\r?\n/).slice(1).map(l => l.split(",")).filter(c => c.length == 2 && /^\d{4}-\d\d-\d\d$/.test(c[0]) && c[1] !== "" && c[1] !== ".").map(c => [c[0], +c[1]]);
+  if (!rows.length) throw new Error("FRED " + id + " 空");
+  return rows;
+}
+const yoyAt = (R, i) => {                     // 年增率;去年同月官方沒資料(例:2025 年 10 月美國政府停擺)時,用前後月份幾何平均推估
+  const d = R[i][0], y = +d.slice(0, 4), m = +d.slice(5, 7), g = (yy, mm) => { while (mm < 1) { mm += 12; yy--; } while (mm > 12) { mm -= 12; yy++; } const r = R.find(x => x[0] == `${yy}-${String(mm).padStart(2, "0")}-01`); return r ? r[1] : null; };
+  let p = g(y - 1, m); if (p == null) { const a = g(y - 1, m - 1), b = g(y - 1, m + 1); if (a && b) p = Math.sqrt(a * b); }
+  return p ? (R[i][1] / p - 1) * 100 : null; };
+const momAt = (R, i) => i > 0 ? (R[i][1] / R[i - 1][1] - 1) * 100 : null;
+const EFF = {
+  hot: "降息機會變小，美債殖利率容易上升，科技股、成長股壓力較大；台股電子權值股隔天開盤容易跟著修正。",
+  cool: "降息預期升溫，資金比較願意回到股市，科技股、成長股通常受惠；台股電子股隔天開盤有機會偏強。",
+};
+/* 各指標的白話判讀:回傳 {head(標題用), num(數字), read(判讀), eff(對股市), dir(偏多/偏空/中性)} */
+function macEval(R, D){
+  const L = a => a.length - 1;
+  if (R.k == "CPI" || R.k == "PCE") {
+    const [A, B] = D, a1 = yoyAt(A, L(A)), a0 = yoyAt(A, L(A) - 1), b1 = yoyAt(B, L(B)), b0 = yoyAt(B, L(B) - 1), mm = momAt(A, L(A));
+    const core = R.k == "CPI" ? {n: "核心 CPI", v: b1, p: b0} : {n: "核心 PCE", v: a1, p: a0}, head = R.k == "CPI" ? {n: "CPI", v: a1, p: a0} : {n: "PCE", v: b1, p: b0};
+    if ([head.v, head.p, core.v, core.p].some(x => x == null || !isFinite(x))) return null;
+    const dc = core.v - core.p, dh = head.v - head.p, up = dc >= 0.1 || (dh >= 0.15 && dc >= 0), dn = dc <= -0.1 || (dh <= -0.15 && dc <= 0);
+    const hi = core.v >= 3 ? "仍明顯高於聯準會 2% 目標" : core.v >= 2.5 ? "還高於聯準會 2% 目標" : "已接近聯準會 2% 目標";
+    return {head: `${head.n} 年增 ${f2(head.v)}%（前值 ${f2(head.p)}%）`,
+      num: `${head.n} 年增 ${f2(head.v)}%（前值 ${f2(head.p)}%）${R.k == "CPI" ? `、月增 ${sg2(mm)}%` : ""}；${core.n} 年增 ${f2(core.v)}%（前值 ${f2(core.p)}%）`,
+      read: up ? `通膨比上一次熱（${core.n}升 ${f2(dc)} 個百分點），${hi}。` : dn ? `通膨比上一次降溫（${core.n}降 ${f2(-dc)} 個百分點），${hi}。` : `通膨和上一次差不多，${hi}。`,
+      eff: up ? EFF.hot : dn ? EFF.cool : core.v >= 3 ? "通膨卡在高檔，降息不會太快，股市沒有新的利多，波動看其他數據。" : "對股市影響不大，市場會轉看下一個數據與聯準會官員的說法。",
+      dir: up ? "偏空" : dn ? "偏多" : "中性"};
+  }
+  if (R.k == "PPI") {
+    const [A] = D, v = yoyAt(A, L(A)), p = yoyAt(A, L(A) - 1); if (v == null || p == null) return null; const d = v - p, up = d >= 0.2, dn = d <= -0.2;
+    return {head: `PPI 年增 ${f2(v)}%（前值 ${f2(p)}%）`, num: `PPI 年增 ${f2(v)}%（前值 ${f2(p)}%）、月增 ${sg2(momAt(A, L(A)))}%`,
+      read: up ? "工廠端成本升溫，之後可能慢慢轉嫁到 CPI。" : dn ? "工廠端成本降溫，對之後的 CPI 是好消息。" : "工廠端成本變化不大。",
+      eff: (up ? "對股市略偏空：市場擔心通膨回頭、降息延後。" : dn ? "對股市略偏多：通膨壓力減輕。" : "對股市影響有限。") + "PPI 是 CPI 的前哨，影響通常比 CPI 小。", dir: up ? "偏空" : dn ? "偏多" : "中性"};
+  }
+  if (R.k == "NFP") {
+    const [A, U] = D, n = L(A), c = A[n][1] - A[n - 1][1], cp = A[n - 1][1] - A[n - 2][1], u = U[L(U)][1], up = U[L(U) - 1][1], du = u - up, w = x => `${sg2(x / 10, 1)} 萬人`;
+    const t = c >= 250 ? ["就業過熱", "就業太強，市場怕聯準會不急著降息，美債殖利率容易上升，科技股、成長股壓力較大。", "偏空"]
+      : c >= 100 ? ["溫和成長", "最理想的「不冷不熱」：景氣穩、通膨壓力不大，對股市偏多。", "偏多"]
+      : c >= 0 ? ["明顯放緩", "降息機會增加（利多），但也要留意景氣轉弱；股市常先漲、之後看企業獲利。", "中性"]
+      : ["就業減少", "就業負成長是衰退警訊，市場會擔心企業獲利，股市容易下跌、資金轉向債券。", "偏空"];
+    return {head: `非農新增 ${w(c)}（前值 ${w(cp)}）、失業率 ${f2(u, 1)}%`, num: `非農就業新增 ${w(c)}（前值 ${w(cp)}）；失業率 ${f2(u, 1)}%（前值 ${f2(up, 1)}%）`,
+      read: `${t[0]}。${du >= 0.2 ? `失業率跳升 ${f2(du, 1)} 個百分點，市場會擔心景氣衰退。` : du <= -0.2 ? "失業率明顯下降，就業市場偏緊。" : "失業率變化不大。"}`,
+      eff: t[1] + "非農常讓美股單日大漲大跌，台股隔天開盤跟著反應。", dir: du >= 0.2 && t[2] != "偏空" ? "中性" : t[2]};
+  }
+  if (R.k == "RET") {
+    const [A] = D, m = momAt(A, L(A)), mp = momAt(A, L(A) - 1), y = yoyAt(A, L(A));
+    return {head: `零售銷售月增 ${sg2(m)}%（前值 ${sg2(mp)}%）`, num: `零售銷售月增 ${sg2(m)}%（前值 ${sg2(mp)}%）、年增 ${sg2(y)}%`,
+      read: m >= 0.6 ? "美國人花錢力道強。" : m >= 0 ? "消費穩健。" : "消費轉弱，美國人開始省錢。",
+      eff: m >= 0.6 ? "景氣強對企業獲利是好事，但太強會讓降息延後，股市偏多但波動加大。" : m >= 0 ? "對股市偏多：景氣穩、通膨壓力不大。" : "對股市偏空：消費占美國經濟七成，轉弱會讓市場擔心景氣。", dir: m >= 0.6 ? "中性" : m >= 0 ? "偏多" : "偏空"};
+  }
+  if (R.k == "GDP") {
+    const [A] = D, v = A[L(A)][1], p = A[L(A) - 1][1], q = A[L(A)][0], qn = `${q.slice(0, 4)} 第 ${Math.floor((+q.slice(5, 7) - 1) / 3) + 1} 季`;
+    const t = v >= 3 ? ["經濟強勁", "企業獲利有支撐，但太熱會讓降息延後。", "中性"] : v >= 1 ? ["溫和成長", "最理想的速度，對股市偏多。", "偏多"] : v >= 0 ? ["成長放緩", "市場會開始擔心景氣，但也提高降息機會。", "中性"] : ["負成長", "衰退警訊，股市容易下跌。", "偏空"];
+    return {head: `GDP ${qn}年化 ${sg2(v, 1)}%（前值 ${sg2(p, 1)}%）`, num: `${qn} GDP 年化季增 ${sg2(v, 1)}%（前一季 ${sg2(p, 1)}%）`, read: t[0] + "。", eff: t[1], dir: t[2]};
+  }
+  if (R.k == "CLM") {
+    const [A] = D, v = A[L(A)][1], p = A[L(A) - 1][1], w = x => `${(x / 1e4).toFixed(1)} 萬人`;
+    const t = v >= 260000 ? ["裁員升溫", "就業市場轉弱，市場會擔心景氣，股市偏空（但也提高降息機會）。", "偏空"] : v >= 230000 ? ["略為增加，要留意", "還在可接受範圍，影響有限。", "中性"] : ["就業市場穩", "裁員不多，景氣還穩。", "中性"];
+    return {head: `初領失業金 ${w(v)}（前值 ${w(p)}）`, num: `初領失業救濟金 ${w(v)}（前一週 ${w(p)}）`, read: t[0] + "。", eff: t[1] + "這是每週數據，單週影響通常不大。", dir: t[2]};
+  }
+  if (R.k == "UMS" || R.k == "PHI") {
+    const [A] = D, v = A[L(A)][1], p = A[L(A) - 1][1], d = v - p, nm = R.k == "UMS" ? "密大消費者信心" : "費城聯準會製造業指數";
+    const read = R.k == "UMS" ? (d >= 2 ? "美國人對未來比較有信心。" : d <= -2 ? "美國人對未來比較悲觀。" : "信心變化不大。") + (v < 60 ? "整體信心仍偏低。" : "")
+      : (v > 0 ? "工廠景氣在擴張（大於 0）。" : "工廠景氣在收縮（小於 0）。") + (d >= 5 ? "比上個月明顯變好。" : d <= -5 ? "比上個月明顯變差。" : "");
+    return {head: `${nm} ${f2(v, 1)}（前值 ${f2(p, 1)}）`, num: `${nm} ${f2(v, 1)}（前值 ${f2(p, 1)}）`, read,
+      eff: (d >= (R.k == "UMS" ? 2 : 5) ? "對股市略偏多。" : d <= -(R.k == "UMS" ? 2 : 5) ? "對股市略偏空。" : "對股市影響有限。") + "這類調查數據影響通常一兩天。",
+      dir: d >= (R.k == "UMS" ? 2 : 5) ? "偏多" : d <= -(R.k == "UMS" ? 2 : 5) ? "偏空" : "中性"};
+  }
+  return null;
+}
+async function macGet(env, k){ const r = await env.DB.prepare("SELECT v FROM state WHERE k=?").bind("mac:" + k).first(); return r ? JSON.parse(r.v) : null; }
+async function macPut(env, k, v){ await env.DB.prepare("INSERT OR REPLACE INTO state(k,v,ts) VALUES(?,?,?)").bind("mac:" + k, JSON.stringify(v), Date.now()).run(); }
+async function macBuild(R){
+  const mo = R.f == "q" ? 30 : R.f == "w" ? 3 : 26, D = [];
+  for (const id of R.s) D.push(await fred(id, mo));
+  const E = macEval(R, D); if (!E) return null;
+  const d = D[0][D[0].length - 1][0];
+  return {k: `${R.k}:${d}`, g: "US", obs: d, title: `⚡ ${R.n}｜${E.head}`, body: `📊 ${E.num}。\n🔍 判讀：${E.read}\n📈 對股市：${E.dir}——${E.eff}\n（和前一次公布值比較；市場預期值請以財經新聞為準）`, dir: E.dir, short: `${E.dir}｜${E.read}`};
+}
+async function macUS(env){
+  const out = [];
+  for (const R of MACR) {
+    try {
+      const st = await macGet(env, R.k);
+      if (st && st.seen && Date.now() - st.seen < MAC_GAP[R.f] * 864e5) continue;
+      const A = await fred(R.s[0], R.f == "q" ? 30 : R.f == "w" ? 3 : 26), d = A[A.length - 1][0];
+      if (!st) { await macPut(env, R.k, {d, seen: 0}); out.push([R.k, "基準", d]); continue; }       // 第一次:只記錄
+      if (d <= st.d) continue;
+      const M = await macBuild(R); if (!M) continue;
+      await macPut(env, R.k, {d, seen: Date.now()}); out.push([R.k, await macDeliver(env, M)]);
+    } catch (e) { out.push([R.k, "錯誤 " + e.message]); }
+  }
+  return out;
+}
+/* FOMC:聯準會新聞稿 RSS 出現新的「FOMC statement」→ 讀聲明裡的利率區間 */
+const fedNum = t => { const m = String(t).trim().match(/^(\d+)(?:-(\d+)\/(\d+))?$/); return m ? +m[1] + (m[2] ? +m[2] / +m[3] : 0) : null; };
+async function macFOMC(env){
+  const x = await (await fetch("https://www.federalreserve.gov/feeds/press_monetary.xml", {headers: UA})).text();
+  const it = [...x.matchAll(/<item>([\s\S]*?)<\/item>/g)].map(m => ({t: (m[1].match(/<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/) || [])[1] || "", u: ((m[1].match(/<link>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/link>/) || [])[1] || "").trim()})).find(i => /FOMC statement/i.test(i.t));
+  if (!it || !it.u) return "沒有聲明";
+  const st = await macGet(env, "FOMC");
+  if (st && st.u == it.u) return "沒有新聲明";
+  const h = await (await fetch(it.u, {headers: UA})).text(), m = h.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").match(/target range for the federal funds rate (?:at|to) ([\d\-\/]+) to ([\d\-\/]+) percent/i);
+  if (!m) return "讀不到利率";
+  const lo = fedNum(m[1]), up = fedNum(m[2]);
+  if (!st) { await macPut(env, "FOMC", {u: it.u, up}); return "基準 " + up; }
+  const bp = Math.round((up - st.up) * 100), day = new Date(Date.now() - 5 * 3600e3).toISOString().slice(0, 10);
+  const t = bp > 0 ? ["升息 " + bp / 25 + " 碼", "升息讓借錢變貴，股市（尤其科技股、成長股）偏空；美元走強，台幣容易貶值、外資可能賣台股。", "偏空"]
+    : bp < 0 ? ["降息 " + -bp / 25 + " 碼", "降息讓資金變便宜，股市偏多；但如果是因為景氣變差才急降，要留意後續企業獲利。", "偏多"]
+    : ["利率不變", "市場會看聲明和主席記者會的口氣：暗示之後會降息 → 偏多；暗示不降或可能升息 → 偏空。", "中性"];
+  const M = {k: `FOMC:${day}`, g: "US", obs: day, title: `⚡ 🇺🇸 FOMC 利率決策｜${t[0]}，利率區間 ${f2(lo)}%～${f2(up)}%`,
+    body: `📊 聯準會${t[0]}，聯邦基金利率目標區間 ${f2(lo)}%～${f2(up)}%（之前上限 ${f2(st.up)}%）。\n🔍 判讀：${t[0] == "利率不變" ? "這次按兵不動。" : "利率方向改變，是全球股市最重要的消息。"}\n📈 對股市：${t[2]}——${t[1]}台股隔天開盤會直接反應。`, dir: t[2], short: `${t[2]}｜${t[0]}`};
+  await macPut(env, "FOMC", {u: it.u, up});
+  return await macDeliver(env, M);
+}
+/* 台灣:網站 data/macro.json 的景氣燈號/出口/外銷訂單有新月份 */
+async function macTW(env){
+  const r = await fetch("https://yuan780903-cpu.github.io/tw-etf-dividend/data/macro.json?" + Date.now(), {cf: {cacheTtl: 0}}); if (!r.ok) return "macro.json " + r.status;
+  const tw = (await r.json()).tw || {}, out = [];
+  const LCOL = v => v >= 38 ? "紅燈" : v >= 32 ? "黃紅燈" : v >= 23 ? "綠燈" : v >= 17 ? "黃藍燈" : "藍燈";
+  for (const k of ["LIGHT", "EXPORT", "ORDERS"]) {
+    const R = (tw[k] || {}).rows || []; if (R.length < 2) continue;
+    const [d, v] = R[R.length - 1], p = R[R.length - 2][1], st = await macGet(env, "TW" + k);
+    if (!st) { await macPut(env, "TW" + k, {d}); out.push([k, "基準", d]); continue; }
+    if (d <= st.d) continue;
+    let M;
+    if (k == "LIGHT") { const c = LCOL(v), cp = LCOL(p);
+      const t = c == "紅燈" ? ["景氣過熱", "紅燈代表景氣熱到最高檔，歷史上常是股市高檔區，追高要小心、留意轉弱。", "中性"] : c == "黃紅燈" ? ["景氣熱絡", "景氣好、企業獲利佳，對股市偏多。", "偏多"]
+        : c == "綠燈" ? ["景氣穩定", "景氣穩定成長，對股市中性偏多。", "偏多"] : c == "黃藍燈" ? ["景氣轉弱", "景氣轉弱，企業獲利可能下修，股市偏空。", "偏空"] : ["景氣低迷", "短期股市偏弱，但歷史上藍燈常是長線分批布局的時機。", "偏空"];
+      M = {title: `⚡ 🇹🇼 景氣對策信號｜${ymTxt(d)}${c} ${v} 分（前值 ${cp} ${p} 分）`, num: `${ymTxt(d)}景氣對策信號 ${c}，綜合分數 ${v} 分（前一個月 ${cp} ${p} 分）`, read: `${t[0]}${v > p ? "，分數比上個月高" : v < p ? "，分數比上個月低" : ""}。`, eff: t[1], dir: t[2]}; }
+    else { const nm = k == "EXPORT" ? "海關出口" : "外銷訂單", d0 = v - p;
+      const t = v >= 10 ? ["高成長", `${nm}持續大幅成長，台灣企業（尤其電子業）獲利有支撐，對台股偏多。`, "偏多"] : v >= 0 ? ["溫和成長", "成長不快但還在增加，對台股中性偏多。", "中性"] : ["衰退", `${nm}年減，市場會擔心景氣與企業獲利，對台股偏空。`, "偏空"];
+      M = {title: `⚡ 🇹🇼 ${nm}｜${ymTxt(d)}年增 ${sg2(v, 1)}%（前值 ${sg2(p, 1)}%）`, num: `${ymTxt(d)}${nm}年增 ${sg2(v, 1)}%（前一個月 ${sg2(p, 1)}%）`,
+        read: `${t[0]}${d0 >= 5 ? "，成長比上個月加快" : d0 <= -5 ? "，成長比上個月放緩" : ""}。${k == "ORDERS" ? "外銷訂單是未來 1～3 個月出口的領先指標。" : ""}`, eff: t[1], dir: t[2]}; }
+    const Mx = {k: `TW${k}:${d}`, g: "TW", obs: d, title: M.title, body: `📊 ${M.num}。\n🔍 判讀：${M.read}\n📈 對股市：${M.dir}——${M.eff}\n（台灣數據由網站每天更新時取得，可能比官方公布晚幾小時）`, dir: M.dir, short: `${M.dir}｜${M.read}`};
+    await macPut(env, "TW" + k, {d}); out.push([k, await macDeliver(env, Mx)]);
+  }
+  return out;
+}
+async function macDeliver(env, M){
+  const DB = env.DB, now = Date.now();
+  const ins = await DB.prepare("INSERT OR IGNORE INTO macro(k,ts,g,title,body,dir) VALUES(?,?,?,?,?,?)").bind(M.k, now, M.g, M.title, M.body, M.dir).run();
+  if (!ins.meta.changes) return 0;
+  const subs = ((await DB.prepare("SELECT * FROM subs WHERE rd != 0").all()).results || []).filter(s => { const c = JSON.parse(s.cfg || "{}"); return "b_mac" in c ? !!c.b_mac : c.brief !== false; });
+  if (!subs.length) return 0;
+  await DB.batch(subs.map(s => DB.prepare("INSERT INTO alerts(sub,ts,code,title,body,bad) VALUES(?,?,?,?,?,0)").bind(s.id, now, "MAC", M.title.replace(/^⚡\s*/, "⚡ "), M.short)));
+  for (const s of subs) await push(env, s);
+  return subs.length;
+}
+async function macRun(env, T){
+  const N = nyNow(), out = {};
+  if (N.wd >= 1 && N.wd <= 5 && N.m >= 505 && N.m <= 660 && N.m % 5 == 0) { try { out.us = await macUS(env); } catch (e) { out.usErr = e.message; } }
+  if (N.wd >= 1 && N.wd <= 5 && N.m >= 840 && N.m <= 930 && N.m % 3 == 0) { try { out.fomc = await macFOMC(env); } catch (e) { out.fomcErr = e.message; } }
+  if (T.m % 30 == 7) { try { out.tw = await macTW(env); } catch (e) { out.twErr = e.message; } }
+  return out;
+}
+
 /* 存進全站時間軸,再推播給有訂閱且開著這種摘要的人 */
 async function deliver(env, k, day, B){
   const DB = env.DB, now = Date.now();
@@ -309,6 +490,7 @@ async function run(env){
   if (T.m == 480) { await DB.prepare("DELETE FROM alerts WHERE ts < ?").bind(Date.now() - 7 * 864e5).run(); await DB.prepare("DELETE FROM fired WHERE day < ?").bind(new Date(Date.now() - 3 * 864e5).toISOString().slice(0, 10)).run(); await DB.prepare("DELETE FROM briefs WHERE ts < ?").bind(Date.now() - 30 * 864e5).run(); await DB.prepare("DELETE FROM pffired WHERE ts < ?").bind(Date.now() - 150 * 864e5).run(); }
   try { const r = await pfRun(env, T); if (r) res.pf = r; } catch (e) { res.pfErr = e.message; }
   try { res.briefs = await briefs(env, T); } catch (e) { res.briefErr = e.message; }
+  try { const m = await macRun(env, T); if (Object.keys(m).length) res.mac = m; } catch (e) { res.macErr = e.message; }
   if (!(T.wd >= 1 && T.wd <= 5) || T.m < 480 || T.m > 812) return res;          // 盤中雷達只在台北 08:00～13:32
   if (await twHoliday(env, T.day)) return {...res, skip: "台股休市"};
   const subs = (await DB.prepare("SELECT * FROM subs").all()).results || [];
@@ -397,6 +579,17 @@ export default {
       if (p == "/briefs") {                        // 網站「今日盤勢摘要」時間軸(公開)
         const R = (await env.DB.prepare("SELECT day,k,ts,title,body FROM briefs WHERE ts>? ORDER BY ts DESC LIMIT 14").bind(Date.now() - 4 * 864e5).all()).results || [];
         return new Response(JSON.stringify({items: R, now: Date.now()}), {headers: {"Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=60", ...cors(req)}});
+      }
+      if (p == "/macro") {                         // 網站「⚡ 總經快訊」(公開):近 30 天最新 30 則
+        const R = (await env.DB.prepare("SELECT k,ts,g,title,body,dir FROM macro WHERE ts>? ORDER BY ts DESC LIMIT 30").bind(Date.now() - 30 * 864e5).all()).results || [];
+        return new Response(JSON.stringify({items: R, now: Date.now()}), {headers: {"Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=60", ...cors(req)}});
+      }
+      if (p == "/macprev") {                       // 測試用:用最新數字產生快訊文字(不存、不推播;每種 30 秒最多一次)
+        const k = u.searchParams.get("k") || "", R = MACR.find(x => x.k == k), sk = "mp:" + k, row = await env.DB.prepare("SELECT v,ts FROM state WHERE k=?").bind(sk).first();
+        if (!R) return J(req, {error: "k 要是 " + MACR.map(x => x.k).join("/")}, 400);
+        if (row && Date.now() - row.ts < 30e3) return J(req, JSON.parse(row.v));
+        const o = await macBuild(R); await env.DB.prepare("INSERT OR REPLACE INTO state(k,v,ts) VALUES(?,?,?)").bind(sk, JSON.stringify(o), Date.now()).run();
+        return J(req, o);
       }
       if (p == "/preview") {                       // 測試用:產生摘要文字但不存、不推播(每種 30 秒最多一次)
         const k = u.searchParams.get("k") || "", T = tpe(), N = nyNow(), sk = "pv:" + k, row = await env.DB.prepare("SELECT v,ts FROM state WHERE k=?").bind(sk).first();
