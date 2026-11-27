@@ -119,7 +119,8 @@ def check_runtime(g):
     except Exception: add(g, "實際開網頁", "warn", "沒有安裝 Playwright，略過（本機測試時正常）"); return
     try:
         with sync_playwright() as p:
-            b = p.chromium.launch()
+            try: b = p.chromium.launch()                   # 雲端:playwright install 下載的 Chromium
+            except Exception: b = p.chromium.launch(channel="chrome")   # 本機 Mac:直接用已安裝的 Google Chrome(不用另外下載)
             for nm, vp in (("電腦", {"width": 1280, "height": 900}), ("手機", {"width": 390, "height": 844})):
                 pg = b.new_page(viewport=vp); errs = []
                 pg.on("pageerror", lambda e: errs.append(str(e)[:160]))
