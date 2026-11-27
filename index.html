@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-version" content="v2026.11.27.1">
+<meta name="app-version" content="v2026.11.27.2">
 <meta name="theme-color" content="#F1F5FF">
 <title>巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
@@ -1962,7 +1962,7 @@ button{-webkit-tap-highlight-color:transparent}
   <div class="top">
     <div class="brand"><img class="logo" src="logo.svg" alt="柴犬博士" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.27.1</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
+      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.27.2</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
@@ -2121,7 +2121,7 @@ button{-webkit-tap-highlight-color:transparent}
 </div>
 
 <footer><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button>
-  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.27.1</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.27.2</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -6114,7 +6114,7 @@ function bpBox(d){
 /* ================= ⚡ 盤中雷達:當沖參考 + 即時警示(自己人評估用) ================= */
 const RDK = {list: "bfy_rd", cfg: "bfy_rd_cfg", on: "bfy_rd_on", log: "bfy_rd_log"};
 const rdLS = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }, rdSave = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} if (k == "bfy_rd" || k == "bfy_rd_cfg") setTimeout(() => typeof cpSync == "function" && cpSync(), 300); };
-const RD = {list: rdLS(RDK.list, null), cfg: Object.assign({drop: 2, win: 15, pct: -5, lim: -8, sell: 3, up: true, sound: true, brief: true, b_am: true, b_open: true, b_close: true, b_inst: true, b_uso: true, b_usc: true, b_mac: true, px: {}}, rdLS(RDK.cfg, {})), on: rdLS(RDK.on, false),
+const RD = {list: rdLS(RDK.list, null), cfg: Object.assign({drop: 2, win: 15, pct: -5, lim: -8, sell: 3, up: true, sound: true, brief: true, b_am: true, b_open: true, b_close: true, b_inst: true, b_uso: true, b_usc: true, b_no: true, b_nc: true, b_mac: true, px: {}}, rdLS(RDK.cfg, {})), on: rdLS(RDK.on, false),
   q: {}, smp: {}, bars: {}, ref: {}, log: [], fired: {}, unread: 0, t: null, barT: 0, last: null, err: null, sw: null, wake: null};
 (() => { const L = rdLS(RDK.log, {d: "", log: [], fired: {}}), td = new Date().toLocaleDateString("sv", {timeZone: "Asia/Taipei"}); if (L.d == td) { RD.log = L.log; RD.fired = L.fired; } })();
 const rdToday = () => new Date().toLocaleDateString("sv", {timeZone: "Asia/Taipei"});
@@ -7276,7 +7276,7 @@ function ixChart(el, V, ks, CO, NM, ixName){
 
 /* ================= 🗞️ 盤勢摘要時間軸(大盤頁最上面)＋手機推播:晨報/台股開盤/收盤/三大法人/美股開盤/美股收盤 =================
    內容由雲端 Worker etf-alert 在各時間點產生(GET /briefs),有開「關網站也通知」的手機同時收到推播 */
-function BRFL(){ return [["am", "☀️", "晨報", "tw", 510], ["open", "🔔", "台股開盤", "tw", 545], ["close", "🔔", "台股收盤", "tw", 815], ["inst", "🏦", "三大法人", "tw", 900], ["uso", "🇺🇸", "美股開盤", "ny", 575], ["usc", "🇺🇸", "美股收盤", "ny", 965]]; }   // 用函式宣告(會提升),頁面載入時先畫雷達也不會出錯
+function BRFL(){ return [["am", "☀️", "晨報", "tw", 510], ["open", "🔔", "台股開盤", "tw", 545], ["close", "🔔", "台股收盤", "tw", 815], ["inst", "🏦", "三大法人", "tw", 900], ["no", "🌙", "台指期夜盤開盤", "tw", 905], ["uso", "🇺🇸", "美股開盤", "ny", 575], ["nc", "🌙", "台指期夜盤收盤", "tw", 302], ["usc", "🇺🇸", "美股收盤", "ny", 965]]; }   // 用函式宣告(會提升),頁面載入時先畫雷達也不會出錯
 var BRS = {items: [], t: 0, err: ""};
 function nyDiff(){ try { const d = new Date(), f = z => new Date(d.toLocaleString("en-US", {timeZone: z})); return Math.round((f("Asia/Taipei") - f("America/New_York")) / 36e5); } catch (e) { return 13; } }
 function brfMin(k){ const b = BRFL().find(x => x[0] == k); return b[3] == "tw" ? b[4] : (b[4] + nyDiff() * 60) % 1440; }
@@ -7289,8 +7289,8 @@ async function briefUI(force){
   const nx = S.slice().sort((a, b) => (a.at - m + 1440) % 1440 - (b.at - m + 1440) % 1440)[0], newest = BRS.items[0];
   const fresh = x => x && Date.now() - x.ts < 20 * 3600e3, when = ts => new Date(ts).toLocaleString("zh-TW", {timeZone: "Asia/Taipei", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false});
   const cpOnNow = typeof CP != "undefined" && CP.on;
-  el.innerHTML = `<h2 class="sec">🗞️ 盤勢摘要時間軸 <small>台股開收盤、三大法人、美股開收盤（晨報與美股收盤附美元兌台幣判讀），時間到雲端自動產生；開「📲 關網站也通知」手機同步收到</small></h2>
-    <div class="brf-top"><span>⏭️ 下一則：${nx.ic} ${nx.nm} <b class="num">${brfHM(nx.k)}</b>${nx.k == "usc" ? "（凌晨）" : ""}<small>　週一～五；台股休市或美股休市那天自動不發</small></span>
+  el.innerHTML = `<h2 class="sec">🗞️ 盤勢摘要時間軸 <small>台股開收盤、三大法人、台指期夜盤開收盤、美股開收盤（晨報與美股收盤附美元兌台幣判讀），時間到雲端自動產生；開「📲 關網站也通知」手機同步收到</small></h2>
+    <div class="brf-top"><span>⏭️ 下一則：${nx.ic} ${nx.nm} <b class="num">${brfHM(nx.k)}</b>${nx.k == "usc" || nx.k == "nc" ? "（凌晨）" : ""}<small>　週一～五；台股休市或美股休市那天自動不發</small></span>
       ${cpOnNow ? `<span class="brf-ok">📲 手機推播已開<small>（想關掉某幾種：專家選股 → ⚡ 盤中雷達 → ⚙️ 警示條件）</small></span>` : `<button class="lgo hl" id="brfPush">📲 手機也要收到</button><small class="mknote">iPhone 要先把網站「加入主畫面」，再從主畫面圖示開啟</small>`}</div>
     ${BRS.err ? `<p class="mknote">${BRS.err}</p>` : ""}
     <div class="brf">${S.map(s => `<div class="brf-c${fresh(s.last) ? " on" : ""}${newest && s.last === newest ? " new" : ""}"><div class="brf-h"><span>${s.ic} ${s.nm}</span><b class="num">${brfHM(s.k)}</b></div>

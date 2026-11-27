@@ -10,7 +10,7 @@ const ORIGINS = ["https://yuan780903-cpu.github.io", "http://localhost:8770"];
 const PUSH_HOSTS = /^(fcm\.googleapis\.com|android\.googleapis\.com|updates\.push\.services\.mozilla\.com|web\.push\.apple\.com|[a-z0-9-]+\.notify\.windows\.com|[a-z0-9-]+\.push\.apple\.com)$/;
 const UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/124 Safari/537.36"};
 const YUA = {"User-Agent": "Mozilla/5.0"};   // Yahoo 會擋完整瀏覽器字串(429),用簡短版
-const DEF = {drop: 2, win: 15, pct: -5, lim: -8, sell: 3, up: true, brief: true, b_am: true, b_open: true, b_close: true, b_inst: true, b_uso: true, b_usc: true, b_mac: true};
+const DEF = {drop: 2, win: 15, pct: -5, lim: -8, sell: 3, up: true, brief: true, b_am: true, b_open: true, b_close: true, b_inst: true, b_uso: true, b_usc: true, b_no: true, b_nc: true, b_mac: true};
 
 const cors = req => { const o = req.headers.get("Origin") || ""; return {"Access-Control-Allow-Origin": ORIGINS.includes(o) ? o : ORIGINS[0], "Access-Control-Allow-Methods": "GET,POST,OPTIONS", "Access-Control-Allow-Headers": "Content-Type", "Vary": "Origin"}; };
 const J = (req, d, s = 200) => new Response(JSON.stringify(d), {status: s, headers: {"Content-Type": "application/json; charset=utf-8", ...cors(req)}});
@@ -97,7 +97,7 @@ function rules(c, q, st, cf, ref, m){
  * 🇺🇸 美股開盤 美東 09:35、美股收盤 美東 16:05(台灣冬令 22:35／05:05,夏令 21:35／04:05,程式自動換算)
  * 晨報、美股收盤都附「💱 美元兌台幣」:升貶幾角、近一個月位置、對台股的白話判讀(fxTwd/fxTxt)
  * 台股休市看證交所休市日；美股休市看最後成交日期不是今天就不發 */
-const BKEY = {am: "b_am", open: "b_open", close: "b_close", inst: "b_inst", uso: "b_uso", usc: "b_usc"};
+const BKEY = {am: "b_am", open: "b_open", close: "b_close", inst: "b_inst", uso: "b_uso", usc: "b_usc", no: "b_no", nc: "b_nc"};
 const SLOTS = [["am", "tw", 510, 520, 1], ["open", "tw", 545, 552, 1], ["close", "tw", 815, 825, 1], ["inst", "tw", 900, 960, 5], ["uso", "ny", 575, 590, 1], ["usc", "ny", 965, 990, 1]];
 const pc = (x, d = 1) => x == null || !isFinite(x) ? "—" : (x > 0 ? "+" : "") + x.toFixed(d) + "%";
 const nf = (x, d = 0) => x == null || !isFinite(x) ? "—" : Number(x).toLocaleString("en-US", {minimumFractionDigits: d, maximumFractionDigits: d});
@@ -411,6 +411,65 @@ async function deliver(env, k, day, B){
   for (const s of subs) await push(env, s);
   return subs.length;
 }
+/* ---------- 🌙 台指期夜盤(期交所盤後交易時段 15:00～隔天 05:00) ----------
+ * 資料:期交所即時行情 mis.taifex.com.tw getQuoteList(MarketType 1 = 夜盤);近月合約取成交量最大的那一個(結算週換月也對)。
+ * 夜盤開盤:台北 15:02～15:25(台股交易日);夜盤收盤:台北 05:01～05:30(週二～六),時間軸日期記在夜盤開始那天。
+ * CRefPrice = 夜盤參考價(當天日盤結算);TXF-P 的 CRefPrice = 今天加權指數收盤。 */
+var TXERR = "";
+/* 期交所即時行情(mis.taifex)擋 Cloudflare 主機(HTTP 520),改用 Yahoo 奇摩「台指期近一」WTX&(含夜盤;regularMarketPreviousClose=日盤結算) */
+async function txNight(){
+  try {
+    const r = await fetch("https://tw.stock.yahoo.com/_td-stock/api/resource/StockServices.stockList;fields=avgPrice;symbols=WTX%26", {headers: YUA});
+    if (!r.ok) { TXERR = "HTTP " + r.status; return null; }
+    const x = ((await r.json()) || [])[0], v = o => o && typeof o == "object" ? +o.raw : +o;
+    if (!x || !v(x.price)) { TXERR = "無報價"; return null; }
+    const t = new Date(Date.parse(x.regularMarketTime) + 8 * 3600e3).toISOString();      // 轉台北時間
+    const tw = await spark(["^TWII"]), sp = tw["^TWII"] || {};
+    return {nm: "台指期近月", px: v(x.price), ref: v(x.regularMarketPreviousClose), o: v(x.regularMarketOpen), h: v(x.regularMarketDayHigh), l: v(x.regularMarketDayLow),
+      vol: +x.volume || 0, date: t.slice(0, 10).replace(/-/g, ""), time: t.slice(11, 19).replace(/:/g, ""), spot: sp.px || null, spotDay: sp.day};
+  } catch (e) { TXERR = e.message; return null; }
+}
+const dayAdd = (day, n) => new Date(Date.parse(day) + n * 864e5).toISOString().slice(0, 10);
+const pts = x => (x > 0 ? "+" : x < 0 ? "−" : "") + nf(Math.abs(x)) + " 點";
+async function genNight(T, k, test){
+  const q = await txNight(); if (!q || !q.px || !q.ref) return null;
+  const today = T.day.replace(/-/g, ""), yday = dayAdd(T.day, -1).replace(/-/g, "");
+  const y = await spark(["ES=F", "NQ=F", "^GSPC", "^IXIC", "^SOX"]), g = x => y[x] || {};
+  const chg = (q.px / q.ref - 1) * 100, d = q.px - q.ref;
+  if (k == "no") {
+    if (!test && (q.date != today || q.time < "150000")) return null;          // 還沒開盤(或今天沒有夜盤)
+    const gap = q.o ? (q.o / q.ref - 1) * 100 : chg, basis = q.spot ? q.px - q.spot : null, es = g("ES=F").chg, nq = g("NQ=F").chg;
+    let body = `${q.nm} 開 ${nf(q.o || q.px)}（${gap >= .5 ? "開高" : gap <= -.5 ? "開低" : "平開"} ${pc(gap, 2)}），現 ${nf(q.px)}（${pts(d)}，${pc(chg, 2)}）`;
+    if (basis != null) body += `；今天加權收 ${nf(q.spot, 2)}，期現價差 ${pts(Math.round(basis))}（${basis > 30 ? "正價差，市場偏樂觀" : basis < -30 ? "逆價差，市場偏保守" : "差不多"}）`;
+    if (es != null || nq != null) body += `；美股期貨 標普 ${pc(es, 2)}、那斯達克 ${pc(nq, 2)}`;
+    const us = [es, nq].filter(x => x != null), ua = us.length ? us.reduce((a, b) => a + b, 0) / us.length : 0;
+    const tone = chg >= .5 ? "偏多" : chg <= -.5 ? "偏空" : "持平", sync = Math.abs(ua) >= .3 && Math.sign(ua) == Math.sign(chg) && Math.abs(chg) >= .2;
+    body += `。→ 夜盤開盤${tone}${sync ? `，和美股期貨同方向（國際資金${ua > 0 ? "偏樂觀" : "偏謹慎"}）` : Math.abs(ua) >= .3 && Math.abs(chg) >= .2 ? "，但和美股期貨方向不同，容易來回震盪" : ""}；今晚美股開盤後波動通常會變大。`;
+    return {title: `🌙 台指期夜盤開盤 ${md(T.day)}`, body, day: T.day};
+  }
+  // nc:夜盤收盤(05:00 收);最後成交要在 04:00 之後,日期是今天或昨天(跨午夜前後期交所寫法都接受)
+  if (!test && (![today, yday].includes(q.date) || !(q.time >= "040000" && q.time <= "050500"))) return null;
+  const amp = q.h && q.l ? (q.h - q.l) / q.ref * 100 : null, sess = dayAdd(T.day, -1);
+  let body = `${q.nm} 收 ${nf(q.px)}，比日盤結算 ${pts(d)}（${pc(chg, 2)}）；夜盤最高 ${nf(q.h)}、最低 ${nf(q.l)}${amp != null ? `（振幅 ${amp.toFixed(1)}%）` : ""}，成交 ${nf(q.vol)} 口`;
+  const sp = g("^GSPC"), sox = g("^SOX");
+  if (sp.chg != null) body += `；美股 標普 ${pc(sp.chg, 2)}、那斯達克 ${pc(g("^IXIC").chg, 2)}、費半 ${pc(sox.chg, 2)}`;
+  if (q.spot) body += `。→ 下個交易日加權開盤參考約 ${nf(Math.round(q.spot * (1 + chg / 100)))}（${pc(chg, 2)}，${chg >= .5 ? "偏多開高" : chg <= -.5 ? "偏空開低" : "平盤附近"}）`;
+  else body += `。→ 下個交易日台股開盤${chg >= .5 ? "偏多" : chg <= -.5 ? "偏空" : "持平"}`;
+  body += `${amp != null && amp >= 1.5 ? "；夜盤震盪大，開盤後容易來回" : ""}（夜盤漲跌通常會反映在早上開盤，僅供參考）。`;
+  return {title: `🌙 台指期夜盤收盤 ${md(sess)}`, body, day: sess};
+}
+async function nightBriefs(env, T){
+  const out = [];
+  for (const [k, a, b, wdOk] of [["no", 902, 925, T.wd >= 1 && T.wd <= 5], ["nc", 301, 330, T.wd >= 2 && T.wd <= 6]]) {
+    if (!wdOk || T.m < a || T.m > b) continue;
+    if (k == "no" && await twHoliday(env, T.day)) continue;
+    const day = k == "no" ? T.day : dayAdd(T.day, -1);
+    if (await env.DB.prepare("SELECT 1 FROM briefs WHERE day=? AND k=?").bind(day, k).first()) continue;
+    const B = await genNight(T, k); if (B) out.push([k, await deliver(env, k, B.day, B)]);
+  }
+  return out;
+}
+
 async function briefs(env, T){
   const N = nyNow(), out = []; let hol = null;
   for (const [k, zone, a, b, step] of SLOTS) {
@@ -490,6 +549,7 @@ async function run(env){
   if (T.m == 480) { await DB.prepare("DELETE FROM alerts WHERE ts < ?").bind(Date.now() - 7 * 864e5).run(); await DB.prepare("DELETE FROM fired WHERE day < ?").bind(new Date(Date.now() - 3 * 864e5).toISOString().slice(0, 10)).run(); await DB.prepare("DELETE FROM briefs WHERE ts < ?").bind(Date.now() - 30 * 864e5).run(); await DB.prepare("DELETE FROM pffired WHERE ts < ?").bind(Date.now() - 150 * 864e5).run(); }
   try { const r = await pfRun(env, T); if (r) res.pf = r; } catch (e) { res.pfErr = e.message; }
   try { res.briefs = await briefs(env, T); } catch (e) { res.briefErr = e.message; }
+  try { const n = await nightBriefs(env, T); if (n.length) res.night = n; } catch (e) { res.nightErr = e.message; }
   try { const m = await macRun(env, T); if (Object.keys(m).length) res.mac = m; } catch (e) { res.macErr = e.message; }
   if (!(T.wd >= 1 && T.wd <= 5) || T.m < 480 || T.m > 812) return res;          // 盤中雷達只在台北 08:00～13:32
   if (await twHoliday(env, T.day)) return {...res, skip: "台股休市"};
@@ -591,12 +651,13 @@ export default {
         const o = await macBuild(R); await env.DB.prepare("INSERT OR REPLACE INTO state(k,v,ts) VALUES(?,?,?)").bind(sk, JSON.stringify(o), Date.now()).run();
         return J(req, o);
       }
+      if (p == "/txnight") { const q = await txNight(); return J(req, {q, err: q ? "" : TXERR}); }   // 檢查雲端抓不抓得到期交所夜盤
       if (p == "/preview") {                       // 測試用:產生摘要文字但不存、不推播(每種 30 秒最多一次)
         const k = u.searchParams.get("k") || "", T = tpe(), N = nyNow(), sk = "pv:" + k, row = await env.DB.prepare("SELECT v,ts FROM state WHERE k=?").bind(sk).first();
         if (!BKEY[k]) return J(req, {error: "k 要是 " + Object.keys(BKEY).join("/")}, 400);
         if (row && Date.now() - row.ts < 30e3) return J(req, JSON.parse(row.v));
         if (u.searchParams.get("hm")) { const [h, m] = u.searchParams.get("hm").split(":").map(Number); T.m = h * 60 + m; }
-        const B = k == "am" ? await genAm(T) : k == "inst" ? await genInst(T) : ["open", "close"].includes(k) ? await genTw(T, k) : await genUs(N, k), o = {k, tw: T.day, ny: N.day + " " + Math.floor(N.m / 60) + ":" + String(N.m % 60).padStart(2, "0"), brief: B};
+        const B = k == "am" ? await genAm(T) : k == "inst" ? await genInst(T) : ["open", "close"].includes(k) ? await genTw(T, k) : k == "no" || k == "nc" ? await genNight(T, k, 1) : await genUs(N, k), o = {k, tw: T.day, ny: N.day + " " + Math.floor(N.m / 60) + ":" + String(N.m % 60).padStart(2, "0"), brief: B};
         await env.DB.prepare("INSERT OR REPLACE INTO state(k,v,ts) VALUES(?,?,?)").bind(sk, JSON.stringify(o), Date.now()).run();
         return J(req, o);
       }
