@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5B2A86"/><stop offset="1" stop-color="#1E0B33"/></linearGradient>
+    <linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F3DFA8"/><stop offset=".5" stop-color="#C9A24E"/><stop offset="1" stop-color="#E9C77B"/></linearGradient>
+    <linearGradient id="fur" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0A64C"/><stop offset="1" stop-color="#D9822E"/></linearGradient>
+    <clipPath id="cl"><circle cx="256" cy="256" r="236"/></clipPath>
+  </defs>
+  <circle cx="256" cy="256" r="248" fill="url(#gd)"/>
+  <circle cx="256" cy="256" r="236" fill="url(#bg)"/>
+  <g clip-path="url(#cl)">
+    <circle cx="256" cy="256" r="200" fill="none" stroke="#fff" stroke-opacity=".08" stroke-width="40"/>
+    <!-- 10 月 萬聖節 裝飾 -->
+    <g><circle cx="404" cy="104" r="50" fill="#FFE08A" opacity=".95"/><circle cx="420" cy="92" r="40" fill="#3B1F5C" opacity=".0"/><path transform="translate(404 104) scale(1.4)" d="M0 0 C-6 -8 -14 -8 -22 -4 C-18 0 -18 4 -20 8 C-14 4 -8 6 -4 10 C-2 6 2 6 4 10 C8 6 14 4 20 8 C18 4 18 0 22 -4 C14 -8 6 -8 0 0 Z M-3 -2 L-5 -8 L-1 -4 Z M3 -2 L5 -8 L1 -4 Z" fill="#1A1028" opacity="0.95"/><path transform="translate(96 110) scale(1.6)" d="M0 0 C-6 -8 -14 -8 -22 -4 C-18 0 -18 4 -20 8 C-14 4 -8 6 -4 10 C-2 6 2 6 4 10 C8 6 14 4 20 8 C18 4 18 0 22 -4 C14 -8 6 -8 0 0 Z M-3 -2 L-5 -8 L-1 -4 Z M3 -2 L5 -8 L1 -4 Z" fill="#1A1028" opacity="0.9"/><path transform="translate(150 64) scale(1)" d="M0 0 C-6 -8 -14 -8 -22 -4 C-18 0 -18 4 -20 8 C-14 4 -8 6 -4 10 C-2 6 2 6 4 10 C8 6 14 4 20 8 C18 4 18 0 22 -4 C14 -8 6 -8 0 0 Z M-3 -2 L-5 -8 L-1 -4 Z M3 -2 L5 -8 L1 -4 Z" fill="#1A1028" opacity="0.8"/><path transform="translate(450 230) scale(1)" d="M0 0 C-6 -8 -14 -8 -22 -4 C-18 0 -18 4 -20 8 C-14 4 -8 6 -4 10 C-2 6 2 6 4 10 C8 6 14 4 20 8 C18 4 18 0 22 -4 C14 -8 6 -8 0 0 Z M-3 -2 L-5 -8 L-1 -4 Z M3 -2 L5 -8 L1 -4 Z" fill="#1A1028" opacity="0.8"/><path transform="translate(66 250) scale(0.9)" d="M0 0 C-6 -8 -14 -8 -22 -4 C-18 0 -18 4 -20 8 C-14 4 -8 6 -4 10 C-2 6 2 6 4 10 C8 6 14 4 20 8 C18 4 18 0 22 -4 C14 -8 6 -8 0 0 Z M-3 -2 L-5 -8 L-1 -4 Z M3 -2 L5 -8 L1 -4 Z" fill="#1A1028" opacity="0.7"/><polygon points="210.0,45.0 211.3,48.2 214.8,48.5 212.1,50.7 212.9,54.0 210.0,52.2 207.1,54.0 207.9,50.7 205.2,48.5 208.7,48.2" fill="#FFD166" opacity="0.8"/><polygon points="330.0,35.0 331.3,38.2 334.8,38.5 332.1,40.7 332.9,44.0 330.0,42.2 327.1,44.0 327.9,40.7 325.2,38.5 328.7,38.2" fill="#FFD166" opacity="0.8"/><polygon points="60.0,175.0 61.3,178.2 64.8,178.5 62.1,180.7 62.9,184.0 60.0,182.2 57.1,184.0 57.9,180.7 55.2,178.5 58.7,178.2" fill="#FFD166" opacity="0.8"/></g>
+    <!-- 西裝 -->
+    <path d="M70 512 C80 420 150 384 256 380 C362 384 432 420 442 512 Z" fill="#14213D"/>
+    <path d="M206 386 L256 470 L306 386 C290 382 272 380 256 380 C240 380 222 382 206 386 Z" fill="#FFFFFF"/>
+    <path d="M244 400 L268 400 L262 418 L276 476 L256 500 L236 476 L250 418 Z" fill="url(#gd)"/>
+    <path d="M206 386 L256 470 L226 512 L176 512 L184 420 Z" fill="#1E2E52"/>
+    <path d="M306 386 L256 470 L286 512 L336 512 L328 420 Z" fill="#1E2E52"/>
+    <path d="M194 318 L194 394 C230 406 282 406 318 394 L318 318 Z" fill="url(#fur)"/>
+    <!-- 脖子毛 -->
+    <path d="M200 350 C220 392 292 392 312 350 L300 390 C280 402 232 402 212 390 Z" fill="#FFF3DE"/>
+    <!-- 耳朵 -->
+    <path d="M150 196 L162 92 C166 80 178 78 186 88 L232 140 Z" fill="url(#fur)"/>
+    <path d="M362 196 L350 92 C346 80 334 78 326 88 L280 140 Z" fill="url(#fur)"/>
+    <path d="M166 170 L172 108 L214 146 Z" fill="#FFE2C8"/><path d="M346 170 L340 108 L298 146 Z" fill="#FFE2C8"/>
+    <!-- 頭 -->
+    <path d="M146 222 C146 152 196 122 256 122 C316 122 366 152 366 222 C366 262 356 296 334 320 C312 346 286 360 256 360 C226 360 200 346 178 320 C156 296 146 262 146 222 Z" fill="url(#fur)"/>
+    <!-- 柴犬招牌白臉頰＋嘴邊 -->
+    <path d="M160 250 C170 300 210 346 256 348 C302 346 342 300 352 250 C338 274 312 284 290 280 C276 292 236 292 222 280 C200 284 174 274 160 250 Z" fill="#FFF3DE"/>
+    <ellipse cx="256" cy="292" rx="52" ry="40" fill="#FFF3DE"/>
+    <!-- 白色眉點 -->
+    <ellipse cx="214" cy="190" rx="13" ry="8" fill="#FFF3DE"/><ellipse cx="298" cy="190" rx="13" ry="8" fill="#FFF3DE"/>
+    <!-- 巫師帽 -->
+    <ellipse cx="256" cy="150" rx="138" ry="26" fill="#241436"/>
+    <path d="M190 146 C204 110 222 60 262 30 C270 24 300 34 318 52 C300 50 288 58 282 74 C296 98 314 124 324 146 C292 158 220 158 190 146 Z" fill="#2E1A47"/>
+    <path d="M194 136 C226 146 290 146 320 136 L324 148 C290 160 222 160 190 148 Z" fill="#F28C28"/>
+    <rect x="243" y="132" width="26" height="22" rx="3" fill="none" stroke="url(#gd)" stroke-width="5"/>
+    <ellipse cx="256" cy="148" rx="138" ry="26" fill="none" stroke="#3D2460" stroke-width="3"/>
+    <!-- 眼睛:精明的笑眼 -->
+    <path d="M200 226 C208 214 226 214 234 226" stroke="#2A1E18" stroke-width="7" stroke-linecap="round" fill="none"/>
+    <path d="M278 226 C286 214 304 214 312 226" stroke="#2A1E18" stroke-width="7" stroke-linecap="round" fill="none"/>
+    <!-- 金框圓眼鏡 -->
+    <circle cx="217" cy="224" r="30" fill="#FFFFFF" fill-opacity=".14" stroke="url(#gd)" stroke-width="7"/>
+    <circle cx="295" cy="224" r="30" fill="#FFFFFF" fill-opacity=".14" stroke="url(#gd)" stroke-width="7"/>
+    <path d="M247 222 C252 216 260 216 265 222" stroke="url(#gd)" stroke-width="6" fill="none"/>
+    <!-- 鼻子 -->
+    <path d="M238 264 C238 254 274 254 274 264 C274 274 262 280 256 280 C250 280 238 274 238 264 Z" fill="#1B1B22"/>
+    <ellipse cx="249" cy="261" rx="5" ry="3" fill="#FFFFFF" opacity=".6"/>
+    <!-- 嘴巴＋吐舌頭 -->
+    <path d="M256 280 L256 292 M256 292 C246 304 230 304 222 294 M256 292 C266 304 282 304 290 294" stroke="#1B1B22" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path d="M244 298 C244 330 268 330 268 298 C262 302 250 302 244 298 Z" fill="#F07A8A"/>
+    <path d="M256 304 L256 322" stroke="#D85A6C" stroke-width="3" stroke-linecap="round"/>
+    <!-- 腮紅 -->
+    <ellipse cx="184" cy="268" rx="16" ry="9" fill="#F29A8A" opacity=".55"/><ellipse cx="328" cy="268" rx="16" ry="9" fill="#F29A8A" opacity=".55"/>
+    <!-- 道具 -->
+    <g transform="translate(306 356) rotate(-10) scale(1.18)"><ellipse cx="48" cy="40" rx="48" ry="40" fill="#F28C28"/><path d="M48 0 C30 0 28 80 48 80 M48 0 C66 0 68 80 48 80 M20 8 C6 24 6 58 20 74 M76 8 C90 24 90 58 76 74" stroke="#D96F12" stroke-width="3" fill="none"/>
+   <path d="M46 2 C44 -8 48 -16 56 -18" stroke="#3E8E4F" stroke-width="6" fill="none" stroke-linecap="round"/>
+   <path d="M24 30 L36 22 L38 36 Z M72 30 L60 22 L58 36 Z" fill="#2A1A0A"/><path d="M26 52 L34 48 L40 56 L48 48 L56 56 L62 48 L70 52 C62 66 34 66 26 52 Z" fill="#2A1A0A"/>
+   <g fill="url(#gd)"><circle cx="34" cy="-6" r="9"/><circle cx="64" cy="-8" r="9"/></g><ellipse cx="-4" cy="46" rx="20" ry="16" fill="url(#fur)"/><ellipse cx="-6" cy="48" rx="10" ry="8" fill="#FFF3DE"/></g>
+  </g>
+</svg>

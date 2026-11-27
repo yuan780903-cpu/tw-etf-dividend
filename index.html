@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-version" content="v2026.11.27.4">
+<meta name="app-version" content="v2026.11.27.5">
 <meta name="theme-color" content="#F1F5FF">
 <title>巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://yuan780903-cpu.github.io/tw-etf-dividend/og.jpg">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="icon" type="image/svg+xml" href="logo.svg" id="favLogo">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -1965,7 +1965,7 @@ button{-webkit-tap-highlight-color:transparent}
   <div class="top">
     <div class="brand"><img class="logo" src="logo.svg" alt="柴犬博士" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.27.4</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
+      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.27.5</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
@@ -2124,7 +2124,7 @@ button{-webkit-tap-highlight-color:transparent}
 </div>
 
 <footer><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button>
-  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.27.4</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.27.5</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -4824,7 +4824,7 @@ async function memOpenOld(){
     return `<div class="mp-c ${k == "month" ? "hot" : ""}">${k == "month" ? `<span class="mp-tag">最划算</span>` : ""}<b>${n}</b><small>${sub}</small><div class="mp-p">${o ? `<s>${o}</s>` : ""}<span class="num">${v}</span> 元</div>${off ? (ok ? `<i>已套用折扣碼 ${MDISC.code}（折 ${off} 元）</i>` : `<i style="color:var(--sub)">折扣碼不適用此方案</i>`) : ""}<button onclick="memCopy('${n}', ${v})">📋 複製開通訊息</button></div>`; };
   const lid = (C.line || "").trim(), line = !lid ? "" : /^https?:/.test(lid) ? lid : `https://line.me/R/ti/p/${lid.startsWith("@") ? encodeURIComponent(lid) : "~" + encodeURIComponent(lid)}`;
   $("#memDlg").innerHTML = `<button class="x" onclick="memClose()" aria-label="關閉">✕</button>
-    <div class="mm-hd"><img src="logo.svg" alt="" width="58" height="58"><div><h2>巴菲遠付費會員</h2><p>${isPaid() ? `你目前是 <b>${MEM.plan || ""}付費會員</b>，到期時間 <b>${mdate(MEM.until)}</b>（還有 ${Math.max(0, Math.ceil((MEM.until - Date.now()) / 36e5))} 小時）` : "解鎖全部進階分析，免費會員仍可使用大盤、ETF、配息試算與退休規劃。"}</p></div></div>
+    <div class="mm-hd"><img src="${LOGO()}" alt="" width="58" height="58"><div><h2>巴菲遠付費會員</h2><p>${isPaid() ? `你目前是 <b>${MEM.plan || ""}付費會員</b>，到期時間 <b>${mdate(MEM.until)}</b>（還有 ${Math.max(0, Math.ceil((MEM.until - Date.now()) / 36e5))} 小時）` : "解鎖全部進階分析，免費會員仍可使用大盤、ETF、配息試算與退休規劃。"}</p></div></div>
     <div class="mm-ben">${["🏆 巴菲特選股完整 150 名：股價區間、安全邊際、選股理由", "📐 線型分析：任一檔個股自動畫線＋全市場線型選股", "🔎 各國大盤區間查詢、統計與 CSV 下載", "📋 大盤 5 年明細與歷史回測", "🏛️ 聯準會期貨預期利率、總經指標長期走勢", "🏭 每家公司的產品與商業模式"].map(t => `<span>${t}</span>`).join("")}</div>
     <div class="mm-plans">${pr("day", "一日通行", "24 小時全部解鎖")}${pr("month", "月費會員", "30 天全部解鎖")}</div>
     <div class="mm-pay"><b>💳 付款方式：直接聯絡${C.name || "巴菲遠"}</b><p>${C.note || ""}</p>
@@ -4839,7 +4839,7 @@ async function memOpen(){
   if (!isPaid()) return lgShow();
   await memCfg();
   $("#memDlg").innerHTML = `<button class="x" onclick="memClose()" aria-label="關閉">✕</button>
-    <div class="mm-hd"><img src="logo.svg" alt="" width="58" height="58"><div><h2>👑 ${esc(MEM.code)}</h2><p><b>${MEM.plan || ""}付費會員</b>・到期 <b>${mdate(MEM.until)}</b>（還有 ${MEM.until - Date.now() > 864e5 ? Math.ceil((MEM.until - Date.now()) / 864e5) + " 天" : Math.max(0, Math.ceil((MEM.until - Date.now()) / 36e5)) + " 小時"}）</p></div></div>
+    <div class="mm-hd"><img src="${LOGO()}" alt="" width="58" height="58"><div><h2>👑 ${esc(MEM.code)}</h2><p><b>${MEM.plan || ""}付費會員</b>・到期 <b>${mdate(MEM.until)}</b>（還有 ${MEM.until - Date.now() > 864e5 ? Math.ceil((MEM.until - Date.now()) / 864e5) + " 天" : Math.max(0, Math.ceil((MEM.until - Date.now()) / 36e5)) + " 小時"}）</p></div></div>
     <h3 class="mm-h3">續約方案</h3>${planHTML()}
     <button class="mm-out" onclick="memLogout()">登出這台裝置</button>`;
   $("#memOv").classList.add("on"); document.body.style.overflow = "hidden"; bindPlan();
@@ -4849,7 +4849,7 @@ async function lgShow(){
   document.body.classList.add("need-login");
   const o = $("#lgOv"); o.classList.add("on");
   o.innerHTML = `<div class="lg-wrap"><div class="lg-card">
-      <img class="lg-logo" src="logo.svg" alt="柴犬博士" width="96" height="96" onclick="admTapLogo()">
+      <img class="lg-logo" src="${LOGO()}" alt="柴犬博士" width="96" height="96" onclick="admTapLogo()">
       <h1><span class="bm">巴菲遠</span>不負責任財富系統</h1><p class="lg-sub">付費會員專屬・請登入</p>
       <div class="lg-f"><input id="lgU" placeholder="會員帳號" autocomplete="username" autocapitalize="none"><input id="lgP" type="password" placeholder="密碼" autocomplete="current-password"><button id="lgGo">登入</button><p id="lgMsg"></p></div>
       ${MEM && MEM.code && !isPaid() ? `<p class="lg-exp">⏰ 你的會員（${esc(MEM.code)}）已到期或已停用，請聯絡巴菲遠續約。</p>` : ""}
@@ -4903,7 +4903,7 @@ async function admApi(path, body){
 function admTapLogo(){ admTap++; clearTimeout(admT); admT = setTimeout(() => admTap = 0, 1500); if (admTap >= 7) { admTap = 0; admOpen(); } }
 async function admOpen(){
   $("#admOv").classList.add("on"); document.body.style.overflow = "hidden";
-  if (!ADM.tok) { $("#adm").innerHTML = `<button class="x" onclick="admClose()">✕</button><div class="ad-login"><img src="logo.svg" width="72" height="72" alt=""><h2>巴菲遠後台</h2><input id="admPw" type="password" placeholder="管理密碼" autocomplete="current-password"><button id="admLg">登入</button><p id="admLm" class="mknote"></p></div>`;
+  if (!ADM.tok) { $("#adm").innerHTML = `<button class="x" onclick="admClose()">✕</button><div class="ad-login"><img src="${LOGO()}" width="72" height="72" alt=""><h2>巴菲遠後台</h2><input id="admPw" type="password" placeholder="管理密碼" autocomplete="current-password"><button id="admLg">登入</button><p id="admLm" class="mknote"></p></div>`;
     const go = async () => { ADM.tok = $("#admPw").value; const r = await admApi("ping"); if (r.ok) { try { sessionStorage.setItem("bfy_adm", ADM.tok); } catch (e) {} admRender(); } else $("#admLm").textContent = "❌ " + (r.reason || "登入失敗"); };
     $("#admLg").onclick = go; $("#admPw").onkeydown = e => { if (e.key == "Enter") go(); }; setTimeout(() => $("#admPw").focus(), 50); return; }
   admRender();
@@ -4911,7 +4911,7 @@ async function admOpen(){
 function admClose(){ $("#admOv").classList.remove("on"); document.body.style.overflow = ""; }
 const AT = [["acct", "➕ 新增帳號"], ["members", "👥 會員清單"], ["stats", "📊 統計"], ["disc", "🏷️ 折扣碼"], ["cfg", "⚙️ 價格與聯絡"]];
 function admRender(){
-  $("#adm").innerHTML = `<button class="x" onclick="admClose()">✕</button><div class="ad-hd"><img src="logo.svg" width="40" height="40" alt=""><b>巴菲遠後台</b><button class="ad-lo" onclick="ADM.tok='';try{sessionStorage.removeItem('bfy_adm')}catch(e){};admOpen()">登出</button></div>
+  $("#adm").innerHTML = `<button class="x" onclick="admClose()">✕</button><div class="ad-hd"><img src="${LOGO()}" width="40" height="40" alt=""><b>巴菲遠後台</b><button class="ad-lo" onclick="ADM.tok='';try{sessionStorage.removeItem('bfy_adm')}catch(e){};admOpen()">登出</button></div>
     <nav class="ad-tabs">${AT.map(([k, n]) => `<button data-k="${k}" class="${ADM.tab == k ? "on" : ""}">${n}</button>`).join("")}</nav><div id="adB" class="ad-b"><div class="sk" style="height:240px"></div></div>`;
   $("#adm").querySelector(".ad-tabs").onclick = e => { const b = e.target.closest("button"); if (b) { ADM.tab = b.dataset.k; admRender(); } };
   ({stats: admStats, acct: admAcct, pass: admPass, members: admMembers, disc: admDisc, cfg: admCfg})[ADM.tab]();
@@ -5026,6 +5026,7 @@ async function admCfg(){
   };
 }
 
+logoApply();   // 🐕 每月節日 logo
 memBadge(); if (!isPaid()) lgShow(); memCheck(); setInterval(memCheck, 10 * 60e3);
 setTimeout(playFestive, 900);   // 🎉 節日氛圍(有節日才跳;登入畫面也會跳)
 /* ================= 🧠 專家選股:大師選股 / 巴菲遠綜合 / 券商評等 / 股利排行 ================= */
@@ -8286,6 +8287,28 @@ function newyearCountdown(){
     }
     tick(); _nyTimer = setInterval(tick, 1000);
   } catch (e) {}
+}
+
+/* ================= 🐕 每月節日 logo:每月 1 號換成當月主題(logos/logo-m01～m12.svg,tools/gen_logos.py 產生);
+   農曆節日落在別的月份時,節日期間改用節日那款(春節→2 月、元宵→3 月、端午→6 月、中秋→9 月);?logo=7 可預覽某月 ================= */
+function LOGO(){
+  try {
+    const q = +new URLSearchParams(location.search).get("logo"); if (q >= 1 && q <= 12) return `logos/logo-m${String(q).padStart(2, "0")}.svg`;
+    const d = new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Taipei"})), iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    let m = d.getMonth() + 1;
+    if (typeof FEST_LUNAR != "undefined") {
+      if (FEST_LUNAR.cny.some(x => { const a = x.split("/"); return iso >= a[0] && iso <= a[1]; })) m = 2;
+      else if (FEST_LUNAR.lantern.includes(iso)) m = 3;
+      else if (FEST_LUNAR.dragonboat.includes(iso)) m = 6;
+      else if (FEST_LUNAR.midautumn.includes(iso)) m = 9;
+    }
+    return `logos/logo-m${String(m).padStart(2, "0")}.svg`;
+  } catch (e) { return "logo.svg"; }
+}
+function logoApply(){
+  const u = LOGO();
+  document.querySelectorAll('img[src="logo.svg"],img[src^="logos/logo-m"]').forEach(im => { if (im.getAttribute("src") != u) { im.onerror = () => { im.onerror = null; im.src = "logo.svg"; }; im.src = u; } });
+  const f = document.getElementById("favLogo"); if (f && f.getAttribute("href") != u) f.href = u;
 }
 </script>
 </body>
