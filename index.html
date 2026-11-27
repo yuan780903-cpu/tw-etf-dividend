@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-version" content="v2026.11.27.2">
+<meta name="app-version" content="v2026.11.27.3">
 <meta name="theme-color" content="#F1F5FF">
 <title>巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
@@ -1904,7 +1904,7 @@ button{-webkit-tap-highlight-color:transparent}
 @media(max-width:700px){.brf{grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:84%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}.brf-c{scroll-snap-align:start}}
 
 /* ===== 🎉 節日氛圍（高級質感版） ===== */
-#fest{position:fixed;inset:0;z-index:9998;pointer-events:none;overflow:hidden;animation:fsIn 6.6s ease forwards}
+#fest{position:fixed;inset:0;z-index:9998;pointer-events:none;overflow:hidden;animation:fsIn 5s ease forwards}
 #fest .fs-bg{position:absolute;inset:0}
 #fest .fs-vig{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 45%,transparent 35%,rgba(6,8,18,.55) 100%)}
 #fest canvas{position:absolute;inset:0}
@@ -1917,7 +1917,7 @@ button{-webkit-tap-highlight-color:transparent}
   -webkit-backdrop-filter:blur(12px) saturate(1.25);backdrop-filter:blur(12px) saturate(1.25);
   border:1px solid var(--fs-line,rgba(214,178,104,.55));
   box-shadow:0 40px 90px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.08);
-  animation:fsCard 6.6s cubic-bezier(.2,.7,.2,1) forwards}
+  animation:fsCard 5s cubic-bezier(.2,.7,.2,1) forwards}
 #fest .fs-card::before{content:"";position:absolute;inset:7px;border:1px solid var(--fs-line2,rgba(214,178,104,.22));pointer-events:none}
 #fest .fs-card i.c{position:absolute;width:7px;height:7px;background:var(--fs-acc,#d9b56a);transform:rotate(45deg)}
 #fest .fs-card i.c1{left:-4px;top:-4px}#fest .fs-card i.c2{right:-4px;top:-4px}#fest .fs-card i.c3{left:-4px;bottom:-4px}#fest .fs-card i.c4{right:-4px;bottom:-4px}
@@ -1962,7 +1962,7 @@ button{-webkit-tap-highlight-color:transparent}
   <div class="top">
     <div class="brand"><img class="logo" src="logo.svg" alt="柴犬博士" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.27.2</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
+      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.27.3</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
@@ -2121,7 +2121,7 @@ button{-webkit-tap-highlight-color:transparent}
 </div>
 
 <footer><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button>
-  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.27.2</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.27.3</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -8236,13 +8236,13 @@ function runFestive(id){
     w.style.setProperty("--fs-grad", FEST_GRAD[t.m]); w.style.setProperty("--fs-acc", FEST_ACC[t.m]);
     w.style.setProperty("--fs-line", FEST_ACC[t.m] + "8c"); w.style.setProperty("--fs-line2", FEST_ACC[t.m] + "38");
     w.innerHTML = '<div class="fs-bg" style="background:' + t.tint + '"></div>' + (t.moon ? '<div class="fs-moon"></div>' : "") + '<div class="fs-vig"></div>';
-    festCanvas(w, t, 6.6);
+    festCanvas(w, t, 4.9);
     var card = document.createElement("div"); card.className = "fs-card";
     card.innerHTML = '<i class="c c1"></i><i class="c c2"></i><i class="c c3"></i><i class="c c4"></i><div class="fs-eb">' + t.en + '</div><div class="fs-t">' + t.g +
       '</div><div class="fs-div"><b></b><em></em><b></b></div><div class="fs-s">' + t.s + '</div><div class="fs-by">巴菲遠不負責任財富系統・敬賀</div>';
     w.appendChild(card); document.body.appendChild(w);
     festChime(t.snd);
-    setTimeout(function(){ if (w.parentNode) w.remove(); }, 6700);
+    setTimeout(function(){ if (w.parentNode) w.remove(); }, 5000);   // 節日動畫統一 5 秒（與人生說明書／名片王／棧板同步）
   } catch (e) {}
 }
 var festivePlayed = false;
