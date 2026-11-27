@@ -8,7 +8,8 @@ workers_dev = true
 #   13-14 點 = 美東 09:35 美股開盤(夏令 13:35、冬令 14:35 UTC);20-21 點 = 美東 16:05 美股收盤(夏令 20:05、冬令 21:05 UTC)
 #   12-16 點 = 美東 08:25～11:00 美國總經數據公布(⚡ 總經快訊);18-19 點 = 美東 14:00～15:30 FOMC 決策
 [triggers]
-crons = ["* 0-5,7,12-16,18-21 * * 1-5"]
+# ⚠️ Cloudflare 的星期是 1=週日～7=週六(和一般 cron 不同),寫 1-5 會變成週日～週四、漏掉週五 → 一律用英文縮寫 MON-FRI
+crons = ["* 0-5,7,12-16,18-21 * * MON-FRI"]
 
 [vars]
 VAPID_PUBLIC = "BBHDQ5nJ47ju8R7qaXR2s3umhhuDiaC3XjywFim3XLESAL-V7dopeit9QLqICDQKMiFfrhr8koiKtSLeNh2RUSE"
