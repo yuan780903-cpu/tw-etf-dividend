@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-version" content="v2026.11.26.6">
+<meta name="app-version" content="v2026.11.27.1">
 <meta name="theme-color" content="#F1F5FF">
 <title>巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
@@ -1902,6 +1902,57 @@ button{-webkit-tap-highlight-color:transparent}
 .brf-cf>b{flex-basis:100%;font-size:13px}
 @media(max-width:900px){.brf{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.brf{grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:84%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}.brf-c{scroll-snap-align:start}}
+
+/* ===== 🎉 節日氛圍（高級質感版） ===== */
+#fest{position:fixed;inset:0;z-index:9998;pointer-events:none;overflow:hidden;animation:fsIn 6.6s ease forwards}
+#fest .fs-bg{position:absolute;inset:0}
+#fest .fs-vig{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 45%,transparent 35%,rgba(6,8,18,.55) 100%)}
+#fest canvas{position:absolute;inset:0}
+#fest .fs-moon{position:absolute;right:12%;top:9%;width:min(30vw,190px);aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle at 38% 36%,#fffdf2 0%,#fbefc6 42%,#e9cf88 72%,#c9a24e 100%);
+  box-shadow:0 0 60px 18px rgba(250,230,170,.45),0 0 160px 60px rgba(250,220,150,.18);opacity:.92}
+#fest .fs-card{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);text-align:center;
+  width:min(88vw,440px);padding:34px 26px 26px;border-radius:3px;
+  background:linear-gradient(180deg,rgba(14,16,30,.62),rgba(14,16,30,.42));
+  -webkit-backdrop-filter:blur(12px) saturate(1.25);backdrop-filter:blur(12px) saturate(1.25);
+  border:1px solid var(--fs-line,rgba(214,178,104,.55));
+  box-shadow:0 40px 90px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.08);
+  animation:fsCard 6.6s cubic-bezier(.2,.7,.2,1) forwards}
+#fest .fs-card::before{content:"";position:absolute;inset:7px;border:1px solid var(--fs-line2,rgba(214,178,104,.22));pointer-events:none}
+#fest .fs-card i.c{position:absolute;width:7px;height:7px;background:var(--fs-acc,#d9b56a);transform:rotate(45deg)}
+#fest .fs-card i.c1{left:-4px;top:-4px}#fest .fs-card i.c2{right:-4px;top:-4px}#fest .fs-card i.c3{left:-4px;bottom:-4px}#fest .fs-card i.c4{right:-4px;bottom:-4px}
+#fest .fs-eb{font-family:"Cormorant Garamond","Didot","Times New Roman",serif;font-style:italic;font-size:15px;letter-spacing:.32em;
+  color:var(--fs-acc,#d9b56a);opacity:.95;margin-bottom:10px;text-transform:uppercase}
+#fest .fs-t{font-family:"Noto Serif TC","Songti TC","PMingLiU",serif;font-weight:700;font-size:clamp(38px,9vw,60px);line-height:1.15;
+  letter-spacing:.16em;padding-left:.16em;
+  background:var(--fs-grad);background-size:260% 100%;background-position:120% 0;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 14px rgba(0,0,0,.4));animation:fsShine 2.8s ease-in-out .7s forwards}
+#fest .fs-div{display:flex;align-items:center;justify-content:center;gap:10px;margin:16px auto 14px}
+#fest .fs-div b{display:block;width:72px;height:1px;background:linear-gradient(90deg,transparent,var(--fs-acc,#d9b56a))}
+#fest .fs-div b:last-child{background:linear-gradient(270deg,transparent,var(--fs-acc,#d9b56a))}
+#fest .fs-div em{width:6px;height:6px;background:var(--fs-acc,#d9b56a);transform:rotate(45deg)}
+#fest .fs-s{font-family:"Noto Serif TC","Songti TC",serif;font-size:15px;font-weight:600;letter-spacing:.34em;padding-left:.34em;color:rgba(255,250,238,.9)}
+#fest .fs-by{margin-top:20px;font-size:10.5px;letter-spacing:.3em;padding-left:.3em;color:rgba(255,250,238,.48)}
+@keyframes fsIn{0%{opacity:0}12%{opacity:1}84%{opacity:1}100%{opacity:0}}
+@keyframes fsCard{0%{opacity:0;transform:translate(-50%,-46%) scale(.965);filter:blur(6px)}
+  16%{opacity:1;transform:translate(-50%,-50%) scale(1);filter:blur(0)}84%{opacity:1;transform:translate(-50%,-50%) scale(1);filter:blur(0)}
+  100%{opacity:0;transform:translate(-50%,-52%) scale(1.01);filter:blur(3px)}}
+@keyframes fsShine{to{background-position:-60% 0}}
+@media(max-width:560px){#fest .fs-card{padding:28px 18px 22px}#fest .fs-s{font-size:13.5px;letter-spacing:.24em}}
+/* 跨年倒數(12 月) */
+.nycount{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 14px);transform:translateX(-50%);z-index:9997;pointer-events:none;
+  text-align:center;padding:10px 26px 11px;border-radius:2px;
+  background:linear-gradient(180deg,rgba(14,16,30,.82),rgba(10,12,24,.78));border:1px solid rgba(214,178,104,.5);
+  box-shadow:0 16px 40px rgba(0,0,0,.35),inset 0 0 0 4px rgba(10,12,24,.0);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  animation:nyIn .6s ease both;transition:opacity .7s}
+.nycount::before{content:"";position:absolute;inset:4px;border:1px solid rgba(214,178,104,.18)}
+@keyframes nyIn{from{opacity:0;transform:translate(-50%,-6px)}to{opacity:1;transform:translate(-50%,0)}}
+.nycount .nyl{display:block;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:12.5px;letter-spacing:.28em;color:rgba(232,205,140,.92)}
+.nycount .nyt{display:block;font-family:"Noto Serif TC","Songti TC",serif;font-size:28px;font-weight:700;letter-spacing:.08em;font-variant-numeric:tabular-nums;
+  background:linear-gradient(100deg,#c99a45,#f8e7b4 45%,#d4a952 70%,#f2dc9c);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nycount.hit .nyb{font-family:"Noto Serif TC","Songti TC",serif;font-size:22px;font-weight:700;letter-spacing:.14em;color:#f4dc9a;text-shadow:0 0 18px rgba(240,200,110,.6)}
+@media(max-width:560px){.nycount{padding:9px 18px}.nycount .nyt{font-size:24px}}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="巴菲遠">
@@ -1911,7 +1962,7 @@ button{-webkit-tap-highlight-color:transparent}
   <div class="top">
     <div class="brand"><img class="logo" src="logo.svg" alt="柴犬博士" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.26.6</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
+      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.27.1</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
@@ -2070,7 +2121,7 @@ button{-webkit-tap-highlight-color:transparent}
 </div>
 
 <footer><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button>
-  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.26.6</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.27.1</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -4973,6 +5024,7 @@ async function admCfg(){
 }
 
 memBadge(); if (!isPaid()) lgShow(); memCheck(); setInterval(memCheck, 10 * 60e3);
+setTimeout(playFestive, 900);   // 🎉 節日氛圍(有節日才跳;登入畫面也會跳)
 /* ================= 🧠 專家選股:大師選股 / 巴菲遠綜合 / 券商評等 / 股利排行 ================= */
 let XP = {sub: (() => { try { return localStorage.getItem("bfy_xp") || "ex"; } catch (e) { return "ex"; } })()}, EXD = null, RTD = null, DVD = null;
 const XSUB = [["rd", "⚡ 盤中雷達"], ["bt", "📈 大師回測"], ["pt", "💼 投資組合"], ["rk", "⚠️ 風險股"], ["wh", "🐳 大戶吸籌"], ["ex", "🧠 大師選股"], ["dc", "💎 定存股"], ["vs", "🎯 估價篩選"], ["qs", "❄️ 量化評分"], ["vp", "🏆 綜合 Top150"], ["ck", "🏦 籌碼排行"], ["rv", "📈 月營收"], ["rt", "📣 券商評等"], ["dv", "💰 股利"], ["ev", "📅 法說會・內部人"], ["wl", "⭐ 自選股"]];
@@ -7989,6 +8041,242 @@ function macFlashPop(){
 setTimeout(() => macFlashLoad(true), 4000);
 clearInterval(MACT); MACT = setInterval(() => macFlashLoad(), 120e3);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) macFlashLoad(); });
+
+/* ================= 🎉 節日氛圍（高級質感版）：節日當天打開網站跳約 6 秒；?festive=xmas 預覽、?festive=off 關閉；
+   localStorage bfy_fest_snd=off 關音效。節日判斷沿用棧板系統（農曆節日 2026–2031 已預算）。 ================= */
+var FEST_GRAD = {
+  gold:  "linear-gradient(100deg,#a87a2e 0%,#e9cf88 20%,#c99a45 38%,#fff6d8 50%,#c99a45 62%,#f2dc9c 82%,#a87a2e 100%)",
+  rose:  "linear-gradient(100deg,#a8606a 0%,#f1c4c0 20%,#c98a8a 38%,#fff1ee 50%,#c98a8a 62%,#f3cfc8 82%,#a8606a 100%)",
+  silver:"linear-gradient(100deg,#7d8895 0%,#e4ebf2 20%,#a9b5c2 38%,#ffffff 50%,#a9b5c2 62%,#dfe7ef 82%,#7d8895 100%)",
+  jade:  "linear-gradient(100deg,#4f7d63 0%,#cfe6d3 20%,#86b394 38%,#f3fbf4 50%,#86b394 62%,#cde3cf 82%,#4f7d63 100%)",
+  ember: "linear-gradient(100deg,#9a4b1c 0%,#f5c38a 20%,#d9823e 38%,#fff0dc 50%,#d9823e 62%,#f3c690 82%,#9a4b1c 100%)"
+};
+var FEST_ACC = {gold:"#d9b56a", rose:"#e3a9a6", silver:"#c9d3de", jade:"#9cc7a8", ember:"#e7a160"};
+var FEST_THEMES = {
+  cny:      {g:"新年快樂", s:"恭喜發財・萬事如意", en:"Happy Lunar New Year", m:"gold", fx:"dust", pal:["#ffd97a","#ffb84d","#ff8a5c"],
+             tint:"radial-gradient(70% 55% at 50% 30%,rgba(190,40,30,.55),transparent 75%),linear-gradient(180deg,rgba(110,14,10,.55),rgba(60,6,6,.62))",
+             snd:{gap:.22,dur:2.2,vol:.13,notes:[523.25,587.33,659.25,783.99,880,1046.5]}},
+  lantern:  {g:"元宵節快樂", s:"月圓人團圓", en:"Lantern Festival", m:"gold", fx:"glow", pal:["#ffcf73","#ff9f45","#ffe3a3"],
+             tint:"radial-gradient(70% 60% at 50% 70%,rgba(200,90,20,.5),transparent 75%),linear-gradient(180deg,rgba(30,14,40,.55),rgba(60,20,10,.6))",
+             snd:{gap:.3,dur:2.4,vol:.12,notes:[659.25,783.99,880,783.99,659.25]}},
+  qingming: {g:"清明", s:"慎終追遠・春和景明", en:"Qingming", m:"jade", fx:"leaf", pal:["#a9d4ae","#7fb58c","#d7ecd2"],
+             tint:"linear-gradient(180deg,rgba(30,60,45,.55),rgba(15,35,28,.62))",
+             snd:{gap:.42,dur:2.6,vol:.1,notes:[880,783.99,659.25,587.33,523.25]}},
+  dragonboat:{g:"端午安康", s:"龍舟競渡・粽葉飄香", en:"Dragon Boat Festival", m:"jade", fx:"dust", pal:["#bfe6d0","#f2dc9c","#8fd0c0"],
+             tint:"radial-gradient(70% 55% at 50% 35%,rgba(30,110,110,.45),transparent 75%),linear-gradient(180deg,rgba(10,45,55,.58),rgba(6,28,36,.64))",
+             snd:{gap:.26,dur:2.2,vol:.12,notes:[587.33,659.25,880,783.99,880,1174.66]}},
+  midautumn:{g:"中秋團圓", s:"花好月圓・千里嬋娟", en:"Mid-Autumn Festival", m:"gold", fx:"glow", moon:1, pal:["#fff1c2","#f6d98e","#ffffff"],
+             tint:"radial-gradient(60% 50% at 80% 18%,rgba(250,225,160,.28),transparent 70%),linear-gradient(180deg,rgba(14,22,60,.62),rgba(6,10,34,.7))",
+             snd:{gap:.55,dur:3,vol:.11,notes:[523.25,659.25,783.99,880,1046.5]}},
+  national: {g:"國慶快樂", s:"普天同慶・國泰民安", en:"National Day", m:"gold", fx:"spark", pal:["#ffd77a","#ff6b6b","#7fa8ff","#ffffff"],
+             tint:"linear-gradient(180deg,rgba(20,18,50,.6),rgba(8,10,30,.7))",
+             snd:{gap:.18,dur:2,vol:.12,notes:[523.25,659.25,783.99,1046.5,0,783.99,1046.5]}},
+  xmas:     {g:"聖誕快樂", s:"平安喜樂・溫暖團聚", en:"Merry Christmas", m:"gold", fx:"snow", pal:["#ffffff","#eaf3ff","#f6e3a8"],
+             tint:"radial-gradient(70% 55% at 50% 40%,rgba(30,90,60,.45),transparent 75%),linear-gradient(180deg,rgba(90,14,24,.5),rgba(10,32,24,.66))",
+             snd:{gap:.24,dur:2.2,vol:.11,notes:[659.25,659.25,659.25,0,659.25,659.25,659.25,0,659.25,783.99,523.25,587.33,659.25]}},
+  newyear:  {g:"跨年快樂", s:"辭舊迎新・前程似錦", en:"Happy New Year", m:"gold", fx:"spark", pal:["#ffe08a","#fff4d0","#f2b85a","#ffffff"],
+             tint:"linear-gradient(180deg,rgba(12,14,40,.66),rgba(4,6,20,.74))",
+             snd:{gap:.17,dur:2,vol:.12,notes:[523.25,659.25,783.99,1046.5,1318.51]}},
+  yuandan:  {g:"元旦快樂", s:"新年新氣象・一元復始", en:"Happy New Year", m:"gold", fx:"dust", pal:["#ffd28a","#ffb36b","#fff0cf"],
+             tint:"radial-gradient(80% 60% at 50% 80%,rgba(240,140,60,.45),transparent 75%),linear-gradient(180deg,rgba(40,20,50,.55),rgba(70,30,20,.6))",
+             snd:{gap:.22,dur:2.2,vol:.12,notes:[523.25,659.25,783.99,1046.5,1174.66]}},
+  valentine:{g:"情人節快樂", s:"願有情人終成眷屬", en:"Happy Valentine's Day", m:"rose", fx:"petal", pal:["#f4a7b5","#e86f8a","#ffd3dc"],
+             tint:"radial-gradient(70% 60% at 50% 55%,rgba(170,40,80,.45),transparent 75%),linear-gradient(180deg,rgba(50,10,26,.58),rgba(30,6,18,.66))",
+             snd:{gap:.3,dur:2.4,vol:.11,notes:[523.25,659.25,783.99,987.77,1046.5]}},
+  halloween:{g:"萬聖節快樂", s:"Trick or Treat", en:"Happy Halloween", m:"ember", fx:"ember", pal:["#ffb35c","#ff7a2e","#ffd79a"],
+             tint:"radial-gradient(70% 60% at 50% 85%,rgba(200,90,20,.4),transparent 75%),linear-gradient(180deg,rgba(30,14,40,.66),rgba(12,6,20,.74))",
+             snd:{gap:.34,dur:2.4,vol:.1,notes:[440,523.25,622.25,440,415.3]}},
+  mothersday:{g:"母親節快樂", s:"感謝媽媽・平安健康", en:"Happy Mother's Day", m:"rose", fx:"petal", pal:["#f7c1cc","#f29bb0","#ffe4ea"],
+             tint:"radial-gradient(70% 60% at 50% 55%,rgba(190,80,110,.4),transparent 75%),linear-gradient(180deg,rgba(50,16,30,.55),rgba(30,10,20,.64))",
+             snd:{gap:.3,dur:2.4,vol:.11,notes:[523.25,659.25,783.99,880,783.99]}},
+  fathersday:{g:"父親節快樂", s:"爸爸辛苦了・八八節", en:"Happy Father's Day", m:"silver", fx:"dust", pal:["#cfe0ff","#9fbfff","#ffffff"],
+             tint:"radial-gradient(70% 60% at 50% 40%,rgba(40,80,150,.42),transparent 75%),linear-gradient(180deg,rgba(10,18,40,.6),rgba(6,10,26,.68))",
+             snd:{gap:.3,dur:2.4,vol:.11,notes:[392,523.25,659.25,783.99]}}
+};
+var FEST_LUNAR = {
+  cny:["2026-02-16/2026-02-21","2027-02-05/2027-02-10","2028-01-25/2028-01-30","2029-02-12/2029-02-17","2030-02-02/2030-02-07","2031-01-22/2031-01-27"],
+  lantern:["2026-03-03","2027-02-20","2028-02-09","2029-02-27","2030-02-17","2031-02-06"],
+  dragonboat:["2026-06-19","2027-06-09","2028-05-28","2029-06-16","2030-06-05","2031-06-24"],
+  midautumn:["2026-09-25","2027-09-15","2028-10-03","2029-09-22","2030-09-12","2031-10-01"]
+};
+function festThemeId(d){
+  var p2 = function(n){ return (n < 10 ? "0" : "") + n; };
+  var y = d.getFullYear(), m = d.getMonth() + 1, day = d.getDate(), iso = y + "-" + p2(m) + "-" + p2(day);
+  if (FEST_LUNAR.cny.some(function(x){ var a = x.split("/"); return iso >= a[0] && iso <= a[1]; })) return "cny";
+  if (FEST_LUNAR.lantern.indexOf(iso) >= 0) return "lantern";
+  if (FEST_LUNAR.dragonboat.indexOf(iso) >= 0) return "dragonboat";
+  if (FEST_LUNAR.midautumn.indexOf(iso) >= 0) return "midautumn";
+  if (m == 12 && day >= 24 && day <= 25) return "xmas";
+  if (m == 12 && day == 31) return "newyear";
+  if (m == 1 && day == 1) return "yuandan";
+  if (m == 4 && day >= 3 && day <= 5) return "qingming";
+  if (m == 10 && day == 10) return "national";
+  if (m == 10 && day == 31) return "halloween";
+  if (m == 2 && day == 14) return "valentine";
+  if (m == 8 && day == 8) return "fathersday";
+  if (m == 5) { var f = new Date(y, 4, 1).getDay(); if (day == 1 + ((7 - f) % 7) + 7) return "mothersday"; }   // 5 月第 2 個週日
+  return null;
+}
+var FEST_FONT;
+function festFonts(){            // 只在要播時才載入字型,而且只下載用到的字(text= 子集,很小)
+  if (FEST_FONT) return; FEST_FONT = 1;
+  var zh = "", en = "Cormorant Garamond";
+  Object.keys(FEST_THEMES).forEach(function(k){ zh += FEST_THEMES[k].g + FEST_THEMES[k].s; en += FEST_THEMES[k].en; });
+  zh += "巴菲遠不負責任財富系統敬賀・距還有新年快樂0123456789:🎉";
+  var l = document.createElement("link"); l.rel = "stylesheet";
+  l.href = "https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&text=" + encodeURIComponent(zh) + "&display=swap";
+  var l2 = document.createElement("link"); l2.rel = "stylesheet";
+  l2.href = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&display=swap";
+  document.head.appendChild(l); document.head.appendChild(l2);
+}
+function festSoundOn(){ try { return localStorage.getItem("bfy_fest_snd") !== "off"; } catch (e) { return true; } }
+/* 鐘聲:每個音 = 基音+泛音(2、3.01、4.2 倍)快起慢收,再接一段延遲回授當殘響 */
+function festChime(snd){
+  if (!snd || !festSoundOn()) return;
+  var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+  if (!window._festAC) { try { window._festAC = new AC(); } catch (e) { return; } }
+  var ctx = window._festAC;
+  function play(){
+    try {
+      var out = ctx.createGain(); out.gain.value = 1; out.connect(ctx.destination);
+      var dl = ctx.createDelay(1), fb = ctx.createGain(), lp = ctx.createBiquadFilter(), wet = ctx.createGain();
+      dl.delayTime.value = .26; fb.gain.value = .34; lp.type = "lowpass"; lp.frequency.value = 2400; wet.gain.value = .42;
+      out.connect(dl); dl.connect(lp); lp.connect(fb); fb.connect(dl); lp.connect(wet); wet.connect(ctx.destination);
+      var t0 = ctx.currentTime + .08, gap = snd.gap || .26, dur = snd.dur || 2.2, vol = snd.vol || .12;
+      snd.notes.forEach(function(f, i){
+        if (!f) return;
+        var st = t0 + i * gap;
+        [[1, 1], [2, .32], [3.01, .14], [4.2, .06]].forEach(function(h){
+          var o = ctx.createOscillator(), g = ctx.createGain(), d = dur / Math.sqrt(h[0]);
+          o.type = "sine"; o.frequency.value = f * h[0];
+          g.gain.setValueAtTime(.0001, st); g.gain.exponentialRampToValueAtTime(vol * h[1], st + .012);
+          g.gain.exponentialRampToValueAtTime(.0001, st + d);
+          o.connect(g); g.connect(out); o.start(st); o.stop(st + d + .05);
+        });
+      });
+    } catch (e) {}
+  }
+  if (ctx.state == "running") { play(); return; }
+  var fired = false;                 // 瀏覽器擋自動播放:第一次點擊/按鍵時再響
+  function once(){ if (fired) return; fired = true;
+    ["pointerdown", "keydown", "touchstart"].forEach(function(ev){ document.removeEventListener(ev, once, true); });
+    ctx.resume().then(play).catch(play); }
+  ["pointerdown", "keydown", "touchstart"].forEach(function(ev){ document.addEventListener(ev, once, true); });
+}
+/* 畫布粒子:dust 金色光塵＋柔焦光斑、glow 暖光燈球、snow 雪、petal 花瓣、leaf 葉、ember 餘燼、spark 煙火 */
+function festCanvas(wrap, t, life){
+  if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var cv = document.createElement("canvas"); wrap.appendChild(cv);
+  var c = cv.getContext("2d"), dpr = Math.min(2, window.devicePixelRatio || 1), W = innerWidth, H = innerHeight;
+  cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + "px"; cv.style.height = H + "px"; c.scale(dpr, dpr);
+  var R = Math.random, pal = t.pal, P = [], fx = t.fx, small = W < 600, N = small ? .6 : 1;
+  function col(){ return pal[Math.floor(R() * pal.length)]; }
+  function add(o){ o.c = o.c || col(); o.ph = R() * 6.28; P.push(o); }
+  if (fx == "dust" || fx == "glow") {
+    for (var i = 0; i < 90 * N; i++) add({x: R() * W, y: H * (.2 + R() * .9), r: .6 + R() * 2.2, vx: (R() - .5) * .25, vy: -(.15 + R() * .55), k: "d"});
+    for (i = 0; i < 14 * N; i++) add({x: R() * W, y: R() * H, r: 14 + R() * 38, vx: (R() - .5) * .15, vy: -(.05 + R() * .2), k: "b", a: .05 + R() * .1});
+    if (fx == "glow") for (i = 0; i < 16 * N; i++) add({x: R() * W, y: H + R() * H * .5, r: 5 + R() * 11, vx: (R() - .5) * .3, vy: -(.5 + R() * .7), k: "g"});
+  } else if (fx == "snow") {
+    for (i = 0; i < 140 * N; i++) { var z = R(); add({x: R() * W, y: -R() * H, r: .8 + z * 3.4, vx: 0, vy: .35 + z * 1.2, k: "s", a: .35 + z * .6}); }
+    for (i = 0; i < 10 * N; i++) add({x: R() * W, y: R() * H, r: 14 + R() * 30, vx: 0, vy: .1, k: "b", a: .04 + R() * .06, c: "#ffffff"});
+  } else if (fx == "petal" || fx == "leaf") {
+    for (i = 0; i < 46 * N; i++) add({x: R() * W, y: -R() * H, r: 5 + R() * 7, vx: .2 + R() * .5, vy: .6 + R() * 1.1, k: "p", rot: R() * 6.28, vr: (R() - .5) * .06});
+    for (i = 0; i < 50 * N; i++) add({x: R() * W, y: R() * H, r: .6 + R() * 1.6, vx: 0, vy: -(.1 + R() * .3), k: "d", c: "#fff4e0"});
+  } else if (fx == "ember") {
+    for (i = 0; i < 80 * N; i++) add({x: R() * W, y: H + R() * H * .6, r: .8 + R() * 2.4, vx: (R() - .5) * .6, vy: -(.6 + R() * 1.3), k: "d"});
+    for (i = 0; i < 10 * N; i++) add({x: R() * W, y: R() * H, r: 18 + R() * 30, vx: 0, vy: -.1, k: "b", a: .05 + R() * .07});
+  } else if (fx == "spark") {
+    for (i = 0; i < 40 * N; i++) add({x: R() * W, y: R() * H, r: .5 + R() * 1.4, vx: 0, vy: -(.05 + R() * .2), k: "d"});
+  }
+  var t0 = performance.now(), lastBurst = -1;
+  function burst(){
+    var bx = W * (.15 + R() * .7), by = H * (.12 + R() * .35), cc = col(), n = small ? 46 : 70;
+    for (var j = 0; j < n; j++) { var a = j / n * 6.28 + R() * .1, sp = 1.4 + R() * 2.6;
+      P.push({x: bx, y: by, px: bx, py: by, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, k: "f", c: cc, life: 1, r: 1.3}); }
+  }
+  function frame(now){
+    var el = (now - t0) / 1000; if (el > life || !wrap.parentNode) return;
+    c.clearRect(0, 0, W, H); c.globalCompositeOperation = "lighter";
+    if (fx == "spark" && el < life - 1.6 && Math.floor(el / .55) != lastBurst) { lastBurst = Math.floor(el / .55); burst(); }
+    for (var i = P.length - 1; i >= 0; i--) {
+      var q = P[i];
+      if (q.k == "f") {
+        q.px = q.x; q.py = q.y; q.vx *= .975; q.vy = q.vy * .975 + .035; q.x += q.vx; q.y += q.vy; q.life -= .011;
+        if (q.life <= 0) { P.splice(i, 1); continue; }
+        c.strokeStyle = q.c; c.globalAlpha = q.life * .9; c.lineWidth = 1.6; c.beginPath(); c.moveTo(q.px - q.vx * 3, q.py - q.vy * 3); c.lineTo(q.x, q.y); c.stroke();
+        continue;
+      }
+      q.x += q.vx + (q.k == "s" || q.k == "p" ? Math.sin(el * 1.1 + q.ph) * .45 : 0); q.y += q.vy;
+      if (q.y < -60) q.y = H + 40; if (q.y > H + 60) q.y = -40;
+      var tw = .55 + .45 * Math.sin(el * 2.4 + q.ph);
+      if (q.k == "d") { var g = c.createRadialGradient(q.x, q.y, 0, q.x, q.y, q.r * 3.2); g.addColorStop(0, q.c); g.addColorStop(1, "rgba(0,0,0,0)");
+        c.globalAlpha = .55 + .45 * tw; c.fillStyle = g; c.beginPath(); c.arc(q.x, q.y, q.r * 3.2, 0, 6.28); c.fill(); }
+      else if (q.k == "b") { var g2 = c.createRadialGradient(q.x, q.y, 0, q.x, q.y, q.r); g2.addColorStop(0, q.c); g2.addColorStop(.6, q.c); g2.addColorStop(1, "rgba(0,0,0,0)");
+        c.globalAlpha = q.a * (.7 + .3 * tw); c.fillStyle = g2; c.beginPath(); c.arc(q.x, q.y, q.r, 0, 6.28); c.fill(); }
+      else if (q.k == "g") { var g3 = c.createRadialGradient(q.x, q.y, 0, q.x, q.y, q.r * 4); g3.addColorStop(0, "#fff6dc"); g3.addColorStop(.25, q.c); g3.addColorStop(1, "rgba(0,0,0,0)");
+        c.globalAlpha = .75 + .25 * tw; c.fillStyle = g3; c.beginPath(); c.arc(q.x, q.y, q.r * 4, 0, 6.28); c.fill(); }
+      else if (q.k == "s") { var g4 = c.createRadialGradient(q.x, q.y, 0, q.x, q.y, q.r); g4.addColorStop(0, "rgba(255,255,255,1)"); g4.addColorStop(1, "rgba(255,255,255,0)");
+        c.globalCompositeOperation = "source-over"; c.globalAlpha = q.a; c.fillStyle = g4; c.beginPath(); c.arc(q.x, q.y, q.r, 0, 6.28); c.fill(); c.globalCompositeOperation = "lighter"; }
+      else if (q.k == "p") { q.rot += q.vr; c.save(); c.globalCompositeOperation = "source-over"; c.translate(q.x, q.y); c.rotate(q.rot);
+        c.scale(1, .55 + .45 * Math.abs(Math.sin(el * 1.6 + q.ph))); c.globalAlpha = .85; c.fillStyle = q.c; c.beginPath();
+        if (fx == "leaf") { c.moveTo(-q.r, 0); c.quadraticCurveTo(0, -q.r * .8, q.r, 0); c.quadraticCurveTo(0, q.r * .8, -q.r, 0); }
+        else { c.moveTo(0, -q.r); c.bezierCurveTo(q.r, -q.r * .6, q.r * .8, q.r * .7, 0, q.r); c.bezierCurveTo(-q.r * .8, q.r * .7, -q.r, -q.r * .6, 0, -q.r); }
+        c.fill(); c.restore(); }
+    }
+    c.globalAlpha = 1; requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+function runFestive(id){
+  var t = FEST_THEMES[id]; if (!t) return;
+  try {
+    festFonts();
+    var old = document.getElementById("fest"); if (old) old.remove();
+    var w = document.createElement("div"); w.id = "fest";
+    w.style.setProperty("--fs-grad", FEST_GRAD[t.m]); w.style.setProperty("--fs-acc", FEST_ACC[t.m]);
+    w.style.setProperty("--fs-line", FEST_ACC[t.m] + "8c"); w.style.setProperty("--fs-line2", FEST_ACC[t.m] + "38");
+    w.innerHTML = '<div class="fs-bg" style="background:' + t.tint + '"></div>' + (t.moon ? '<div class="fs-moon"></div>' : "") + '<div class="fs-vig"></div>';
+    festCanvas(w, t, 6.6);
+    var card = document.createElement("div"); card.className = "fs-card";
+    card.innerHTML = '<i class="c c1"></i><i class="c c2"></i><i class="c c3"></i><i class="c c4"></i><div class="fs-eb">' + t.en + '</div><div class="fs-t">' + t.g +
+      '</div><div class="fs-div"><b></b><em></em><b></b></div><div class="fs-s">' + t.s + '</div><div class="fs-by">巴菲遠不負責任財富系統・敬賀</div>';
+    w.appendChild(card); document.body.appendChild(w);
+    festChime(t.snd);
+    setTimeout(function(){ if (w.parentNode) w.remove(); }, 6700);
+  } catch (e) {}
+}
+var festivePlayed = false;
+function playFestive(){
+  try {
+    if (festivePlayed) return; festivePlayed = true;
+    var forced = new URLSearchParams(location.search).get("festive");
+    if (forced == "off") return;
+    var now = new Date(), today = now.toDateString(), id = forced || festThemeId(now);
+    if (!forced) { try { if (sessionStorage.getItem("bfy_fest") == today) return; sessionStorage.setItem("bfy_fest", today); } catch (e) {} }
+    if (id && FEST_THEMES[id]) runFestive(id);
+    if (now.getMonth() == 11 || forced == "newyear" || forced == "countdown") newyearCountdown();
+  } catch (e) {}
+}
+/* 跨年倒數(整個 12 月):12/31 整天顯示到午夜(歸零放煙火),其他天顯示 10 秒後收掉 */
+var _nyTimer;
+function newyearCountdown(){
+  try {
+    if (document.getElementById("nyCount")) return;
+    festFonts();
+    var el = document.createElement("div"); el.id = "nyCount"; el.className = "nycount"; document.body.appendChild(el);
+    var now0 = new Date(), stay = now0.getMonth() == 11 && now0.getDate() == 31, fired = false, ty = new Date(now0.getFullYear() + 1, 0, 1);
+    if (!stay) setTimeout(function(){ if (el.parentNode && !fired) { el.style.opacity = "0"; setTimeout(function(){ el.remove(); clearInterval(_nyTimer); }, 800); } }, 10000);
+    var p2 = function(n){ return (n < 10 ? "0" : "") + n; };
+    function tick(){
+      if (!document.body.contains(el)) { clearInterval(_nyTimer); return; }
+      var diff = ty - new Date();
+      if (diff <= 0) { if (!fired) { fired = true; el.className = "nycount hit"; el.innerHTML = '<span class="nyb">🎉 ' + ty.getFullYear() + ' 新年快樂</span>'; runFestive("yuandan"); } return; }
+      var s = Math.floor(diff / 1000), d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60), ss = s % 60;
+      el.innerHTML = '<span class="nyl">Countdown to ' + ty.getFullYear() + '</span><b class="nyt">' + (d ? d + " 天 " : "") + p2(h) + ":" + p2(m) + ":" + p2(ss) + "</b>";
+    }
+    tick(); _nyTimer = setInterval(tick, 1000);
+  } catch (e) {}
+}
 </script>
 </body>
 </html>
