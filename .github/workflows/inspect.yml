@@ -1,0 +1,36 @@
+name: 每週網站巡檢
+on:
+  schedule:
+    - cron: "0 2 * * 0"        # 每週日 台北 10:00(GitHub 的星期 0=週日,和 Cloudflare 不同)
+  workflow_dispatch:            # 也可以在 GitHub 頁面手動觸發
+permissions:
+  contents: write               # 寫 data/inspect.json、自動修復 commit
+  actions: write                # 資料壞了自動觸發 update.yml
+  issues: write                 # 修不好就開 Issue 通知
+concurrency:
+  group: etf-inspect
+  cancel-in-progress: false
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 60          # 首頁程式壞掉時要往回找可還原的版本
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 安裝瀏覽器(實際打開網站找 JS 錯誤)
+        run: |
+          pip install -q playwright
+          python -m playwright install --with-deps chromium
+      - name: 巡檢＋自動修復
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TZ: Asia/Taipei
+        run: python -u scripts/inspect_site.py

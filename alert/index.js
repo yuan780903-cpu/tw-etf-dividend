@@ -636,6 +636,12 @@ export default {
         const R = (await env.DB.prepare("SELECT ts,code,title,body,bad FROM alerts WHERE sub=? ORDER BY ts DESC LIMIT 50").bind(s.id).all()).results || [];
         return J(req, {sub: true, n: JSON.parse(s.codes).length, updated: s.updated, items: R});
       }
+      if (p == "/coverage") {                      // 每週巡檢用:近 N 天(最多 14)每天發了哪些摘要(只回日期與種類)
+        const n = Math.min(14, Math.max(1, +(u.searchParams.get("days") || 8)));
+        const R = (await env.DB.prepare("SELECT day,k,ts FROM briefs WHERE ts>? ORDER BY day,k").bind(Date.now() - n * 864e5).all()).results || [];
+        const S = await env.DB.prepare("SELECT MAX(ts) t FROM state").first();
+        return J(req, {items: R, lastRun: S && S.t ? new Date(S.t).toISOString() : null, now: Date.now()});
+      }
       if (p == "/briefs") {                        // 網站「今日盤勢摘要」時間軸(公開)
         const R = (await env.DB.prepare("SELECT day,k,ts,title,body FROM briefs WHERE ts>? ORDER BY ts DESC LIMIT 14").bind(Date.now() - 4 * 864e5).all()).results || [];
         return new Response(JSON.stringify({items: R, now: Date.now()}), {headers: {"Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=60", ...cors(req)}});

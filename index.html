@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-version" content="v2026.11.27.5">
+<meta name="app-version" content="v2026.11.28.1">
 <meta name="theme-color" content="#F1F5FF">
 <title>巴菲遠不負責任財富系統｜ETF 配息・專家選股・大盤儀表板</title>
 <meta name="description" content="全台 ETF 配息日曆與每月領息試算、巴菲特選股 Top 50 與正常股價區間、大盤恐慌度與籌碼儀表板、退休規劃，每天收盤後自動更新。">
@@ -1766,9 +1766,12 @@ button{-webkit-tap-highlight-color:transparent}
 .cal-eff{margin:4px 0 0!important;font-size:12.5px;line-height:1.6;color:var(--ink)!important;background:var(--panel);border-radius:9px;padding:6px 9px}.cal-dir{display:inline-block;background:var(--c);color:#fff;border-radius:6px;padding:0 7px;font-weight:800;font-size:11.5px;margin-right:6px}
 .cal-e.hol b{color:#B45309}
 /* 資料健康 */
+.hp-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 auto 12px}.hp-row .hp-btn{margin:0}
+.hp-btn.err{border-color:#F5B3B3;color:#CF3A3A}
+#ipDlg .gx-tb td{text-align:left;vertical-align:top}.ip-g{margin:12px 0 4px;font-size:14px}.ip-st{white-space:nowrap}.ip-h{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.ip-h span{font-size:11.5px;border:1px solid var(--line);border-radius:999px;padding:2px 8px;color:var(--sub)}
 .hp-btn{display:block;margin:0 auto 12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font-weight:800;cursor:pointer;font-size:13px}.hp-btn.warn{border-color:#F5C26B}.hp-btn.error{border-color:#F5B3B3;color:#CF3A3A}
 .hp-ban{margin:10px 0 0;background:#FDECEC;border:1px solid #F5B3B3;color:#9B1C1C;border-radius:12px;padding:8px 12px;font-size:13px;font-weight:700}.hp-ban button{margin-left:8px;border:0;background:#CF3A3A;color:#fff;border-radius:8px;padding:3px 10px;font-weight:800;cursor:pointer}
-#hpDlg{position:fixed;inset:0;z-index:9850;background:rgba(10,15,30,.5);display:none;align-items:flex-start;justify-content:center;padding:4vh 12px}#hpDlg.on{display:flex}
+#hpDlg,#ipDlg{position:fixed;inset:0;z-index:9850;background:rgba(10,15,30,.5);display:none;align-items:flex-start;justify-content:center;padding:4vh 12px}#hpDlg.on,#ipDlg.on{display:flex}
 .hp-x{background:var(--bg);border-radius:12px;padding:6px 12px;font-size:13.5px}.hp-x p{margin:4px 0}.hp-ok{color:#1A8F57;font-weight:700}.hp-r{color:#B45309;font-weight:700}
 /* 雲端更新進度 */
 #cwChip{position:fixed;right:14px;bottom:14px;z-index:9800;max-width:min(360px,calc(100vw - 28px));background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:9px 13px;font-size:13px;font-weight:700;line-height:1.5;box-shadow:0 12px 30px -14px rgba(20,33,61,.5)}
@@ -1965,7 +1968,7 @@ button{-webkit-tap-highlight-color:transparent}
   <div class="top">
     <div class="brand"><img class="logo" src="logo.svg" alt="柴犬博士" width="64" height="64" onclick="admTapLogo()">
       <div><h1><span class="bm">巴菲遠</span>不負責任財富系統</h1>
-      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.27.5</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
+      <p><span class="app-ver" title="網站版本（年.月.日.當天第幾版）">v2026.11.28.1</span>ETF 配息・專家選股・全球大盤・股利・退休規劃，一站看懂</p></div>
     </div>
     <div class="clk" id="clk" aria-live="off"></div>
     <div class="hacts">
@@ -2123,8 +2126,8 @@ button{-webkit-tap-highlight-color:transparent}
   </div>
 </div>
 
-<footer><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button>
-  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.27.5</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
+<footer><div class="hp-row"><button id="hpBtn" class="hp-btn" hidden>🩺 資料健康</button><button id="ipBtn" class="hp-btn" hidden>🛡️ 每週巡檢</button></div>
+  <div class="ft-brand"><div class="ft-logo"><img src="logo.svg" alt="" width="34" height="34">巴菲遠不負責任財富系統</div><div class="cp">© <span id="cpY">2026</span> 莊政遠 版權所有</div><div class="ft-ver">網站版本 <span class="app-ver">v2026.11.28.1</span></div><small>未經授權請勿轉載、重製或作商業使用。</small></div>
   <div class="ft-nav"><b>功能</b><a href="#mkt">📉 大盤儀表板</a><a href="#macro">🛢️ 總經指標</a><a href="#etf">📊 ETF 總覽</a><a href="#vp">🧠 專家選股</a><a href="#calc">💰 我的配息試算</a><a href="#plan">🎯 退休規劃</a><a href="#learn">📚 投資教學</a></div>
   <div class="ft-src"><b>資料來源</b><span>臺灣證券交易所、證券櫃檯買賣中心、臺灣期貨交易所、公開資訊觀測站、FinMind、Yahoo Finance、MoneyDJ。每個交易日收盤後自動更新。</span>
     <span class="ft-disc">本站內容為公開資料整理與統計推估，僅供參考，不構成任何投資建議；配息以各投信公告為準。</span></div>
@@ -7004,6 +7007,26 @@ async function healthUI(){
   window.hpOpen = hpOpen;
 }
 setTimeout(healthUI, 2000);
+/* ================= 🛡️ 每週巡檢(scripts/inspect_site.py,每週日 10:00):網站本體/資料/雲端推播/看門狗/排程與來源,能修的自動修 ================= */
+async function inspUI(){
+  const I = await getJ("inspect"); if (!I) return;
+  const ic = {ok: "✅", warn: "⚠️", err: "⛔", fixed: "🔧"}, nm = {ok: "全部正常", warn: "有項目要注意", err: "有問題待處理"};
+  const b = $("#ipBtn"); if (!b) return;
+  const d0 = I.updated ? I.updated.slice(5, 10).replace("-", "/") : "";
+  b.hidden = false; b.className = "hp-btn " + I.overall; b.innerHTML = `🛡️ 每週巡檢 ${d0}：${ic[I.overall]} ${nm[I.overall]}${(I.fixes || []).length ? `・自動修好 ${I.fixes.length} 項` : ""}`;
+  b.onclick = () => {
+    let d = $("#ipDlg"); if (!d) { d = document.createElement("div"); d.id = "ipDlg"; d.className = "hpDlg"; document.body.append(d); }
+    const G = [...new Set(I.items.map(i => i.g))], c = I.count || {};
+    d.innerHTML = `<div class="gd-box"><div class="gd-hd"><h2>🛡️ 每週網站巡檢 <small>${I.updated}・網站版本 ${I.version || "—"}・✅ ${c.ok || 0}　🔧 ${c.fixed || 0}　⚠️ ${c.warn || 0}　⛔ ${c.err || 0}</small></h2><button class="gd-x">✕</button></div>
+      <p class="kid-mini">👶 <b>白話</b>：每個禮拜天早上，系統像保全巡邏一樣把整個網站走一遍：網頁打不打得開、程式有沒有壞、資料新不新、推播有沒有照時間發、外面的資料來源還抓不抓得到。能自己修的就自動修（重抓資料、重產 logo、程式壞了自動換回上一版），修不了的會發通知給站長。</p>
+      ${(I.fixes || []).length ? `<p class="hp-r">🔧 這次自動修好：${I.fixes.map(esc).join("、")}</p>` : ""}
+      <div class="gx-tw" style="max-height:58vh">${G.map(g => `<h3 class="ip-g">${g}</h3><table class="gx-tb"><tbody>${I.items.filter(i => i.g == g).map(i => `<tr><td style="width:30%"><b>${esc(i.name)}</b></td><td class="ip-st">${ic[i.st] || ""}</td><td>${esc(i.msg || "")}${i.fix ? `<small style="display:block;color:var(--sub)">→ ${esc(i.fix)}</small>` : ""}</td></tr>`).join("")}</tbody></table>`).join("")}</div>
+      ${(I.hist || []).length > 1 ? `<div class="ip-h">${I.hist.map(h => `<span>${h.d.slice(5, 10).replace("-", "/")} ${ic[h.overall]}${h.fixed ? " 🔧" + h.fixed : ""}</span>`).join("")}</div>` : ""}
+      <p class="mknote">${esc(I.note || "")}</p></div>`;
+    d.classList.add("on"); d.querySelector(".gd-x").onclick = () => d.classList.remove("on"); d.onclick = e => { if (e.target == d) d.classList.remove("on"); };
+  };
+}
+setTimeout(inspUI, 2200);
 
 /* ================= 🐻 外資期貨空單(台指期三大法人淨未平倉)================= */
 async function futUI(){
